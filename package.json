@@ -6,8 +6,7 @@
     "scripts": {
         "server": "node src/server.js",
         "start": "node src/server.js",
-        "build": "node src/server.js",
-        "production": "parcel build && cp -r public/assets/ dist/assets && node src/server.js"
+        "build": "node src/server.js"
     },
     "engines" : { 
         "node" : "16.13.2"
