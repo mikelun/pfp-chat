@@ -1,7 +1,7 @@
-import { initiateAudio, removePeer } from '../audioSocket';
-import { initializePlayersSocket } from '../playerSocket';
 import Phaser from 'phaser';
-import { io } from "socket.io-client";
+import {initializeSocket} from '../socketController/socketController';
+import {initMainMap} from '../utils/utils';
+
 /**
  * Socket.io socket
  */
@@ -30,59 +30,18 @@ export class MainScene extends Phaser.Scene {
 
     create() {
 
-        initKeysForMoving(this);
+        initKeysForController(this);
 
         initMainMap(this);
 
+        // Set camera zoom to 3
         this.cameras.main.setZoom(3);
 
-
-
-
-        // ANIMS
-        const anims = this.anims;
-        anims.create({
-            key: "player-walk",
-            frames: anims.generateFrameNumbers("characters", { start: 46, end: 49 }),
-            frameRate: 16,
-            repeat: -1
-        });
-        anims.create({
-            key: "player-walk-back",
-            frames: anims.generateFrameNumbers("characters", { start: 65, end: 68 }),
-            frameRate: 16,
-            repeat: -1
-        });
-
-
-        var self = this;
-        this.socket = io('ws://localhost:3000');
-        socket = this.socket;
-
-
-        // Initialize audio stream for socket
-        initiateAudio(socket, peers);
-
-        // Initialize player socket
-        initializePlayersSocket(self, peers);
-
-
-        socket.on('disconnected', (socket_id) => {
-            console.log('disconnected');
-
-            this.otherPlayers.getChildren().forEach(function (otherPlayer) {
-                if (socket_id === otherPlayer.playerId) {
-                    otherPlayer.destroy();
-                }
-            });
-            for (let socket_id in peers) {
-                removePeer(socket_id)
-            }
-        });
+        initializeSocket(this, peers);
+   
     }
 
     update() {
-
         if (this.sprite) {
 
             var sprite = this.sprite;
@@ -136,20 +95,11 @@ export class MainScene extends Phaser.Scene {
  * Intialize keys for controller
  * @param {Scene} self 
  */
-function initKeysForMoving(self) {
+function initKeysForController(self) {
+    console.log("HERE");
     keyUp = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     keyDown = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     keyLeft = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     keyRight = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-}
-
-/**
- * Initialize main tile map
- * @param {Scene} self 
- */
-function initMainMap(self) {
-    const dungeon = self.make.tilemap({ key: 'dungeon' });
-    const tileset = dungeon.addTilesetImage('indoors', 'tiles');
-    dungeon.createStaticLayer('background', tileset);
-    dungeon.createStaticLayer('structure', tileset);
+    console.log(self);
 }
