@@ -1,0 +1,17 @@
+body {
+    background: #313131;
+    margin: 0;
+    padding: 0;
+}
+
+#mygame {
+    /* width: 100%; */
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*# sourceMappingURL=/main.c52e0fe2.css.map */
