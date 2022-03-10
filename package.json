@@ -5,8 +5,8 @@
     "source": "public/index.html",
     "scripts": {
         "server": "node src/server.js",
-        "start": "parcel build && cp -r public/assets/ dist/assets && node src/server.js",
-        "build": "parcel build && cp -r public/assets/ dist/assets && node src/server.js",
+        "start": "node src/server.js",
+        "build": "node src/server.js",
         "production": "parcel build && cp -r public/assets/ dist/assets && node src/server.js"
     },
     "author": "",
@@ -32,9 +32,5 @@
         "staticPath": [
             "public"
         ]
-    },
-    "engines" : { 
-        "npm" : ">=7.0.0",
-        "node" : ">=16.0.0"
-      }
+    }
 }

@@ -18,7 +18,7 @@ var port = process.env.PORT || 5000; // set our port
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
     cors: {
-      origin: "http://localhost:1234",
+      origin: "https://lunverse.herokuapp.com/",
       methods: ["GET", "POST"]
     }
   });
