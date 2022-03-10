@@ -15,8 +15,13 @@ var port = process.env.PORT || 3000; // set our port
 
 
 // build server
-const server = require('http').Server(app);   
-const io = require('socket.io')(server);
+const server = require('http').Server(app);
+const io = require('socket.io')(server, {
+    cors: {
+      origin: "http://localhost:1234",
+      methods: ["GET", "POST"]
+    }
+  });
 require('./socketController')(io)
 
 

@@ -1,4 +1,5 @@
-
+import { initiateAudio, removePeer } from './audioSocket';
+import {initializePlayersSocket} from './playerSocket';
 /**
  * Socket.io socket
  */
@@ -22,8 +23,8 @@ var config = {
         mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 400,
-        height: 250,
+        width: 1280,
+        height: 720,
     },
     physics: {
       default: 'arcade',
@@ -88,6 +89,7 @@ function preload() {
 
 function create() {
 
+    this.cameras.main.setZoom(3);
     // create button
     const button = document.createElement('div');
     button.className = 'button';
@@ -102,10 +104,6 @@ function create() {
     //map = this.add.image(526, 495, 'map');
     //map.setScale(2.1);
 
-    navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
-        console.log('got stream');
-        localStream = stream;  
-    });
 
     // ANIMS
     const anims = this.anims;
@@ -128,20 +126,35 @@ function create() {
 
 
     var self = this;
-    this.socket = io();
+    this.socket = io('ws://localhost:3000');
     socket = this.socket;
 
+
     // Initialize audio stream for socket
-    initiateAudio(socket);
+    initiateAudio(socket, peers);
     
     // Initialize player socket
-    initializePlayersSocket(self);
+    initializePlayersSocket(self, peers);
+      
 
+    socket.on('disconnected', (socket_id) => {
+      console.log('disconnected');
+
+      this.otherPlayers.getChildren().forEach(function (otherPlayer) {
+      if (socket_id === otherPlayer.playerId) {
+          otherPlayer.destroy();
+      }
+      });
+      for (let socket_id in peers) {
+          removePeer(socket_id)
+      }
+    });
 } 
 
 const spriteSpeed = 2;
 
 function update() {
+  
     if (this.sprite) {
 
       var sprite = this.sprite;
@@ -188,6 +201,4 @@ function update() {
       };
     }
   }
-
-
 

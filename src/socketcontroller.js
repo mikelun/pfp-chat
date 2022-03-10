@@ -38,22 +38,7 @@ module.exports = (io) => {
             socket.broadcast.emit('playerMoved', players[socket.id]);
         });
 
-        // ADDING VOICE PART
-        socket.on("voice", function (data) {
-            var newData = data.split(";");
-            newData[0] = "data:audio/ogg;";
-            newData = newData[0] + newData[1];
-            for (const id in socketsStatus) {
-            if (id != socketId)
-                socket.broadcast.to(id).emit("send", newData);
-            }
-        });
         
-        socket.on("userInformation", function (data) {
-            socketsStatus[socketId] = data;
-            io.sockets.emit("usersUpdate",socketsStatus);
-        });
-
 
 
         // Asking all other clients to setup the peer connection receiver
@@ -80,6 +65,7 @@ module.exports = (io) => {
          socket.on('disconnect', async function () {
             console.log('user disconnected: ', socket.id);
             delete players[socket.id];
+            delete peers[socket.id];
             // emit a message to all players to remove this player
             io.emit('disconnected', socket.id);
           });

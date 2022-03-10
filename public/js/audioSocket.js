@@ -26,11 +26,14 @@
   ]
 }
 
-
+var peers;
+var socket;
 // Initialize audio stream for socket
-function initiateAudio(socket) {
+export function initiateAudio(_socket, _peers) {
+    peers = _peers;
+    socket = _socket;
     socket.on('initReceive', socket_id => {
-        console.log('INIT RECEIVE ' + socket_id)
+        console.log('INIT RECEIVE ' + socket_id);
         addPeer(socket_id, false)
 
         socket.emit('initSend', socket_id)
@@ -46,45 +49,60 @@ function initiateAudio(socket) {
         removePeer(socket_id)
     })
 
-    // socket.on('disconnect', () => {
-    //     console.log('GOT DISCONNECTED')
-    //     for (let socket_id in peers) {
-    //         removePeer(socket_id)
-    //     }
-        
-    // })
-
     socket.on('signal', data => {
         peers[data.socket_id].signal(data.signal)
     })
 }
-function addPeer(socket_id, am_initiator) {
-    peers[socket_id] = new SimplePeer({
-        initiator: am_initiator,
-        stream: localStream,
-        config: configuration
-    })
 
-    peers[socket_id].on('signal', data => {
-        socket.emit('signal', {
-            signal: data,
-            socket_id: socket_id
+function addPeer(socket_id, am_initiator, localStream) {
+
+    navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
+        let localStream = stream; 
+        console.log('EOO'  + localStream);
+        peers[socket_id] = new SimplePeer({
+            initiator: am_initiator,
+            stream: localStream,
+            config: configuration
+        });
+        peers[socket_id].on('signal', data => {
+            socket.emit('signal', {
+                signal: data,
+                socket_id: socket_id
+            })
         })
-    })
+    
+        peers[socket_id].on('stream', stream => {
+            console.log('Was here');
+            let newVid = document.createElement('video')
+            newVid.srcObject = stream
+            newVid.id = socket_id
+            newVid.playsinline = false
+            newVid.autoplay = true
+            newVid.className = "vid"
+            // append newVid to body
+            document.body.appendChild(newVid)
+        });
+        /**
+         * Enable/disable microphone
+         */
+        function toggleMute() {
+            console.log("Microphone has been toggled");
+            for (let index in localStream.getAudioTracks()) {
+                localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
+                muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
+            }
+        }
+        
+        window.toggleMute = toggleMute;
 
-    peers[socket_id].on('stream', stream => {
-        let newVid = document.createElement('video')
-        newVid.srcObject = stream
-        newVid.id = socket_id
-        newVid.playsinline = false
-        newVid.autoplay = true
-        newVid.className = "vid"
-        // append newVid to body
-        document.body.appendChild(newVid)
-    })
+
+        
+    });
+    
+
 }
 
-function removePeer(socket_id) {
+export function removePeer(socket_id) {
 
     let videoEl = document.getElementById(socket_id)
     if (videoEl) {
@@ -100,16 +118,4 @@ function removePeer(socket_id) {
     }
     if (peers[socket_id]) peers[socket_id].destroy()
     delete peers[socket_id]
-}
-
-
-/**
- * Enable/disable microphone
- */
- function toggleMute() {
-    console.log("Microphone has been toggled");
-    for (let index in localStream.getAudioTracks()) {
-        localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-        muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
-    }
 }

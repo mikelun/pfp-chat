@@ -4,19 +4,29 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "node src/server.js",
-        "signalhub": "signalhub listen -p 8080"
+        "start-server": "node src/server.js",
+        "start-parcel": "parcel public/index.html"
     },
-    "author": "Kyle Robinson Young <kyle@dontkry.com> (http://dontkry.com)",
+    "author": "",
     "license": "MIT",
     "devDependencies": {
-        "budo": "^11.2.0"
+        "budo": "^11.2.0",
+        "parcel-plugin-static-files-copy": "^2.6.0"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "express": "^4.17.3",
+        "fs": "^0.0.1-security",
+        "https": "^1.0.0",
+        "parcel-bundler": "^1.3.1",
         "signalhub": "^4.9.0",
         "simple-peer": "^9.11.1",
         "socket.io": "^4.4.1",
         "webrtc-swarm": "^2.9.0"
+    },
+    "staticFiles": {
+        "staticPath": [
+            "public"
+        ]
     }
 }

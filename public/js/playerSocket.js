@@ -1,4 +1,4 @@
-function initializePlayersSocket(self) {
+export function initializePlayersSocket(self, peers) {
     self.otherPlayers = self.physics.add.group();
 
     self.socket.on('currentPlayers', function (players) {
@@ -24,18 +24,18 @@ function initializePlayersSocket(self) {
     });
 
     // DISCONNECT FUNCTION ONLY HERE
-    self.socket.on('disconnected', function (playerId) {
-        console.log('disconnected');
+    // self.socket.on('disconnected', function (playerId) {
+    //     console.log('disconnected');
 
-        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-        if (playerId === otherPlayer.playerId) {
-            otherPlayer.destroy();
-        }
-        });
-        for (let socket_id in peers) {
-            removePeer(socket_id)
-        }
-    });
+    //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+    //     if (playerId === otherPlayer.playerId) {
+    //         otherPlayer.destroy();
+    //     }
+    //     });
+    //     for (let socket_id in peers) {
+    //         removePeer(socket_id)
+    //     }
+    // });
 }
 
 function addPlayer(self, playerInfo) {
