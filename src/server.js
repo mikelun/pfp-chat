@@ -2,13 +2,13 @@
 // Make app with express
 var express = require('express');
 var app = express();
-require('./routes')(app);
+require('./routes.js')(app);
 
 
 
 // CONFIGURATION ===============================================================
 
-var port = process.env.PORT || 3000; // set our port
+var port = process.env.PORT || 5000; // set our port
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -22,7 +22,7 @@ const io = require('socket.io')(server, {
       methods: ["GET", "POST"]
     }
   });
-require('./socketController')(io)
+require('./socketController.js')(io)
 
 
 
