@@ -1,4 +1,6 @@
-export function initializePlayersSocket(self, peers) {
+var peers;
+export function initializePlayersSocket(self, _peers) {
+    peers = _peers;
     self.otherPlayers = self.physics.add.group();
 
     self.socket.on('currentPlayers', function (players) {
@@ -23,19 +25,19 @@ export function initializePlayersSocket(self, peers) {
         });
     });
 
-    // DISCONNECT FUNCTION ONLY HERE
-    // self.socket.on('disconnected', function (playerId) {
-    //     console.log('disconnected');
+    //DISCONNECT FUNCTION ONLY HERE
+    self.socket.on('disconnected', function (playerId) {
+        console.log('disconnected');
 
-    //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-    //     if (playerId === otherPlayer.playerId) {
-    //         otherPlayer.destroy();
-    //     }
-    //     });
-    //     for (let socket_id in peers) {
-    //         removePeer(socket_id)
-    //     }
-    // });
+        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        if (playerId === otherPlayer.playerId) {
+            otherPlayer.destroy();
+        }
+        });
+        for (let socket_id in peers) {
+            removePeer(socket_id)
+        }
+    });
 }
 
 function addPlayer(self, playerInfo) {
@@ -61,9 +63,6 @@ function addOtherPlayers(self, playerInfo) {
     otherPlayer.anims.play("player-walk");
     otherPlayer.playerId = playerInfo.playerId;
     self.otherPlayers.add(otherPlayer);
-  
-    // const camera  = this.cameras.main;
-    // camera.setBounds(0, 0, 1400, 1400);
 }
 
 

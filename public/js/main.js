@@ -5,10 +5,6 @@ import {initializePlayersSocket} from './playerSocket';
  */
 let socket;
 
-/**
- * The stream object used to send media
- */
-let localStream = null;
 
 /**
  * All peer connections
@@ -51,35 +47,6 @@ var map;
 
 
 function preload() {
-    for (let i = 0; i < 4; i++) {
-        this.load.spritesheet(`characters${i}`, 
-        `assets/Other/${i}.png`,
-        {
-        frameWidth: 32,
-        frameHeight: 32,
-        margin: 0,
-        spacing: 0
-      });
-    }
-    this .load.image('tiles', 'assets/tiles/indoors.png');
-    this.load.tilemapTiledJSON('dungeon', 'assets/tiles/mainmap.json');
-    this.load.spritesheet(
-      "characters",
-      "assets/characterSprite.png",
-      {
-        frameWidth: 64,
-        frameHeight: 64,
-        margin: 1,
-        spacing: 2
-      }
-    );
-  
-    this.load.image('map', 'assets/mainMap.jpeg');
-  
-  
-    this.load.image('sprite', 'assets/spaceShips_001.png');
-  
-    this.load.image('star', 'assets/star_gold.png');
     keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -88,7 +55,6 @@ function preload() {
 
 
 function create() {
-
     this.cameras.main.setZoom(3);
     // create button
     const button = document.createElement('div');
