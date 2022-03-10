@@ -22,7 +22,7 @@ const io = require('socket.io')(server, {
       methods: ["GET", "POST"]
     }
   });
-//require('./socketController.js')(io)
+require('./socketcontroller.js')(io)
 
 
 
