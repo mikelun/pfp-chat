@@ -1,3 +1,5 @@
+import { Player } from "../characters/player";
+import {createAnimationForPlayer} from "../anims/characterAnims";
 var peers;
 export function initializePlayersSocket(self, _peers) {
     peers = _peers;
@@ -41,20 +43,14 @@ export function initializePlayersSocket(self, _peers) {
 }
 
 function addPlayer(self, playerInfo) {
-    self.sprite = self.physics.add
-      .sprite(400, 400, "characters", 0)
-      .setSize(22, 33)
-      .setOffset(23, 27)
-      .setScale(0.5);
-    var test = self.add.sprite(400, 400, "characters0", 0).setSize(22, 33);
-    createAnims(self);
-    test.anims.play("hero-walk-down");
-    self.sprite.anims.play("player-walk-back");
-    self.cameras.main.startFollow(self.sprite, true);
-    self.cameras.main.setBounds(0, 0, 1000, 1000);
-  
-    // Change texts
-    //playerName = self.add.text(self.sprite.x, self.sprite.y, "player", { fontSize: '20px', color: '#ffffff' });
+    // generate random number 0 -4
+    const textureId = Math.floor(Math.random() * 4);
+    self.textureId = textureId;
+    const texture = `characters${textureId}`;
+    self.player = self.add.player(410, 410, texture, 4, 0);
+    createAnimationForPlayer(self.anims, textureId);
+    self.cameras.main.startFollow(self.player, true, 0.07, 0.07);
+
 }
 
 function addOtherPlayers(self, playerInfo) {
@@ -86,4 +82,21 @@ function createAnims(self) {
         frameRate: 16,
         repeat: -1
     });
+}
+function removePeer(socket_id) {
+
+    let videoEl = document.getElementById(socket_id)
+    if (videoEl) {
+
+        const tracks = videoEl.srcObject.getTracks();
+
+        tracks.forEach(function (track) {
+            track.stop()
+        })
+
+        videoEl.srcObject = null
+        videoEl.parentNode.removeChild(videoEl)
+    }
+    if (peers[socket_id]) peers[socket_id].destroy()
+    delete peers[socket_id]
 }

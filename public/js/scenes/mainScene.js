@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import {initializeSocket} from '../socketController/socketController';
 import {initMainMap} from '../utils/utils';
-
+import {createCharacterAnims} from '../anims/characterAnims';
 /**
  * Socket.io socket
  */
@@ -11,6 +11,7 @@ let socket;
  * All peer connections
  */
 let peers = {};
+
 
 // KEYS
 var keyUp, keyDown, keyLeft, keyRight;
@@ -27,67 +28,29 @@ export class MainScene extends Phaser.Scene {
         super({ key: 'MainScene' })
     }
 
-
-    create() {
-
+    preload() {
         initKeysForController(this);
+    }
+    create() {
+        
+        //createCharacterAnims(this.anims);
+       
 
         initMainMap(this);
 
         // Set camera zoom to 3
-        this.cameras.main.setZoom(3);
+        this.cameras.main.setZoom(2);
+        this.cameras.main.setBounds(0, 0, 1000, 1000);
 
         initializeSocket(this, peers);
    
     }
 
     update() {
-        if (this.sprite) {
-
-            var sprite = this.sprite;
-            if (keyUp.isDown) {
-                sprite.y -= spriteSpeed;
-                //this.sprite.rotation = -3.14;
-            }
-            if (keyDown.isDown) {
-                sprite.y += spriteSpeed;
-                //this.sprite.rotation = 0;
-            }
-            if (keyLeft.isDown) {
-                sprite.x -= spriteSpeed;
-                //this.sprite.rotation = 3.14 / 2;
-                sprite.setFlipX(true);
-            }
-            if (keyRight.isDown) {
-                sprite.x += spriteSpeed;
-                //this.sprite.rotation = -3.14 / 2;
-                sprite.setFlipX(false);
-            }
-
-            if (keyLeft.isDown || keyRight.isDown || keyDown.isDown) {
-                sprite.anims.play("player-walk", true);
-            } else if (keyUp.isDown) {
-                sprite.anims.play("player-walk-back", true);
-            } else {
-                sprite.anims.stop();
-            }
-
-
-            // emit player movement
-            var x = this.sprite.x;
-            var y = this.sprite.y;
-            var r = this.sprite.rotation;
-            if (this.sprite.oldPosition && (x !== this.sprite.oldPosition.x || y !== this.sprite.oldPosition.y || r !== this.sprite.oldPosition.rotation)) {
-                this.socket.emit('playerMovement', { x: this.sprite.x, y: this.sprite.y, rotation: this.sprite.rotation });
-            }
-            // save old position data
-            this.sprite.oldPosition = {
-                x: this.sprite.x,
-                y: this.sprite.y,
-                rotation: this.sprite.rotation
-            };
+        if (this.player) {
+            this.player.update(keyUp, keyDown, keyLeft, keyRight, this.textureId); 
+            emitPlayerPosition(this);
         }
-
     }
 }
 
@@ -96,10 +59,32 @@ export class MainScene extends Phaser.Scene {
  * @param {Scene} self 
  */
 function initKeysForController(self) {
-    console.log("HERE");
     keyUp = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     keyDown = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     keyLeft = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     keyRight = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    console.log(self);
+
+}
+
+
+/**
+ * Send player position to server
+ * @param {this.player} player 
+ */
+function emitPlayerPosition(self) {
+    var player = self.player;
+    var socket = self.socket;
+    // emit player movement
+    var x = player.x;
+    var y = player.y;
+    var r = player.rotation;
+    if (player.oldPosition && (x !== player.oldPosition.x || y !== player.oldPosition.y || r !== player.oldPosition.rotation)) {
+        socket.emit('playerMovement', { x: player.x, y: player.y, rotation: player.rotation });
+    }
+    // save old position data
+    player.oldPosition = {
+        x: player.x,
+        y: player.y,
+        rotation: player.rotation
+    };
 }
