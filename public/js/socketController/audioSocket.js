@@ -31,19 +31,19 @@ import SimplePeer from 'simple-peer';
 var peers;
 var socket;
 // Initialize audio stream for socket
-export function initializeAudio(_socket, _peers) {
+export function initializeAudio(_socket, _peers, self) {
     peers = _peers;
     socket = _socket;
     socket.on('initReceive', socket_id => {
         console.log('INIT RECEIVE ' + socket_id);
-        addPeer(socket_id, false)
+        addPeer(socket_id, false, self)
 
         socket.emit('initSend', socket_id)
     })
 
     socket.on('initSend', socket_id => {
         console.log('INIT SEND ' + socket_id)
-        addPeer(socket_id, true)
+        addPeer(socket_id, true, self)
     })
 
     socket.on('removePeer', socket_id => {
@@ -56,11 +56,15 @@ export function initializeAudio(_socket, _peers) {
     })
 }
 
-function addPeer(socket_id, am_initiator, localStream) {
+function addPeer(socket_id, am_initiator, self) {
 
     navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
         let localStream = stream; 
-        console.log('EOO'  + localStream);
+        for (let index in localStream.getAudioTracks()) {
+            localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled;
+        }
+        self.localStream = localStream;
+        console.log('EOO'  + self.localStream);
         peers[socket_id] = new SimplePeer({
             initiator: am_initiator,
             stream: localStream,
@@ -84,18 +88,6 @@ function addPeer(socket_id, am_initiator, localStream) {
             // append newVid to body
             document.body.appendChild(newVid)
         });
-        /**
-         * Enable/disable microphone
-         */
-        function toggleMute() {
-            console.log("Microphone has been toggled");
-            for (let index in localStream.getAudioTracks()) {
-                localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-                muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
-            }
-        }
-        
-        window.toggleMute = toggleMute;
 
 
         

@@ -1,12 +1,15 @@
-import {MainScene} from './scenes/mainScene.js'
-import {PreloadScene} from './scenes/preloadScene.js'
-
+import { MainScene } from './scenes/mainScene.js'
+import { PreloadScene } from './scenes/preloadScene.js'
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
 const config = {
   type: Phaser.AUTO,
-  backgroundColor: '#ffffff',
+  backgroundColor: '#000000',
+  parent: 'phaser-container',
+  dom: {
+    createContainer: true
+  },
   scale: {
     parent: 'phaser-game',
     mode: Phaser.Scale.FIT,

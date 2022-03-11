@@ -49,7 +49,7 @@ function addPlayer(self, playerInfo) {
     const texture = `characters${textureId}`;
     self.player = self.add.player(410, 410, texture, 4, 0);
     createAnimationForPlayer(self.anims, textureId);
-    self.cameras.main.startFollow(self.player, true, 0.07, 0.07);
+    self.cameras.main.startFollow(self.player, true, 0.02, 0.02);
 
 }
 
