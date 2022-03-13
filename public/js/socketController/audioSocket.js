@@ -57,14 +57,9 @@ export function initializeAudio(_socket, _peers, self) {
 }
 
 function addPeer(socket_id, am_initiator, self) {
-
-    navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
-        let localStream = stream; 
-        for (let index in localStream.getAudioTracks()) {
-            localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled;
-        }
-        self.localStream = localStream;
-        console.log('EOO'  + self.localStream);
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then(localtream => {
+        console.log("ADD PEER" + localStream);
         peers[socket_id] = new SimplePeer({
             initiator: am_initiator,
             stream: localStream,
@@ -88,10 +83,8 @@ function addPeer(socket_id, am_initiator, self) {
             // append newVid to body
             document.body.appendChild(newVid)
         });
-
-
-        
     });
+
     
 
 }

@@ -2,7 +2,9 @@ import Phaser from 'phaser';
 import { initializeSocket } from '../socketController/socketController';
 import { initMainMap } from '../utils/utils';
 import { createCharacterAnims } from '../anims/characterAnims';
-import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js'
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
+import { sceneEvents } from '../Events/EventsCenter';
+
 /**
  * Socket.io socket
  */
@@ -47,11 +49,11 @@ export class MainScene extends Phaser.Scene {
 
         initializeSocket(this, peers);
 
-        this.playerName = this.add.text(0, 0, 'sad.eth', { fontFamily: 'monospace', fill: '#CCFFFF'})
+        this.playerName = this.add.text(0, 0, 'sad.eth', { fontFamily: 'monospace', fill: '#CCFFFF' })
             .setInteractive()
             .on('pointerdown', () => {
                 toggleMute(this);
-        });
+            });
 
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
@@ -64,12 +66,22 @@ export class MainScene extends Phaser.Scene {
                 // forceMin: 16,
                 // enable: true
             });
-            this.cursorKeys = this.joyStick.createCursorKeys();   
+            this.cursorKeys = this.joyStick.createCursorKeys();
         }
 
-    }
-    updateClickCountText(clickCount) {
-        this.clickCountText.setText(`Button has been clicked ${clickCount} times.`);
+        sceneEvents.on('toggleMute', () => {
+            if (this.localStream) {
+                this.toggleMute();
+            } else {
+                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => { 
+                    this.localStream = stream;
+                    if (this.localStream) {
+                        this.toggleMute();
+                    }
+                });
+            }
+        });
+
     }
     update() {
         if (this.player) {
@@ -83,20 +95,21 @@ export class MainScene extends Phaser.Scene {
             emitPlayerPosition(this);
         }
     }
+
+    toggleMute() {
+        let localStream = this.localStream;
+        for (let index in localStream.getAudioTracks()) {
+            const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
+            localStream.getAudioTracks()[index].enabled = !localStreamEnabled
+            sceneEvents.emit("microphone-toggled", localStreamEnabled);
+        }
+    }
 }
 
 /**
 * Enable/disable microphone
 */
-function toggleMute(self) {
-    let localStream = self.localStream;
-    if (localStream) {
-        for (let index in localStream.getAudioTracks()) {
-            localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-            self.playerName.setText(localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted");
-        }
-    }
-}
+
 /**
  * Intialize keys for controller
  * @param {Scene} self 
@@ -139,12 +152,12 @@ function updatePlayerPosition(self) {
             keyUp,
             keyDown,
             keyLeft,
-            keyRight, 
+            keyRight,
             self.cursorKeys.up,
             self.cursorKeys.down,
             self.cursorKeys.left,
             self.cursorKeys.right,
-            self.textureId, 
+            self.textureId,
 
         );
     }
