@@ -1,5 +1,6 @@
-import { MainScene } from './scenes/mainScene.js'
-import { PreloadScene } from './scenes/preloadScene.js'
+import { MainScene } from './scenes/mainScene.js';
+import { PreloadScene } from './scenes/preloadScene.js';
+import { GameUi } from './scenes/GameUi.js';
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
@@ -17,7 +18,7 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainScene],
+  scene: [PreloadScene, MainScene, GameUi ],
   physics: {
     default: 'arcade',
     arcade: {

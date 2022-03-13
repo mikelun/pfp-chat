@@ -35,9 +35,8 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
-
-
-        //createCharacterAnims(this.anims);
+        // Add Game Ui
+        this.scene.run('game-ui');
 
 
         initMainMap(this);
@@ -48,43 +47,39 @@ export class MainScene extends Phaser.Scene {
 
         initializeSocket(this, peers);
 
-        this.clickButton = this.add.text(400, 400, 'Muted!', { fill: '#0f0' })
+        this.playerName = this.add.text(0, 0, 'sad.eth', { fontFamily: 'monospace', fill: '#CCFFFF'})
             .setInteractive()
             .on('pointerdown', () => {
                 toggleMute(this);
-            });
-
-        this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-            x: 400,
-            y: 470,
-            radius: 50,
-            base: this.add.circle(0, 0, 50, 0x888888),
-            thumb: this.add.circle(0, 0, 25, 0xcccccc),
-            // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
-            // forceMin: 16,
-            // enable: true
         });
-        this.cursorKeys = this.joyStick.createCursorKeys();
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+            this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+                x: 400,
+                y: 470,
+                radius: 50,
+                base: this.add.circle(0, 0, 50, 0x888888),
+                thumb: this.add.circle(0, 0, 25, 0xcccccc),
+                // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
+                // forceMin: 16,
+                // enable: true
+            });
+            this.cursorKeys = this.joyStick.createCursorKeys();   
+        }
+
     }
     updateClickCountText(clickCount) {
         this.clickCountText.setText(`Button has been clicked ${clickCount} times.`);
     }
     update() {
         if (this.player) {
-            this.clickButton.x = this.player.x - 20;
-            this.clickButton.y = this.player.y - 35;
-            this.player.update(
-                keyUp,
-                keyDown,
-                keyLeft,
-                keyRight, 
-                this.cursorKeys.up,
-                this.cursorKeys.down,
-                this.cursorKeys.left,
-                this.cursorKeys.right,
-                this.textureId, 
+            // write text size of clibButton
+            const textSize = this.playerName.text.length;
+            this.playerName.x = this.player.x - textSize * 4;
+            this.playerName.y = this.player.y - 35;
+            // update player position
+            updatePlayerPosition(this);
 
-            );
             emitPlayerPosition(this);
         }
     }
@@ -98,7 +93,7 @@ function toggleMute(self) {
     if (localStream) {
         for (let index in localStream.getAudioTracks()) {
             localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-            self.clickButton.setText(localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted");
+            self.playerName.setText(localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted");
         }
     }
 }
@@ -135,4 +130,35 @@ function emitPlayerPosition(self) {
         y: player.y,
         rotation: player.rotation
     };
+}
+
+
+function updatePlayerPosition(self) {
+    if (self.cursorKeys) {
+        self.player.update(
+            keyUp,
+            keyDown,
+            keyLeft,
+            keyRight, 
+            self.cursorKeys.up,
+            self.cursorKeys.down,
+            self.cursorKeys.left,
+            self.cursorKeys.right,
+            self.textureId, 
+
+        );
+    }
+    else {
+        self.player.update(
+            keyUp,
+            keyDown,
+            keyLeft,
+            keyRight,
+            false,
+            false,
+            false,
+            false,
+            self.textureId
+        );
+    }
 }

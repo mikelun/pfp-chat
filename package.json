@@ -5,7 +5,7 @@
     "source": "public/index.html",
     "scripts": {
         "server": "node src/server.js",
-        "start": "node src/server.js",
+        "start": "parcel && cp -r public/assets/ dist/assets",
         "build": "parcel build && cp -r public/assets/ dist/assets",
         "production": "parcel build && cp -r public/assets/ dist/assets && node src/server.js"
     },
@@ -13,7 +13,6 @@
     "license": "MIT",
     "devDependencies": {
         "budo": "^11.2.0",
-        "parcel": "^2.3.2",
         "parcel-plugin-static-files-copy": "^2.6.0"
     },
     "dependencies": {
@@ -22,6 +21,7 @@
         "express": "^4.17.3",
         "fs": "^0.0.1-security",
         "https": "^1.0.0",
+        "parcel": "^2.3.2",
         "phaser": "^3.55.2",
         "phaser3-rex-plugins": "^1.1.67",
         "signalhub": "^4.9.0",
