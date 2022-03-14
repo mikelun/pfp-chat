@@ -19,11 +19,11 @@ module.exports = (io) => {
             x: Math.floor(Math.random() * 300) + 500,
             y: Math.floor(Math.random() * 100) + 500,
             playerId: socket.id,
-            team: (Math.floor(Math.random() * 2) == 0) ? 'red' : 'blue',
-            account: "player"
+            microphoneStatus: false,
+            playerName: '', 
+            textureId: Math.floor(Math.random() * 4),
         };
 
-        console.log(players[socket.id]);
         socket.emit('currentPlayers', players);
         
         // update all other players of the new player
@@ -38,6 +38,12 @@ module.exports = (io) => {
             socket.broadcast.emit('playerMoved', players[socket.id]);
         });
 
+
+        socket.on('updatePlayerInfo', (data, socket_id) => {
+            if (data.playerName) players[socket_id].playerName = data.playerName;
+            if (data.microphoneStatus)  players[socket_id].microphoneStatus = data.microphoneStatus;
+            socket.broadcast.emit('updatePlayerInfo', players[socket_id]);
+        })
         
 
 

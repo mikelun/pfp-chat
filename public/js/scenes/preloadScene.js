@@ -5,62 +5,62 @@ export class PreloadScene extends Phaser.Scene {
 
     preload() {
         var progressBar = this.add.graphics();
-            var progressBox = this.add.graphics();
-            progressBox.fillStyle(0x222222, 0.8);
-            progressBox.fillRect(250, 280, 740, 30);
-            
-            var width = this.cameras.main.width;
-            var height = this.cameras.main.height;
-            var loadingText = this.make.text({
-                x: width / 2,
-                y: height / 2,
-                text: 'Loading...',
-                style: {
-                    font: '20px monospace',
-                    fill: '#ffffff'
-                }
-            });
-            loadingText.setOrigin(0.5, 0.5);
-            
-            var percentText = this.make.text({
-                x: width / 2,
-                y: height / 2 + 40,
-                text: '0%',
-                style: {
-                    font: '18px monospace',
-                    fill: '#ffffff'
-                }
-            });
-            percentText.setOrigin(0.5, 0.5);
-            
-            var assetText = this.make.text({
-                x: width / 2,
-                y: height / 2 + 100,
-                text: '',
-                style: {
-                    font: '18px monospace',
-                    fill: '#ffffff'
-                }
-            });
-            assetText.setOrigin(0.5, 0.5);
-            
-            this.load.on('progress', function (value) {
-                percentText.setText(parseInt(value * 100) + '%');
-                progressBar.clear();
-                progressBar.fillStyle(0xffffff, 1);
-                progressBar.fillRect(250, 280, 740 * value, 30);
-            });
-            
-            // this.load.on('fileprogress', function (file) {
-            //     assetText.setText('Loading asset: ' + file.key);
-            // });
-            this.load.on('complete', function () {
-                progressBar.destroy();
-                progressBox.destroy();
-                loadingText.destroy();
-                percentText.destroy();
-                assetText.destroy();
-            });
+        var progressBox = this.add.graphics();
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(250, 280, 740, 30);
+
+        var width = this.cameras.main.width;
+        var height = this.cameras.main.height;
+        var loadingText = this.make.text({
+            x: width / 2,
+            y: height / 2,
+            text: 'Loading...',
+            style: {
+                font: '20px monospace',
+                fill: '#ffffff'
+            }
+        });
+        loadingText.setOrigin(0.5, 0.5);
+
+        var percentText = this.make.text({
+            x: width / 2,
+            y: height / 2 + 40,
+            text: '0%',
+            style: {
+                font: '18px monospace',
+                fill: '#ffffff'
+            }
+        });
+        percentText.setOrigin(0.5, 0.5);
+
+        var assetText = this.make.text({
+            x: width / 2,
+            y: height / 2 + 100,
+            text: '',
+            style: {
+                font: '18px monospace',
+                fill: '#ffffff'
+            }
+        });
+        assetText.setOrigin(0.5, 0.5);
+
+        this.load.on('progress', function (value) {
+            percentText.setText(parseInt(value * 100) + '%');
+            progressBar.clear();
+            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillRect(250, 280, 740 * value, 30);
+        });
+
+        // this.load.on('fileprogress', function (file) {
+        //     assetText.setText('Loading asset: ' + file.key);
+        // });
+        this.load.on('complete', function () {
+            progressBar.destroy();
+            progressBox.destroy();
+            loadingText.destroy();
+            percentText.destroy();
+            assetText.destroy();
+        });
         for (let i = 0; i < 4; i++) {
             this.load.spritesheet(`characters${i}`,
                 `assets/Other/${i}.png`,
@@ -71,7 +71,7 @@ export class PreloadScene extends Phaser.Scene {
                     spacing: 0
                 });
         }
-        
+
         // GAME UI
         this.load.image('1', 'assets/game-ui/1.png');
         this.load.image('2', 'assets/game-ui/2.png');
@@ -99,6 +99,8 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('sprite', 'assets/spaceShips_001.png');
 
         this.load.image('star', 'assets/star_gold.png');
+        
+        
     }
 
     create() {

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { initializeSocket } from '../socketController/socketController';
 import { initMainMap } from '../utils/utils';
-import { createCharacterAnims } from '../anims/characterAnims';
+import {createAnimationForPlayer} from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
 
@@ -36,6 +36,9 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+        for (let i = 0; i < 4; i++) {
+            createAnimationForPlayer(this.anims, i);
+        }
 
         // Add Game Ui
         this.scene.run('game-ui');

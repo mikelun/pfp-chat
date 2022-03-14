@@ -1,5 +1,6 @@
-import { Player } from "../characters/player";
-import {createAnimationForPlayer} from "../anims/characterAnims";
+import { Player } from "../characters/player"; 
+import { OtherPlayer } from "../characters/otherPlayer";
+import { nicknames } from "../utils/nicknames";
 var peers;
 export function initializePlayersSocket(self, _peers) {
     peers = _peers;
@@ -14,6 +15,15 @@ export function initializePlayersSocket(self, _peers) {
         }
         });
     });
+
+    self.socket.on('updatePlayerInfo', (player) => {
+        if (self.socket.id === player.playerId) {
+            console.log("Change own nickname by" + player.playerName);
+        }
+        else {
+            console.log("Change other nickname by" + player.playerName);
+        }
+    });
     self.socket.on('newPlayer', function (playerInfo) {
         addOtherPlayers(self, playerInfo);
     });
@@ -21,8 +31,8 @@ export function initializePlayersSocket(self, _peers) {
     self.socket.on('playerMoved', function (playerInfo) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
         if (playerInfo.playerId === otherPlayer.playerId) {
-            otherPlayer.setRotation(playerInfo.rotation);
             otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+            otherPlayer.update(otherPlayer.x, otherPlayer.y);
         }
         });
     });
@@ -43,46 +53,23 @@ export function initializePlayersSocket(self, _peers) {
 }
 
 function addPlayer(self, playerInfo) {
-    // generate random number 0 -4
-    const textureId = Math.floor(Math.random() * 4);
-    self.textureId = textureId;
-    const texture = `characters${textureId}`;
-    self.player = self.add.player(410, 410, texture, 4, 0);
-    createAnimationForPlayer(self.anims, textureId);
+    self.textureId = playerInfo.textureId;
+    self.player = self.add.player(playerInfo.x - 100, playerInfo.y - 100,  `characters${playerInfo.textureId}`);
     self.cameras.main.startFollow(self.player, true, 0.02, 0.02);
 
+    // random nickname 
+    let playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
+    self.socket.emit('updatePlayerInfo', {playerName: playerName}, self.socket.id);
 }
 
 function addOtherPlayers(self, playerInfo) {
-    const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, "characters", 0).setScale(0.5);
+    const otherPlayer = self.add.otherPlayer(playerInfo.x - 100, playerInfo.y - 100, `characters${playerInfo.textureId}`, 4, 0);
     //const otherPlayerName = self.add.text(playerInfo.x, playerInfo.y, playerInfo.account, { fontSize: '20px', color: '#ffffff' });
-    otherPlayer.anims.play("player-walk");
     otherPlayer.playerId = playerInfo.playerId;
     self.otherPlayers.add(otherPlayer);
 }
 
 
-function createAnims(self) {
-    const anims = self.anims;
-    anims.create({
-        key: "hero-walk-down",
-        frames: anims.generateFrameNumbers("characters0", { start: 0, end: 2 }),
-        frameRate: 8,
-        repeat: -1
-    });
-    anims.create({
-        key: "player-walk",
-        frames: anims.generateFrameNumbers("characters", { start: 46, end: 49 }),
-        frameRate: 16,
-        repeat: -1
-    });
-    anims.create({
-        key: "player-walk-back",
-        frames: anims.generateFrameNumbers("characters", { start: 65, end: 68 }),
-        frameRate: 16,
-        repeat: -1
-    });
-}
 function removePeer(socket_id) {
 
     let videoEl = document.getElementById(socket_id)

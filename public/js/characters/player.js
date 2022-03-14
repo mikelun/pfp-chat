@@ -6,10 +6,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
     }
 
-    /**
-     * 
-     * @param {Phaser.numbers.Input.Keyboard.CursorKeys} cursors 
-     */
     update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, self) {
 
         if (keyUp.isDown || jUp.isDown) {

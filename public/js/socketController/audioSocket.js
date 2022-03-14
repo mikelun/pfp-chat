@@ -4,28 +4,28 @@ import SimplePeer from 'simple-peer';
  * RTCPeerConnection configuration 
  */
 
- const configuration = {
+const configuration = {
     // Using From https://www.metered.ca/tools/openrelay/
     "iceServers": [
-    {
-      urls: "stun:openrelay.metered.ca:80"
-    },
-    {
-      urls: "turn:openrelay.metered.ca:80",
-      username: "openrelayproject",
-      credential: "openrelayproject"
-    },
-    {
-      urls: "turn:openrelay.metered.ca:443",
-      username: "openrelayproject",
-      credential: "openrelayproject"
-    },
-    {
-      urls: "turn:openrelay.metered.ca:443?transport=tcp",
-      username: "openrelayproject",
-      credential: "openrelayproject"
-    }
-  ]
+        {
+            urls: "stun:openrelay.metered.ca:80"
+        },
+        {
+            urls: "turn:openrelay.metered.ca:80",
+            username: "openrelayproject",
+            credential: "openrelayproject"
+        },
+        {
+            urls: "turn:openrelay.metered.ca:443",
+            username: "openrelayproject",
+            credential: "openrelayproject"
+        },
+        {
+            urls: "turn:openrelay.metered.ca:443?transport=tcp",
+            username: "openrelayproject",
+            credential: "openrelayproject"
+        }
+    ]
 }
 
 var peers;
@@ -58,34 +58,35 @@ export function initializeAudio(_socket, _peers, self) {
 
 function addPeer(socket_id, am_initiator, self) {
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(localtream => {
-        console.log("ADD PEER" + localStream);
-        peers[socket_id] = new SimplePeer({
-            initiator: am_initiator,
-            stream: localStream,
-            config: configuration
-        });
-        peers[socket_id].on('signal', data => {
-            socket.emit('signal', {
-                signal: data,
-                socket_id: socket_id
+        .then(stream => {
+            self.localStream = stream;
+            console.log("ADD PEER");
+            peers[socket_id] = new SimplePeer({
+                initiator: am_initiator,
+                stream: am_initiator ? self.localStream : null,
+                config: configuration
+            });
+            peers[socket_id].on('signal', data => {
+                socket.emit('signal', {
+                    signal: data,
+                    socket_id: socket_id
+                })
             })
-        })
-    
-        peers[socket_id].on('stream', stream => {
-            console.log('Was here');
-            let newVid = document.createElement('video')
-            newVid.srcObject = stream
-            newVid.id = socket_id
-            newVid.playsinline = false
-            newVid.autoplay = true
-            newVid.className = "vid"
-            // append newVid to body
-            document.body.appendChild(newVid)
-        });
-    });
 
-    
+            peers[socket_id].on('stream', stream => {
+                console.log('Was here');
+                let newVid = document.createElement('video')
+                newVid.srcObject = stream
+                newVid.id = socket_id
+                newVid.playsinline = false
+                newVid.autoplay = true
+                newVid.className = "vid"
+                // append newVid to body
+                document.body.appendChild(newVid)
+            });
+        });
+
+
 
 }
 
