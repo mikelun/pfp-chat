@@ -1,1 +1,1 @@
-# LunVerse
+# OpenMetaverse
