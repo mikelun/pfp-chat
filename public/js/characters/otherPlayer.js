@@ -2,8 +2,8 @@ import Phaser from "phaser";
 const spriteSpeed = 1.5;
 
 export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, textureId, frame) {
-        super(scene, x, y, textureId, frame);
+    constructor(scene, x, y, textureId) {
+        super(scene, x, y, textureId);
         this.oldX = x;
         this.oldY = y;
         this.textureId = textureId.replace('characters', '');
@@ -28,9 +28,10 @@ export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
     }
 }
 
-Phaser.GameObjects.GameObjectFactory.register('otherPlayer', function (x, y, textureId,  frame) {
-	var sprite = new OtherPlayer(this.scene, x, y, textureId, frame).setScale(1);
-	this.displayList.add(sprite)
-	this.updateList.add(sprite)
+Phaser.GameObjects.GameObjectFactory.register('otherPlayer', function (x, y, textureId, self) {
+    console.log(self.socket.id);
+	var sprite = new OtherPlayer(this.scene, x, y, textureId).setScale(1);
+	this.displayList.add(sprite);
+	this.updateList.add(sprite);
 	return sprite;
 })

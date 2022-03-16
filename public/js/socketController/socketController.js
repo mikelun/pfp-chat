@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
  * Initialize socket and connect to server by socket.io
  */
  export function initializeSocket(self, peers) {
+    
     self.socket = io();
 
     // Initialize audio stream for socket

@@ -1,3 +1,4 @@
+const nicknames = require("./data/nicknames");
 
 
 peers = {};
@@ -20,7 +21,7 @@ module.exports = (io) => {
             y: Math.floor(Math.random() * 100) + 500,
             playerId: socket.id,
             microphoneStatus: false,
-            playerName: '', 
+            playerName: nicknames[Math.floor(Math.random() * nicknames.length)], 
             textureId: Math.floor(Math.random() * 4),
         };
 
@@ -40,7 +41,6 @@ module.exports = (io) => {
 
 
         socket.on('updatePlayerInfo', (data, socket_id) => {
-            if (data.playerName) players[socket_id].playerName = data.playerName;
             if (data.microphoneStatus)  players[socket_id].microphoneStatus = data.microphoneStatus;
             socket.broadcast.emit('updatePlayerInfo', players[socket_id]);
         })

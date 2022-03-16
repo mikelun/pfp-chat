@@ -1,23 +1,16 @@
 import Phaser from 'phaser';
 import { initializeSocket } from '../socketController/socketController';
-import { initMainMap } from '../utils/utils';
-import {createAnimationForPlayer} from "../anims/characterAnims";
+import { initMainMap, updatePlayerPosition, initKeysForController } from '../utils/utils';
+import { createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
+import e from 'cors';
 
-/**
- * Socket.io socket
- */
-let socket;
 
 /**
  * All peer connections
  */
 let peers = {};
-
-
-// KEYS
-var keyUp, keyDown, keyLeft, keyRight;
 
 // Speed of all players
 const spriteSpeed = 2;
@@ -36,6 +29,8 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+        this.playerUI = {};
+        // Create Animations for heroes
         for (let i = 0; i < 4; i++) {
             createAnimationForPlayer(this.anims, i);
         }
@@ -53,10 +48,6 @@ export class MainScene extends Phaser.Scene {
         initializeSocket(this, peers);
 
         this.playerName = this.add.text(0, 0, 'sad.eth', { fontFamily: 'monospace', fill: '#CCFFFF' })
-            .setInteractive()
-            .on('pointerdown', () => {
-                toggleMute(this);
-            });
 
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
@@ -73,10 +64,15 @@ export class MainScene extends Phaser.Scene {
         }
 
         sceneEvents.on('toggleMute', () => {
+            if (this.playerUI[this.socket.id].microphone.texture.key == 'microphone')
+                this.playerUI[this.socket.id].microphone.setTexture('microphoneMuted');
+            else
+                this.playerUI[this.socket.id].microphone.setTexture('microphone');
+
             if (this.localStream) {
                 this.toggleMute();
             } else {
-                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => { 
+                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
                     this.localStream = stream;
                     if (this.localStream) {
                         this.toggleMute();
@@ -89,13 +85,30 @@ export class MainScene extends Phaser.Scene {
     update() {
         if (this.player) {
             // write text size of clibButton
-            const textSize = this.playerName.text.length;
-            this.playerName.x = this.player.x - textSize * 4;
-            this.playerName.y = this.player.y - 35;
+            //console.log
+            const playerUI = this.playerUI[this.socket.id];
+            const playerText = playerUI.playerText;
+            const textSize = playerText.text.length;
+            playerText.x = this.player.x - textSize * 3.5;
+            playerText.y = this.player.y - 27;
+
+            playerUI.microphone.x = this.player.x;
+            playerUI.microphone.y = this.player.y - 32;
+
             // update player position
             updatePlayerPosition(this);
 
             emitPlayerPosition(this);
+        }
+        if (this.otherPlayers) {
+            this.otherPlayers.getChildren().forEach(otherPlayer => {
+                const playerUI = this.playerUI[otherPlayer.playerId];
+                const otherPlayerText = playerUI.playerText;
+                otherPlayerText.x = otherPlayer.x - otherPlayerText.text.length * 3.5;
+                otherPlayerText.y = otherPlayer.y - 25;
+                playerUI.microphone.x = otherPlayer.x;
+                playerUI.microphone.y = otherPlayer.y - 32;
+            });
         }
     }
 
@@ -103,27 +116,13 @@ export class MainScene extends Phaser.Scene {
         let localStream = this.localStream;
         for (let index in localStream.getAudioTracks()) {
             const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
-            localStream.getAudioTracks()[index].enabled = !localStreamEnabled
+            localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
+            this.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled}, this.socket.id);
             sceneEvents.emit("microphone-toggled", localStreamEnabled);
         }
     }
 }
 
-/**
-* Enable/disable microphone
-*/
-
-/**
- * Intialize keys for controller
- * @param {Scene} self 
- */
-function initKeysForController(self) {
-    keyUp = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    keyDown = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    keyLeft = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    keyRight = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-}
 
 
 /**
@@ -149,32 +148,3 @@ function emitPlayerPosition(self) {
 }
 
 
-function updatePlayerPosition(self) {
-    if (self.cursorKeys) {
-        self.player.update(
-            keyUp,
-            keyDown,
-            keyLeft,
-            keyRight,
-            self.cursorKeys.up,
-            self.cursorKeys.down,
-            self.cursorKeys.left,
-            self.cursorKeys.right,
-            self.textureId,
-
-        );
-    }
-    else {
-        self.player.update(
-            keyUp,
-            keyDown,
-            keyLeft,
-            keyRight,
-            false,
-            false,
-            false,
-            false,
-            self.textureId
-        );
-    }
-}
