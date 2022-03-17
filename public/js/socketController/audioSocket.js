@@ -63,7 +63,7 @@ function addPeer(socket_id, am_initiator, self) {
             console.log("ADD PEER");
             peers[socket_id] = new SimplePeer({
                 initiator: am_initiator,
-                stream: am_initiator ? self.localStream : null,
+                stream: self.localStream,
                 config: configuration
             });
             peers[socket_id].on('signal', data => {
