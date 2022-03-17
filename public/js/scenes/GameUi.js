@@ -48,7 +48,6 @@ export class GameUi extends Phaser.Scene {
         this.playerList.clear(true);
         for (let i = 0; i < players.length; i++) {
             let player = players[i];
-            console.log(player.name);
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
             this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, {fontSize: '14px', fill: "#fffffff"}));
             this.playerList.add(this.add.image(180, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted"));

@@ -3,22 +3,33 @@
  * @param {Scene} self 
  */
 import Phaser from "phaser";
+
+
+
 export function initMainMap(self) {
+
+    /// DEBUG COLLISIONS
+    const debugConfig = {tileColor: null,
+        collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    };
+    const debugGraphics = self.add.graphics().setAlpha(1);
+    // END DEBUG
+
     const dungeon = self.make.tilemap({ key: 'dungeon' });
     const tileset = dungeon.addTilesetImage('TilemapDay', 'tiles');
     dungeon.createStaticLayer('floor', tileset);
-    dungeon.createStaticLayer('stairs-up-floor', tileset);
-    dungeon.createStaticLayer('objects', tileset);
-    dungeon.createStaticLayer('next-objects', tileset);
-    const wallsLayer = dungeon.createStaticLayer('walls', tileset);
-    wallsLayer.setCollisionByProperty({collides: true});
+    self.stairsUpFloorLayer = dungeon.createStaticLayer('stairs-up-floor', tileset);
+    self.stairsUpFloorLayer.setCollisionByProperty({collides: true})//.renderDebug(debugGraphics, debugConfig);
+    
+    self.objectsLayer = dungeon.createStaticLayer('objects', tileset);
+    self.objectsLayer.setCollisionByProperty({collides: true})//.renderDebug(debugGraphics, debugConfig);
+    
+    // dungeon.createStaticLayer('next-objects', tileset);
+    self.wallsLayer = dungeon.createStaticLayer('walls', tileset);
+    self.wallsLayer.setCollisionByProperty({collides: true})//.renderDebug(debugGraphics, debugConfig);
+    //stairsUpFloorLayer.setCollisionByProperty({collides: true}).renderDebug(debugGraphics, debugConfig);
 
-    const debugGraphics = self.add.graphics().setAlpha(0.7);
-    wallsLayer.renderDebug(debugGraphics, 
-        {tileColor: null,
-        collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    });
 
 }
 
@@ -32,10 +43,10 @@ export function initKeysForController(self) {
 export function updatePlayerPosition(self) {
     if (self.cursorKeys) {
         self.player.update(
-            keyUp,
-            keyDown,
-            keyLeft,
-            keyRight,
+            false,
+            false,
+            false,
+            false,
             self.cursorKeys.up,
             self.cursorKeys.down,
             self.cursorKeys.left,

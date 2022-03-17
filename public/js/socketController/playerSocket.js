@@ -60,7 +60,8 @@ export function initializePlayersSocket(self, _peers) {
     self.socket.on('updatePlayerInfo', (playerInfo) => {
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerInfo.playerId) {
-                playersList[i] = playerInfo;
+                playersList[i].name = playerInfo.playerName;
+                playersList[i].microphoneStatus = playerInfo.microphoneStatus;
                 sceneEvents.emit('currentPlayers', playersList);
                 break;
             } 
@@ -92,16 +93,23 @@ function addPlayer(self, playerInfo) {
     self.textureId = playerInfo.textureId;
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     self.cameras.main.startFollow(self.player, true, 0.02, 0.02);
+
+    // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
     const textColor = randColor();
     self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '36px', fontFamily: 'monospace', fill: textColor }).setScale(0.3);
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
+    
     playersList.push({name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor:textColor});
+    // END PLAYER UI
     sceneEvents.emit("currentPlayers", playersList);
-    // random nickname 
-    //let playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
-    //self.socket.emit('updatePlayerInfo', {playerName: playerName}, self.socket.id);
-    //self.add
+
+    self.physics.add.collider(self.player, self.wallsLayer);
+
+    self.physics.add.collider(self.player, self.stairsUpFloorLayer);
+    self.physics.add.collider(self.player, self.objectsLayer);
+
+
 }
 
 function addOtherPlayers(self, playerInfo) {

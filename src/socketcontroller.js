@@ -17,8 +17,8 @@ module.exports = (io) => {
         // create new player and add him to players
         players[socket.id] = {
             rotation: 0,
-            x: Math.floor(Math.random() * 300) + 500,
-            y: Math.floor(Math.random() * 100) + 500,
+            x: Math.floor(Math.random() * 100) + 100,
+            y: 850,
             playerId: socket.id,
             microphoneStatus: false,
             playerName: nicknames[Math.floor(Math.random() * nicknames.length)], 
@@ -41,8 +41,8 @@ module.exports = (io) => {
 
 
         socket.on('updatePlayerInfo', (data, socket_id) => {
-            if (data.microphoneStatus)  players[socket_id].microphoneStatus = data.microphoneStatus;
-            socket.broadcast.emit('updatePlayerInfo', players[socket_id]);
+            if (data.microphoneStatus != null)  players[socket_id].microphoneStatus = data.microphoneStatus;
+            io.emit('updatePlayerInfo', players[socket_id]);
         })
         
 

@@ -40,7 +40,7 @@ export class MainScene extends Phaser.Scene {
 
 
         initMainMap(this);
-
+        
         // Set camera zoom to 3
         this.cameras.main.setZoom(1.5);
         //this.cameras.main.setBounds(0, 0, 1000, 1000);
@@ -64,11 +64,6 @@ export class MainScene extends Phaser.Scene {
         }
 
         sceneEvents.on('toggleMute', () => {
-            if (this.playerUI[this.socket.id].microphone.texture.key == 'microphone')
-                this.playerUI[this.socket.id].microphone.setTexture('microphoneMuted');
-            else
-                this.playerUI[this.socket.id].microphone.setTexture('microphone');
-
             if (this.localStream) {
                 this.toggleMute();
             } else {
@@ -84,6 +79,7 @@ export class MainScene extends Phaser.Scene {
     }
     update() {
         if (this.player) {
+            //console.log(this.player.x, this.player.y);
             // write text size of clibButton
             //console.log
             const playerUI = this.playerUI[this.socket.id];
@@ -117,6 +113,8 @@ export class MainScene extends Phaser.Scene {
         for (let index in localStream.getAudioTracks()) {
             const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
             localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
+            this.playerUI[this.socket.id].microphone.setTexture( localStreamEnabled ? 'microphone' :'microphoneMuted');
+            // /console.log(localStreamEnabled);
             this.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled}, this.socket.id);
             sceneEvents.emit("microphone-toggled", localStreamEnabled);
         }
