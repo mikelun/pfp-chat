@@ -57,39 +57,36 @@ export function initializeAudio(_socket, _peers, self) {
 }
 
 function addPeer(socket_id, am_initiator, self) {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(stream => {
-            console.log("ASDLAKSHDKLAHSLDKUHASLDKUASHDKLHSDLKJAHSDLKHASKLUDH");
-            self.localStream = stream;
-            console.log("ADD PEER");
-            if (peers[socket_id]) {
-                peers[socket_id].addStream(stream)
-            } else {
-                peers[socket_id] = new SimplePeer({
-                    initiator: am_initiator,
-                    stream: self.localStream,
-                    config: configuration
-                });
-            }
-            peers[socket_id].on('signal', data => {
-                socket.emit('signal', {
-                    signal: data,
-                    socket_id: socket_id
-                })
-            })
-
-            peers[socket_id].on('stream', stream => {
-                console.log('Was here');
-                let newVid = document.createElement('video')
-                newVid.srcObject = stream
-                newVid.id = socket_id
-                newVid.playsinline = false
-                newVid.autoplay = true
-                newVid.className = "vid"
-                // append newVid to body
-                document.body.appendChild(newVid)
-            });
+    console.log("ASDLAKSHDKLAHSLDKUHASLDKUASHDKLHSDLKJAHSDLKHASKLUDH");
+    let stream = self.localStream;
+    console.log("ADD PEER");
+    if (peers[socket_id]) {
+        peers[socket_id].addStream(stream)
+    } else {
+        peers[socket_id] = new SimplePeer({
+            initiator: am_initiator,
+            stream: self.localStream,
+            config: configuration
         });
+    }
+    peers[socket_id].on('signal', data => {
+        socket.emit('signal', {
+            signal: data,
+            socket_id: socket_id
+        })
+    })
+
+    peers[socket_id].on('stream', stream => {
+        console.log('Was here');
+        let newVid = document.createElement('video')
+        newVid.srcObject = stream
+        newVid.id = socket_id
+        newVid.playsinline = false
+        newVid.autoplay = true
+        newVid.className = "vid"
+        // append newVid to body
+        document.body.appendChild(newVid)
+    });
 
 
 

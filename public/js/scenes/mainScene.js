@@ -24,9 +24,15 @@ export class MainScene extends Phaser.Scene {
         super({ key: 'MainScene' });
     }
 
-    init(stream) {
-        this.localStream = stream;
-        this.toggleMute();
+    init(data) {
+        if (data.stream != false) {
+            this.localStream = data.stream;
+            let localStream = this.localStream;
+            for (let index in localStream.getAudioTracks()) {
+                const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
+                localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
+            }
+        }
     }
 
     preload() {
@@ -45,7 +51,7 @@ export class MainScene extends Phaser.Scene {
 
 
         initMainMap(this);
-        
+
         // Set camera zoom to 3
         this.cameras.main.setZoom(1.5);
         //this.cameras.main.setBounds(0, 0, 1000, 1000);
@@ -71,14 +77,7 @@ export class MainScene extends Phaser.Scene {
         sceneEvents.on('toggleMute', () => {
             if (this.localStream) {
                 this.toggleMute();
-            } else {
-                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
-                    this.localStream = stream;
-                    if (this.localStream) {
-                        this.toggleMute();
-                    }
-                });
-            }
+            };
         });
 
     }
@@ -116,11 +115,14 @@ export class MainScene extends Phaser.Scene {
     toggleMute() {
         let localStream = this.localStream;
         for (let index in localStream.getAudioTracks()) {
-            const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
+            let localStreamEnabled = localStream.getAudioTracks()[index].enabled;
             localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
-            this.playerUI[this.socket.id].microphone.setTexture( localStreamEnabled ? 'microphone' :'microphoneMuted');
-            // /console.log(localStreamEnabled);
-            this.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled}, this.socket.id);
+
+            localStreamEnabled = !localStreamEnabled;
+
+            this.playerUI[this.socket.id].microphone.setTexture(localStreamEnabled ? 'microphone' : 'microphoneMuted');
+    
+            this.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled }, this.socket.id);
             sceneEvents.emit("microphone-toggled", localStreamEnabled);
         }
     }
