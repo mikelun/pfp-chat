@@ -5,7 +5,7 @@
     "source": "public/index.html",
     "scripts": {
         "server": "node src/server.js",
-        "start": "node src/server.js",
+        "start": "parcel",
         "build": "parcel build && cp -r public/assets/ dist/assets",
         "production": "parcel build && cp -r public/assets/ dist/assets && node src/server.js"
     },

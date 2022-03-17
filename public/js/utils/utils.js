@@ -28,7 +28,6 @@ export function initMainMap(self) {
     // dungeon.createStaticLayer('next-objects', tileset);
     self.wallsLayer = dungeon.createStaticLayer('walls', tileset);
     self.wallsLayer.setCollisionByProperty({collides: true})//.renderDebug(debugGraphics, debugConfig);
-    //stairsUpFloorLayer.setCollisionByProperty({collides: true}).renderDebug(debugGraphics, debugConfig);
 
 
 }
