@@ -80,18 +80,13 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('x', 'assets/game-ui/x.png');
         this.load.image('player', 'assets/game-ui/player.png');
 
-        this.load.image('tiles', 'assets/tiles/indoors.png');
-        this.load.tilemapTiledJSON('dungeon', 'assets/tiles/mainmap.json');
-        this.load.spritesheet(
-            "characters",
-            "assets/characterSprite.png",
-            {
-                frameWidth: 64,
-                frameHeight: 64,
-                margin: 0,
-                spacing: 1
-            }
-        );
+        // LOADING MAP
+        // this.load.image('tiles', 'assets/tiles/indoors.png');
+        // this.load.tilemapTiledJSON('dungeon', 'assets/tiles/mainmap.json');
+
+        // LOADING MAP
+        this.load.image('tiles', 'assets/tiles/TilemapDay.png');
+        this.load.tilemapTiledJSON('dungeon', 'assets/tiles/map-bar.json');
 
         this.load.image('map', 'assets/mainMap.jpeg');
 

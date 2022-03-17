@@ -2,11 +2,24 @@
  * Initialize main tile map
  * @param {Scene} self 
  */
+import Phaser from "phaser";
 export function initMainMap(self) {
     const dungeon = self.make.tilemap({ key: 'dungeon' });
-    const tileset = dungeon.addTilesetImage('indoors', 'tiles');
-    dungeon.createStaticLayer('background', tileset);
-    dungeon.createStaticLayer('structure', tileset);
+    const tileset = dungeon.addTilesetImage('TilemapDay', 'tiles');
+    dungeon.createStaticLayer('floor', tileset);
+    dungeon.createStaticLayer('stairs-up-floor', tileset);
+    dungeon.createStaticLayer('objects', tileset);
+    dungeon.createStaticLayer('next-objects', tileset);
+    const wallsLayer = dungeon.createStaticLayer('walls', tileset);
+    wallsLayer.setCollisionByProperty({collides: true});
+
+    const debugGraphics = self.add.graphics().setAlpha(0.7);
+    wallsLayer.renderDebug(debugGraphics, 
+        {tileColor: null,
+        collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    });
+
 }
 
 export function initKeysForController(self) {

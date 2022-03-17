@@ -42,8 +42,8 @@ export class MainScene extends Phaser.Scene {
         initMainMap(this);
 
         // Set camera zoom to 3
-        this.cameras.main.setZoom(2);
-        this.cameras.main.setBounds(0, 0, 1000, 1000);
+        this.cameras.main.setZoom(1.5);
+        //this.cameras.main.setBounds(0, 0, 1000, 1000);
 
         initializeSocket(this, peers);
 
