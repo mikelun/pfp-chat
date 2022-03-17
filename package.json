@@ -6,7 +6,7 @@
     "scripts": {
         "server": "node src/server.js",
         "start": "parcel && cp -r public/assets/ dist/assets",
-        "build": "parcel build && cp -r public/assets/ dist/assets && node src/server.js",
+        "build": "parcel build && cp -r public/assets/ dist/assets",
         "production": "parcel build && cp -r public/assets/ dist/assets && node src/server.js"
     },
     "author": "",
