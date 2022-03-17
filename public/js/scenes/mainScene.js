@@ -20,8 +20,13 @@ var map;
 
 export class MainScene extends Phaser.Scene {
 
-    constructor() {
-        super({ key: 'MainScene' })
+    constructor(stream) {
+        super({ key: 'MainScene' });
+    }
+
+    init(stream) {
+        this.localStream = stream;
+        this.toggleMute();
     }
 
     preload() {

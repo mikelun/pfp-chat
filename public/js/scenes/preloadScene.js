@@ -79,10 +79,8 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('4', 'assets/game-ui/4.png');
         this.load.image('x', 'assets/game-ui/x.png');
         this.load.image('player', 'assets/game-ui/player.png');
+        this.load.image('background-button', 'assets/game-ui/background-button.png')
 
-        // LOADING MAP
-        // this.load.image('tiles', 'assets/tiles/indoors.png');
-        // this.load.tilemapTiledJSON('dungeon', 'assets/tiles/mainmap.json');
 
         // LOADING MAP
         this.load.image('tiles', 'assets/tiles/TilemapDay.png');
@@ -104,6 +102,6 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start('MainScene');
+        this.scene.start('microphone');
     }
 }

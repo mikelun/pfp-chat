@@ -1,6 +1,7 @@
 import { MainScene } from './scenes/mainScene.js';
 import { PreloadScene } from './scenes/preloadScene.js';
 import { GameUi } from './scenes/GameUi.js';
+import { MicrophoneEnableScene } from './scenes/MicrophoneEnableScene.js';
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
@@ -18,7 +19,7 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainScene, GameUi ],
+  scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene ],
   physics: {
     default: 'arcade',
     arcade: {
