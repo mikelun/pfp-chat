@@ -57,7 +57,6 @@ export function initializeAudio(_socket, _peers, self) {
 }
 
 function addPeer(socket_id, am_initiator, self) {
-    console.log("ASDLAKSHDKLAHSLDKUHASLDKUASHDKLHSDLKJAHSDLKHASKLUDH");
     let stream = self.localStream;
     console.log("ADD PEER");
     if (peers[socket_id]) {

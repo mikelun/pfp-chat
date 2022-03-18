@@ -34,12 +34,9 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         });
 
          // CHECK IF USER HAS BEEN IN OPEN METAVERSE
-         localStorage.removeItem('firstEnter');
-         if (localStorage.firstEnter == undefined) {
+         //localStorage.removeItem('firstEnter');
+         if (localStorage.firstEnter == undefined || localStorage.firstEnter == "false") {
              this.typewriteText(text);
-         }
-         else if (localStorage.firstEnter == "false") {
-             this.scene.start('MainScene', { stream: false });
          }
          else if (localStorage.firstEnter == "true") {
              navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
