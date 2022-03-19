@@ -145,6 +145,26 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="162">
+   <animation>
+    <frame tileid="162" duration="100"/>
+    <frame tileid="198" duration="100"/>
+    <frame tileid="234" duration="100"/>
+    <frame tileid="270" duration="100"/>
+    <frame tileid="306" duration="100"/>
+    <frame tileid="342" duration="100"/>
+    <frame tileid="378" duration="100"/>
+    <frame tileid="414" duration="100"/>
+    <frame tileid="450" duration="100"/>
+    <frame tileid="486" duration="100"/>
+    <frame tileid="522" duration="100"/>
+    <frame tileid="558" duration="100"/>
+    <frame tileid="594" duration="100"/>
+    <frame tileid="630" duration="100"/>
+    <frame tileid="666" duration="100"/>
+    <frame tileid="702" duration="100"/>
+   </animation>
+  </tile>
   <tile id="181">
    <properties>
     <property name="collides" type="bool" value="true"/>

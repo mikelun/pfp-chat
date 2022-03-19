@@ -334,6 +334,74 @@
                         }]
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":162
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":198
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":234
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":270
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":306
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":342
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":378
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":414
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":450
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":486
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":522
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":558
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":594
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":630
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":666
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":702
+                        }],
+                 "id":162
+                }, 
+                {
                  "id":181,
                  "properties":[
                         {

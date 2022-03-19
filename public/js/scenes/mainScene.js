@@ -4,7 +4,6 @@ import { initMainMap, updatePlayerPosition, initKeysForController } from '../uti
 import { createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
-import e from 'cors';
 
 
 /**
@@ -40,6 +39,7 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+
         this.playerUI = {};
         // Create Animations for heroes
         for (let i = 0; i < 4; i++) {
@@ -81,7 +81,8 @@ export class MainScene extends Phaser.Scene {
         });
 
     }
-    update() {
+    update(time, delta) {
+        this.animatedTiles.forEach(tile => tile.update(delta))
         if (this.player) {
             //console.log(this.player.x, this.player.y);
             // write text size of clibButton
