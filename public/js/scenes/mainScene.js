@@ -16,8 +16,11 @@ const spriteSpeed = 2;
 
 var drawBattle, cancelButton;
 
-// BACKGROUND
+// ON OVERLAP EFFECTS
 var shadowGroup;
+var musicMachineGroup;
+
+var audio;
 
 export class MainScene extends Phaser.Scene {
 
@@ -41,6 +44,11 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+        musicMachineGroup = this.add.group();
+
+        audio = new Audio('assets/music/still-loving-you.mp3');
+        audio.play();
+        audio.volume = 0.2;
 
         this.playerUI = {};
         // Create Animations for heroes
@@ -53,8 +61,7 @@ export class MainScene extends Phaser.Scene {
 
 
         initMainMap(this);
-
-
+        this.add.image(230, 680, 'machine').setScale(0.1);
 
 
         // Set camera zoom to 3
@@ -104,15 +111,15 @@ export class MainScene extends Phaser.Scene {
 
         var keyIframe = this.input.keyboard.addKey('X');  // Get key object
         keyIframe.on('down', function (event) {
-            if (!drawBattle) addDomElement();
-            else {
-                drawBattle.destroy();
-                drawBattle = null;
-                this.xButton.alpha = 0;
+            if (shadowGroup.getChildren().length) {
+                if (!drawBattle) addDomElement();
+                else {
+                    drawBattle.destroy();
+                    drawBattle = null;
+                    cancelButton.destroy();
+                }
             }
         });
-
-
 
     }
 
@@ -123,6 +130,28 @@ export class MainScene extends Phaser.Scene {
         return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
     }
 
+    addMusicMachine() {
+
+        // TEST MUSIC MACHINE
+        musicMachineGroup.add(this.add.image(230, 680, 'retro-background'));
+        musicMachineGroup.add(this.add.text(100, 550, '8 BIT MUSIC MACHINE', { fontSize: "24px", fill: "#ffffff" }));
+        var songsArtists = ['Elvis Presley', 'Red Hot Chilli Peppers', 'Scorpions'];
+        var songsNames = ['Can\'t Help Falling In Love', 'Californication', 'Still loving you'];
+        var songs = ['elvis.mp3', 'californication.mp3', 'still-loving-you.mp3'];
+        musicMachineGroup.add(this.add.image(525, 543, 'x-button').setScale(0.3));
+        for (let i = 0; i < songsArtists.length; i++) {
+            musicMachineGroup.add(this.add.text(0, 600 + i * 60, songsArtists[i], { fontSize: "20px", fill: "#ffffff" }));
+            musicMachineGroup.add(this.add.text(0, 620 + i * 60, songsNames[i], { fontSize: "14px", fill: "#ffffff" }));
+            musicMachineGroup.add(this.add.image(400, 620 + i * 60, 'background-button').setScale(1.3)
+            .setInteractive().on('pointerdown', () => {
+                audio.pause();
+                audio = new Audio(`assets/music/${songs[i]}`);
+                audio.play();
+                audio.volume = 0.2;
+            }));
+            musicMachineGroup.add(this.add.text(380, 610 + i * 60, 'PLAY', { fontSize: "14px", fill: "#000000" }));
+        }
+    }
     addShadow() {
         let x = 200;
         let y = 650;
@@ -138,9 +167,11 @@ export class MainScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        if (audio) {
+            console.log(audio.currentTime, audio.duration);
+        }
         if (this.player) {
             this.animatedTiles.forEach(tile => tile.update(delta));
-            //console.log(this.player.x, this.player.y);
             if (this.checkOverlap(this.player, this.rectangleTrigger)) {
                 if (!this.trigger) {
                     this.addShadow();
@@ -150,6 +181,16 @@ export class MainScene extends Phaser.Scene {
             else {
                 this.trigger = false;
                 shadowGroup.clear(true);
+            }
+            if (this.checkOverlap(this.player, this.machineTrigger)) {
+                if (!this.trigger1) {
+                    this.addMusicMachine();
+                }
+                this.trigger1 = true;
+            }
+            else {
+                this.trigger1 = false;
+                musicMachineGroup.clear(true);
             }
             //console.log(this.player.x, this.player.y);
             // write text size of clibButton

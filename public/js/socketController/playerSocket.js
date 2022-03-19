@@ -91,6 +91,7 @@ function removePeer(socket_id) {
 
 function addPlayer(self, playerInfo) {
     self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
+    self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);
 
     self.textureId = playerInfo.textureId;
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
