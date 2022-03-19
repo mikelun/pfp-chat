@@ -46,10 +46,6 @@ export class MainScene extends Phaser.Scene {
     create() {
         musicMachineGroup = this.add.group();
 
-        audio = new Audio('assets/music/still-loving-you.mp3');
-        audio.play();
-        audio.volume = 0.2;
-
         this.playerUI = {};
         // Create Animations for heroes
         for (let i = 0; i < 4; i++) {
@@ -120,7 +116,7 @@ export class MainScene extends Phaser.Scene {
                 }
             }
         });
-
+        //this.addMusicMachine()
     }
 
     checkOverlap(a, b) {
@@ -144,12 +140,38 @@ export class MainScene extends Phaser.Scene {
             musicMachineGroup.add(this.add.text(0, 620 + i * 60, songsNames[i], { fontSize: "14px", fill: "#ffffff" }));
             musicMachineGroup.add(this.add.image(400, 620 + i * 60, 'background-button').setScale(1.3)
             .setInteractive().on('pointerdown', () => {
-                audio.pause();
+                if (audio) {
+                    if (this.songNameText) {
+                        this.songNameText.destroy();
+                        this.songArtistText.destroy();
+                        this.timeMusic.destroy();
+                        audio.pause();
+                    }
+                }
                 audio = new Audio(`assets/music/${songs[i]}`);
                 audio.play();
                 audio.volume = 0.2;
+                this.songId = i;
+                this.songNameText = this.add.text(100, 770, `${songsNames[this.songId]}`);
+                musicMachineGroup.add(this.songNameText);
+                this.songArtistText = this.add.text(100, 790, `${songsArtists[this.songId]}`);
+                musicMachineGroup.add(this.songArtistText);
+                this.noMusicText.setText('');
+                this.timeMusic = this.add.text(0, 780, '0:10/3:00');
+                musicMachineGroup.add(this.timeMusic);
             }));
             musicMachineGroup.add(this.add.text(380, 610 + i * 60, 'PLAY', { fontSize: "14px", fill: "#000000" }));
+        }
+        if (!audio) {
+            this.noMusicText = this.add.text(100, 800, 'NO MUSIC PLAYING', {fontSize: "24px", fill: "#555555"});
+            musicMachineGroup.add(this.noMusicText);
+        }
+        else {
+            this.songNameText = musicMachineGroup.add(this.add.text(100, 770, `${songsNames[this.songId]}`));
+            this.songArtistText = musicMachineGroup.add(this.add.text(100, 790, `${songsArtists[this.songId]}`));
+            this.noMusicText.setText('');
+            this.timeMusic = this.add.text(0, 780, '0:10/3:00');
+            musicMachineGroup.add(this.timeMusic);
         }
     }
     addShadow() {
@@ -167,8 +189,13 @@ export class MainScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (audio) {
-            console.log(audio.currentTime, audio.duration);
+        if (this.timeMusic) {
+            let currentMin = Math.floor(audio.currentTime / 60);
+            let currentSec = Math.floor(audio.currentTime) % 60;
+            let durationMin = Math.floor(audio.duration / 60);
+            let durationSec = Math.floor(audio.duration) % 60;
+            if (currentSec < 10) currentSec = '0' + currentSec;
+            this.timeMusic.setText(`${currentMin}:${currentSec}/${durationMin}:${durationSec}`)
         }
         if (this.player) {
             this.animatedTiles.forEach(tile => tile.update(delta));
