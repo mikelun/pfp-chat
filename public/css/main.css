@@ -13,7 +13,7 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-#btn {
+.button {
     width: 100px;
     height: 100px;
     background-color: rebeccapurple;

@@ -14,6 +14,8 @@ let peers = {};
 // Speed of all players
 const spriteSpeed = 2;
 
+var drawBattle, cancelButton;
+
 // BACKGROUND
 var shadowGroup;
 
@@ -40,7 +42,6 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
-
         this.playerUI = {};
         // Create Animations for heroes
         for (let i = 0; i < 4; i++) {
@@ -52,6 +53,7 @@ export class MainScene extends Phaser.Scene {
 
 
         initMainMap(this);
+
 
 
 
@@ -80,11 +82,38 @@ export class MainScene extends Phaser.Scene {
         sceneEvents.on('toggleMute', () => {
             if (this.localStream) {
                 this.toggleMute();
+                bullShit.destroy();
             };
         });
 
+        const self = this;
+        function addDomElement() {
+            const iframe = document.createElement('iframe');
+            iframe.src = "https://drawbattle.io";
+            iframe.style.width = "600px";
+            iframe.style.height = "370px";
+            drawBattle = self.add.dom(310, 670, iframe);
+            cancelButton = self.add.image(535, 440, 'x-button').setScale(0.3).setInteractive().on('pointerdown', () => {
+                drawBattle.destroy();
+                drawBattle = null;
+                cancelButton.destroy();
+            });
+        }
 
         shadowGroup = this.add.group();
+
+        var keyIframe = this.input.keyboard.addKey('X');  // Get key object
+        keyIframe.on('down', function (event) {
+            if (!drawBattle) addDomElement();
+            else {
+                drawBattle.destroy();
+                drawBattle = null;
+                this.xButton.alpha = 0;
+            }
+        });
+
+
+
     }
 
     checkOverlap(a, b) {
@@ -104,12 +133,13 @@ export class MainScene extends Phaser.Scene {
         shadowGroup.add(this.add.rectangle(0, y - 10, 270, h + 10, 0x000000).setAlpha(0.4));
         shadowGroup.add(this.add.rectangle(x + w + 175, y - 10, 500, h + 10, 0x000000).setAlpha(0.4));
         shadowGroup.add(this.add.image(180, 650, 'play-button').setScale(0.1).setAlpha());
-        shadowGroup.add(this.add.text(150, 700, 'PRESS X', {fill: "#ffffff"}));
+        shadowGroup.add(this.add.text(150, 700, 'PRESS X', { fill: "#ffffff" }));
+
     }
 
     update(time, delta) {
-        this.animatedTiles.forEach(tile => tile.update(delta));
         if (this.player) {
+            this.animatedTiles.forEach(tile => tile.update(delta));
             //console.log(this.player.x, this.player.y);
             if (this.checkOverlap(this.player, this.rectangleTrigger)) {
                 if (!this.trigger) {
@@ -134,9 +164,11 @@ export class MainScene extends Phaser.Scene {
             playerUI.microphone.y = this.player.y - 32;
 
             // update player position
-            updatePlayerPosition(this);
+            if (!drawBattle) {
+                updatePlayerPosition(this);
 
-            emitPlayerPosition(this);
+                emitPlayerPosition(this);
+            }
         }
         if (this.otherPlayers) {
             this.otherPlayers.getChildren().forEach(otherPlayer => {

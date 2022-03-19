@@ -6,20 +6,17 @@ const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
 const config = {
+  parent: "gameDiv",
+  dom: { createContainer: true },
   type: Phaser.AUTO,
   backgroundColor: '#000000',
-  parent: 'phaser-container',
-  dom: {
-    createContainer: true
-  },
   scale: {
-    parent: 'phaser-game',
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene ],
+  scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene],
   physics: {
     default: 'arcade',
     arcade: {

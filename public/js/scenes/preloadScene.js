@@ -91,7 +91,7 @@ export class PreloadScene extends Phaser.Scene {
     
         this.load.image('microphone',"assets/game-ui/microphone.png");
         this.load.image('microphoneMuted',"assets/game-ui/mute.png");
-
+        this.load.image('x-button',"assets/game-ui/x-button.png");
         this.load.image('pixel-box',"assets/game-ui/pixel-box.png");
         // this.load.image('volume',"assets/game-ui/high-volume.png");
 

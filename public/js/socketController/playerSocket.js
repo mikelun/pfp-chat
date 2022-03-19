@@ -51,7 +51,7 @@ export function initializePlayersSocket(self, _peers) {
             }
         }
         console.log(playersList);
-    
+
         for (let socket_id in peers) {
             removePeer(socket_id)
         }
@@ -64,7 +64,7 @@ export function initializePlayersSocket(self, _peers) {
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
                 sceneEvents.emit('currentPlayers', playersList);
                 break;
-            } 
+            }
         }
     });
 }
@@ -93,7 +93,7 @@ function addPlayer(self, playerInfo) {
     self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
 
     self.textureId = playerInfo.textureId;
-    self.player = self.add.player(200, 650, `characters${playerInfo.textureId}`);
+    self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     self.cameras.main.startFollow(self.player);
 
     // ADD PLAYER UI
@@ -101,8 +101,8 @@ function addPlayer(self, playerInfo) {
     const textColor = randColor();
     self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '36px', fontFamily: 'monospace', fill: textColor }).setScale(0.3);
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
-    
-    playersList.push({name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor:textColor});
+
+    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor });
     // END PLAYER UI
     sceneEvents.emit("currentPlayers", playersList);
 
@@ -110,7 +110,7 @@ function addPlayer(self, playerInfo) {
 
     self.physics.add.collider(self.player, self.stairsUpFloorLayer);
     self.physics.add.collider(self.player, self.objectsLayer);
-    
+
 }
 
 
@@ -125,7 +125,7 @@ function addOtherPlayers(self, playerInfo) {
     self.otherPlayers.add(otherPlayer);
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
-    playersList.push({name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId});
+    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId });
     sceneEvents.emit('currentPlayers', playersList);
 }
 
