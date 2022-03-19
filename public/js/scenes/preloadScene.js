@@ -86,13 +86,9 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('tiles', 'assets/tiles/TilemapDay.png');
         this.load.tilemapTiledJSON('dungeon', 'assets/tiles/map-bar.json');
 
-        this.load.image('map', 'assets/mainMap.jpeg');
-
-
-        this.load.image('sprite', 'assets/spaceShips_001.png');
-
-        this.load.image('star', 'assets/star_gold.png');
         
+        this.load.image('play-button', 'assets/game-ui/button-play.png');
+    
         this.load.image('microphone',"assets/game-ui/microphone.png");
         this.load.image('microphoneMuted',"assets/game-ui/mute.png");
 

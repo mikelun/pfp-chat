@@ -15,7 +15,7 @@ let peers = {};
 const spriteSpeed = 2;
 
 // BACKGROUND
-var map;
+var shadowGroup;
 
 export class MainScene extends Phaser.Scene {
 
@@ -40,6 +40,7 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+
         this.playerUI = {};
         // Create Animations for heroes
         for (let i = 0; i < 4; i++) {
@@ -51,6 +52,8 @@ export class MainScene extends Phaser.Scene {
 
 
         initMainMap(this);
+
+
 
         // Set camera zoom to 3
         this.cameras.main.setZoom(1.5);
@@ -80,10 +83,44 @@ export class MainScene extends Phaser.Scene {
             };
         });
 
+
+        shadowGroup = this.add.group();
     }
+
+    checkOverlap(a, b) {
+        var boundsA = a.getBounds();
+        var boundsB = b.getBounds();
+
+        return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
+    }
+
+    addShadow() {
+        let x = 200;
+        let y = 650;
+        let w = 130;
+        let h = 60;
+        shadowGroup.add(this.add.rectangle(0, y + 500, 2000, 950, 0x000000).setAlpha(0.4));
+        shadowGroup.add(this.add.rectangle(0, y - 145, 2000, 200, 0x000000).setAlpha(0.4));
+        shadowGroup.add(this.add.rectangle(0, y - 10, 270, h + 10, 0x000000).setAlpha(0.4));
+        shadowGroup.add(this.add.rectangle(x + w + 175, y - 10, 500, h + 10, 0x000000).setAlpha(0.4));
+        shadowGroup.add(this.add.image(180, 650, 'play-button').setScale(0.1).setAlpha());
+        shadowGroup.add(this.add.text(150, 700, 'PRESS X', {fill: "#ffffff"}));
+    }
+
     update(time, delta) {
-        this.animatedTiles.forEach(tile => tile.update(delta))
+        this.animatedTiles.forEach(tile => tile.update(delta));
         if (this.player) {
+            //console.log(this.player.x, this.player.y);
+            if (this.checkOverlap(this.player, this.rectangleTrigger)) {
+                if (!this.trigger) {
+                    this.addShadow();
+                }
+                this.trigger = true;
+            }
+            else {
+                this.trigger = false;
+                shadowGroup.clear(true);
+            }
             //console.log(this.player.x, this.player.y);
             // write text size of clibButton
             //console.log
@@ -122,7 +159,7 @@ export class MainScene extends Phaser.Scene {
             localStreamEnabled = !localStreamEnabled;
 
             this.playerUI[this.socket.id].microphone.setTexture(localStreamEnabled ? 'microphone' : 'microphoneMuted');
-    
+
             this.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled }, this.socket.id);
             sceneEvents.emit("microphone-toggled", localStreamEnabled);
         }

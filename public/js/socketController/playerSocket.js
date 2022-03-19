@@ -90,9 +90,11 @@ function removePeer(socket_id) {
 //////////////////// INTERECTING WITH GAME
 
 function addPlayer(self, playerInfo) {
+    self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
+
     self.textureId = playerInfo.textureId;
-    self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
-    self.cameras.main.startFollow(self.player, true, 0.02, 0.02);
+    self.player = self.add.player(200, 650, `characters${playerInfo.textureId}`);
+    self.cameras.main.startFollow(self.player);
 
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
@@ -108,9 +110,9 @@ function addPlayer(self, playerInfo) {
 
     self.physics.add.collider(self.player, self.stairsUpFloorLayer);
     self.physics.add.collider(self.player, self.objectsLayer);
-
-
+    
 }
+
 
 function addOtherPlayers(self, playerInfo) {
     const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self);

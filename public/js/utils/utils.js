@@ -19,6 +19,7 @@ export function initMainMap(self) {
 
     const dungeon = self.make.tilemap({ key: 'dungeon' });
     const tileset = dungeon.addTilesetImage('TilemapDay', 'tiles');
+
     //console.log(tileset);
     //console.log(dungeon);
     dungeon.createStaticLayer('floor', tileset);
