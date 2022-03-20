@@ -139,36 +139,38 @@ export class MainScene extends Phaser.Scene {
             musicMachineGroup.add(this.add.text(0, 600 + i * 60, songsArtists[i], { fontSize: "20px", fill: "#ffffff" }));
             musicMachineGroup.add(this.add.text(0, 620 + i * 60, songsNames[i], { fontSize: "14px", fill: "#ffffff" }));
             musicMachineGroup.add(this.add.image(400, 620 + i * 60, 'background-button').setScale(1.3)
-            .setInteractive().on('pointerdown', () => {
-                if (audio) {
-                    if (this.songNameText) {
-                        this.songNameText.destroy();
-                        this.songArtistText.destroy();
-                        this.timeMusic.destroy();
+                .setInteractive().on('pointerdown', () => {
+                    if (audio) {
+                        if (this.songNameText) {
+                            this.songNameText.destroy();
+                            this.songArtistText.destroy();
+                            this.timeMusic.destroy();
+                        }
                         audio.pause();
                     }
-                }
-                audio = new Audio(`assets/music/${songs[i]}`);
-                audio.play();
-                audio.volume = 0.2;
-                this.songId = i;
-                this.songNameText = this.add.text(100, 770, `${songsNames[this.songId]}`);
-                musicMachineGroup.add(this.songNameText);
-                this.songArtistText = this.add.text(100, 790, `${songsArtists[this.songId]}`);
-                musicMachineGroup.add(this.songArtistText);
-                this.noMusicText.setText('');
-                this.timeMusic = this.add.text(0, 780, '0:10/3:00');
-                musicMachineGroup.add(this.timeMusic);
-            }));
+                    audio = new Audio(`assets/music/${songs[i]}`);
+                    audio.play();
+                    audio.volume = 0.2;
+                    this.songId = i;
+                    this.songNameText = this.add.text(100, 770, `${songsNames[this.songId]}`);
+                    musicMachineGroup.add(this.songNameText);
+                    this.songArtistText = this.add.text(100, 790, `${songsArtists[this.songId]}`);
+                    musicMachineGroup.add(this.songArtistText);
+                    if (this.noMusicText) this.noMusicText.setText('');
+                    this.timeMusic = this.add.text(0, 780, '0:10/3:00');
+                    musicMachineGroup.add(this.timeMusic);
+                }));
             musicMachineGroup.add(this.add.text(380, 610 + i * 60, 'PLAY', { fontSize: "14px", fill: "#000000" }));
         }
         if (!audio) {
-            this.noMusicText = this.add.text(100, 800, 'NO MUSIC PLAYING', {fontSize: "24px", fill: "#555555"});
+            this.noMusicText = this.add.text(100, 800, 'NO MUSIC PLAYING', { fontSize: "24px", fill: "#555555" });
             musicMachineGroup.add(this.noMusicText);
         }
         else {
-            this.songNameText = musicMachineGroup.add(this.add.text(100, 770, `${songsNames[this.songId]}`));
-            this.songArtistText = musicMachineGroup.add(this.add.text(100, 790, `${songsArtists[this.songId]}`));
+            this.songNameText = this.add.text(100, 770, `${songsNames[this.songId]}`);
+            musicMachineGroup.add(this.songNameText);
+            this.songArtistText = this.add.text(100, 790, `${songsArtists[this.songId]}`);
+            musicMachineGroup.add(this.songArtistText);
             this.noMusicText.setText('');
             this.timeMusic = this.add.text(0, 780, '0:10/3:00');
             musicMachineGroup.add(this.timeMusic);
@@ -189,7 +191,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (this.timeMusic) {
+        if (this.timeMusic && audio.duration) {
             let currentMin = Math.floor(audio.currentTime / 60);
             let currentSec = Math.floor(audio.currentTime) % 60;
             let durationMin = Math.floor(audio.duration / 60);
@@ -217,20 +219,22 @@ export class MainScene extends Phaser.Scene {
             }
             else {
                 this.trigger1 = false;
-                musicMachineGroup.clear(true);
+                if (musicMachineGroup) musicMachineGroup.clear(true);
             }
             //console.log(this.player.x, this.player.y);
             // write text size of clibButton
             //console.log
             const playerUI = this.playerUI[this.socket.id];
-            const playerText = playerUI.playerText;
-            const textSize = playerText.text.length;
-            playerText.x = this.player.x - textSize * 3.5;
-            playerText.y = this.player.y - 27;
-
-            playerUI.microphone.x = this.player.x;
-            playerUI.microphone.y = this.player.y - 32;
-
+            if (playerUI) {
+                const playerText = playerUI.playerText;
+                if (playerText) {
+                    const textSize = playerText.text.length;
+                    playerText.x = this.player.x - textSize * 3.5;
+                    playerText.y = this.player.y - 27;
+                }
+                playerUI.microphone.x = this.player.x;
+                playerUI.microphone.y = this.player.y - 32;
+            }
             // update player position
             if (!drawBattle) {
                 updatePlayerPosition(this);
