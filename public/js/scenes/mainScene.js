@@ -17,7 +17,9 @@ const spriteSpeed = 2;
 var drawBattle, cancelButton;
 
 // ON OVERLAP EFFECTS
-var shadowGroup;
+var drawbattleGroup;
+
+var musicMachineShadowGroup;
 var musicMachineGroup;
 
 var audio;
@@ -45,6 +47,7 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
         musicMachineGroup = this.add.group();
+        musicMachineShadowGroup = this.add.group();
 
         this.playerUI = {};
         // Create Animations for heroes
@@ -58,7 +61,7 @@ export class MainScene extends Phaser.Scene {
 
         initMainMap(this);
         this.add.image(230, 680, 'machine').setScale(0.1);
-
+        this.musicMachineShadow();
 
         // Set camera zoom to 3
         this.cameras.main.setZoom(1.5);
@@ -103,11 +106,11 @@ export class MainScene extends Phaser.Scene {
             });
         }
 
-        shadowGroup = this.add.group();
+        drawbattleGroup = this.add.group();
 
         var keyIframe = this.input.keyboard.addKey('X');  // Get key object
         keyIframe.on('down', function (event) {
-            if (shadowGroup.getChildren().length) {
+            if (drawbattleGroup.getChildren().length) {
                 if (!drawBattle) addDomElement();
                 else {
                     drawBattle.destroy();
@@ -115,6 +118,15 @@ export class MainScene extends Phaser.Scene {
                     cancelButton.destroy();
                 }
             }
+            if (musicMachineShadowGroup.getChildren().length) {
+                if (!(musicMachineGroup.getChildren().length > 0)) {
+                    self.addMusicMachine();
+                } else {
+                    musicMachineGroup.clear(true);
+                }
+            }
+
+
         });
         //this.addMusicMachine()
     }
@@ -134,7 +146,8 @@ export class MainScene extends Phaser.Scene {
         var songsArtists = ['Elvis Presley', 'Red Hot Chilli Peppers', 'Scorpions'];
         var songsNames = ['Can\'t Help Falling In Love', 'Californication', 'Still loving you'];
         var songs = ['elvis.mp3', 'californication.mp3', 'still-loving-you.mp3'];
-        musicMachineGroup.add(this.add.image(525, 543, 'x-button').setScale(0.3));
+        musicMachineGroup.add(this.add.image(525, 543, 'x-button').setScale(0.3).setInteractive()
+        .on('pointerdown', () => {musicMachineGroup.clear(true);}));
         for (let i = 0; i < songsArtists.length; i++) {
             musicMachineGroup.add(this.add.text(0, 600 + i * 60, songsArtists[i], { fontSize: "20px", fill: "#ffffff" }));
             musicMachineGroup.add(this.add.text(0, 620 + i * 60, songsNames[i], { fontSize: "14px", fill: "#ffffff" }));
@@ -157,7 +170,7 @@ export class MainScene extends Phaser.Scene {
                     this.songArtistText = this.add.text(100, 790, `${songsArtists[this.songId]}`);
                     musicMachineGroup.add(this.songArtistText);
                     if (this.noMusicText) this.noMusicText.setText('');
-                    this.timeMusic = this.add.text(0, 780, '0:10/3:00');
+                    this.timeMusic = this.add.text(0, 780, '0:00/0:00');
                     musicMachineGroup.add(this.timeMusic);
                 }));
             musicMachineGroup.add(this.add.text(380, 610 + i * 60, 'PLAY', { fontSize: "14px", fill: "#000000" }));
@@ -176,18 +189,25 @@ export class MainScene extends Phaser.Scene {
             musicMachineGroup.add(this.timeMusic);
         }
     }
-    addShadow() {
+    drawbattleShadow() {
         let x = 200;
         let y = 650;
         let w = 130;
         let h = 60;
-        shadowGroup.add(this.add.rectangle(0, y + 500, 2000, 950, 0x000000).setAlpha(0.4));
-        shadowGroup.add(this.add.rectangle(0, y - 145, 2000, 200, 0x000000).setAlpha(0.4));
-        shadowGroup.add(this.add.rectangle(0, y - 10, 270, h + 10, 0x000000).setAlpha(0.4));
-        shadowGroup.add(this.add.rectangle(x + w + 175, y - 10, 500, h + 10, 0x000000).setAlpha(0.4));
-        shadowGroup.add(this.add.image(180, 650, 'play-button').setScale(0.1).setAlpha());
-        shadowGroup.add(this.add.text(150, 700, 'PRESS X', { fill: "#ffffff" }));
+        drawbattleGroup.add(this.add.rectangle(0, y + 500, 2000, 950, 0x000000).setAlpha(0.4));
+        drawbattleGroup.add(this.add.rectangle(0, y - 145, 2000, 200, 0x000000).setAlpha(0.4));
+        drawbattleGroup.add(this.add.rectangle(0, y - 10, 270, h + 10, 0x000000).setAlpha(0.4));
+        drawbattleGroup.add(this.add.rectangle(x + w + 175, y - 10, 500, h + 10, 0x000000).setAlpha(0.4));
+        drawbattleGroup.add(this.add.image(180, 650, 'play-button').setScale(0.1).setAlpha());
+        drawbattleGroup.add(this.add.text(150, 700, 'PRESS X', { fill: "#ffffff" }));
 
+    }
+
+    musicMachineShadow() {
+        let x = 225;
+        let y = 680;
+        musicMachineShadowGroup.add(this.add.image(x + 30, y - 40, 'comment').setScale(0.2));
+        musicMachineShadowGroup.add(this.add.text(x - 9, y - 60, 'PRESS X\nTO INTERACT', { fontSize: "60px", fill: "#000000" }).setScale(0.2));
     }
 
     update(time, delta) {
@@ -203,23 +223,24 @@ export class MainScene extends Phaser.Scene {
             this.animatedTiles.forEach(tile => tile.update(delta));
             if (this.checkOverlap(this.player, this.rectangleTrigger)) {
                 if (!this.trigger) {
-                    this.addShadow();
+                    this.drawbattleShadow();
                 }
                 this.trigger = true;
             }
             else {
                 this.trigger = false;
-                shadowGroup.clear(true);
+                drawbattleGroup.clear(true);
             }
             if (this.checkOverlap(this.player, this.machineTrigger)) {
                 if (!this.trigger1) {
-                    this.addMusicMachine();
+                    this.musicMachineShadow();
                 }
                 this.trigger1 = true;
             }
             else {
                 this.trigger1 = false;
-                if (musicMachineGroup) musicMachineGroup.clear(true);
+                if (musicMachineShadowGroup) musicMachineShadowGroup.clear(true);
+                //if (musicMachineGroup) musicMachineGroup.clear(true);
             }
             //console.log(this.player.x, this.player.y);
             // write text size of clibButton
@@ -236,7 +257,7 @@ export class MainScene extends Phaser.Scene {
                 playerUI.microphone.y = this.player.y - 32;
             }
             // update player position
-            if (!drawBattle) {
+            if (!drawBattle && !(musicMachineGroup.getChildren().length > 0)) {
                 updatePlayerPosition(this);
 
                 emitPlayerPosition(this);

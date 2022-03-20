@@ -96,6 +96,8 @@ export class PreloadScene extends Phaser.Scene {
         // this.load.image('volume',"assets/game-ui/high-volume.png");
         this.load.image('machine', 'assets/machine.png');
         this.load.image('retro-background', "assets/retro-background.jpeg");
+
+        this.load.image('comment', 'assets/game-ui/comment.png');
     }
 
     create() {
