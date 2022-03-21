@@ -2,6 +2,7 @@ import { Player } from "../characters/player";
 import { OtherPlayer } from "../characters/otherPlayer";
 import { nicknames } from "../utils/nicknames";
 import { sceneEvents } from '../Events/EventsCenter';
+// import { sendFile } from "express/lib/response";
 
 var peers;
 var playersList = [];
@@ -90,6 +91,15 @@ function removePeer(socket_id) {
 //////////////////// INTERECTING WITH GAME
 
 function addPlayer(self, playerInfo) {
+    // IF PLAYER DISCONNECTED AND AFTER RECONNECTED
+    if (self.errors) {
+        if (self.errors.getChildren().length > 0) {
+            self.errors.clear(true);
+        }
+        self.errors = null;
+    }
+
+    // TRIGGERS FOR 
     self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
     self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);
 
@@ -97,6 +107,7 @@ function addPlayer(self, playerInfo) {
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     self.cameras.main.startFollow(self.player);
 
+    self.player.id = playerInfo.playerId;
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
     const textColor = randColor();
@@ -132,4 +143,9 @@ function addOtherPlayers(self, playerInfo) {
 
 const randColor = () => {
     return "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0').toUpperCase();
+}
+
+export function currentPlayerDisconnected(playerId) {
+    playersList = [];
+    sceneEvents.emit('currentPlayers', playersList);
 }

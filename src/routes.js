@@ -1,6 +1,5 @@
-const path = require('path')
-const express = require('express')
-var cors = require('cors');
+const path = require('path');
+const express = require('express');
 
 module.exports = (app) => {
 

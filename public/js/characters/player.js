@@ -32,21 +32,22 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocity(+spriteSpeed, velY);
             //this.x += spriteSpeed;
         }
-        if (keyUp.isDown || jUp.isDown) {
-            this.anims.play(`player-walk-up${type}`, true);
-        } else if (keyDown.isDown || jDown.isDown) {
-            this.anims.play(`player-walk-down${type}`, true);
-        } else if (keyLeft.isDown || jLeft.isDown) {
-            this.anims.play(`player-walk-left${type}`, true);
-        } else if (keyRight.isDown || jRight.isDown) {
-            this.anims.play(`player-walk-right${type}`, true);
-        }      
+        if (this.anims) {
+            if (keyUp.isDown || jUp.isDown) {
+                this.anims.play(`player-walk-up${type}`, true);
+            } else if (keyDown.isDown || jDown.isDown) {
+                this.anims.play(`player-walk-down${type}`, true);
+            } else if (keyLeft.isDown || jLeft.isDown) {
+                this.anims.play(`player-walk-left${type}`, true);
+            } else if (keyRight.isDown || jRight.isDown) {
+                this.anims.play(`player-walk-right${type}`, true);
+            }      
 
-        if (!(keyUp.isDown || jUp.isDown) && !(keyDown.isDown || jDown.isDown) && !(keyLeft.isDown || jLeft.isDown) && !(keyRight.isDown || jRight.isDown)) {
-            this.anims.stop();
-            this.setVelocity(0, 0)
+            if (!(keyUp.isDown || jUp.isDown) && !(keyDown.isDown || jDown.isDown) && !(keyLeft.isDown || jLeft.isDown) && !(keyRight.isDown || jRight.isDown)) {
+                this.anims.stop();
+                this.setVelocity(0, 0)
+            }
         }
-
     }
 }
 
