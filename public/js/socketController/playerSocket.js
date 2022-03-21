@@ -147,5 +147,8 @@ const randColor = () => {
 
 export function currentPlayerDisconnected(playerId) {
     playersList = [];
+    for (let socket_id in peers) {
+        removePeer(socket_id)
+    }
     sceneEvents.emit('currentPlayers', playersList);
 }

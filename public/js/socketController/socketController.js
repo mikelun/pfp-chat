@@ -27,5 +27,10 @@ export function initializeSocket(self, peers) {
         playerUI.microphone.destroy();
         self.player.destroy();
         self.player = null;
+        self.otherPlayers.getChildren().forEach(otherPlayer => {
+            self.playerUI[otherPlayer.playerId].playerText.destroy();
+            self.playerUI[otherPlayer.playerId].microphone.destroy();
+            otherPlayer.destroy();
+        })
     })
 }
