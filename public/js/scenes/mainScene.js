@@ -50,7 +50,7 @@ export class MainScene extends Phaser.Scene {
 
         this.playerUI = {};
         // Create Animations for heroes
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 30; i++) {
             createAnimationForPlayer(this.anims, i);
         }
 
