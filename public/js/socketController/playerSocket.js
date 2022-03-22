@@ -35,7 +35,7 @@ export function initializePlayersSocket(self, _peers) {
 
     //DISCONNECT FUNCTION ONLY HERE
     self.socket.on('disconnected', function (playerId) {
-        console.log('disconnected');
+        console.log('Other player disconnected');
 
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (playerId === otherPlayer.playerId) {
@@ -44,18 +44,13 @@ export function initializePlayersSocket(self, _peers) {
                 otherPlayer.destroy();
             }
         });
-        console.log(playersList);
 
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerId) {
                 playersList.splice(i, 1);
             }
         }
-        console.log(playersList);
-
-        for (let socket_id in peers) {
-            removePeer(socket_id)
-        }
+        removePeer(playerId);
     });
 
     self.socket.on('updatePlayerInfo', (playerInfo) => {
