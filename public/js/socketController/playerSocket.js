@@ -103,6 +103,7 @@ function addPlayer(self, playerInfo) {
     self.cameras.main.startFollow(self.player);
 
     self.player.id = playerInfo.playerId;
+
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
     const textColor = randColor();
@@ -118,6 +119,11 @@ function addPlayer(self, playerInfo) {
     self.physics.add.collider(self.player, self.stairsUpFloorLayer);
     self.physics.add.collider(self.player, self.objectsLayer);
 
+    // ADD BALL TO SCENE
+    self.physics.add.collider(self.player, self.ball);
+    self.physics.add.collider(self.wallsLayer, self.ball);
+    self.physics.add.collider(self.ball, self.stairsUpFloorLayer);
+    self.physics.add.collider(self.ball, self.objectsLayer);
 }
 
 

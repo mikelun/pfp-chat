@@ -62,13 +62,15 @@ export class MainScene extends Phaser.Scene {
         this.add.image(230, 680, 'machine').setScale(0.1);
         this.musicMachineShadow();
 
+
+        this.ball = this.physics.add.image(550, 910, 'ball').setScale(0.08).setBounce(0.9).setVelocity(0, 0);
+    
+        //this.ball.body.bounce.setTo(1, 1);
         // Set camera zoom to 3
         this.cameras.main.setZoom(1.5);
         //this.cameras.main.setBounds(0, 0, 1000, 1000);
 
         initializeSocket(this, peers);
-
-        this.playerName = this.add.text(0, 0, 'sad.eth', { fontFamily: 'monospace', fill: '#CCFFFF' })
 
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
             this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
@@ -94,10 +96,10 @@ export class MainScene extends Phaser.Scene {
         const self = this;
         function addDomElement() {
             const iframe = document.createElement('iframe');
-            iframe.src = "https://www.airconsole.com/?embed#!play=com.codethislab.eightballpool";
-            iframe.style.width = "600px";
+            iframe.src = "https://funhtml5games.com/pacman/index.html";
+            iframe.style.width = "350px";
             iframe.style.height = "370px";
-            drawBattle = self.add.dom(310, 670, iframe);
+            drawBattle = self.add.dom(230, 670, iframe);
             cancelButton = self.add.image(535, 440, 'x-button').setScale(0.3).setInteractive().on('pointerdown', () => {
                 drawBattle.destroy();
                 drawBattle = null;

@@ -98,6 +98,8 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('retro-background', "assets/retro-background.jpeg");
 
         this.load.image('comment', 'assets/game-ui/comment.png');
+
+        this.load.image('ball', 'assets/ball.png');
     }
 
     create() {
