@@ -22,7 +22,7 @@ module.exports = (io) => {
             playerId: socket.id,
             microphoneStatus: false,
             playerName: nicknames[Math.floor(Math.random() * nicknames.length)], 
-            textureId: Math.floor(Math.random() * 30),
+            textureId: Math.floor(Math.random() * 50),
         };
 
         socket.emit('currentPlayers', players);

@@ -16,11 +16,17 @@ export class GameUi extends Phaser.Scene {
         for (let i = 0; i < 4; i++) {
             this.add.image(width / 3 + i * (width / 8) , height * 0.90, 'player').setScale(2.5);
         }
+        // this.add.image(150, height - 150, 'player').setScale(5);
+        // this.add.image(150, height - 150, '1').setScale(0.5);
+        // this.add.image(150, height -150, 'x').setScale(0.6).setAlpha(0.4);
+
+
         this.add.image(width / 3 + 0 * (width / 8) , height * 0.90 - 5, '1').setScale(0.2).setInteractive()
         .on('pointerdown', () => {
             sceneEvents.emit('toggleMute');
         });
         this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
+        
         this.add.image(width / 3 + 1 * (width / 8) , height * 0.90, '2').setScale(1.5);
         this.add.image(width / 3 + 2 * (width / 8) , height * 0.90, '3').setScale(1.5);
         this.add.image(width / 3 + 3 * (width / 8) , height * 0.90, '4').setScale(1.5);

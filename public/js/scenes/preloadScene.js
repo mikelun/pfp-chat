@@ -61,7 +61,7 @@ export class PreloadScene extends Phaser.Scene {
             percentText.destroy();
             assetText.destroy();
         });
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 50; i++) {
             this.load.spritesheet(`characters${i}`,
                 `assets/Other/${i}.png`,
                 {
