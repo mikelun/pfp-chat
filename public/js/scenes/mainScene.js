@@ -160,7 +160,7 @@ export class MainScene extends Phaser.Scene {
 
     update(time, delta) {
         let audio = this.audio;
-        if (this.timeMusic && audio.duration) {
+        if (audio && this.timeMusic && audio.duration) {
             let currentMin = Math.floor(audio.currentTime / 60);
             let currentSec = Math.floor(audio.currentTime) % 60;
             let durationMin = Math.floor(audio.duration / 60);
