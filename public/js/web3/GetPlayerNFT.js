@@ -1,21 +1,5 @@
 export async function getPlayerNFT(moralis) {
     const { result } = await moralis.Web3API.account.getNFTs()
-    // .then(res => {
-    //     res = res['result'];
-    //     for (let i = 0; i < res.length; i++) {
-    //         let url = fixURL(res[i].token_uri);
-    //         return fetch(url)
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 if (data.image) {
-    //                     console.log("KK", data.image);
-    //                     return fixURL2(data.image);
-    //                 }
-    //             });
-            
-    //     }
-    // });
-    // Array of numbers from 1 to n
     const promises = result.map((r) => {
         let url = fixURL(r.token_uri);
         return fetch(url)

@@ -60,9 +60,7 @@ export class GameUi extends Phaser.Scene {
         }
         for (let i = 0; i < players.length; i++) {
             let player = players[i];
-            console.log(player);
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
-            this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, {fontSize: '12px', fill: "#fffffff"}));
             this.playerList.add(this.add.image(190, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted").setScale(0.7));
             if (player.nft) {
                 var dom = document.createElement('img');
@@ -70,9 +68,10 @@ export class GameUi extends Phaser.Scene {
                 dom.style.width = '40px';
                 dom.style.height = '40px';
                 this.nfts.push(this.add.dom(60, 60 + i * 65, dom));
+                this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, {fontSize: '12px', fill: "#fffffff"}));
                 //console.log(player.name + " HAS NFT");
             } else {
-                this.playerList.add(this.add.rectangle(60, 60 + i * 65, 40, 40, 0x333333));
+                this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, {fontSize: '12px', fill: "#fffffff"}));
             }
         };
     }
