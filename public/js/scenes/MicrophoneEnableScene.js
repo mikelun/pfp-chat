@@ -18,15 +18,15 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
         // CHECK IF USER HAS BEEN IN OPEN METAVERSE
         //localStorage.removeItem('firstEnter');
-        if (localStorage.firstEnter != undefined || localStorage.firstEnter == "false") {
+        //if (localStorage.firstEnter == undefined || localStorage.firstEnter == "false") {
             this.typewriteText(text, 0);
-        }
-        else if (localStorage.firstEnter == "true") {
-            navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
-                localStorage.setItem('firstEnter', true);
-                this.scene.start('MainScene', { stream: stream });
-            })
-        }
+       // }
+        // else if (localStorage.firstEnter == "true") {
+        //     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
+        //         localStorage.setItem('firstEnter', true);
+        //         this.scene.start('MainScene', { stream: stream });
+        //     })
+        // }
 
     }
 
@@ -66,6 +66,8 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
         // ADDING METAMASK
         if (step == 1) {
+            if (this.getMetamask) return;
+            this.getMetamask = true;
             this.button1.setAlpha(1);
             this.button1.setInteractive().on('pointerdown', () => {
                 // ADDING METAMASK
@@ -94,10 +96,11 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                         localStorage.setItem('firstEnter', this.stream ? true : false);
                         this.scene.start('MainScene', { stream: this.stream ? this.stream : false, moralis: moralis});
                     } else {
-                        this.label.text = "YOU HAVEN'T METAMASK IN YOUR BROWSER";
+                        this.label.text = "YOU HAVEN'T METAMASK IN YOUR BROWSER OR RELOAD THE PAGE";
                     }
                 })
             });
+            
             this.text1.setAlpha(1);
             this.text1.setText("CONNECT");
             this.button1.y -= 100;
