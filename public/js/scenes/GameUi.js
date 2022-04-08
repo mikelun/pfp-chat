@@ -40,6 +40,8 @@ export class GameUi extends Phaser.Scene {
         sceneEvents.on('microphone-toggled', this.handleMicrophoneStatus, this)
 
         sceneEvents.on('currentPlayers', this.updateCurrentPlayers, this);
+    
+        sceneEvents.on('newPlayerNFT', this.updateCurrentPlayers, this);
     }
 
     handleMicrophoneStatus(status) {
@@ -57,6 +59,14 @@ export class GameUi extends Phaser.Scene {
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
             this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, {fontSize: '14px', fill: "#fffffff"}));
             this.playerList.add(this.add.image(180, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted"));
+            if (player.nft) {
+                var dom = document.createElement('img');
+                dom.src = player.nft;
+                dom.style.width = '55px';
+                dom.style.height = '55px';
+                this.playerList.add(this.add.dom(245, 60 + i * 65, dom));
+                console.log(player.name + " HAS NFT");
+            }
         };
     }
 

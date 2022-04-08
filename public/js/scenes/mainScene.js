@@ -3,9 +3,12 @@ import { initializeSocket } from '../socketController/socketController';
 import { initMainMap, updatePlayerPosition, initKeysForController } from '../utils/utils';
 import { createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
-import {addMusicMachine} from "./scene-elements/music-machine";
+import { addMusicMachine } from "./scene-elements/music-machine";
+import { getPlayerNFT } from '../web3/GetPlayerNFT';
 
+import web3 from 'web3'
 /**
  * All peer connections
  */
@@ -36,6 +39,8 @@ export class MainScene extends Phaser.Scene {
                 const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
                 localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
             }
+            this.moralis = data.moralis;
+            console.log(this.moralis);
         }
     }
 
@@ -44,6 +49,8 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+        // const w3 = new web3(window.ethereum);
+        // console.log(w3.eth.getAccounts());
         this.audio = null;
         this.musicMachineGroup = this.add.group();
         musicMachineShadowGroup = this.add.group();
@@ -62,9 +69,8 @@ export class MainScene extends Phaser.Scene {
         this.add.image(230, 680, 'machine').setScale(0.1);
         this.musicMachineShadow();
 
-
         this.ball = this.physics.add.image(550, 910, 'ball').setScale(0.08).setBounce(0.9).setVelocity(0, 0);
-    
+
         //this.ball.body.bounce.setTo(1, 1);
         // Set camera zoom to 3
         this.cameras.main.setZoom(1.5);
@@ -89,7 +95,6 @@ export class MainScene extends Phaser.Scene {
         sceneEvents.on('toggleMute', () => {
             if (this.localStream) {
                 this.toggleMute();
-                bullShit.destroy();
             };
         });
 
@@ -265,5 +270,3 @@ function emitPlayerPosition(self) {
         rotation: player.rotation
     };
 }
-
-

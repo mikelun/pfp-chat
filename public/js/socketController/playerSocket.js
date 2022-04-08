@@ -2,6 +2,7 @@ import { Player } from "../characters/player";
 import { OtherPlayer } from "../characters/otherPlayer";
 import { nicknames } from "../utils/nicknames";
 import { sceneEvents } from '../Events/EventsCenter';
+import { getPlayerNFT } from "../web3/GetPlayerNFT";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -58,6 +59,11 @@ export function initializePlayersSocket(self, _peers) {
             if (playersList[i].id == playerInfo.playerId) {
                 playersList[i].name = playerInfo.playerName;
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
+                
+                if (playerInfo.nft) {
+                    playersList[i].nft = playerInfo.nft;
+                }
+                
                 sceneEvents.emit('currentPlayers', playersList);
                 break;
             }
@@ -111,8 +117,25 @@ function addPlayer(self, playerInfo) {
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
 
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor });
+    
     // END PLAYER UI
+
     sceneEvents.emit("currentPlayers", playersList);
+
+    getPlayerNFT(self.moralis).then(nfts => {
+        nfts = nfts.filter(nft => nft != undefined);
+        
+        // get random nft
+        const nft = nfts[Math.floor(Math.random() * nfts.length)];
+
+        playersList.forEach(player => {
+            if (player.id == self.socket.id) {
+                player.nft = nft;
+                sceneEvents.emit("currentPlayers", playersList);
+            }
+        });
+        
+    });
 
     self.physics.add.collider(self.player, self.wallsLayer);
 

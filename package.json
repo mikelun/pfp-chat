@@ -21,6 +21,7 @@
         "express": "^4.17.3",
         "fs": "^0.0.1-security",
         "https": "^1.0.0",
+        "moralis": "^1.5.8",
         "parcel": "^2.3.2",
         "phaser": "^3.55.2",
         "phaser-animated-tiles": "^2.0.2",
@@ -29,6 +30,7 @@
         "simple-peer": "^9.11.1",
         "socket.io": "^4.4.1",
         "socket.io-client": "^4.4.1",
+        "web3": "^1.7.1",
         "webrtc-swarm": "^2.9.0"
     },
     "staticFiles": {
