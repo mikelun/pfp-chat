@@ -59,10 +59,7 @@ export function initializePlayersSocket(self, _peers) {
             if (playersList[i].id == playerInfo.playerId) {
                 playersList[i].name = playerInfo.playerName;
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
-                
-                if (playerInfo.nft) {
-                    playersList[i].nft = playerInfo.nft;
-                }
+                playersList[i].nft = playerInfo.nft;
                 
                 sceneEvents.emit('currentPlayers', playersList);
                 break;
@@ -116,7 +113,7 @@ function addPlayer(self, playerInfo) {
     self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '36px', fontFamily: 'monospace', fill: textColor }).setScale(0.3);
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
 
-    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor });
+    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor, nft: playerInfo.nft });
     
     // END PLAYER UI
 
@@ -131,6 +128,7 @@ function addPlayer(self, playerInfo) {
         playersList.forEach(player => {
             if (player.id == self.socket.id) {
                 player.nft = nft;
+                self.socket.emit("updatePlayerInfo", {nft: nft},self.socket.id);
                 sceneEvents.emit("currentPlayers", playersList);
             }
         });
@@ -161,7 +159,7 @@ function addOtherPlayers(self, playerInfo) {
     self.otherPlayers.add(otherPlayer);
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
-    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId });
+    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor });
     sceneEvents.emit('currentPlayers', playersList);
 }
 

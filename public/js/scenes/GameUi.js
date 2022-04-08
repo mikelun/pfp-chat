@@ -8,6 +8,7 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
+        this.nfts = [];
         this.playerList = this.add.group();
 
         // get the game width and height
@@ -54,18 +55,24 @@ export class GameUi extends Phaser.Scene {
 
     updateCurrentPlayers(players) {
         this.playerList.clear(true);
+        for (let i = 0; i < this.nfts.length; i++) {
+            this.nfts[i].destroy();
+        }
         for (let i = 0; i < players.length; i++) {
             let player = players[i];
+            console.log(player);
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
-            this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, {fontSize: '14px', fill: "#fffffff"}));
-            this.playerList.add(this.add.image(180, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted"));
+            this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, {fontSize: '12px', fill: "#fffffff"}));
+            this.playerList.add(this.add.image(190, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted").setScale(0.7));
             if (player.nft) {
                 var dom = document.createElement('img');
                 dom.src = player.nft;
-                dom.style.width = '55px';
-                dom.style.height = '55px';
-                this.playerList.add(this.add.dom(245, 60 + i * 65, dom));
-                console.log(player.name + " HAS NFT");
+                dom.style.width = '40px';
+                dom.style.height = '40px';
+                this.nfts.push(this.add.dom(60, 60 + i * 65, dom));
+                //console.log(player.name + " HAS NFT");
+            } else {
+                this.playerList.add(this.add.rectangle(60, 60 + i * 65, 40, 40, 0x333333));
             }
         };
     }

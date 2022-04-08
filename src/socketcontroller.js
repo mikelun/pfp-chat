@@ -23,6 +23,7 @@ module.exports = (io) => {
             microphoneStatus: false,
             playerName: nicknames[Math.floor(Math.random() * nicknames.length)], 
             textureId: Math.floor(Math.random() * 50),
+            nft: null
         };
 
         socket.emit('currentPlayers', players);
@@ -42,6 +43,8 @@ module.exports = (io) => {
 
         socket.on('updatePlayerInfo', (data, socket_id) => {
             if (data.microphoneStatus != null)  players[socket_id].microphoneStatus = data.microphoneStatus;
+            if (data.playerName != null) players[socket_id].playerName = data.playerName;
+            if (data.nft != null) players[socket_id].nft = data.nft;
             io.emit('updatePlayerInfo', players[socket_id]);
         })
         
