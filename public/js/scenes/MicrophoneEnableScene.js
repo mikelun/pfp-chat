@@ -19,8 +19,8 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         // CHECK IF USER HAS BEEN IN OPEN METAVERSE
         //localStorage.removeItem('firstEnter');
         //if (localStorage.firstEnter == undefined || localStorage.firstEnter == "false") {
-            this.typewriteText(text, 0);
-       // }
+        this.typewriteText(text, 0);
+        // }
         // else if (localStorage.firstEnter == "true") {
         //     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
         //         localStorage.setItem('firstEnter', true);
@@ -90,17 +90,17 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                             });
                     }
                 }
-                login().then( () => {
+                login().then(() => {
                     console.log(user);
                     if (user) {
                         localStorage.setItem('firstEnter', this.stream ? true : false);
-                        this.scene.start('MainScene', { stream: this.stream ? this.stream : false, moralis: moralis});
+                        this.scene.start('MainScene', { stream: this.stream ? this.stream : false, moralis: moralis });
                     } else {
                         this.label.text = "YOU HAVEN'T METAMASK IN YOUR BROWSER OR RELOAD THE PAGE";
                     }
                 })
             });
-            
+
             this.text1.setAlpha(1);
             this.text1.setText("CONNECT");
             this.button1.y -= 100;

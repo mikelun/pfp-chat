@@ -3,10 +3,10 @@ import { initializeSocket } from '../socketController/socketController';
 import { initMainMap, updatePlayerPosition, initKeysForController } from '../utils/utils';
 import { createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
 import { addMusicMachine } from "./scene-elements/music-machine";
 import { getPlayerNFT } from '../web3/GetPlayerNFT';
+
 
 import web3 from 'web3'
 /**
@@ -134,6 +134,7 @@ export class MainScene extends Phaser.Scene {
 
 
         });
+
         //this.addMusicMachine()
     }
 

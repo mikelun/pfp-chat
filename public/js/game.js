@@ -2,6 +2,7 @@ import { MainScene } from './scenes/mainScene.js';
 import { PreloadScene } from './scenes/preloadScene.js';
 import { GameUi } from './scenes/GameUi.js';
 import { MicrophoneEnableScene } from './scenes/MicrophoneEnableScene.js';
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
@@ -17,6 +18,15 @@ const config = {
     height: DEFAULT_HEIGHT
   },
   scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene],
+  plugins: {
+    scene: [{
+        key: 'rexUI',
+        plugin: UIPlugin,
+        mapping: 'rexUI'
+    },
+    // ...
+    ]
+  },
   physics: {
     default: 'arcade',
     arcade: {

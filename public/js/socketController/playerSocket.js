@@ -7,9 +7,13 @@ import { getPlayerNFT } from "../web3/GetPlayerNFT";
 
 var peers;
 var playersList = [];
-export function initializePlayersSocket(self, _peers) {
+
+var self;
+export function initializePlayersSocket(anotherSelf, _peers) {
+    self = anotherSelf;
     peers = _peers;
     self.otherPlayers = self.physics.add.group();
+
 
     self.socket.on('currentPlayers', function (players) {
         Object.keys(players).forEach(function (id) {
@@ -121,17 +125,17 @@ function addPlayer(self, playerInfo) {
 
     getPlayerNFT(self.moralis).then(nfts => {
         nfts = nfts.filter(nft => nft != undefined);
-        
+        sceneEvents.emit('getPlayerNFTs', nfts);
         // get random nft
-        const nft = nfts[Math.floor(Math.random() * nfts.length)];
+        // const nft = nfts[Math.floor(Math.random() * nfts.length)];
 
-        playersList.forEach(player => {
-            if (player.id == self.socket.id) {
-                player.nft = nft;
-                self.socket.emit("updatePlayerInfo", {nft: nft},self.socket.id);
-                sceneEvents.emit("currentPlayers", playersList);
-            }
-        });
+        // playersList.forEach(player => {
+        //     if (player.id == self.socket.id) {
+        //         player.nft = nft;
+        //         self.socket.emit("updatePlayerInfo", {nft: nft},self.socket.id);
+        //         sceneEvents.emit("currentPlayers", playersList);
+        //     }
+        // });
         
     });
 
@@ -145,7 +149,20 @@ function addPlayer(self, playerInfo) {
     self.physics.add.collider(self.wallsLayer, self.ball);
     self.physics.add.collider(self.ball, self.stairsUpFloorLayer);
     self.physics.add.collider(self.ball, self.objectsLayer);
+
+    sceneEvents.on('nftSelected', nftSelected, this);
 }
+
+function nftSelected(nftImage) {
+    playersList.forEach(player => {
+        if (player.id == self.socket.id) {
+            player.nft = nftImage;
+            self.socket.emit("updatePlayerInfo", { nft: nftImage }, self.socket.id);
+            sceneEvents.emit("currentPlayers", playersList);
+        }
+    });
+}
+
 
 
 function addOtherPlayers(self, playerInfo) {
