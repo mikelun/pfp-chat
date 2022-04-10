@@ -72,7 +72,7 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('newPlayerNFT', this.updateCurrentPlayers, this);
 
-        sceneEvents.on('getPlayerNFTs', this.loadNfts, this);
+        //sceneEvents.on('getPlayerNFTs', this.addDomNFTs, this);
     }
 
     update(time, delta) {
@@ -149,6 +149,10 @@ export class GameUi extends Phaser.Scene {
 
     }
 
+    addDomNFTs(nfts) {
+        console.log("HERE");
+        this.add.rectangle(0, 0, 1000, 1000, 0x333333);
+    }
     loadNfts(nfts) {
         console.log(nfts);
         const self = this;

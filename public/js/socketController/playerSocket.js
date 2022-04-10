@@ -56,6 +56,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 playersList.splice(i, 1);
             }
         }
+        sceneEvents.emit('currentPlayers', playersList);
         removePeer(playerId);
     });
 

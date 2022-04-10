@@ -1,14 +1,17 @@
 export async function getPlayerNFT(moralis) {
-    const {result} = await moralis.Web3API.account.getNFTs();
+
+    const result = await moralis.Web3.getNFTs({chain: 'eth', address: '0xeac41D05531770b85ad1E0f145b94BFE205bDa78', limit: '10'});
+    console.log(result.length);
     const promises = result.map((r) => {
-        console.log(r);
         if (r.token_uri) {
             let url = fixURL(r.token_uri);
             try {
-                return fetch(url, { credentials: 'omit' })
+                return fetch(url)
                     .then(response => {
-                        if (!null)
+                        if (!null) {
+                            response.setHeader("Access-Control-Allow-Origin", "*");
                             return response.json();
+                        }
                         else return null;
                     })
                     .then(data => {
