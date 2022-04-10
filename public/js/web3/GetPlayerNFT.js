@@ -1,29 +1,29 @@
 export async function getPlayerNFT(moralis) {
-
-    const result = await moralis.Web3.getNFTs({chain: 'eth', address: '0xeac41D05531770b85ad1E0f145b94BFE205bDa78', limit: '10'});
+    const playerAddress = '0xeac41D05531770b85ad1E0f145b94BFE205bDa78'
+    const result = await moralis.Web3.getNFTs({chain: 'eth', address: playerAddress, limit: '10'});
     console.log(result.length);
     const promises = result.map((r) => {
         if (r.token_uri) {
             let url = fixURL(r.token_uri);
             try {
-                return fetch(url)
-                    .then(response => {
-                        if (!null) {
-                            response.setHeader("Access-Control-Allow-Origin", "*");
-                            return response.json();
-                        }
-                        else return null;
-                    })
-                    .then(data => {
-                        if (data && data.image) {
-                            return { image: fixURL2(data.image), name: data.name };
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                // if url is data:application/json; fetch right away
+                // if not, proxy via /metadata?uri=
+                let data
+                if (url.startsWith("data:application/json")) {
+                    data = await fetch(url).then(r => r.json());
+                } else if (true) {
+                    data = await moralis.Web3.getMetadata({chain: 'eth', uri: url});
+                } else {
+                    const proxiedURL = `/metadata?uri=${encodeURIComponent(url)}`;
+                    data = await fetch(proxiedURL).then(r => r.json());
+                }
+
+                if (data && data.image) {
+                    return { image: fixImageURL(data.image), name: data.name };
+                }
+
             } catch (err) {
-                //console.log(err);
+                console.log('Error with', r.token_uri, err);
             }
         }
 
@@ -39,7 +39,7 @@ function fixURL(url) {
         return url;
     }
 }
-function fixURL2(url) {
+function fixImageURL(url) {
     if (url.startsWith("ipfs")) {
         return "https://ipfs.moralis.io:2053/ipfs/" + url.split("ipfs://").slice(-1)[0];
     } else {
