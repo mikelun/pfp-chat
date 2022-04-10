@@ -40,7 +40,7 @@ export class MainScene extends Phaser.Scene {
                 localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
             }
             this.moralis = data.moralis;
-            console.log(this.moralis);
+            console.log("MORALIS", this.moralis);
         }
     }
 
