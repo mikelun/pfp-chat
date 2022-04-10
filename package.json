@@ -23,6 +23,7 @@
         "fs": "^0.0.1-security",
         "https": "^1.0.0",
         "moralis": "^1.5.8",
+        "node-fetch": "^2.6.7",
         "parcel": "^2.3.2",
         "phaser": "^3.55.2",
         "phaser-animated-tiles": "^2.0.2",
