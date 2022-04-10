@@ -194,6 +194,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                         })
                         .catch(function (error) {
                             alert(error);
+                            self.label.text = 'ERROR, TRY AGAIN'
                         });
                 } else {
                     localStorage.setItem('Moralis', 'true');

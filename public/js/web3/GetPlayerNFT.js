@@ -1,5 +1,4 @@
 export async function getPlayerNFT(moralis) {
-    const headers = {};
     const {result} = await moralis.Web3API.account.getNFTs();
     const promises = result.map((r) => {
         console.log(r);

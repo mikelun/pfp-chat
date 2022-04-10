@@ -16,6 +16,7 @@
         "parcel-plugin-static-files-copy": "^2.6.0"
     },
     "dependencies": {
+        "@ensdomains/ensjs": "^2.1.0",
         "bulma": "^0.9.3",
         "cors": "^2.8.5",
         "express": "^4.17.3",

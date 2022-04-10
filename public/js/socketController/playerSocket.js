@@ -3,6 +3,7 @@ import { OtherPlayer } from "../characters/otherPlayer";
 import { nicknames } from "../utils/nicknames";
 import { sceneEvents } from '../Events/EventsCenter';
 import { getPlayerNFT } from "../web3/GetPlayerNFT";
+import { getEnsDomain } from "../web3/GetEnsDomain";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -61,6 +62,10 @@ export function initializePlayersSocket(anotherSelf, _peers) {
     self.socket.on('updatePlayerInfo', (playerInfo) => {
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerInfo.playerId) {
+                if (playerInfo.playerName) {
+                    
+                    self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
+                }
                 playersList[i].name = playerInfo.playerName;
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
                 playersList[i].nft = playerInfo.nft;
@@ -126,17 +131,16 @@ function addPlayer(self, playerInfo) {
     getPlayerNFT(self.moralis).then(nfts => {
         nfts = nfts.filter(nft => nft != undefined);
         sceneEvents.emit('getPlayerNFTs', nfts);
-        // get random nft
-        // const nft = nfts[Math.floor(Math.random() * nfts.length)];
+    });
 
-        // playersList.forEach(player => {
-        //     if (player.id == self.socket.id) {
-        //         player.nft = nft;
-        //         self.socket.emit("updatePlayerInfo", {nft: nft},self.socket.id);
-        //         sceneEvents.emit("currentPlayers", playersList);
-        //     }
-        // });
-        
+    getEnsDomain(self.moralis).then(domain => {
+        playersList.forEach(player => {
+            if (player.id == self.socket.id) {
+                player.name = domain;
+                self.socket.emit("updatePlayerInfo", { playerName: domain }, self.socket.id);
+                sceneEvents.emit("currentPlayers", playersList);
+            }
+        });
     });
 
     self.physics.add.collider(self.player, self.wallsLayer);
