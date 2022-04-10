@@ -72,6 +72,7 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('newPlayerNFT', this.updateCurrentPlayers, this);
 
+        this.addDomNFTs([]);
         //sceneEvents.on('getPlayerNFTs', this.addDomNFTs, this);
     }
 
@@ -151,7 +152,18 @@ export class GameUi extends Phaser.Scene {
 
     addDomNFTs(nfts) {
         console.log("HERE");
-        this.add.rectangle(0, 0, 1000, 1000, 0x333333);
+        this.add.rectangle(675, 325, 800, 550, COLOR_PRIMARY);
+        this.add.rectangle(675, 75, 800, 50, COLOR_DARK);
+        this.add.text(590, 60, "YOUR NFTs", { fontSize: '32px', fill: '#ffffff' });
+        for (let i = 0; i < 12; i++) {
+            //this.add.rectangle(370 + (i % 4) * 200, 170 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333);
+            const dom = document.createElement('img');
+            dom.src = "https://upload.wikimedia.org/wikipedia/commons/c/c1/Duck_on_Yeadon_Tarn_%2813th_November_2010%29_002.jpg";
+            dom.style.width = "100px";
+            dom.style.height = "100px";
+            this.add.dom(370 + (i % 4) * 200, 170 + (Math.floor(i / 4)) * 150, dom);
+            this.add.text(320 + (i % 4) * 200, 230 + (Math.floor(i / 4)) * 150, "NFT#" + i, { fontSize: '14px', fill: '#ffffff' });
+        }
     }
     loadNfts(nfts) {
         console.log(nfts);
