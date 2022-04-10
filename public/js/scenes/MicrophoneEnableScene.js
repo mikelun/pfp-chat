@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import moralis from 'moralis'
+import {Moralis} from 'moralis'
 
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
@@ -12,13 +12,13 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         this.step = 0;
         this.showCurrentLevel();
         // check if lastVisit localStorage is true
-        if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('moralis') == 'true') {
-            // TRY TO GET MORALIS AND MICROPHONE
+        if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('Moralis') == 'true') {
+            // TRY TO GET Moralis AND MICROPHONE
             try {
                 navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
                     this.stream = stream;
                     this.startMoralis();
-                    this.scene.start('MainScene', { stream: this.stream, moralis: moralis });
+                    this.scene.start('MainScene', { stream: this.stream, moralis: Moralis });
                 });
             } catch (e) {
                 alert(e);
@@ -28,11 +28,11 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
     }
 
-    // START MORALIS
+    // START Moralis
     startMoralis() {
-        const serverUrl = "https://aehuzyu1u1bu.usemoralis.com:2053/server";
+        const serverUrl = "https://aehuzyu1u1bu.useMoralis.com:2053/server";
         const appId = "qjkycuFOWtZY1v6bpU8N2e4oxTqdvxNt6ajnsNIm";
-        moralis.start({ serverUrl, appId });
+        Moralis.start({ serverUrl, appId });
     }
 
     showCurrentLevel() {
@@ -62,7 +62,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         if (this.step == 2) {
             localStorage.setItem('lastVisit', 'true');
             // go to mainscene
-            this.scene.start('MainScene', { stream: this.stream, moralis: moralis });
+            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis });
 
         }
 
@@ -177,18 +177,18 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         this.button1.setInteractive().on('pointerdown', () => {
             if (this.step != 1) return;
 
-            // connect to moralis
+            // connect to Moralis
             this.startMoralis();
 
             async function login() {
-                self.user = moralis.User.current();
+                self.user = Moralis.User.current();
                 if (!self.user) {
                     self.label.text = 'CONNECTING YOUR METAMASK...'
-                    self.user = await moralis.authenticate({
+                    self.user = await Moralis.authenticate({
                         signingMessage: "Log in using Moralis",
                     })
                         .then(function (user) {
-                            localStorage.setItem('moralis', 'true');
+                            localStorage.setItem('Moralis', 'true');
                             self.step = 2;
                             self.showCurrentLevel();
                         })
@@ -196,7 +196,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                             alert(error);
                         });
                 } else {
-                    localStorage.setItem('moralis', 'true');
+                    localStorage.setItem('Moralis', 'true');
                     self.step = 2;
                     self.showCurrentLevel();
                 }
@@ -207,7 +207,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         this.button2.setInteractive().on('pointerdown', () => {
             if (this.step != 1) return;
             this.step = 2;
-            moralis = null;
+            //Moralis = null;
             this.showCurrentLevel();
         });
 
