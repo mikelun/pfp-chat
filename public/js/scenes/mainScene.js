@@ -4,25 +4,19 @@ import { initMainMap, updatePlayerPosition, initKeysForController } from '../uti
 import { createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
-import { addMusicMachine } from "./scene-elements/music-machine";
 import { getEnsDomain } from '../web3/GetEnsDomain';
-
+import { addJoysticIfAndroid } from '../utils/pluginJoystic';
+import { addIframeGameAndMusicMachine } from '../utils/addIframeGameAndMusicMachine';
+import { addPlayerOverlap } from '../utils/playerOverlap';
+import { updateOtherPlayersPositions } from '../utils/updatePlayersPositions';
+import { addFollowingUI } from '../utils/addFollowingUi';
+import { addAudioTimer } from '../utils/addAudioTimer';
+import { toggleMute } from '../utils/microphoneUtils';
 
 /**
  * All peer connections
  */
 let peers = {};
-
-// Speed of all players
-const spriteSpeed = 2;
-
-var drawBattle, cancelButton;
-
-// ON OVERLAP EFFECTS
-var drawbattleGroup;
-
-var musicMachineShadowGroup;
-
 
 export class MainScene extends Phaser.Scene {
 
@@ -32,19 +26,24 @@ export class MainScene extends Phaser.Scene {
 
     init(data) {
         if (data.stream != false) {
+            // local stream of user microphone
             this.localStream = data.stream;
-            let localStream = this.localStream;
-            for (let index in localStream.getAudioTracks()) {
-                const localStreamEnabled = localStream.getAudioTracks()[index].enabled;
-                localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
+
+            // DISABLE MICROPHONE AT FIRST
+            for (let index in this.localStream.getAudioTracks()) {
+                this.localStream.getAudioTracks()[index].enabled = false;
             }
+
+            // ADD MORALIS FOR BLOCKCHAIN(IF EXIST)
             this.moralis = data.moralis;
-            console.log("MORALIS", this.moralis);
         }
     }
 
     preload() {
+        // INITIALIZE KEYS
         initKeysForController(this);
+
+        // LOAD PLUGIN FOR VIRTUAL JOYSTICK
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
@@ -53,13 +52,14 @@ export class MainScene extends Phaser.Scene {
         var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
         keyObj.on('down', function (event) { });
 
-        // const w3 = new web3(window.ethereum);
-        // console.log(w3.eth.getAccounts());
+        // INITIALIZE Music Machine (YOU CAN SEE RAINBOW TV AT MAIN MAP) 
         this.audio = null;
         this.musicMachineGroup = this.add.group();
-        musicMachineShadowGroup = this.add.group();
+        this.musicMachineShadowGroup = this.add.group();
 
+        // add UI for each player (microphone, name, etc)
         this.playerUI = {};
+
         // Create Animations for heroes
         for (let i = 0; i < 50; i++) {
             createAnimationForPlayer(this.anims, i);
@@ -68,217 +68,64 @@ export class MainScene extends Phaser.Scene {
         // Add Game Ui
         this.scene.run('game-ui');
 
-
+        // initialize main map
         initMainMap(this);
-        this.add.image(230, 680, 'machine').setScale(0.1);
-        this.musicMachineShadow();
 
+        // add ball for fun with physics
         this.ball = this.physics.add.image(550, 910, 'ball').setScale(0.08).setBounce(0.9).setVelocity(0, 0);
 
-        //this.ball.body.bounce.setTo(1, 1);
-        // Set camera zoom to 3
+        // add main camera zoom
         this.cameras.main.setZoom(1.5);
-        //this.cameras.main.setBounds(0, 0, 1000, 1000);
 
+        // Initialize socket for client - server application
         initializeSocket(this, peers);
 
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-            this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-                x: 400,
-                y: 470,
-                radius: 50,
-                base: this.add.circle(0, 0, 50, 0x888888),
-                thumb: this.add.circle(0, 0, 25, 0xcccccc),
-                // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
-                // forceMin: 16,
-                // enable: true
-            });
-            this.cursorKeys = this.joyStick.createCursorKeys();
-        }
+        // add joystic if android
+        addJoysticIfAndroid(this);
 
+        // if user touch microphone on Game UI scene -> toggle microphone stream
         sceneEvents.on('toggleMute', () => {
             if (this.localStream) {
-                this.toggleMute();
+                toggleMute(this);
             };
         });
 
-        const self = this;
-        function addDomElement() {
-            const iframe = document.createElement('iframe');
-            iframe.src = "https://funhtml5games.com/pacman/index.html";
-            iframe.style.width = "350px";
-            iframe.style.height = "370px";
-            drawBattle = self.add.dom(230, 670, iframe);
-            cancelButton = self.add.image(535, 440, 'x-button').setScale(0.3).setInteractive().on('pointerdown', () => {
-                drawBattle.destroy();
-                drawBattle = null;
-                cancelButton.destroy();
-            });
-        }
+        // adding music machine image to main map
+        this.add.image(230, 680, 'machine').setScale(0.1);
 
-        drawbattleGroup = this.add.group();
+        // add iframe game(You can see it upstairs on main map) and music machine - rainbow TV ;)
+        addIframeGameAndMusicMachine(this);
 
-        var keyIframe = this.input.keyboard.addKey('X');  // Get key object
-        keyIframe.on('down', function (event) {
-            if (drawbattleGroup.getChildren().length) {
-                if (!drawBattle) addDomElement();
-                else {
-                    drawBattle.destroy();
-                    drawBattle = null;
-                    cancelButton.destroy();
-                }
-            }
-            if (musicMachineShadowGroup.getChildren().length) {
-                if (!(self.musicMachineGroup.getChildren().length > 0)) {
-                    addMusicMachine(self);
-                } else {
-                    self.musicMachineGroup.clear(true);
-                }
-            }
-
-
-        });
-    }
-
-    checkOverlap(a, b) {
-        var boundsA = a.getBounds();
-        var boundsB = b.getBounds();
-
-        return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
-    }
-
-    drawbattleShadow() {
-        let x = 200;
-        let y = 650;
-        let w = 130;
-        let h = 60;
-        drawbattleGroup.add(this.add.rectangle(0, y + 500, 2000, 950, 0x000000).setAlpha(0.4));
-        drawbattleGroup.add(this.add.rectangle(0, y - 145, 2000, 200, 0x000000).setAlpha(0.4));
-        drawbattleGroup.add(this.add.rectangle(0, y - 10, 270, h + 10, 0x000000).setAlpha(0.4));
-        drawbattleGroup.add(this.add.rectangle(x + w + 175, y - 10, 500, h + 10, 0x000000).setAlpha(0.4));
-        drawbattleGroup.add(this.add.image(180, 650, 'play-button').setScale(0.1).setAlpha());
-        drawbattleGroup.add(this.add.text(150, 700, 'PRESS X', { fill: "#ffffff" }));
-
-    }
-
-    musicMachineShadow() {
-        let x = 225;
-        let y = 680;
-        musicMachineShadowGroup.add(this.add.image(x + 30, y - 40, 'comment').setScale(0.2));
-        musicMachineShadowGroup.add(this.add.text(x - 9, y - 60, 'PRESS X\nTO INTERACT', { fontSize: "60px", fill: "#000000" }).setScale(0.2));
     }
 
     update(time, delta) {
-        let audio = this.audio;
-        if (audio && this.timeMusic && audio.duration) {
-            let currentMin = Math.floor(audio.currentTime / 60);
-            let currentSec = Math.floor(audio.currentTime) % 60;
-            let durationMin = Math.floor(audio.duration / 60);
-            let durationSec = Math.floor(audio.duration) % 60;
-            if (currentSec < 10) currentSec = '0' + currentSec;
-            this.timeMusic.setText(`${currentMin}:${currentSec}/${durationMin}:${durationSec}`)
-        }
+
+        // add audio timer for music machine
+        addAudioTimer(this);
+
+        // animate tiles for main map
+        this.animatedTiles.forEach(tile => tile.update(delta));
 
         if (this.player) {
-            this.animatedTiles.forEach(tile => tile.update(delta));
-            if (this.checkOverlap(this.player, this.rectangleTrigger)) {
-                if (!this.trigger) {
-                    this.drawbattleShadow();
-                }
-                this.trigger = true;
-            }
-            else {
-                this.trigger = false;
-                drawbattleGroup.clear(true);
-            }
-            if (this.checkOverlap(this.player, this.machineTrigger)) {
-                if (!this.trigger1) {
-                    this.musicMachineShadow();
-                }
-                this.trigger1 = true;
-            }
-            else {
-                this.trigger1 = false;
-                if (musicMachineShadowGroup) musicMachineShadowGroup.clear(true);
-            }
+            // if player overlap with game objects(TV, Games, etc)
+            addPlayerOverlap(this);
 
-            const playerUI = this.playerUI[this.socket.id];
-            if (playerUI) {
-                const playerText = playerUI.playerText;
-                if (playerText) {
-                    const textSize = playerText.text.length;
-                    playerText.x = this.player.x - textSize * 3.5;
-                    playerText.y = this.player.y - 27;
-                }
-                playerUI.microphone.x = this.player.x;
-                playerUI.microphone.y = this.player.y - 32;
-            }
-            // update player position
-            if (!drawBattle && !(this.musicMachineGroup.getChildren().length > 0)) {
-                updatePlayerPosition(this);
-                let currentTime = Math.floor(time / 25);
-                if (currentTime != this.lastTime) {
-                    emitPlayerPosition(this);
-                }
+            // update a position of player ui
+            addFollowingUI(this);
 
-                this.lastTime = currentTime;
-            }
+            // update a player position
+            updatePlayerPosition(this);
+
+            // send player position to server after 25 ms
+            sendPlayerPosition(this, time);
         }
 
+        // update other players positions with interpolation
         if (this.otherPlayers) {
-            this.otherPlayers.getChildren().forEach(otherPlayer => {
-                if (otherPlayer.newX) {
-                    let diffX = otherPlayer.x - otherPlayer.newX;
-                    if (Math.abs(diffX) < 0.1) {
-                        otherPlayer.x = otherPlayer.newX;
-                    } else {
-                        otherPlayer.x = otherPlayer.x - diffX * 0.05;
-                    }
-                    let diffY = otherPlayer.y - otherPlayer.newY;
-                    if (Math.abs(diffY) < 0.1) {
-                        otherPlayer.y = otherPlayer.newY;
-                    } else {
-                        otherPlayer.y = otherPlayer.y - diffY * 0.02 * delta;
-                    }
-                    otherPlayer.update(otherPlayer.x, otherPlayer.y);
-                }
-                // if (!otherPlayer.newX) {
-                //     return;
-                // }
-                // console.log("HERE");
-                // let diffX = otherPlayer.x - otherPlayer.newX;
-                // console.log(diffX);
-                // if (Math.abs(diffX) > 0.05) {
-                //     otherPlayer.x = otherPlayer.newX;
-                // } else {
-                //     otherPlayer.x += diffX * delta * 0.0005;
-                // }
-                // otherPlayer.y = otherPlayer.newY;
-                // otherPlayer.update(otherPlayer.x, otherPlayer.y);
-                const playerUI = this.playerUI[otherPlayer.playerId];
-                const otherPlayerText = playerUI.playerText;
-                otherPlayerText.x = otherPlayer.x - otherPlayerText.text.length * 3.5;
-                otherPlayerText.y = otherPlayer.y - 25;
-                playerUI.microphone.x = otherPlayer.x;
-                playerUI.microphone.y = otherPlayer.y - 32;
-            });
+            updateOtherPlayersPositions(this, delta);
         }
     }
 
-    toggleMute() {
-        let localStream = this.localStream;
-        for (let index in localStream.getAudioTracks()) {
-            let localStreamEnabled = localStream.getAudioTracks()[index].enabled;
-            localStream.getAudioTracks()[index].enabled = !localStreamEnabled;
-
-            localStreamEnabled = !localStreamEnabled;
-
-            this.playerUI[this.socket.id].microphone.setTexture(localStreamEnabled ? 'microphone' : 'microphoneMuted');
-
-            this.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled }, this.socket.id);
-            sceneEvents.emit("microphone-toggled", localStreamEnabled);
-        }
-    }
 }
 
 
@@ -303,4 +150,12 @@ function emitPlayerPosition(self) {
         y: player.y,
         rotation: player.rotation
     };
+}
+
+function sendPlayerPosition(self, time) {
+    let currentTime = Math.floor(time / 25);
+    if (currentTime != self.lastTime) {
+        emitPlayerPosition(self);
+    }
+    self.lastTime = currentTime;
 }

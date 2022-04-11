@@ -1,14 +1,17 @@
 export function addMusicMachine(self) {
     const musicMachineGroup = self.musicMachineGroup;
-    //var audio = self.audio;
+   
     musicMachineGroup.add(self.add.image(230, 680, 'retro-background'));
     musicMachineGroup.add(self.add.text(100, 550, '8 BIT MUSIC MACHINE', { fontSize: "24px", fill: "#ffffff" }));
+    
     var songsArtists = ['Elvis Presley', 'Red Hot Chilli Peppers', 'Scorpions'];
     var songsNames = ['Can\'t Help Falling In Love', 'Californication', 'Still loving you'];
     var songs = ['elvis.mp3', 'californication.mp3', 'still-loving-you.mp3'];
+    
     musicMachineGroup.add(self.add.image(525, 543, 'x-button').setScale(0.3).setInteractive()
         .on('pointerdown', () => { musicMachineGroup.clear(true); }));
-    for (let i = 0; i < songsArtists.length; i++) {
+    
+        for (let i = 0; i < songsArtists.length; i++) {
         musicMachineGroup.add(self.add.text(0, 600 + i * 60, songsArtists[i], { fontSize: "20px", fill: "#ffffff" }));
         musicMachineGroup.add(self.add.text(0, 620 + i * 60, songsNames[i], { fontSize: "14px", fill: "#ffffff" }));
         musicMachineGroup.add(self.add.image(400, 620 + i * 60, 'background-button').setScale(1.3)
@@ -69,7 +72,6 @@ export function addMusicMachine(self) {
         musicMachineGroup.add(self.noMusicText);
     }
     else {
-        console.log("HERE");
         self.pauseMusicText.setAlpha(1);
         self.pauseMusicBackground.setAlpha(1);
 
