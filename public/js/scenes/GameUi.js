@@ -10,8 +10,14 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
+        this.currentNFTs = [];
         this.timer = 0;
+        this.playerNFTIcons = [];
         this.playerList = this.add.group();
+        
+        this.panelNFTs = this.add.group();
+
+        const self = this;
 
         // get the game width and height
         const width = this.game.config.width;
@@ -33,27 +39,20 @@ export class GameUi extends Phaser.Scene {
 
         this.add.image(width / 3 + 1 * (width / 8), height * 0.90, '2').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
-                if (!this.scrollablePanel) {
-                    var waitText = this.add.text(this.game.config.width / 2 - 160, this.game.config.height / 2 + 130, "YOUR NFTS ARE LOADING\nPLEASE WAIT", { fontSize: '32px', fill: '#ffffff', align: 'center' });
-                    var timer = this.time.addEvent({
-                        delay: 1300,                // ms
-                        callback: () => {
-                            waitText.destroy();
-                        },
-                        loop: false
+                if (!this.getNFTPanelStatus()) {
+                    this.panelNFTs.getChildren().forEach(child => {
+                        child.alpha = 1;
                     });
-
-                }
-                else {
-                    if (this.scrollablePanel.alpha == 0) {
-                        this.scrollablePanel.alpha = 1;
-                        this.closePanelButton.alpha = 1;
-                    } else {
-                        this.scrollablePanel.alpha = 0;
-                        this.closePanelButton.alpha = 0;
-                    }
+                    sceneEvents.emit('getNFTsFromPage', this.page);
+                } else {
+                    this.panelNFTs.getChildren().forEach(child => {
+                        child.alpha = 0;
+                    })
+                    this.currentNFTs.forEach(nft => {
+                        nft.destroy();});
                 }
             });
+
         this.add.image(width / 3 + 2 * (width / 8), height * 0.90, '3').setScale(1.5);
         this.add.image(width / 3 + 3 * (width / 8), height * 0.90, '4').setScale(1.5);
         //this.add.image(120, 80, 'leaderboard-ui').setScale(0.7);
@@ -72,10 +71,16 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('newPlayerNFT', this.updateCurrentPlayers, this);
 
-        this.addDomNFTs([]);
-        //sceneEvents.on('getPlayerNFTs', this.addDomNFTs, this);
+        this.makePanelForNFTs();
+
+        sceneEvents.on('makeNFTsPanel', this.addInitialNFTPage, this);
+
+        sceneEvents.on('getNFTsFromPageResult', this.addNFTsForPage, this);
     }
 
+    getNFTPanelStatus() {
+        return this.panelNFTs.getChildren()[0].alpha == 0 ? false : true;
+    }
     update(time, delta) {
         if (this.timer > 0) {
             this.timer -= delta;
@@ -96,6 +101,10 @@ export class GameUi extends Phaser.Scene {
     }
 
     updateCurrentPlayers(players) {
+        this.playerNFTIcons.forEach(nft => {
+            nft.destroy();
+        });
+
         const self = this;
         this.playerList.clear(true);
         for (let i = 0; i < players.length; i++) {
@@ -104,40 +113,12 @@ export class GameUi extends Phaser.Scene {
             this.playerList.add(this.add.image(190, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted").setScale(0.7));
             if (player.nft) {
                 const nft = player.nft;
-                if (nft.image.startsWith("data")) {
-                    if (!this.textures.exists(nft.name)) {
-                         this.textures.addBase64(nft.name, nft.image);
-                    } else {
-                        showNFTOnPlayerList(nft);
-                    }
-
-                } else {
-                    if (!this.textures.exists(nft.name)) {
-                        this.load.image(nft.name, nft.image);
-                    } else {
-                        showNFTOnPlayerList(nft);
-                    }
-                }
-                this.load.on('filecomplete', function (key, type, data) {
-                    if (key == nft.name) {
-                        showNFTOnPlayerList(nft);
-                    }
-                });
-                this.textures.on('onload', () => {
-                    if (this.textures.exists(nft.name)) {
-                        showNFTOnPlayerList(nft);
-                    }
-
-                })
-
-                
-                function showNFTOnPlayerList(nft) {
-                    const playerNFT = self.add.image(60, 60 + i * 65, nft.name);
-                        playerNFT.setScale(40/playerNFT.width, 40/playerNFT.height);
-                        self.playerList.add(playerNFT);
-                }
-
-
+                const dom = document.createElement('img');
+                dom.src = nft;
+                dom.style.width = '40px';
+                dom.style.height = '40px';
+                const playerNFT = self.add.dom(60, 60 + i * 65, dom);
+                this.playerNFTIcons.push(playerNFT);
                 this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff" }));
                 //console.log(player.name + " HAS NFT");
             } else {
@@ -150,155 +131,102 @@ export class GameUi extends Phaser.Scene {
 
     }
 
-    addDomNFTs(nfts) {
-        console.log("HERE");
-        this.add.rectangle(675, 325, 800, 550, COLOR_PRIMARY);
-        this.add.rectangle(675, 75, 800, 50, COLOR_DARK);
-        this.add.text(590, 60, "YOUR NFTs", { fontSize: '32px', fill: '#ffffff' });
-        for (let i = 0; i < 12; i++) {
-            //this.add.rectangle(370 + (i % 4) * 200, 170 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333);
-            const dom = document.createElement('img');
-            dom.src = "https://upload.wikimedia.org/wikipedia/commons/c/c1/Duck_on_Yeadon_Tarn_%2813th_November_2010%29_002.jpg";
-            dom.style.width = "100px";
-            dom.style.height = "100px";
-            this.add.dom(370 + (i % 4) * 200, 170 + (Math.floor(i / 4)) * 150, dom);
-            this.add.text(320 + (i % 4) * 200, 230 + (Math.floor(i / 4)) * 150, "NFT#" + i, { fontSize: '14px', fill: '#ffffff' });
-        }
-    }
-    loadNfts(nfts) {
-        console.log(nfts);
-        const self = this;
-        self.nfts = nfts;
-        let k = 0;
-        nfts.forEach(nft => {
-            k++;
-            // check substring svg
-            if (nft.image.startsWith("data")) {
-                this.textures.addBase64(nft.name, nft.image);
-            } else {
-                this.load.image(nft.name, nft.image);
-            }
-
-        });
-        this.load.start();
-
-        var countLoadedImages = 0;
-        this.load.on('filecomplete', function (key, type, data) {
-            self.timer = 1000;
-        });
-        this.textures.on('onload', () => {
-            self.timer = 1000;
-        })
-
-    }
-
-    addPanel(nfts) {
-        nfts = nfts.filter(nft => this.textures.exists(nft.name));
+    // MAKE PANEL
+    makePanelForNFTs() {
+        this.page = 1;
+        this.panelNFTs.add(this.add.image(675, 300, 'background-nfts').setScale(2.5,));
+        this.panelNFTs.add(this.add.text(590, 40, "YOUR NFTs", { fontSize: '24px', fill: '#ffffff' }));
+        this.panelNFTs.add(this.loadingText = this.add.text(550, 260, 'LOADING...', { fontSize: '40px', fill: '#ffffff' }));
+        this.pageText = this.add.text(630 - (0) * 7, 530, '0/0', { fontSize: '20px', fill: '#ffffff' });
+        this.panelNFTs.add(this.pageText);
         const self = this;
         
-        self.scrollablePanel = self.rexUI.add.scrollablePanel({
-            x: self.game.config.width / 2 + 25,
-            y: 300,
-            width: 500,
-            height: 500,
-
-            scrollMode: 0,
-
-            background: self.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
-
-            panel: {
-                child: createGrid(self, 1, nfts.length, nfts),
-                mask: {
-                    mask: true,
-                    padding: 1,
-                }
-            },
-
-            slider: {
-                track: self.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_DARK),
-                thumb: self.rexUI.add.roundRectangle(0, 0, 0, 0, 13, COLOR_LIGHT),
-                // position: 'left'
-            },
-
-            mouseWheelScroller: {
-                focus: false,
-                speed: 0.1
-            },
-            header: self.rexUI.add.label({
-                align: 'center',
-                height: 30,
-                orientation: 'vertical',
-                background: self.rexUI.add.roundRectangle(0, 0, 20, 20, 10, COLOR_DARK),
-                text: self.add.text(0, 0, 'Your NFTs', { fontSize: '18px', fill: "#ffffff" }),
-            }),
-
-            space: {
-                left: 10,
-                right: 10,
-                top: 10,
-                bottom: 10,
-
-                panel: 10,
-                header: 10,
-                footer: 10,
-            }
-        })
-            .layout()
-            self.closePanelButton = self.add.image(950, 85, 'x-button').setScale(0.5).setInteractive()
+        // PAGINATION
+        this.panelNFTs.add(this.add.image(570, 543, 'arrow').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
-                self.scrollablePanel.alpha = 0;
-                self.closePanelButton.alpha = 0;
-            })
-    }
+                if (!this.pageIsReady) return;
 
-}
-var createGrid = function (scene, col, row, nfts) {
-    var sizer = scene.rexUI.add.gridSizer({
-        column: col,
-        row: row,
+                if (this.page > 1) {
+                    this.page--;
 
-        columnProportions: 1,
-    })
-    for (var i = 0; i < col; i++) {
-        for (var j = 0; j < row; j++) {
-            sizer.add(
-                createItem(scene, i, j, nfts[i * row + j]), // child
-                i, // columnIndex
-                j, // rowIndex
-                'center', // align
-                0, // paddingConfig
-                false, // expand
-            )
-        }
-    }
-    return sizer;
-}
+                    // UPDATE PAGE TEXT
+                    this.pageText.setText(this.page + '/' + this.lastPage);
 
-var createItem = function (scene, colIdx, rowIdx, nft) {
-    console.log(scene.textures.exists(nft.name));
-    var image = scene.add.image(0, 0, nft.name);
-    image.setScale(150 / image.width, 150 / image.height);
+                    // SET LOADING TEXT
+                    self.loadingText.alpha = 1;
 
+                    this.addNFTsForPage(this.page);
 
-    var item = scene.rexUI.add.label({
-        orientation: "v",
-        text: scene.add.text(0, 0, nft.name, {
-            fontSize: 16
-        }),
-        icon: image,
-        space: {
-            left: 20,
-            right: 20,
-            top: 20,
-            bottom: 20,
+                    this.currentNFTs.forEach(nft => {
+                        nft.destroy();
+                    });
+                    this.currentNFTs = [];
+                    this.pageIsReady = false;
+                    sceneEvents.emit('getNFTsFromPage', this.page);
+                    
+                }
+            }))
 
-            icon: 20,
-        }
-    })
-        .setDepth(3)
-        item.setInteractive()
-            .on('pointerdown', function () {
-                sceneEvents.emit('nftSelected', nft);
+        this.panelNFTs.add(this.add.image(725, 543, 'arrow').setScale(1.5).setFlipX(true).setInteractive()
+            .on('pointerdown', () => {
+                if (!this.pageIsReady) return;
+
+                if (this.page < this.lastPage) {
+                    this.page++;
+
+                    // UPDATE PAGE TEXT
+                    let text = this.page + '/' + this.lastPage;
+                    this.pageText.setText(text);
+                    this.pageText.x = 630 - (text.length - 3) * 7;
+                    // SET LOADING TEXT
+                    self.loadingText.alpha = 1;
+
+                    this.addNFTsForPage(this.page);
+
+                    this.currentNFTs.forEach(nft => {
+                        nft.destroy();
+                    });
+                    this.currentNFTs = [];
+
+                    this.pageIsReady = false;
+                    sceneEvents.emit('getNFTsFromPage', this.page);
+
+                    
+                }
+            }))
+            this.panelNFTs.getChildren().forEach(child => {
+                child.setAlpha(0)
             });
-    return item;
+    }
+
+    addInitialNFTPage(nftsLength) {
+        const lastPage = Math.floor(nftsLength / 12) + ((nftsLength % 12) > 0 ? +1 : +0);
+        this.lastPage = lastPage;
+        let text = this.page + '/' + this.lastPage;
+        this.pageText.setText(text);
+        this.pageText.x = 630 - (text.length - 3) * 7;
+        sceneEvents.emit('getNFTsFromPage', 1);
+    }
+
+    addNFTsForPage(nfts) {
+        if (!this.getNFTPanelStatus()) return;
+        this.pageIsReady = true;
+        this.loadingText.alpha = 0;
+        for (let i = 0; i < nfts.length; i++) {
+            const dom = document.createElement('img');
+            dom.src = nfts[i].image;
+            dom.style.width = "100px";
+            dom.style.height = "100px";
+            //this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333);
+            let nft = this.add.dom(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, dom).setInteractive()
+            let nftBackground = this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333).setInteractive().on('pointerdown', () => {
+                sceneEvents.emit('nftSelected', nfts[i].image);
+            });
+            this.panelNFTs.add(nftBackground);
+            let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '14px', fill: '#ffffff' });
+            this.currentNFTs.push(nft);
+            this.currentNFTs.push(nftName);
+        }
+    }
+
 }

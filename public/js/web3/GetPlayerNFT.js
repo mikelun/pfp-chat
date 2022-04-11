@@ -1,35 +1,63 @@
+import { sceneEvents } from "../Events/EventsCenter";
+
 export async function getPlayerNFT(moralis) {
     const playerAddress = '0xeac41D05531770b85ad1E0f145b94BFE205bDa78'
-    const result = await moralis.Web3.getNFTs({chain: 'eth', address: playerAddress, limit: '10'});
-    console.log(result.length);
-    const promises = result.map((r) => {
-        if (r.token_uri) {
-            let url = fixURL(r.token_uri);
-            try {
-                // if url is data:application/json; fetch right away
-                // if not, proxy via /metadata?uri=
-                let data
-                if (url.startsWith("data:application/json")) {
-                    data = await fetch(url).then(r => r.json());
-                } else if (true) {
-                    data = await moralis.Web3.getMetadata({chain: 'eth', uri: url});
-                } else {
-                    const proxiedURL = `/metadata?uri=${encodeURIComponent(url)}`;
-                    data = await fetch(proxiedURL).then(r => r.json());
-                }
+    const {result} = await moralis.Web3API.account.getNFTs();
 
-                if (data && data.image) {
-                    return { image: fixImageURL(data.image), name: data.name };
-                }
+    var pageResults = [];
+    var currentPage;
+    sceneEvents.on('getNFTsFromPage', async (page) => {
+        currentPage = page;
 
-            } catch (err) {
-                console.log('Error with', r.token_uri, err);
-            }
+        if (page <= pageResults.length) {
+            sceneEvents.emit('getNFTsFromPageResult', pageResults[page - 1]);
+            return;
         }
 
-    })
-    return Promise.all(promises);
+        let count = 0;
+        const promises = result.map(async (r) => {
+            if ((page - 1) * 12 <= count && count < page * 12) {
+                count++;
+                if (r.token_uri) {
+                    let url = fixURL(r.token_uri);
+                    try {
+                        // if url is data:application/json; fetch right away
+                        // if not, proxy via /metadata?uri=
+                        let data
+                        if (url.startsWith("data:application/json")) {
+                            data = await fetch(url).then(r => r.json());
+                        } else if (false) {
+                            data = await moralis.Web3.getMetadata({ chain: 'eth', uri: url });
+                        } else {
+                            const proxiedURL = `/metadata?uri=${encodeURIComponent(url)}`;
+                            data = await fetch(proxiedURL).then(r => { return r.json() });
+                        }
+    
+                        if (data && data.image) {
+                            return { image: fixImageURL(data.image), name: data.name };
+                        }
+    
+                    } catch (err) {
+                        console.log('Error with', r.token_uri, err);
+                    }
+                }
+            } else {
+                count++;
+                return null;
+            }
+        })
+        Promise.all(promises).then(r => {
+            r = r.filter(data => data != null);
+            if (currentPage > pageResults.length) {
+                pageResults.push(r);
+            }
+            sceneEvents.emit('getNFTsFromPageResult', r);
+        });
+    });
+
+    sceneEvents.emit('makeNFTsPanel', result.length);
 }
+
 
 function fixURL(url) {
     if (url.startsWith("ipfs")) {

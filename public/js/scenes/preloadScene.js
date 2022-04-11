@@ -81,6 +81,9 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('player', 'assets/game-ui/player.png');
         this.load.image('background-button', 'assets/game-ui/background-button.png')
 
+        this.load.image('arrow', 'assets/game-ui/arrow.png');
+
+        this.load.image('background-nfts', 'assets/game-ui/background-nfts.jpg');
 
         // LOADING MAP
         this.load.image('tiles', 'assets/tiles/TilemapDay.png');

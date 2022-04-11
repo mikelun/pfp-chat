@@ -129,10 +129,7 @@ function addPlayer(self, playerInfo) {
 
     sceneEvents.emit("currentPlayers", playersList);
 
-    getPlayerNFT(self.moralis).then(nfts => {
-        nfts = nfts.filter(nft => nft != undefined);
-        sceneEvents.emit('getPlayerNFTs', nfts);
-    });
+    getPlayerNFT(self.moralis);
 
     getEnsDomain(self.moralis).then(domain => {
         playersList.forEach(player => {
