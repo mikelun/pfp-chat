@@ -14,7 +14,8 @@ export class GameUi extends Phaser.Scene {
         this.timer = 0;
         this.playerNFTIcons = [];
         this.playerList = this.add.group();
-        
+        this.backgroundNFTs = this.add.group();
+
         this.panelNFTs = this.add.group();
 
         const self = this;
@@ -39,6 +40,9 @@ export class GameUi extends Phaser.Scene {
 
         this.add.image(width / 3 + 1 * (width / 8), height * 0.90, '2').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
+                if (this.backgroundNFTs) {
+                    this.backgroundNFTs.clear(true);
+                }
                 if (!this.getNFTPanelStatus()) {
                     this.panelNFTs.getChildren().forEach(child => {
                         child.alpha = 1;
@@ -145,7 +149,9 @@ export class GameUi extends Phaser.Scene {
         this.panelNFTs.add(this.add.image(570, 543, 'arrow').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
                 if (!this.pageIsReady) return;
-
+                if (this.backgroundNFTs) {
+                    this.backgroundNFTs.clear(true);
+                }
                 if (this.page > 1) {
                     this.page--;
 
@@ -170,7 +176,9 @@ export class GameUi extends Phaser.Scene {
         this.panelNFTs.add(this.add.image(725, 543, 'arrow').setScale(1.5).setFlipX(true).setInteractive()
             .on('pointerdown', () => {
                 if (!this.pageIsReady) return;
-
+                if (this.backgroundNFTs) {
+                    this.backgroundNFTs.clear(true);
+                }
                 if (this.page < this.lastPage) {
                     this.page++;
 
@@ -222,7 +230,7 @@ export class GameUi extends Phaser.Scene {
             let nftBackground = this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333).setInteractive().on('pointerdown', () => {
                 sceneEvents.emit('nftSelected', nfts[i].image);
             });
-            this.panelNFTs.add(nftBackground);
+            this.backgroundNFTs.add(nftBackground);
             let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '14px', fill: '#ffffff' });
             this.currentNFTs.push(nft);
             this.currentNFTs.push(nftName);
