@@ -4,6 +4,38 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        // GAME UI
+        this.load.image('1', 'assets/game-ui/1.png');
+        this.load.image('2', 'assets/game-ui/2.png');
+        this.load.image('3', 'assets/game-ui/3.png');
+        this.load.image('4', 'assets/game-ui/4.png');
+        this.load.image('x', 'assets/game-ui/x.png');
+        this.load.image('player', 'assets/game-ui/player.png');
+        this.load.image('background-button', 'assets/game-ui/background-button.png')
+
+        this.load.image('arrow', 'assets/game-ui/arrow.png');
+
+        this.load.image('background-nfts', 'assets/game-ui/background-nfts.jpg');
+
+        // LOADING MAP
+        this.load.image('tiles', 'assets/tiles/TilemapDay.png');
+        this.load.tilemapTiledJSON('dungeon', 'assets/tiles/map-bar.json');
+
+        
+        this.load.image('play-button', 'assets/game-ui/button-play.png');
+    
+        this.load.image('microphone',"assets/game-ui/microphone.png");
+        this.load.image('microphoneMuted',"assets/game-ui/mute.png");
+        this.load.image('x-button',"assets/game-ui/x-button.png");
+        this.load.image('pixel-box',"assets/game-ui/pixel-box.png");
+        // this.load.image('volume',"assets/game-ui/high-volume.png");
+        this.load.image('machine', 'assets/machine.png');
+        this.load.image('retro-background', "assets/retro-background.jpeg");
+
+        this.load.image('comment', 'assets/game-ui/comment.png');
+
+        this.load.image('ball', 'assets/ball.png');
+        
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
@@ -72,37 +104,6 @@ export class PreloadScene extends Phaser.Scene {
                 });
         }
 
-        // GAME UI
-        this.load.image('1', 'assets/game-ui/1.png');
-        this.load.image('2', 'assets/game-ui/2.png');
-        this.load.image('3', 'assets/game-ui/3.png');
-        this.load.image('4', 'assets/game-ui/4.png');
-        this.load.image('x', 'assets/game-ui/x.png');
-        this.load.image('player', 'assets/game-ui/player.png');
-        this.load.image('background-button', 'assets/game-ui/background-button.png')
-
-        this.load.image('arrow', 'assets/game-ui/arrow.png');
-
-        this.load.image('background-nfts', 'assets/game-ui/background-nfts.jpg');
-
-        // LOADING MAP
-        this.load.image('tiles', 'assets/tiles/TilemapDay.png');
-        this.load.tilemapTiledJSON('dungeon', 'assets/tiles/map-bar.json');
-
-        
-        this.load.image('play-button', 'assets/game-ui/button-play.png');
-    
-        this.load.image('microphone',"assets/game-ui/microphone.png");
-        this.load.image('microphoneMuted',"assets/game-ui/mute.png");
-        this.load.image('x-button',"assets/game-ui/x-button.png");
-        this.load.image('pixel-box',"assets/game-ui/pixel-box.png");
-        // this.load.image('volume',"assets/game-ui/high-volume.png");
-        this.load.image('machine', 'assets/machine.png');
-        this.load.image('retro-background', "assets/retro-background.jpeg");
-
-        this.load.image('comment', 'assets/game-ui/comment.png');
-
-        this.load.image('ball', 'assets/ball.png');
     }
 
     create() {
