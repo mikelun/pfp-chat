@@ -16,9 +16,9 @@ npm run start
 
 ## How to change UI 
 ### Adding simple text
-Phaser is very simple.  
-For example you want to add text 'Hello world!'.  
-In phaser it looks like.  
+Phaser is very simple.
+For example you want to add text 'Hello world!'.
+In phaser it looks like.
 ```
 this.add.text(x, y, 'Hello World!'). 
 ```
