@@ -37,3 +37,7 @@ You are ready to add it to scene!
 this.add.image(x, y, 'name');
 ```
 You can try it on GameUIScene or MainScene. 
+
+## Learn more about Phaser 3 
+You can check this link: https://phaser.io/examples/v3. 
+There are a lot of simple projects those help you to understand how phaser 3 actually works
