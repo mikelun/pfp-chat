@@ -4,7 +4,6 @@ import { initMainMap, updatePlayerPosition, initKeysForController } from '../uti
 import { createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
-import { getEnsDomain } from '../web3/GetEnsDomain';
 import { addJoysticIfAndroid } from '../utils/pluginJoystic';
 import { addIframeGameAndMusicMachine } from '../utils/addIframeGameAndMusicMachine';
 import { addPlayerOverlap } from '../utils/playerOverlap';

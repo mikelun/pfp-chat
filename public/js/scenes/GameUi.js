@@ -1,43 +1,47 @@
 import Phaser from 'phaser'
 
 import { sceneEvents } from '../Events/EventsCenter';
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
+
 export class GameUi extends Phaser.Scene {
     constructor() {
         super({ key: "game-ui" });
     }
 
     create() {
+        // NFTs dom objects on page
         this.currentNFTs = [];
-        this.timer = 0;
+
+        // icons for players list
         this.playerNFTIcons = [];
+
+        // player list with microphone status
         this.playerList = this.add.group();
+
+        // background for nfts(when nft is loading)
         this.backgroundNFTs = this.add.group();
 
+        // panel for nfts
         this.panelNFTs = this.add.group();
-
-        const self = this;
 
         // get the game width and height
         const width = this.game.config.width;
         const height = this.game.config.height;
+
+        // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
             this.add.image(width / 3 + i * (width / 8), height * 0.90, 'player').setScale(2.5);
         }
-        // this.add.image(150, height - 150, 'player').setScale(5);
-        // this.add.image(150, height - 150, '1').setScale(0.5);
-        // this.add.image(150, height -150, 'x').setScale(0.6).setAlpha(0.4);
 
 
+        // add microphone
         this.add.image(width / 3 + 0 * (width / 8), height * 0.90 - 5, '1').setScale(0.2).setInteractive()
             .on('pointerdown', () => {
                 sceneEvents.emit('toggleMute');
             });
+        // if microphone doesn't work show a red icon
         this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
 
-
+        // add nft panel
         this.add.image(width / 3 + 1 * (width / 8), height * 0.90, '2').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
                 if (this.backgroundNFTs) {
@@ -53,19 +57,15 @@ export class GameUi extends Phaser.Scene {
                         child.alpha = 0;
                     })
                     this.currentNFTs.forEach(nft => {
-                        nft.destroy();});
+                        nft.destroy();
+                    });
                 }
             });
 
+        // add next buttons (dont make sense)
         this.add.image(width / 3 + 2 * (width / 8), height * 0.90, '3').setScale(1.5);
         this.add.image(width / 3 + 3 * (width / 8), height * 0.90, '4').setScale(1.5);
-        //this.add.image(120, 80, 'leaderboard-ui').setScale(0.7);
-        for (let i = 0; i < 4; i++) {
-            this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3));
-            this.playerList.add(this.add.text(50, 60 + i * 65 - 5, "Player" + i));
-            this.playerList.add(this.add.image(180, 60 + i * 65, "microphoneMuted"));
-        }
-        this.playerList.clear(true);
+
 
 
         // SCENE EVENTS
@@ -75,25 +75,16 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('newPlayerNFT', this.updateCurrentPlayers, this);
 
-        this.makePanelForNFTs();
-
         sceneEvents.on('makeNFTsPanel', this.addInitialNFTPage, this);
 
         sceneEvents.on('getNFTsFromPageResult', this.addNFTsForPage, this);
+
+        // ADD PANEL FOR NFTS
+        this.makePanelForNFTs();
     }
 
     getNFTPanelStatus() {
         return this.panelNFTs.getChildren()[0].alpha == 0 ? false : true;
-    }
-    update(time, delta) {
-        if (this.timer > 0) {
-            this.timer -= delta;
-            if (this.timer < 0) {
-                this.addPanel(this.nfts);
-                this.timer = 0;
-            }
-        }
-
     }
 
     handleMicrophoneStatus(status) {
@@ -105,12 +96,15 @@ export class GameUi extends Phaser.Scene {
     }
 
     updateCurrentPlayers(players) {
+        // CLEAR ALL PLAYER LIST
         this.playerNFTIcons.forEach(nft => {
             nft.destroy();
         });
+        this.playerList.clear(true);
+
 
         const self = this;
-        this.playerList.clear(true);
+        // ADD PLAYERS
         for (let i = 0; i < players.length; i++) {
             let player = players[i];
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
@@ -131,20 +125,20 @@ export class GameUi extends Phaser.Scene {
         }
     }
 
-    updatePlayerStatus(status) {
-
-    }
-
     // MAKE PANEL
     makePanelForNFTs() {
+        // PAGE FOR YOUR NFTs
         this.page = 1;
+
+        // ADD PANEL UI
         this.panelNFTs.add(this.add.image(675, 300, 'background-nfts').setScale(2.5,));
         this.panelNFTs.add(this.add.text(590, 40, "YOUR NFTs", { fontSize: '24px', fill: '#ffffff' }));
         this.panelNFTs.add(this.loadingText = this.add.text(550, 260, 'LOADING...', { fontSize: '40px', fill: '#ffffff' }));
         this.pageText = this.add.text(630 - (0) * 7, 530, '0/0', { fontSize: '20px', fill: '#ffffff' });
         this.panelNFTs.add(this.pageText);
+
         const self = this;
-        
+
         // PAGINATION
         this.panelNFTs.add(this.add.image(570, 543, 'arrow').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
@@ -169,13 +163,14 @@ export class GameUi extends Phaser.Scene {
                     this.currentNFTs = [];
                     this.pageIsReady = false;
                     sceneEvents.emit('getNFTsFromPage', this.page);
-                    
+
                 }
             }))
 
         this.panelNFTs.add(this.add.image(725, 543, 'arrow').setScale(1.5).setFlipX(true).setInteractive()
             .on('pointerdown', () => {
                 if (!this.pageIsReady) return;
+
                 if (this.backgroundNFTs) {
                     this.backgroundNFTs.clear(true);
                 }
@@ -186,6 +181,7 @@ export class GameUi extends Phaser.Scene {
                     let text = this.page + '/' + this.lastPage;
                     this.pageText.setText(text);
                     this.pageText.x = 630 - (text.length - 3) * 7;
+
                     // SET LOADING TEXT
                     self.loadingText.alpha = 1;
 
@@ -199,23 +195,38 @@ export class GameUi extends Phaser.Scene {
                     this.pageIsReady = false;
                     sceneEvents.emit('getNFTsFromPage', this.page);
 
-                    
+
                 }
             }))
-            this.panelNFTs.getChildren().forEach(child => {
-                child.setAlpha(0)
-            });
+
+
+        // HIDE PANEL NFTs
+        this.panelNFTs.getChildren().forEach(child => {
+            child.setAlpha(0)
+        });
     }
 
+    /**
+     * 
+     * @param {length of nft result} nftsLength 
+     */
     addInitialNFTPage(nftsLength) {
+        // 12 nfts at page
         const lastPage = Math.floor(nftsLength / 12) + ((nftsLength % 12) > 0 ? +1 : +0);
         this.lastPage = lastPage;
         let text = this.page + '/' + this.lastPage;
         this.pageText.setText(text);
         this.pageText.x = 630 - (text.length - 3) * 7;
+
+        // get nfts from page 1
         sceneEvents.emit('getNFTsFromPage', 1);
     }
 
+    /**
+     * 
+     * @param {nfts from current page(this.page)} nfts 
+     * @returns 
+     */
     addNFTsForPage(nfts) {
         if (!this.getNFTPanelStatus()) return;
         this.pageIsReady = true;
