@@ -48,6 +48,11 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+
+        // fix problem with touching space
+        var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
+        keyObj.on('down', function (event) { });
+
         // const w3 = new web3(window.ethereum);
         // console.log(w3.eth.getAccounts());
         this.audio = null;
@@ -173,6 +178,7 @@ export class MainScene extends Phaser.Scene {
             if (currentSec < 10) currentSec = '0' + currentSec;
             this.timeMusic.setText(`${currentMin}:${currentSec}/${durationMin}:${durationSec}`)
         }
+
         if (this.player) {
             this.animatedTiles.forEach(tile => tile.update(delta));
             if (this.checkOverlap(this.player, this.rectangleTrigger)) {
@@ -194,11 +200,8 @@ export class MainScene extends Phaser.Scene {
             else {
                 this.trigger1 = false;
                 if (musicMachineShadowGroup) musicMachineShadowGroup.clear(true);
-                //if (this.musicMachineGroup) this.musicMachineGroup.clear(true);
             }
-            //console.log(this.player.x, this.player.y);
-            // write text size of clibButton
-            //console.log
+
             const playerUI = this.playerUI[this.socket.id];
             if (playerUI) {
                 const playerText = playerUI.playerText;
@@ -213,12 +216,45 @@ export class MainScene extends Phaser.Scene {
             // update player position
             if (!drawBattle && !(this.musicMachineGroup.getChildren().length > 0)) {
                 updatePlayerPosition(this);
+                let currentTime = Math.floor(time / 25);
+                if (currentTime != this.lastTime) {
+                    emitPlayerPosition(this);
+                }
 
-                emitPlayerPosition(this);
+                this.lastTime = currentTime;
             }
         }
+
         if (this.otherPlayers) {
             this.otherPlayers.getChildren().forEach(otherPlayer => {
+                if (otherPlayer.newX) {
+                    let diffX = otherPlayer.x - otherPlayer.newX;
+                    if (Math.abs(diffX) < 0.1) {
+                        otherPlayer.x = otherPlayer.newX;
+                    } else {
+                        otherPlayer.x = otherPlayer.x - diffX * 0.05;
+                    }
+                    let diffY = otherPlayer.y - otherPlayer.newY;
+                    if (Math.abs(diffY) < 0.1) {
+                        otherPlayer.y = otherPlayer.newY;
+                    } else {
+                        otherPlayer.y = otherPlayer.y - diffY * 0.02 * delta;
+                    }
+                    otherPlayer.update(otherPlayer.x, otherPlayer.y);
+                }
+                // if (!otherPlayer.newX) {
+                //     return;
+                // }
+                // console.log("HERE");
+                // let diffX = otherPlayer.x - otherPlayer.newX;
+                // console.log(diffX);
+                // if (Math.abs(diffX) > 0.05) {
+                //     otherPlayer.x = otherPlayer.newX;
+                // } else {
+                //     otherPlayer.x += diffX * delta * 0.0005;
+                // }
+                // otherPlayer.y = otherPlayer.newY;
+                // otherPlayer.update(otherPlayer.x, otherPlayer.y);
                 const playerUI = this.playerUI[otherPlayer.playerId];
                 const otherPlayerText = playerUI.playerText;
                 otherPlayerText.x = otherPlayer.x - otherPlayerText.text.length * 3.5;

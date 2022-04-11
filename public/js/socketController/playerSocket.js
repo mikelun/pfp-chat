@@ -32,9 +32,13 @@ export function initializePlayersSocket(anotherSelf, _peers) {
 
     self.socket.on('playerMoved', function (playerInfo) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+
             if (playerInfo.playerId === otherPlayer.playerId) {
-                otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-                otherPlayer.update(otherPlayer.x, otherPlayer.y);
+                otherPlayer.newX = playerInfo.x;
+                otherPlayer.newY = playerInfo.y;
+                //console.log(otherPlayer.newX, otherPlayer.x);
+                //otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+                //otherPlayer.update(otherPlayer.x, otherPlayer.y);
             }
         });
     });
