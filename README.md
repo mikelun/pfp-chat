@@ -37,7 +37,9 @@ You are ready to add it to scene!
 this.add.image(x, y, 'name');
 ```
 You can try it on GameUIScene or MainScene. 
-
+## About Idea
+OpenMetaverse is a project where people with NFTs can find their communities and talk to each other with perfect voice chat.    
+In plans I want to add different rooms for NFT collections and watching films.
 ## Learn more about Phaser 3 
 You can check this link: https://phaser.io/examples/v3. 
 There are a lot of simple projects those help you to understand how phaser 3 actually works
