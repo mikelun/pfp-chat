@@ -67,14 +67,12 @@ export function initializePlayersSocket(anotherSelf, _peers) {
     self.socket.on('updatePlayerInfo', (playerInfo) => {
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerInfo.playerId) {
-                if (playerInfo.playerName) {
-                    
-                    self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
-                }
+                self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
+                self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone" : "microphoneMuted");
                 playersList[i].name = playerInfo.playerName;
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
                 playersList[i].nft = playerInfo.nft;
-                
+
                 sceneEvents.emit('currentPlayers', playersList);
                 break;
             }
@@ -128,7 +126,7 @@ function addPlayer(self, playerInfo) {
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
 
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor, nft: playerInfo.nft });
-    
+
     // END PLAYER UI
 
     sceneEvents.emit("currentPlayers", playersList);
