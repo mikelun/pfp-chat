@@ -3,8 +3,10 @@ import { sceneEvents } from "../Events/EventsCenter";
 export async function getPlayerNFT(moralis) {
     const playerAddress1 = '0xeac41D05531770b85ad1E0f145b94BFE205bDa78';
     const playerAddress2 = '0xffE06cb4807917bd79382981f23d16A70C102c3B';
-    const result = await moralis.Web3.getNFTs({ chain: 'eth', address: playerAddress1 });
+    //const result = await moralis.Web3.getNFTs({ chain: 'eth', address: playerAddress1 });
 
+    const {result} = await moralis.Web3API.account.getNFTs();
+    
     var pageResults = [];
     var currentPage;
     sceneEvents.on('getNFTsFromPage', async (page) => {
