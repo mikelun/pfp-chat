@@ -11,6 +11,7 @@ import { updateOtherPlayersPositions } from '../utils/updatePlayersPositions';
 import { addFollowingUI } from '../utils/addFollowingUi';
 import { addAudioTimer } from '../utils/addAudioTimer';
 import { toggleMute } from '../utils/microphoneUtils';
+import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 
 /**
  * All peer connections
@@ -47,14 +48,15 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+
+        this.mapId = 1;
+
+        // add main camera zoom
+        this.cameras.main.setZoom(1.5);
+
         // fix problem with touching space
         var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
         keyObj.on('down', function (event) { });
-
-        // INITIALIZE Music Machine (YOU CAN SEE RAINBOW TV AT MAIN MAP) 
-        this.audio = null;
-        this.musicMachineGroup = this.add.group();
-        this.musicMachineShadowGroup = this.add.group();
 
         // add UI for each player (microphone, name, etc)
         this.playerUI = {};
@@ -67,14 +69,9 @@ export class MainScene extends Phaser.Scene {
         // Add Game Ui
         this.scene.run('game-ui');
 
-        // initialize main map
-        initMainMap(this);
+        // initialize with id
+        showMap(this, this.mapId);
 
-        // add ball for fun with physics
-        this.ball = this.physics.add.image(550, 910, 'ball').setScale(0.08).setBounce(0.9).setVelocity(0, 0);
-
-        // add main camera zoom
-        this.cameras.main.setZoom(1.5);
 
         // Initialize socket for client - server application
         initializeSocket(this, peers);
@@ -89,27 +86,18 @@ export class MainScene extends Phaser.Scene {
             };
         });
 
-        // adding music machine image to main map
-        this.add.image(230, 680, 'machine').setScale(0.1);
-
-        // add iframe game(You can see it upstairs on main map) and music machine - rainbow TV ;)
-        addIframeGameAndMusicMachine(this);
-
     }
 
     update(time, delta) {
-
-        // add audio timer for music machine
-        addAudioTimer(this);
 
         // animate tiles for main map
         this.animatedTiles.forEach(tile => tile.update(delta));
 
         if (this.player) {
-            // if player overlap with game objects(TV, Games, etc)
-            addPlayerOverlap(this);
+            // update function for map
+            addUpdateForMap(this, this.mapId);
 
-            // update a position of player ui
+            // update a position of player UI
             addFollowingUI(this);
 
             // update a player position

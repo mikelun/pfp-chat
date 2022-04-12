@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
  <editorsettings>
   <export target="map-bar.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="TilemapDay" tilewidth="32" tileheight="32" tilecount="1512" columns="36">
-  <image source="../../../../../Downloads/GuttyKreum_JapaneseBar_v7/GuttyKreum_JapaneseBar/TilemapDay.png" width="1152" height="1344"/>
+  <image source="TilemapDay.png" width="1152" height="1344"/>
   <tile id="109">
    <properties>
     <property name="collides" type="bool" value="false"/>

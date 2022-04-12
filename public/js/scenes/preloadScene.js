@@ -17,11 +17,14 @@ export class PreloadScene extends Phaser.Scene {
 
         this.load.image('background-nfts', 'assets/game-ui/background-nfts.jpg');
 
-        // LOADING MAP
+        // LOADING MAIN DAY MAP
         this.load.image('tiles', 'assets/tiles/TilemapDay.png');
         this.load.tilemapTiledJSON('dungeon', 'assets/tiles/map-bar.json');
 
-        
+        // LOADING NIGHT MAP
+        this.load.image('tiles-night', 'assets/tiles/TilemapNight.png');
+        this.load.tilemapTiledJSON('map-night-home', 'assets/tiles/map-night-home.json');
+
         this.load.image('play-button', 'assets/game-ui/button-play.png');
     
         this.load.image('microphone',"assets/game-ui/microphone.png");
@@ -35,7 +38,7 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('comment', 'assets/game-ui/comment.png');
 
         this.load.image('ball', 'assets/ball.png');
-        
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);

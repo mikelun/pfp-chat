@@ -4,6 +4,7 @@ import { nicknames } from "../utils/nicknames";
 import { sceneEvents } from '../Events/EventsCenter';
 import { getPlayerNFT } from "../web3/GetPlayerNFT";
 import { getEnsDomain } from "../web3/GetEnsDomain";
+import { addPhysicsForScene } from "../MapBuilding/showMap";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -114,7 +115,7 @@ function addPlayer(self, playerInfo) {
     self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);
 
     self.textureId = playerInfo.textureId;
-    self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
+    self.player = self.add.player(playerInfo.x + self.playerAddX, playerInfo.y + self.playerAddY, `characters${playerInfo.textureId}`);
     self.cameras.main.startFollow(self.player);
 
     self.player.id = playerInfo.playerId;
@@ -143,16 +144,13 @@ function addPlayer(self, playerInfo) {
         });
     });
 
-    self.physics.add.collider(self.player, self.wallsLayer);
+    addPhysicsForScene(self, 1);
 
-    self.physics.add.collider(self.player, self.stairsUpFloorLayer);
-    self.physics.add.collider(self.player, self.objectsLayer);
-
-    // ADD BALL TO SCENE
-    self.physics.add.collider(self.player, self.ball);
-    self.physics.add.collider(self.wallsLayer, self.ball);
-    self.physics.add.collider(self.ball, self.stairsUpFloorLayer);
-    self.physics.add.collider(self.ball, self.objectsLayer);
+    // // ADD BALL TO SCENE
+    // self.physics.add.collider(self.player, self.ball);
+    // self.physics.add.collider(self.wallsLayer, self.ball);
+    // self.physics.add.collider(self.ball, self.stairsUpFloorLayer);
+    // self.physics.add.collider(self.ball, self.objectsLayer);
 
     sceneEvents.on('nftSelected', nftSelected, this);
 }

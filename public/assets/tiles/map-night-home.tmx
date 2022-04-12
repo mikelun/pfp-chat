@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
+ <editorsettings>
+  <export target="map-night-home.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="TilemapNight" tilewidth="32" tileheight="32" tilecount="1680" columns="40">
+  <image source="TilemapNight.png" width="1280" height="1344"/>
+  <tile id="161">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="162">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="163">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="164">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="165">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="166">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="167">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="168">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="169">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="170">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="176">
+   <animation>
+    <frame tileid="176" duration="100"/>
+    <frame tileid="216" duration="100"/>
+    <frame tileid="256" duration="100"/>
+    <frame tileid="296" duration="100"/>
+    <frame tileid="336" duration="100"/>
+    <frame tileid="376" duration="100"/>
+    <frame tileid="416" duration="100"/>
+    <frame tileid="456" duration="100"/>
+    <frame tileid="496" duration="100"/>
+    <frame tileid="536" duration="100"/>
+    <frame tileid="576" duration="100"/>
+    <frame tileid="616" duration="100"/>
+    <frame tileid="656" duration="100"/>
+    <frame tileid="696" duration="100"/>
+    <frame tileid="736" duration="100"/>
+    <frame tileid="776" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="178">
+   <animation>
+    <frame tileid="178" duration="100"/>
+    <frame tileid="218" duration="100"/>
+    <frame tileid="258" duration="100"/>
+    <frame tileid="298" duration="100"/>
+    <frame tileid="338" duration="100"/>
+    <frame tileid="378" duration="100"/>
+    <frame tileid="418" duration="100"/>
+    <frame tileid="458" duration="100"/>
+    <frame tileid="498" duration="100"/>
+    <frame tileid="538" duration="100"/>
+    <frame tileid="578" duration="100"/>
+    <frame tileid="618" duration="100"/>
+    <frame tileid="658" duration="100"/>
+    <frame tileid="698" duration="100"/>
+    <frame tileid="738" duration="100"/>
+    <frame tileid="778" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="201">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="202">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="203">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="204">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="205">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="206">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="207">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="208">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="209">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="210">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="241">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="242">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="243">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="401">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="402">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="403">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="405">
+   <animation>
+    <frame tileid="445" duration="100"/>
+    <frame tileid="485" duration="100"/>
+    <frame tileid="525" duration="100"/>
+    <frame tileid="565" duration="100"/>
+    <frame tileid="605" duration="100"/>
+    <frame tileid="645" duration="100"/>
+    <frame tileid="685" duration="100"/>
+    <frame tileid="725" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="457">
+   <animation>
+    <frame tileid="177" duration="100"/>
+    <frame tileid="217" duration="100"/>
+    <frame tileid="257" duration="100"/>
+    <frame tileid="297" duration="100"/>
+    <frame tileid="337" duration="100"/>
+    <frame tileid="377" duration="100"/>
+    <frame tileid="417" duration="100"/>
+    <frame tileid="457" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="779">
+   <animation>
+    <frame tileid="179" duration="100"/>
+    <frame tileid="219" duration="100"/>
+    <frame tileid="259" duration="100"/>
+    <frame tileid="299" duration="100"/>
+    <frame tileid="339" duration="100"/>
+    <frame tileid="379" duration="100"/>
+    <frame tileid="419" duration="100"/>
+    <frame tileid="459" duration="100"/>
+    <frame tileid="499" duration="100"/>
+    <frame tileid="539" duration="100"/>
+    <frame tileid="579" duration="100"/>
+    <frame tileid="619" duration="100"/>
+    <frame tileid="659" duration="100"/>
+    <frame tileid="699" duration="100"/>
+    <frame tileid="739" duration="100"/>
+    <frame tileid="779" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="1" name="floor" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,285,286,607,608,648,648,648,608,652,0,0,0,0,0,
+0,0,0,0,0,731,365,364,364,364,364,366,364,364,364,612,608,608,687,0,
+0,0,0,0,0,364,364,364,364,364,364,364,364,364,364,625,627,557,639,0,
+0,0,0,0,0,364,325,324,364,326,324,364,324,324,364,0,0,677,679,0,
+0,0,0,0,0,364,364,365,364,364,325,365,365,364,364,0,0,677,679,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,677,679,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,677,679,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,677,679,0,
+0,0,0,0,0,0,607,648,608,648,648,648,648,608,648,648,648,677,679,0,
+0,0,0,0,0,0,237,238,238,238,238,238,239,550,627,627,627,597,719,0,
+0,0,0,0,0,0,277,278,278,278,278,278,279,666,1350,1426,1356,1356,1351,0,
+0,0,0,0,0,0,277,278,278,278,278,278,279,666,1353,1426,1426,1426,1354,0,
+0,0,0,0,0,0,277,278,278,278,358,318,319,666,1353,1396,1396,1396,1391,0,
+0,0,0,0,0,612,317,318,318,318,319,550,627,591,1466,0,0,0,0,0,
+0,0,0,0,0,550,627,627,627,627,627,591,1350,1427,1391,0,0,0,0,0,
+0,0,0,690,689,666,1350,1356,1356,1356,1356,1356,1354,0,0,0,0,0,0,0,
+0,0,0,1024,625,591,1390,1396,1396,1396,1396,1396,1391,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="next-floor" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,238,238,238,238,238,238,238,238,239,0,0,0,0,0,
+0,0,0,0,0,225,318,318,318,318,318,318,318,318,319,0,0,0,0,0,
+0,0,0,0,0,404,402,402,402,403,403,323,403,402,404,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,570,0,0,728,569,0,570,0,0,572,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,764,765,766,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,764,765,766,765,766,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="objects" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,572,0,369,534,458,0,177,0,0,0,0,0,
+0,0,0,0,0,0,523,0,0,0,0,574,0,0,523,0,0,0,0,0,
+0,0,0,0,0,453,0,0,489,490,0,0,0,453,0,0,0,0,0,0,
+0,0,0,0,0,375,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,415,762,330,763,0,493,0,371,488,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,454,0,458,0,405,0,0,367,0,492,0,0,0,
+0,0,0,0,0,0,523,494,0,0,0,523,453,0,802,803,804,0,0,0,
+0,0,0,0,0,0,483,484,484,484,485,0,523,0,842,847,844,0,643,0,
+0,0,0,0,0,0,693,693,693,693,375,374,0,0,0,0,0,815,816,0,
+0,0,0,0,0,0,489,490,525,0,415,414,0,0,0,0,0,855,856,0,
+0,0,0,0,0,0,332,332,0,0,0,0,374,0,0,0,0,0,0,0,
+0,0,0,0,0,0,802,803,803,803,804,0,414,0,0,0,0,0,0,0,
+0,0,0,0,0,0,842,846,847,846,844,0,331,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,371,330,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="next-objects" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,524,524,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,524,647,530,524,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,331,0,0,0,0,0,0,
+0,0,0,0,0,0,0,647,0,0,0,0,0,528,406,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,642,0,0,0,0,0,492,0,0,0,
+0,0,0,0,0,0,780,0,0,0,682,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,527,527,531,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,529,530,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,527,0,527,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,528,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="walls" width="20" height="20">
+  <data encoding="csv">
+0,0,0,0,0,162,163,163,163,163,163,163,163,163,163,164,0,0,0,0,
+0,0,0,0,162,206,0,0,0,0,0,0,0,0,0,205,163,163,163,164,
+0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,165,166,0,0,204,
+0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,204,202,0,0,204,
+0,0,0,0,242,243,243,243,243,243,243,243,243,243,243,244,202,0,0,204,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,202,0,0,204,
+0,0,0,0,0,162,163,163,163,163,163,163,163,163,163,163,206,0,0,204,
+0,0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,162,206,0,0,0,0,0,0,0,0,0,0,0,0,0,204,
+0,0,0,0,202,0,0,0,0,0,0,0,0,0,0,165,243,243,243,244,
+0,0,162,163,206,0,0,0,0,0,0,0,0,0,0,204,0,0,0,0,
+0,0,202,0,0,0,0,0,0,0,0,0,0,165,243,244,0,0,0,0,
+0,0,202,0,0,0,0,0,0,0,0,0,0,204,0,0,0,0,0,0,
+0,0,242,243,243,243,243,243,243,243,243,243,243,244,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
