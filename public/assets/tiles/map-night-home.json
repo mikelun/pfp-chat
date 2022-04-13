@@ -59,7 +59,7 @@
          "name":"next-floor",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":20,
          "x":0,
          "y":0
@@ -589,7 +589,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -598,7 +598,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -607,7 +607,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -616,7 +616,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -625,7 +625,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -634,7 +634,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -747,12 +747,39 @@
                  "id":457
                 }, 
                 {
+                 "id":482,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":483,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":484,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":487,
                  "properties":[
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -761,7 +788,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -770,7 +797,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -779,7 +806,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -788,7 +815,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -797,7 +824,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -806,7 +833,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -815,7 +842,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -824,7 +851,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -842,7 +869,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -851,7 +878,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -860,16 +887,17 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":650,
                  "properties":[
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -878,7 +906,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -887,17 +915,16 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
-                },
-            
+                }, 
                 {
                  "id":687,
                  "properties":[
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -906,7 +933,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -915,7 +942,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -924,7 +951,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -933,7 +960,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -942,7 +969,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -951,7 +978,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -960,7 +987,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -969,7 +996,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -978,7 +1005,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -987,7 +1014,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1102,7 +1129,8 @@
                          "type":"bool",
                          "value":false
                         }]
-                }, 
+                },
+            
                 {
                  "id":806,
                  "properties":[
@@ -1129,8 +1157,7 @@
                          "type":"bool",
                          "value":false
                         }]
-                },
-            
+                }, 
                 {
                  "id":809,
                  "properties":[
@@ -1146,7 +1173,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1155,7 +1182,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1164,7 +1191,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1173,7 +1200,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1191,7 +1218,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1200,7 +1227,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1209,7 +1236,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1218,7 +1245,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1227,7 +1254,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1236,7 +1263,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1245,7 +1272,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1254,7 +1281,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1263,7 +1290,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1272,7 +1299,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1281,16 +1308,17 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":851,
                  "properties":[
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1299,7 +1327,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1308,10 +1336,9 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
-                },
-            
+                }, 
                 {
                  "id":854,
                  "properties":[
@@ -1327,7 +1354,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1336,7 +1363,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1345,7 +1372,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1354,7 +1381,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1363,7 +1390,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1372,7 +1399,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1381,7 +1408,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1390,7 +1417,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1399,7 +1426,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1408,7 +1435,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1417,7 +1444,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1426,7 +1453,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1435,7 +1462,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1444,7 +1471,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
                 }, 
                 {
@@ -1462,9 +1489,10 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":false
+                         "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":921,
                  "properties":[
@@ -1491,8 +1519,7 @@
                          "type":"bool",
                          "value":false
                         }]
-                },
-            
+                }, 
                 {
                  "id":924,
                  "properties":[

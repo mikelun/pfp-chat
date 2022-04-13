@@ -49,7 +49,7 @@ export class MainScene extends Phaser.Scene {
     create() {
 
 
-        this.mapId = 1;
+        this.mapId = 2;
 
         // add main camera zoom
         this.cameras.main.setZoom(1.5);
@@ -89,7 +89,6 @@ export class MainScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-
         // animate tiles for main map
         this.animatedTiles.forEach(tile => tile.update(delta));
 

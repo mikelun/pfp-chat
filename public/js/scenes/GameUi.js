@@ -27,6 +27,9 @@ export class GameUi extends Phaser.Scene {
         const width = this.game.config.width;
         const height = this.game.config.height;
 
+        // ADD ROOM TEXT
+        this.roomText = this.add.text(width / 2 - 100, 50, 'Room: Buildship.xyz', { fontSize: '24px', fill: "#ffffff", fontFamily: 'PixelFont' });
+
         // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
             this.add.image(width / 3 + i * (width / 8), height * 0.90, 'player').setScale(2.5);
@@ -48,11 +51,13 @@ export class GameUi extends Phaser.Scene {
                     this.backgroundNFTs.clear(true);
                 }
                 if (!this.getNFTPanelStatus()) {
+                    //this.roomText.setAlpha(0);
                     this.panelNFTs.getChildren().forEach(child => {
                         child.alpha = 1;
                     });
                     sceneEvents.emit('getNFTsFromPage', this.page);
                 } else {
+                    //this.roomText.setAlpha(1);
                     this.panelNFTs.getChildren().forEach(child => {
                         child.alpha = 0;
                     })
@@ -81,6 +86,7 @@ export class GameUi extends Phaser.Scene {
 
         // ADD PANEL FOR NFTS
         this.makePanelForNFTs();
+
     }
 
     getNFTPanelStatus() {
@@ -117,10 +123,10 @@ export class GameUi extends Phaser.Scene {
                 dom.style.height = '40px';
                 const playerNFT = self.add.dom(60, 60 + i * 65, dom);
                 this.playerNFTIcons.push(playerNFT);
-                this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff" }));
+                this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'monospace' }));
                 //console.log(player.name + " HAS NFT");
             } else {
-                this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff" }));
+                this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'monospace' }));
             }
         }
     }

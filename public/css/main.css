@@ -4,21 +4,9 @@ body {
     padding: 0;
 }
 
-#mygame {
-    /* width: 100%; */
-}
 
-.flex-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.button {
-    width: 100px;
-    height: 100px;
-    background-color: rebeccapurple;
-}
 @font-face {
-    font-family: "PixelFont";
-    src: url('../assets/fonts/Minecraft.ttf');
-}
+    font-family: PixelFont;
+    src: url('../assets/Minecraft.ttf');
+    font-weight:100;
+  }
