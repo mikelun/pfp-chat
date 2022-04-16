@@ -14,8 +14,10 @@ export function addMap3(self) {
     self.shoreLayer = surfVibeMap.createLayer('Shore', [mainTileset, deepwaterTileset, shoreTileset]).setCollisionByProperty({ collides: true });;
     self.layer1.add(self.shoreLayer);
 
+   
     self.invisibleWalls = surfVibeMap.createLayer('invisibleWalls', [mainTileset]).setCollisionByProperty({ collides: true });;
-    
+    self.invisibleWalls.setVisible(false);
+
     self.layer2.add(self.invisibleWalls);
     self.layer1.add(surfVibeMap.createLayer('objects', [mainTileset, cliffsTileset, nettingTileset, pierTileset]));
     self.layer1.add(surfVibeMap.createLayer('objects-1', [mainTileset, pierTileset]));
@@ -40,8 +42,8 @@ export function addMap3(self) {
    addAnimationForMap(self, surfVibeMap, pierTileset);
 
     // fix player position
-    self.playerAddX = 100;
-    self.playerAddY = 2000;
+    self.playerAddX = 660;
+    self.playerAddY = 1580;
 }
 
 // add physics when player added to map

@@ -177,6 +177,7 @@ function addOtherPlayers(self, playerInfo) {
         playerText: self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '24px', fontFamily: 'monospace', fill: textColor }).setScale(0.5)
     };
     self.otherPlayers.add(otherPlayer);
+    self.layer1.add(otherPlayer);
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor });
