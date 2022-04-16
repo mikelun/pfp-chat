@@ -25,6 +25,21 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('tiles-night', 'assets/tiles/TilemapNight.png');
         this.load.tilemapTiledJSON('map-night-home', 'assets/tiles/map-night-home.json');
 
+        // LOAD SURF VIBE MAP
+        //this.load.image('3_frame_animated_shoreline_and_cliffs', 'assets/tiles/surf-tiles/3_frame_animated_shoreline_and_cliffs.png');
+        
+        this.load.image('Animated_Doors', 'assets/tiles/surf-tiles/Animated_Doors_Extruded.png');
+        this.load.image('Animated_Netting', 'assets/tiles/surf-tiles/Animated_Netting_Extruded.png');
+        this.load.image('Animated_Pier', 'assets/tiles/surf-tiles/Animated_Pier_Extruded.png');
+        this.load.image('Animated_Shore', 'assets/tiles/surf-tiles/Animated_Shore_Extruded.png');
+        this.load.image('Animated_Deepwater', 'assets/tiles/surf-tiles/Animated_Deepwater_Extruded.png');        
+        this.load.image('MainTileMap', 'assets/tiles/surf-tiles/MainTileMap_Extruded.png');
+        this.load.image('Animated_Boats', 'assets/tiles/surf-tiles/Animated_Boats_Extruded.png');
+        this.load.image('Animated_Cliffs', 'assets/tiles/surf-tiles/Animated_Cliffs_Extruded.png');
+        this.load.image('Animated_Dolphin', 'assets/tiles/surf-tiles/Animated_Dolphin.png');
+        this.load.tilemapTiledJSON('surf-vibe', 'assets/tiles/surf-vibe.json');
+        // END LOADING SURF VIBE MAP
+
         this.load.image('play-button', 'assets/game-ui/button-play.png');
     
         this.load.image('microphone',"assets/game-ui/microphone.png");

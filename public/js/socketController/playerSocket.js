@@ -116,6 +116,7 @@ function addPlayer(self, playerInfo) {
 
     self.textureId = playerInfo.textureId;
     self.player = self.add.player(playerInfo.x + self.playerAddX, playerInfo.y + self.playerAddY, `characters${playerInfo.textureId}`);
+    self.layer1.add(self.player);
     self.cameras.main.startFollow(self.player);
 
     self.player.id = playerInfo.playerId;

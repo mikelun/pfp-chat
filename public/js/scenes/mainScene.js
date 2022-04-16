@@ -47,9 +47,10 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+        this.layer1 = this.add.layer();
+        this.layer2 = this.add.layer();
 
-
-        this.mapId = 2;
+        this.mapId = 3;
 
         // add main camera zoom
         this.cameras.main.setZoom(1.5);
@@ -90,7 +91,7 @@ export class MainScene extends Phaser.Scene {
 
     update(time, delta) {
         // animate tiles for main map
-        this.animatedTiles.forEach(tile => tile.update(delta));
+        if (this.animatedTiles) this.animatedTiles.forEach(tile => tile.update(delta));
 
         if (this.player) {
             // update function for map

@@ -24,10 +24,9 @@ export function addAnimationForMap(self, map, tileset) {
 
     const tileData = tileset.tileData;
 
-    self.animatedTiles = [];
+    if (!self.animatedTiles) self.animatedTiles = [];
     for (let tileid in tileData) {
         map.layers.forEach(layer => {
-            if (layer.tilemapLayer.type === "StaticTilemapLayer") return;
             layer.data.forEach(tileRow => {
                 tileRow.forEach(tile => {
                     if (tile.index - tileset.firstgid === parseInt(tileid, 10)) {

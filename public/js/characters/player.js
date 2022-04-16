@@ -1,14 +1,19 @@
 import Phaser from "phaser";
-const spriteSpeed = 100;
+var spriteSpeed = 100;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
     }
 
-    update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, self) {
+    update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift) {
         let velY = 0;
 
+        if (shift.isDown) {
+            spriteSpeed = 400;
+        } else {
+            spriteSpeed = 100;
+        }
         if (keyUp.isDown || jUp.isDown) {
             velY = -spriteSpeed;
         }
