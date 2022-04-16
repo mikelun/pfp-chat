@@ -53,6 +53,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             this.skip = true;
         });
 
+        // LOAD LEVELS
         if (this.step == 0) {
             this.level0();
         }
@@ -62,7 +63,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         if (this.step == 2) {
             localStorage.setItem('lastVisit', 'true');
             // go to mainscene
-            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis });
+            this.scene.start('MainScene', { stream: this.stream, moralis: this.useMoralis == false ? Moralis : null});
 
         }
 
@@ -125,7 +126,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                     this.showCurrentLevel();
                 });
             } catch (e) {
-                alert(e);
+                alert("YOUR MICROPHONE DOESN'T WORKING! " + e);
             }
         });
         this.button2.setInteractive().on('pointerdown', () => {
@@ -208,6 +209,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         this.button2.setInteractive().on('pointerdown', () => {
             if (this.step != 1) return;
             this.step = 2;
+            this.useMoralis = false;
             //Moralis = null;
             this.showCurrentLevel();
         });

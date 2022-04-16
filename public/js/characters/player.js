@@ -10,7 +10,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         let velY = 0;
 
         if (shift.isDown) {
-            spriteSpeed = 400;
+            spriteSpeed = 150;
         } else {
             spriteSpeed = 100;
         }
