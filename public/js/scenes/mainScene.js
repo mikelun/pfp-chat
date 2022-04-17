@@ -6,7 +6,7 @@ import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-p
 import { sceneEvents } from '../Events/EventsCenter';
 import { addJoysticIfAndroid } from '../utils/pluginJoystic';
 import { addIframeGameAndMusicMachine } from '../utils/addIframeGameAndMusicMachine';
-import { addPlayerOverlap } from '../utils/playerOverlap';
+import { addPlayerOverlap, checkOverlap } from '../utils/playerOverlap';
 import { updateOtherPlayersPositions } from '../utils/updatePlayersPositions';
 import { addFollowingUI } from '../utils/addFollowingUi';
 import { addAudioTimer } from '../utils/addAudioTimer';
@@ -17,6 +17,7 @@ import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
  * All peer connections
  */
 let peers = {};
+
 
 export class MainScene extends Phaser.Scene {
 
@@ -95,7 +96,7 @@ export class MainScene extends Phaser.Scene {
 
         if (this.player) {
             // update function for map
-            addUpdateForMap(this, this.mapId);
+            addUpdateForMap(this, this.mapId, time, delta);
 
             // update a position of player UI
             addFollowingUI(this);
@@ -105,6 +106,8 @@ export class MainScene extends Phaser.Scene {
 
             // send player position to server after 25 ms
             sendPlayerPosition(this, time);
+
+            updatePeopleForTalk(this);
         }
 
         // update other players positions with interpolation
@@ -145,4 +148,35 @@ function sendPlayerPosition(self, time) {
         emitPlayerPosition(self);
     }
     self.lastTime = currentTime;
+}
+
+
+function updatePeopleForTalk(self) {
+    // update player rectangle
+    if (self.player) {
+        self.talkRectangle.x = self.player.x;
+        self.talkRectangle.y = self.player.y;
+    }
+
+    self.connected.forEach(otherPlayer => {
+        if (!checkOverlap(otherPlayer, self.talkRectangle)) {
+            // remove from connected)
+            console.log('player with id: ' + otherPlayer.playerId + ' is not in talk rectangle');
+            self.socket.emit('removeFromTalk', otherPlayer.playerId);
+            self.connected.splice(self.connected.indexOf(otherPlayer), 1);
+        }
+    });
+
+    if (self.otherPlayers) {
+        self.otherPlayers.getChildren().forEach(otherPlayer => {
+            if (checkOverlap(otherPlayer, self.talkRectangle) && !self.connected.includes(otherPlayer)) {
+                // add to connected
+                self.socket.emit('addToTalk', otherPlayer.playerId);
+                console.log('player with id: ' + otherPlayer.name + ' is in talk rectangle');
+                self.connected.push(otherPlayer);
+            }
+        });
+    }
+
+
 }

@@ -24,3 +24,18 @@ export function createAnimationForPlayer(anims, type) {
         repeat: -1
     });
 }
+
+export function createAnimationForAnimal(anims, name) {
+    anims.create({
+        key: `${name}-Walk`,
+        frames: `${name}-Walk`,
+        frameRate: 12,
+        repeat: -1
+    });
+    anims.create({
+        key: `${name}-Idle`,
+        frames: `${name}-Idle`,
+        frameRate: 12,
+        repeat: -1
+    })
+}

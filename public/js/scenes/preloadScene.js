@@ -4,6 +4,22 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+
+        // LOADING ANIMALS
+        const animalsFolders = ['cat1', 'dog2'];
+        for (let i = 0; i < animalsFolders.length; i++) {
+            for (let j = 0; j < 2; ++j) {
+                var anim = 'Walk';
+                if (j === 1) anim = 'Idle';
+                this.load.spritesheet(`${animalsFolders[i]}-${anim}`, `assets/animals/${animalsFolders[i]}/${anim}.png`, {
+                    frameWidth: 48,
+                    frameHeight: 48,
+                    margin: 0,
+                    spacing: 0
+                });
+            }
+        }
+
         // GAME UI
         this.load.image('1', 'assets/game-ui/1.png');
         this.load.image('2', 'assets/game-ui/2.png');
@@ -27,12 +43,12 @@ export class PreloadScene extends Phaser.Scene {
 
         // LOAD SURF VIBE MAP
         //this.load.image('3_frame_animated_shoreline_and_cliffs', 'assets/tiles/surf-tiles/3_frame_animated_shoreline_and_cliffs.png');
-        
+
         this.load.image('Animated_Doors', 'assets/tiles/surf-tiles/Animated_Doors_Extruded.png');
         this.load.image('Animated_Netting', 'assets/tiles/surf-tiles/Animated_Netting_Extruded.png');
         this.load.image('Animated_Pier', 'assets/tiles/surf-tiles/Animated_Pier_Extruded.png');
         this.load.image('Animated_Shore', 'assets/tiles/surf-tiles/Animated_Shore_Extruded.png');
-        this.load.image('Animated_Deepwater', 'assets/tiles/surf-tiles/Animated_Deepwater_Extruded.png');        
+        this.load.image('Animated_Deepwater', 'assets/tiles/surf-tiles/Animated_Deepwater_Extruded.png');
         this.load.image('MainTileMap', 'assets/tiles/surf-tiles/MainTileMap_Extruded.png');
         this.load.image('Animated_Boats', 'assets/tiles/surf-tiles/Animated_Boats_Extruded.png');
         this.load.image('Animated_Cliffs', 'assets/tiles/surf-tiles/Animated_Cliffs_Extruded.png');
@@ -41,11 +57,11 @@ export class PreloadScene extends Phaser.Scene {
         // END LOADING SURF VIBE MAP
 
         this.load.image('play-button', 'assets/game-ui/button-play.png');
-    
-        this.load.image('microphone',"assets/game-ui/microphone.png");
-        this.load.image('microphoneMuted',"assets/game-ui/mute.png");
-        this.load.image('x-button',"assets/game-ui/x-button.png");
-        this.load.image('pixel-box',"assets/game-ui/pixel-box.png");
+
+        this.load.image('microphone', "assets/game-ui/microphone.png");
+        this.load.image('microphoneMuted', "assets/game-ui/mute.png");
+        this.load.image('x-button', "assets/game-ui/x-button.png");
+        this.load.image('pixel-box', "assets/game-ui/pixel-box.png");
         // this.load.image('volume',"assets/game-ui/high-volume.png");
         this.load.image('machine', 'assets/machine.png');
         this.load.image('retro-background', "assets/retro-background.jpeg");
@@ -111,6 +127,8 @@ export class PreloadScene extends Phaser.Scene {
             percentText.destroy();
             assetText.destroy();
         });
+
+        // LOADING CHARACTERS
         for (let i = 0; i < 50; i++) {
             this.load.spritesheet(`characters${i}`,
                 `assets/Other/${i}.png`,

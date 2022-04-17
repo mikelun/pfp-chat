@@ -31,6 +31,7 @@ export function initializeSocket(self, peers) {
             self.playerUI[otherPlayer.playerId].playerText.destroy();
             self.playerUI[otherPlayer.playerId].microphone.destroy();
             otherPlayer.destroy();
-        })
+        });
+        self.talkRectangle.destroy();
     })
 }

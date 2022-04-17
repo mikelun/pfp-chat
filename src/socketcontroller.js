@@ -5,6 +5,7 @@ peers = {};
 
 players = {};
 
+hashChats = [];
 
 module.exports = (io) => {
     io.on('connect', (socket) => {
@@ -87,6 +88,19 @@ module.exports = (io) => {
         socket.on('initSend', init_socket_id => {
             console.log('INIT SEND by ' + socket.id + ' for ' + init_socket_id)
             peers[init_socket_id].emit('initSend', socket.id)
+        });
+
+
+        socket.on('addToTalk', id => {
+            if (hashChats.includes(socket.id + id)) return;
+            hashChats.push(id + socket.id);
+            console.log(`TRYING TO CHAT ${id} with ${socket.id}`)
+        });
+
+        socket.on('removeFromTalk', id => {
+            // FIX BUG HERE WITH HASHES
+            if (!hashChats.includes(id + socket.id)) return;
+            hashChats.splice(hashChats.indexOf(id + socket.id), 1);
         });
     });
 };

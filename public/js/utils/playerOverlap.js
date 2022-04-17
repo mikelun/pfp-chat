@@ -23,7 +23,7 @@ export function addPlayerOverlap(self) {
     }
 }
 
-function checkOverlap(a, b) {
+export function checkOverlap(a, b) {
     var boundsA = a.getBounds();
     var boundsB = b.getBounds();
 

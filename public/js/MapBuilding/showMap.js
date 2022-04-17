@@ -30,12 +30,12 @@ export function addPhysicsForScene(self, id) {
     }
 }
 
-export function addUpdateForMap(self, id) {
+export function addUpdateForMap(self, id, time, delta) {
     if (id == 1) {
-        addUpdateForMap1(self);
+        addUpdateForMap1(self, time, delta);
     } else if (id == 2) {
-        addUpdateForMap2(self);
+        addUpdateForMap2(self, time, delta);
     } else if (id == 3) {
-        addUpdateForMap3(self);
+        addUpdateForMap3(self, time, delta);
     }
 }

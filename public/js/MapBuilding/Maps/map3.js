@@ -1,3 +1,4 @@
+import { createAnimationForAnimal } from "../../anims/characterAnims";
 import { addAnimationForMap } from "../AnimatedTile";
 
 export function addMap3(self) {
@@ -42,8 +43,17 @@ export function addMap3(self) {
    addAnimationForMap(self, surfVibeMap, pierTileset);
 
     // fix player position
-    self.playerAddX = 660;
+    self.playerAddX = 670;
     self.playerAddY = 1580;
+
+    // ADDING ANIMALS
+    self.dog2 = self.add.sprite(1100, 1340 + 850, 'cat1-Idle');
+    createAnimationForAnimal(self.anims, 'cat1');
+    self.dog2.play('cat1-Idle');
+    self.dog2.addX = 0;
+
+    self.lastVisit = 0;
+    
 }
 
 // add physics when player added to map
@@ -52,6 +62,43 @@ export function addPhysicsForMap3(self) {
 }
 
 
-export function addUpdateForMap3(self) {
+export function addUpdateForMap3(self, time, delta) {
 
+    // MAKE NPC CAT :)
+    self.dog2.x += self.dog2.addX;
+    if (self.dog2.x < 970 && self.stop == false) {
+        self.dog2.addX = 0;
+        self.dog2.x = 970;
+        self.dog2.play('cat1-Idle');
+        self.stop = true;
+    }
+
+
+    // Current time in seconds
+    const timeSec = Math.floor(time / 1000);
+    if (timeSec - self.lastVisit > 5 + Math.floor(Math.random() * 5)) {
+        
+        // CAT CAN RUN FROM 970 - 1500 in X
+        // get random number for next movement
+        // 0 - go right
+        // 1 - go left
+        // 2 - stay
+        self.stop = false;
+        self.dog2.anims.stop();
+        
+        const moveId = Math.floor(Math.random() * 3);
+        if (moveId === 0) {
+            self.dog2.addX = 0.5;
+            self.dog2.play('cat1-Walk');
+            self.dog2.flipX = false;
+        } else if (moveId === 1) {
+            self.dog2.addX = -0.5;
+            self.dog2.play('cat1-Walk');
+            self.dog2.flipX = true;
+        } else if (moveId === 2) {
+            self.dog2.play('cat1-Idle');
+            self.dog2.addX = 0;
+        }
+        self.lastVisit = timeSec;
+    }
 }

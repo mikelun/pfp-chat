@@ -147,6 +147,9 @@ function addPlayer(self, playerInfo) {
 
     addPhysicsForScene(self, self.mapId);
 
+    self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, 200, 200, 0x000000).setAlpha(0.1);
+    
+    self.connected = [];
     // // ADD BALL TO SCENE
     // self.physics.add.collider(self.player, self.ball);
     // self.physics.add.collider(self.wallsLayer, self.ball);
@@ -172,6 +175,7 @@ function addOtherPlayers(self, playerInfo) {
     const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self);
     //const otherPlayerName = self.add.text(playerInfo.x, playerInfo.y, playerInfo.account, { fontSize: '20px', color: '#ffffff' });
     otherPlayer.playerId = playerInfo.playerId;
+    otherPlayer.name = playerInfo.playerName;
     const textColor = randColor();
     self.playerUI[playerInfo.playerId] = {
         playerText: self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '24px', fontFamily: 'monospace', fill: textColor }).setScale(0.5)
