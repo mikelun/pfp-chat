@@ -20,6 +20,8 @@ export const connect = async () => {
         socket.events.push({ event, callback });
     }
 
+    socket.ws = ws
+
     await new Promise((resolve, reject) => {
         ws.onopen = () => {
             console.log('Connected to server');

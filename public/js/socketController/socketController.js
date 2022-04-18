@@ -25,7 +25,7 @@ export async function initializeSocket(self, peers) {
     });
 
     // IF PLAYER DISCONNECTED
-    self.socket.on('disconnect', () => {
+    const onDisconnect = () => {
         self.errors = self.add.group();
         self.errors.add(self.add.rectangle(0, 0, 2000, 2000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));
@@ -41,6 +41,10 @@ export async function initializeSocket(self, peers) {
             otherPlayer.destroy();
         });
         self.talkRectangle.destroy();
-    })
+    };
+
+    self.socket.on('disconnect', onDisconnect);
+    self.socket.ws.onclose = onDisconnect;
+
 }
 
