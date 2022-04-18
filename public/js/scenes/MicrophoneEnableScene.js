@@ -222,6 +222,8 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                 }
             }
             login();
+            self.button1.setAlpha(0);
+            self.label.setPosition(460, 460);
 
         });
         // this.button2.setInteractive().on('pointerdown', () => {
