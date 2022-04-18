@@ -7,6 +7,53 @@ players = {};
 
 hashChats = [];
 
+
+const buildSocket = (wss, ws) => {
+
+    // generate random id
+    const id = Math.random().toString(36).substring(7);
+
+    ws.send(JSON.stringify({ id }));
+
+    const socket = {
+        id,
+        emit: (event, ...data) => {
+            console.log('emit', event, ...data);
+            ws.send(JSON.stringify({ event, data }));
+        },
+        on: (event, callback) => {
+            console.log('on', event);
+
+            ws.on('message', (_event) => {
+                const data = JSON.parse(_event);
+
+                console.log('received event', data.event, ...data.data);
+
+                if (data.event === event) {
+                    callback(...data.data);
+                }
+
+            });
+        },
+        broadcast: {
+            emit: (event, ...data) => {
+                console.log('broadcast emit', event, ...data)
+
+                wss.clients.forEach(client => {
+                    if (client === ws) {
+                        // skip broadcast to yourself
+                        return
+                    }
+
+                    client.send(JSON.stringify({ event, data }));
+                });
+            }
+        }
+    };
+
+    return socket;
+}
+
 const onConnect = (socket) => {
         console.log('a client is connected', socket.id)
 
@@ -125,11 +172,8 @@ const onConnect = (socket) => {
         });
 }
 
-const ioConfig = (io) => io.on('connect', onConnect);
-
 module.exports = {
     onConnect,
-    ioConfig,
-    default: ioConfig,
+    buildSocket,
 }
 
