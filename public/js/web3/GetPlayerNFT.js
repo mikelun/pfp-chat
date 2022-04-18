@@ -4,10 +4,7 @@ export async function getPlayerNFT(moralis) {
     const playerAddress1 = '0xeac41D05531770b85ad1E0f145b94BFE205bDa78';
     const playerAddress2 = '0xffE06cb4807917bd79382981f23d16A70C102c3B';
     //const result = await moralis.Web3.getNFTs({ chain: 'eth', address: playerAddress1 });
-    const {total} = await moralis.Web3API.account.getNFTsForContract({token_address: "0x922dc160f2ab743312a6bb19dd5152c1d3ecca33"});
-    if (total > 0) {
-        console.log("Player has NFT");
-    }
+    
     const {result} = await moralis.Web3API.account.getNFTs();
     
     var pageResults = [];

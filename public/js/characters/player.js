@@ -8,7 +8,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift) {
         let velY = 0;
-
+        
         if (shift.isDown) {
             spriteSpeed = 150;
         } else {

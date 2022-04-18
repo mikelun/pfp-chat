@@ -28,7 +28,7 @@ export class GameUi extends Phaser.Scene {
         const height = this.game.config.height;
 
         // ADD ROOM TEXT
-        this.roomText = this.add.text(width / 2 - 100, 50, 'Room: Buildship.xyz', { fontSize: '24px', fill: "#ffffff", fontFamily: 'PixelFont' });
+        this.roomText = this.add.text(width / 2 - 100, 50, 'Room:  AILOVERSE', { fontSize: '24px', fill: "#ffffff", fontFamily: 'PixelFont' });
 
         // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
