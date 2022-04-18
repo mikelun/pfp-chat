@@ -79,6 +79,11 @@ export function initializePlayersSocket(anotherSelf, _peers) {
             }
         }
     });
+
+    self.socket.on('removeFromTalk', (playerId) => {
+        // remove peer from talk
+        removePeer(playerId);
+    });
 }
 
 function removePeer(socket_id) {
@@ -198,4 +203,9 @@ export function currentPlayerDisconnected(playerId) {
         removePeer(socket_id)
     }
     sceneEvents.emit('currentPlayers', playersList);
+}
+
+function showPlayersToTalk(self) {
+    // sort players by self.connected and playersList
+    
 }
