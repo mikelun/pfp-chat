@@ -12,6 +12,7 @@ import { addFollowingUI } from '../utils/addFollowingUi';
 import { addAudioTimer } from '../utils/addAudioTimer';
 import { toggleMute } from '../utils/microphoneUtils';
 import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
+import { showPlayersToTalk } from '../socketController/playerSocket';
 
 /**
  * All peer connections
@@ -161,9 +162,9 @@ function updatePeopleForTalk(self) {
     self.connected.forEach(otherPlayer => {
         if (!checkOverlap(otherPlayer, self.talkRectangle)) {
             // remove from connected)
-            console.log('player with id: ' + otherPlayer.playerId + ' is not in talk rectangle');
             self.socket.emit('removeFromTalk', otherPlayer.playerId);
             self.connected.splice(self.connected.indexOf(otherPlayer), 1);
+            showPlayersToTalk();
         }
     });
 
@@ -174,6 +175,7 @@ function updatePeopleForTalk(self) {
                 self.socket.emit('addToTalk', otherPlayer.playerId);
                 console.log('player with id: ' + otherPlayer.name + ' is in talk rectangle');
                 self.connected.push(otherPlayer);
+                showPlayersToTalk();
             }
         });
     }

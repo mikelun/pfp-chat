@@ -61,7 +61,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 playersList.splice(i, 1);
             }
         }
-        sceneEvents.emit('currentPlayers', playersList);
+        showPlayersToTalk()
         removePeer(playerId);
     });
 
@@ -74,7 +74,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
                 playersList[i].nft = playerInfo.nft;
 
-                sceneEvents.emit('currentPlayers', playersList);
+                showPlayersToTalk()
                 break;
             }
         }
@@ -153,7 +153,7 @@ function addPlayer(self, playerInfo) {
     addPhysicsForScene(self, self.mapId);
 
     self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, 200, 200, 0x000000).setAlpha(0.1);
-    
+
     self.connected = [];
     // // ADD BALL TO SCENE
     // self.physics.add.collider(self.player, self.ball);
@@ -190,7 +190,7 @@ function addOtherPlayers(self, playerInfo) {
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor });
-    sceneEvents.emit('currentPlayers', playersList);
+    showPlayersToTalk()
 }
 
 const randColor = () => {
@@ -202,10 +202,25 @@ export function currentPlayerDisconnected(playerId) {
     for (let socket_id in peers) {
         removePeer(socket_id)
     }
-    sceneEvents.emit('currentPlayers', playersList);
+    showPlayersToTalk()
 }
 
-function showPlayersToTalk(self) {
+export function showPlayersToTalk() {
     // sort players by self.connected and playersList
-    
+    let sortedPlayersList = [];
+    console.log('CONNECTED PLAYERS' + self.connected);
+    playersList.forEach(player => {
+        if (self.connected) {
+            self.connected.forEach(otherPlayer => {
+                if (player.id == otherPlayer.playerId) {
+                    console.log('ADDED TO PLAYERS LIST' + player.id);
+                    sortedPlayersList.push(player);
+                }
+            })
+        }
+        if (player.id == self.socket.id) {
+            sortedPlayersList.push(player);
+        }
+    });
+    sceneEvents.emit("currentPlayers", sortedPlayersList);
 }

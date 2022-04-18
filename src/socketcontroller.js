@@ -105,8 +105,8 @@ module.exports = (io) => {
 
             console.log('REMOVING PEER', id, socket.id);
             // emit player with socket id
-            peers[id].emit('removeFromTalk', socket.id);
-            peers[socket.id].emit('removeFromTalk', id);
+            if (peers[id]) peers[id].emit('removeFromTalk', socket.id);
+            if (peers[socket.id] )peers[socket.id].emit('removeFromTalk', id);
         });
 });
 };
