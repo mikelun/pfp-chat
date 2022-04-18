@@ -4,6 +4,15 @@
  */
 import Phaser from "phaser";
 
+export const tryOr = (fn, defaultValue) => {
+    try {
+        return fn();
+    }
+    catch (e) {
+        return defaultValue;
+    }
+}
+
 export function initKeysForController(self) {
     self.keyUp = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     self.keyDown = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);

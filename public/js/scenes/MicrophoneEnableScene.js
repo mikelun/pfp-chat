@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 import { Moralis } from 'moralis'
 
+import { tryOr } from '../utils/utils';
+
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
         super({ key: "microphone" });
@@ -294,7 +296,10 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     async checkNFT() {
-        const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address: "0x35a31fc46eed1f29ba18977e8a963325da882609" });
+        // take token_address from location query
+        const ailoverse_token_address = "0x35a31fc46eed1f29ba18977e8a963325da882609";
+        const token_address = tryOr(() => this.location.search.split('token_address=')[1], ailoverse_token_address);
+        const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
         if (total > 0) {
             this.label.text = 'YOU HAVE AILOVERSE NFT'
             this.step = 3;
