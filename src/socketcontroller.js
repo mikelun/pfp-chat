@@ -47,8 +47,15 @@ const buildSocket = (wss, ws) => {
 
                     client.send(JSON.stringify({ event, data }));
                 });
-            }
-        }
+            },
+            all: (event, ...data) => {
+                console.log('broadcast all', event, ...data)
+
+                wss.clients.forEach(client => {
+                    client.send(JSON.stringify({ event, data }));
+                });
+            },
+        },
     };
 
     return socket;
@@ -109,7 +116,7 @@ const onConnect = (socket) => {
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
-            socket.emit('updatePlayerInfo', players[socket_id]);
+            socket.broadcast.all('updatePlayerInfo', players[socket_id]);
         })
 
 
@@ -140,7 +147,7 @@ const onConnect = (socket) => {
             delete players[socket.id];
             delete peers[socket.id];
             // emit a message to all players to remove this player
-            socket.emit('disconnected', socket.id);
+            socket.broadcast.all('disconnected', socket.id);
         });
 
         /**
