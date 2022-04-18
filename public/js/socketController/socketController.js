@@ -1,14 +1,14 @@
 import { initializeAudio, removePeer } from '../socketController/audioSocket';
 import { initializePlayersSocket } from '../socketController/playerSocket';
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
-import { connectWS } from './ws';
+import { connect } from './ws';
 
 /**
  * Initialize socket and connect to server by socket.io
  */
 export async function initializeSocket(self, peers) {
 
-    self.socket = await connectWS();
+    self.socket = await connect();
 
     // Initialize audio stream for socket
     initializeAudio(self.socket, peers, self);

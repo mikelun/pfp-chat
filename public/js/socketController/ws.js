@@ -1,4 +1,4 @@
-const connectWS = async () => {
+export const connect = async () => {
 
     // Initialize socket
     // will not use tls if the connection is not made over https
@@ -63,4 +63,4 @@ const connectWS = async () => {
 }
 
 
-export default connectWS;
+export default connect;
