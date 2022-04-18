@@ -75,6 +75,10 @@ export class PreloadScene extends Phaser.Scene {
 
         this.load.image('ball', 'assets/ball.png');
 
+        // Load AI Loverse
+        this.load.image('ailoverse-cats', 'assets/ailoverse/cats.png');
+        this.load.image('ailoverse-robots', 'assets/ailoverse/robots.png');
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);

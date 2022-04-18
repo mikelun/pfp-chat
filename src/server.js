@@ -8,7 +8,7 @@ require('./routes.js')(app);
 
 // CONFIGURATION ===============================================================
 
-var port = process.env.PORT || 3000; // set our port
+var port = process.env.PORT || 8080; // set our port
 
 ////////////////////////////////////////////////////////////////////////////////
 
