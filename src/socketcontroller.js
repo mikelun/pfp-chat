@@ -17,6 +17,7 @@ const buildSocket = (wss, ws) => {
 
     const socket = {
         id,
+        ws,
         emit: (event, ...data) => {
             console.log('emit', event, ...data);
             ws.send(JSON.stringify({ event, data }));
@@ -142,13 +143,16 @@ const onConnect = (socket) => {
         /**
          * remove the disconnected peer connection from all other connected clients
          */
-        socket.on('disconnect', async function () {
+        const onDisconnect = async function () {
             console.log('user disconnected: ', socket.id);
             delete players[socket.id];
             delete peers[socket.id];
             // emit a message to all players to remove this player
             socket.broadcast.all('disconnected', socket.id);
-        });
+        };
+
+        socket.ws.onclose = onDisconnect;
+        socket.on('disconnect', onDisconnect);
 
         /**
          * Send message to client to initiate a connection
