@@ -108,11 +108,11 @@ const onConnect = (socket) => {
         });
 
 
-        socket.on('updatePlayerInfo', ({ data, socket_id }) => {
+        socket.on('updatePlayerInfo', (data, socket_id) => {
             console.log('updatePlayerInfo', data, socket_id)
-            if (!players[socket_id]) {
-                return
-            }
+            // if (!players[socket_id]) {
+            //     return
+            // }
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
