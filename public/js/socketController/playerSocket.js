@@ -152,7 +152,7 @@ function addPlayer(self, playerInfo) {
 
     addPhysicsForScene(self, self.mapId);
 
-    self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, 200, 200, 0x000000).setAlpha(0.1);
+    self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, 200, 200, 0x000000).setAlpha(0);
 
     self.connected = [];
     // // ADD BALL TO SCENE

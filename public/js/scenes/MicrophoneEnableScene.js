@@ -7,8 +7,10 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     create() {
-        // adding steps(levels) of typing text
+        // default stream is false
+        this.stream = false;
 
+        // adding steps(levels) of typing text
         this.step = 0;
         this.showCurrentLevel();
         // check if lastVisit localStorage is true
