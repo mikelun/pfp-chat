@@ -7,6 +7,14 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     create() {
+        this.progress = this.add.sprite(640, 300, 'loading').setScale(0.7).setAlpha(0);
+        this.anims.create({
+            key: 'loading',
+            frames: this.anims.generateFrameNumbers('loading', { start: 0, end: 15 }),
+            frameRate: 16,
+            repeat: -1
+        })
+        this.progress.play('loading');
         // default stream is false
         this.stream = false;
 
@@ -20,7 +28,9 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                 navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
                     this.stream = stream;
                     this.startMoralis();
-                    this.scene.start('MainScene', { stream: this.stream, moralis: Moralis });
+                    this.user = Moralis.User.current();
+                    const address = this.user.get('ethAddress');
+                    this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address });
                 });
             } catch (e) {
                 alert(e);
@@ -64,8 +74,9 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         }
         if (this.step == 2) {
             localStorage.setItem('lastVisit', 'true');
+            const address = this.user.get('ethAddress');
             // go to mainscene
-            this.scene.start('MainScene', { stream: this.stream, moralis: this.useMoralis == false ? Moralis : null});
+            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address });
 
         }
 
@@ -131,6 +142,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                 alert("YOUR MICROPHONE DOESN'T WORKING! " + e);
             }
         });
+        
         this.button2.setInteractive().on('pointerdown', () => {
             if (this.step != 0) return;
             this.step = 1;
@@ -163,16 +175,16 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         }).layout().setPosition(325, 350).setAlpha(0);
 
         // BUTTON WITH CONTINUE AS GUEST TEXT
-        this.button2 = this.rexUI.add.label({
-            background: this.add.image(0, 0, 'background-button'),
-            text: this.add.text(0, 0, 'CONTINUE AS GUEST', { fill: "#000000", fontSize: "24px" }),
-            space: {
-                left: 30,
-                right: 40,
-                top: 20,
-                bottom: 30
-            }
-        }).layout().setPosition(325, 420).setAlpha(0);
+        // this.button2 = this.rexUI.add.label({
+        //     background: this.add.image(0, 0, 'background-button'),
+        //     text: this.add.text(0, 0, 'CONTINUE AS GUEST', { fill: "#000000", fontSize: "24px" }),
+        //     space: {
+        //         left: 30,
+        //         right: 40,
+        //         top: 20,
+        //         bottom: 30
+        //     }
+        // }).layout().setPosition(325, 420).setAlpha(0);
 
         const self = this;
 
@@ -185,6 +197,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
             async function login() {
                 self.user = Moralis.User.current();
+                self.progress.setAlpha(1);
                 if (!self.user) {
                     self.label.text = 'CONNECTING YOUR METAMASK...'
                     self.user = await Moralis.authenticate({
@@ -193,10 +206,13 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                         .then(function (user) {
                             localStorage.setItem('Moralis', 'true');
                             self.step = 2;
+                            self.user = user;
                             self.showCurrentLevel();
+                            self.progress.setAlpha(0);
                         })
                         .catch(function (error) {
                             alert(error);
+                            self.progress.setAlpha(0);
                             self.label.text = 'ERROR, TRY AGAIN'
                         });
                 } else {
@@ -208,13 +224,13 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             login();
 
         });
-        this.button2.setInteractive().on('pointerdown', () => {
-            if (this.step != 1) return;
-            this.step = 2;
-            this.useMoralis = false;
-            //Moralis = null;
-            this.showCurrentLevel();
-        });
+        // this.button2.setInteractive().on('pointerdown', () => {
+        //     if (this.step != 1) return;
+        //     this.step = 2;
+        //     this.useMoralis = false;
+        //     //Moralis = null;
+        //     this.showCurrentLevel();
+        // });
 
     }
 

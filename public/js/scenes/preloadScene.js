@@ -33,6 +33,11 @@ export class PreloadScene extends Phaser.Scene {
 
         this.load.image('background-nfts', 'assets/game-ui/background-nfts.jpg');
 
+        // LOAD PROGRESS BAR
+        this.load.spritesheet('loading', 'assets/game-ui/loading.png', {
+            frameWidth: 512,
+            frameHeight: 512});
+
         // LOADING MAIN DAY MAP
         this.load.image('tiles', 'assets/tiles/TilemapDay.png');
         this.load.tilemapTiledJSON('dungeon', 'assets/tiles/map-bar.json');

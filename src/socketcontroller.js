@@ -17,18 +17,30 @@ module.exports = (io) => {
         peers[socket.id] = socket
 
         // create new player and add him to players
-        players[socket.id] = {
-            rotation: 0,
-            x: Math.floor(Math.random() * 100) + 100,
-            y: 850,
-            playerId: socket.id,
-            microphoneStatus: false,
-            playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
-            textureId: Math.floor(Math.random() * 50),
-            nft: null
-        };
+        socket.on('addPlayer', address => {
+            for (test in players) {
+                if (players[test].address == address) {
+                    socket.emit('playerExists')
+                    return;
+                }
+            }
+            players[socket.id] = {
+                rotation: 0,
+                x: Math.floor(Math.random() * 100) + 100,
+                y: 850,
+                playerId: socket.id,
+                microphoneStatus: false,
+                playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
+                textureId: Math.floor(Math.random() * 50),
+                nft: null,
+                address: address
+            };
 
-        socket.emit('currentPlayers', players);
+            socket.emit('currentPlayers', players);
+        });
+        
+
+        
 
         // update all other players of the new player
         socket.broadcast.emit('newPlayer', players[socket.id]);

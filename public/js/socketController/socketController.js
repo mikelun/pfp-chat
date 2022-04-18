@@ -8,13 +8,21 @@ import { currentPlayerDisconnected } from '../socketController/playerSocket';
  */
 export function initializeSocket(self, peers) {
 
-    self.socket = io();
+    self.socket = io();    
 
     // Initialize audio stream for socket
     initializeAudio(self.socket, peers, self);
 
     // Initialize player socket
     initializePlayersSocket(self, peers);
+
+    self.socket.emit('addPlayer', self.address);
+
+    self.socket.on('playerExists', () => {
+        self.cameras.main.shake(500, 0.01);
+        self.add.rectangle(0, 0, 5000, 5000, 0x000000).setAlpha(0.5);
+        self.add.text(330, 300, "You have been logged in!\nPlease close other tab with this metaverse\nand reset the page", { fontSize: "30px", fill: "#ffffff", align: "center", fontFamily: "PixelFont"});
+    });
 
     // IF PLAYER DISCONNECTED
     self.socket.on('disconnect', () => {
@@ -35,3 +43,4 @@ export function initializeSocket(self, peers) {
         self.talkRectangle.destroy();
     })
 }
+

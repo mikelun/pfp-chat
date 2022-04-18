@@ -27,7 +27,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     init(data) {
-        if (data.stream != false) {
+        if (data.stream) {
             // local stream of user microphone
             this.localStream = data.stream;
 
@@ -35,10 +35,13 @@ export class MainScene extends Phaser.Scene {
             for (let index in this.localStream.getAudioTracks()) {
                 this.localStream.getAudioTracks()[index].enabled = false;
             }
-
-            // ADD MORALIS FOR BLOCKCHAIN(IF EXIST)
-            this.moralis = data.moralis;
         }
+        
+        // ADD MORALIS FOR BLOCKCHAIN
+        this.moralis = data.moralis;
+
+        // ADD METAMASK ADDRESS
+        this.address = data.address;
     }
 
     preload() {
@@ -88,7 +91,6 @@ export class MainScene extends Phaser.Scene {
                 toggleMute(this);
             };
         });
-
     }
 
     update(time, delta) {
