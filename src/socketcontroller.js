@@ -19,7 +19,7 @@ const buildSocket = (wss, ws) => {
     const socket = {
         id,
         ws,
-        room: null,
+        currentRoom: null,
         emit: (event, ...data) => {
             console.log('emit', event, ...data);
             ws.send(JSON.stringify({ event, data }));
@@ -39,7 +39,7 @@ const buildSocket = (wss, ws) => {
             });
         },
         join: function (roomName) {
-            this.room = roomName
+            this.currentRoom = roomName
         },
         broadcast: {
             emit: (event, ...data) => {
@@ -64,7 +64,7 @@ const buildSocket = (wss, ws) => {
         },
         room: {
             emit: function (event, ...data) {
-                const thisRoomPeers = Object.values(peers).filter(p => p.room === this.room)
+                const thisRoomPeers = Object.values(peers).filter(p => p.currentRoom === this.currentRoom)
 
                 thisRoomPeers.forEach(client => {
                     if (client === ws) {
@@ -75,8 +75,8 @@ const buildSocket = (wss, ws) => {
                     client.send(JSON.stringify({ event, data }));
                 })
             },
-            all: function (roomName, event, ...data) {
-                const thisRoomPeers = Object.values(peers).filter(p => p.room === this.room)
+            all: function (event, ...data) {
+                const thisRoomPeers = Object.values(peers).filter(p => p.currentRoom === this.currentRoom)
 
                 thisRoomPeers.forEach(client => {
                     client.send(JSON.stringify({ event, data }));
