@@ -16,10 +16,11 @@ const buildSocket = (wss, ws) => {
 
     ws.send(JSON.stringify({ id }));
 
+    let currentRoom = null
+
     const socket = {
         id,
         ws,
-        currentRoom: null,
         emit: (event, ...data) => {
             console.log('emit', event, ...data);
             ws.send(JSON.stringify({ event, data }));
@@ -38,8 +39,9 @@ const buildSocket = (wss, ws) => {
 
             });
         },
-        join: function (roomName) {
-            this.currentRoom = roomName
+        join: (roomName) => {
+            currentRoom = roomName
+            console.log('joined', this.id, currentRoom)
         },
         broadcast: {
             emit: (event, ...data) => {
@@ -62,24 +64,41 @@ const buildSocket = (wss, ws) => {
                 });
             },
         },
+        getRoom: () => currentRoom,
         room: {
-            emit: function (event, ...data) {
-                const thisRoomPeers = Object.values(peers).filter(p => p.currentRoom === this.currentRoom)
+            emit: (event, ...data) => {
+                console.log('emit', currentRoom, event, ...data);
 
-                thisRoomPeers.forEach(client => {
-                    if (client === ws) {
+                const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
+
+                console.log('room', thisRoomPeers.length)
+
+                thisRoomPeers.forEach(peer => {
+                    if (peer.ws === ws) {
                         // skip broadcast to yourself
                         return
                     }
 
-                    client.send(JSON.stringify({ event, data }));
+                    try {
+                        peer.ws.send(JSON.stringify({ event, data }));
+                    } catch (e) {
+                        console.error(e)
+                    }
                 })
             },
-            all: function (event, ...data) {
-                const thisRoomPeers = Object.values(peers).filter(p => p.currentRoom === this.currentRoom)
+            all: (event, ...data) => {
+                console.log('all', currentRoom, event, ...data);
 
-                thisRoomPeers.forEach(client => {
-                    client.send(JSON.stringify({ event, data }));
+                const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
+
+                console.log('room', thisRoomPeers.length)
+
+                thisRoomPeers.forEach(peer => {
+                    try {
+                        peer.ws.send(JSON.stringify({ event, data }));
+                    } catch (e) {
+                        console.error(e)
+                    }
                 })
             },
         },
