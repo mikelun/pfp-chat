@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 import { Moralis } from 'moralis'
+import { ailoverseLevel0, ailoverseLevel1, ailoverseLevel2 } from './StartScene/ailoverse/ailoverse';
+import { buildshipLevel0, buildshipLevel1, buildshipLevel2, updateBuildship } from './StartScene/buildship/buildship';
 
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
@@ -7,6 +9,10 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     create() {
+
+        var room = window.location.href.split('/');
+        this.room = room[room.length - 1];
+
         this.progress = this.add.sprite(640, 300, 'loading').setScale(0.7).setAlpha(0);
         this.anims.create({
             key: 'loading',
@@ -18,7 +24,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         // default stream is false
         this.stream = false;
         // check if lastVisit localStorage is true
-        if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('Moralis') == 'true' && localStorage.getItem('nft') == 'true') {
+        if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('lastVisit') == 'true') {
             // TRY TO GET Moralis AND MICROPHONE
             try {
                 navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
@@ -27,13 +33,16 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                     this.user = Moralis.User.current();
                     // const address = this.user.get('ethAddress');
                     // this.address 
-                    this.progress.setAlpha(1);
-                    this.label = this.add.text(500, 480, 'CHECKING YOUR NFT...', { fill: "#ffffff", fontSize: "24px", align: "center" });
-                    this.checkNFT();
+                    this.step = 2;
+                    this.showCurrentLevel();
+                    // this.progress.setAlpha(1);
+                    // this.label = this.add.text(500, 480, 'CHECKING YOUR NFT...', { fill: "#ffffff", fontSize: "24px", align: "center" });
+                    // this.checkNFT();
                     //this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address });
                 });
             } catch (e) {
-                alert(e);
+                // remove microphone localStorage
+                localStorage.setItem('microphone', 'false');
             }
 
         } else {
@@ -52,6 +61,14 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     showCurrentLevel() {
+
+        if (this.room == 'ailoverse') {
+            this.levels = [ailoverseLevel0, ailoverseLevel1, ailoverseLevel2];
+        } else {
+            this.room = 'buildship';
+            this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
+        }
+
         // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
         if (this.levelGroup) {
             this.levelGroup.clear(true);
@@ -68,22 +85,19 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.skip = true;
         });
-
-        // LOAD LEVELS
-        if (this.step == 0) {
-            this.level0();
-        }
-        if (this.step == 1) {
-            this.level1();
-        }
-        if (this.step == 2) {
-            this.level2();
-        }
-        if (this.step == 3) {
+        
+        // SHOW LEVELS
+        if (this.step < this.levels.length) {
+            for (let i = 0; i < this.levels.length; i++) {
+                if (i == this.step) {
+                    this.levels[i](this, Moralis);
+                }
+            }
+        } else {
             const address = this.user.get('ethAddress');
-            localStorage.setItem('nft', 'true');
+            localStorage.setItem('lastVisit', 'true');
             // go to mainscene
-            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address });
+            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address, room: this.room});
 
         }
 
@@ -102,195 +116,6 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             this.button1.setAlpha(1);
         }
 
-    }
-
-    level0() {
-        // MAKE GROUP FOR LEVEL
-        this.levelGroup = this.add.group();
-
-        // TEXT
-        var text = 'Hello from OpenMetaverse!\nHere you can chat and chill with other players\nIf you want to say something, we need your microphone access\n';
-        this.label = this.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px" });
-        this.levelGroup.add(this.label);
-        this.typeTextWithDelay(text);
-
-        // BUTTON WITH ALLOW TEXT
-        this.button1 = this.rexUI.add.label({
-            background: this.add.image(0, 0, 'background-button'),
-            text: this.add.text(0, 0, 'ALLOW', { fill: "#000000", fontSize: "24px" }),
-            space: {
-                left: 90,
-                right: 90,
-                top: 20,
-                bottom: 30
-            }
-        }).layout().setPosition(325, 350).setAlpha(0);
-
-        // BUTTON WITH "NO, CONTINUE" TEXT
-        this.button2 = this.rexUI.add.label({
-            background: this.add.image(0, 0, 'background-button'),
-            text: this.add.text(0, 0, 'NO, CONTINUE', { fill: "#000000", fontSize: "24px" }),
-            space: {
-                left: 40,
-                right: 40,
-                top: 20,
-                bottom: 30
-            }
-        }).layout().setPosition(325, 420).setAlpha(0);
-
-        // SET BUTTONS INTERCTIVE
-        this.button1.setInteractive().on('pointerdown', () => {
-            if (this.step != 0) return;
-            try {
-                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
-                    this.stream = stream;
-                    localStorage.setItem('microphone', 'true');
-                    this.step = 1;
-                    this.showCurrentLevel();
-                });
-            } catch (e) {
-                alert("YOUR MICROPHONE DOESN'T WORKING! " + e);
-            }
-        });
-
-        this.button2.setInteractive().on('pointerdown', () => {
-            if (this.step != 0) return;
-            this.step = 1;
-            this.stream = null;
-            this.showCurrentLevel();
-        });
-
-    }
-
-    level1() {
-        // MAKE GROUP FOR LEVEL
-        this.levelGroup = this.add.group();
-
-        // TEXT
-        var text = 'IF YOU WANT TO SHOW OFF YOUR NFT\nOR FIND YOUR NFT COMMUNITY ROOM\nPLEASE CONNECT METAMASK';
-        this.label = this.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px" });
-        this.levelGroup.add(this.label);
-        this.typeTextWithDelay(text);
-
-        // BUTTON WITH CONNECT TEXT
-        this.button1 = this.rexUI.add.label({
-            background: this.add.image(0, 0, 'background-button'),
-            text: this.add.text(0, 0, 'CONNECT', { fill: "#000000", fontSize: "24px" }),
-            space: {
-                left: 100,
-                right: 100,
-                top: 20,
-                bottom: 30
-            }
-        }).layout().setPosition(325, 350).setAlpha(0);
-
-        // BUTTON WITH CONTINUE AS GUEST TEXT
-        // this.button2 = this.rexUI.add.label({
-        //     background: this.add.image(0, 0, 'background-button'),
-        //     text: this.add.text(0, 0, 'CONTINUE AS GUEST', { fill: "#000000", fontSize: "24px" }),
-        //     space: {
-        //         left: 30,
-        //         right: 40,
-        //         top: 20,
-        //         bottom: 30
-        //     }
-        // }).layout().setPosition(325, 420).setAlpha(0);
-
-        const self = this;
-
-        // SET BUTTONS INTERCTIVE
-        this.button1.setInteractive().on('pointerdown', () => {
-            if (this.step != 1) return;
-
-            // connect to Moralis
-            this.startMoralis();
-
-            async function login() {
-                var user = Moralis.User.current();
-                self.progress.setAlpha(1);
-                if (!user) {
-                    self.label.setPosition(460, 460);
-                    self.label.text = 'CONNECTING YOUR METAMASK...'
-                    user = await Moralis.authenticate({
-                        signingMessage: "Log in using Moralis",
-                    })
-                        .then(function (user) {
-                            localStorage.setItem('Moralis', 'true');
-                            self.step = 2;
-                            self.user = user;
-                            self.showCurrentLevel();
-                            self.progress.setAlpha(0);
-                        })
-                        .catch(function (error) {
-                            self.progress.setAlpha(0);
-                            self.label.text = 'ERROR, TRY AGAIN'
-                            alert(error);
-                        });
-                } else {
-                    self.user = user;
-                    localStorage.setItem('Moralis', 'true');
-                    self.step = 2;
-                    self.progress.setAlpha(0);
-                    self.showCurrentLevel();
-                }
-            }
-            login();
-            self.button1.setAlpha(0);
-
-        });
-        // this.button2.setInteractive().on('pointerdown', () => {
-        //     if (this.step != 1) return;
-        //     this.step = 2;
-        //     this.useMoralis = false;
-        //     //Moralis = null;
-        //     this.showCurrentLevel();
-        // });
-
-    }
-
-
-    level2() {
-        const self = this;
-
-        // MAKE GROUP FOR LEVEL
-        this.levelGroup = this.add.group();
-
-        this.cats = this.add.image(500, 450, 'ailoverse-cats').setScale(0.2);
-        this.robots = this.add.image(600, 600, 'ailoverse-robots').setScale(0.2);
-        this.ailoverseText = this.add.text(500, 100, 'AILOVERSE', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
-        
-        this.levelGroup.add(this.cats);
-        this.levelGroup.add(this.robots);
-        // TEXT
-        var text = 'TO ENTER THE ROOM YOU SHOULD HAVE AILOVERSE NFT';
-        this.label = this.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px" });
-        this.levelGroup.add(this.label);
-        this.typeTextWithDelay(text);
-
-        // BUTTON WITH START TEXT
-        this.button1 = this.rexUI.add.label({
-            background: this.add.image(0, 0, 'background-button'),
-            text: this.add.text(0, 0, 'CHECK NFT', { fill: "#000000", fontSize: "24px" }),
-            space: {
-                left: 90,
-                right: 90,
-                top: 20,
-                bottom: 30
-            }
-        }).layout().setPosition(325, 300).setAlpha(0);
-
-        // SET BUTTONS INTERCTIVE
-        this.button1.setInteractive().on('pointerdown', () => {
-            if (this.step != 2) return;
-
-            self.progress.setAlpha(1);
-            self.button1.setAlpha(0);
-            self.label.setPosition(500, 480);
-            this.cats.setAlpha(0);
-            this.robots.setAlpha(0);
-            self.label.text = 'CHECKING YOUR NFT...'
-            this.checkNFT(self);
-        });
     }
 
     async checkNFT() {
@@ -334,6 +159,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         if (this.robots) {
             this.robots.x += 0.5;
         }
+        updateBuildship(this);
     }
 
 }

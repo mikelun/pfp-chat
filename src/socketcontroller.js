@@ -9,21 +9,18 @@ hashChats = [];
 
 module.exports = (io) => {
     io.on('connect', (socket) => {
-        console.log('a client is connected')
-
-
         // Initiate the connection process as soon as the client connects
 
         peers[socket.id] = socket
 
         // create new player and add him to players
-        socket.on('addPlayer', address => {
-            for (test in players) {
-                if (players[test].address == address) {
-                    socket.emit('playerExists')
-                    return;
-                }
-            }
+        socket.on('addPlayer', (address, room) => {
+            // for (test in players) {
+            //     if (players[test].address == address) {
+            //         socket.emit('playerExists')
+            //         return;
+            //     }
+            // }
             players[socket.id] = {
                 rotation: 0,
                 x: Math.floor(Math.random() * 100) + 100,
@@ -33,17 +30,26 @@ module.exports = (io) => {
                 playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
                 textureId: Math.floor(Math.random() * 50),
                 nft: null,
-                address: address
+                address: address,
+                room: room
             };
 
-            socket.emit('currentPlayers', players);
+            socket.join(room);
+
+            var sortPlayers = [];
+            for (var player in players) {
+                if (players[player].room == room) {
+                    sortPlayers.push(players[player]);
+                }
+            }
+            socket.emit('currentPlayers', sortPlayers);
+
+            // update all other players of the new player
+            socket.broadcast.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
         });
         
 
         
-
-        // update all other players of the new player
-        socket.broadcast.emit('newPlayer', players[socket.id]);
 
         // when a player moves, update the player data
         socket.on('playerMovement', function (movementData) {
@@ -51,7 +57,7 @@ module.exports = (io) => {
             players[socket.id].y = movementData.y;
             players[socket.id].rotation = movementData.rotation;
             // emit a message to all players about the player that moved
-            socket.broadcast.emit('playerMoved', players[socket.id]);
+            socket.broadcast.to(players[socket.id].room).emit('playerMoved', players[socket.id]);
         });
 
 
@@ -59,7 +65,7 @@ module.exports = (io) => {
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
-            io.emit('updatePlayerInfo', players[socket_id]);
+            io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
         })
 
 
@@ -87,10 +93,11 @@ module.exports = (io) => {
          */
         socket.on('disconnect', async function () {
             console.log('user disconnected: ', socket.id);
+            // emit a message to all players to remove this player
+            io.to(players[socket.id].room).emit('disconnected', socket.id);
             delete players[socket.id];
             delete peers[socket.id];
-            // emit a message to all players to remove this player
-            io.emit('disconnected', socket.id);
+            
         });
 
         /**
