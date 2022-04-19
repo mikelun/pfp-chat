@@ -1,3 +1,4 @@
+const { join, filter, values } = require("./data/nicknames");
 const nicknames = require("./data/nicknames");
 
 
@@ -7,8 +8,111 @@ players = {};
 
 hashChats = [];
 
-module.exports = (io) => {
-    io.on('connect', (socket) => {
+
+const buildSocket = (wss, ws) => {
+
+    // generate random id
+    const id = Math.random().toString(36).substring(7);
+
+    ws.send(JSON.stringify({ id }));
+
+    let currentRoom = null
+
+    const socket = {
+        id,
+        ws,
+        emit: (event, ...data) => {
+            console.log('emit', event, ...data);
+            ws.send(JSON.stringify({ event, data }));
+        },
+        on: (event, callback) => {
+            console.log('on', event);
+
+            ws.on('message', (_event) => {
+                const data = JSON.parse(_event);
+
+                console.log('received event', data.event, ...data.data);
+
+                if (data.event === event) {
+                    callback(...data.data);
+                }
+
+            });
+        },
+        join: (roomName) => {
+            currentRoom = roomName
+            console.log('joined', this.id, currentRoom)
+        },
+        broadcast: {
+            emit: (event, ...data) => {
+                console.log('broadcast emit', event, ...data)
+
+                wss.clients.forEach(client => {
+                    if (client === ws) {
+                        // skip broadcast to yourself
+                        return
+                    }
+
+                    client.send(JSON.stringify({ event, data }));
+                });
+            },
+            all: (event, ...data) => {
+                console.log('broadcast all', event, ...data)
+
+                wss.clients.forEach(client => {
+                    client.send(JSON.stringify({ event, data }));
+                });
+            },
+        },
+        getRoom: () => currentRoom,
+        room: {
+            emit: (event, ...data) => {
+                console.log('emit', currentRoom, event, ...data);
+
+                const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
+
+                console.log('room', thisRoomPeers.length)
+
+                thisRoomPeers.forEach(peer => {
+                    if (peer.ws === ws) {
+                        // skip broadcast to yourself
+                        return
+                    }
+
+                    try {
+                        peer.ws.send(JSON.stringify({ event, data }));
+                    } catch (e) {
+                        console.error(e)
+                    }
+                })
+            },
+            all: (event, ...data) => {
+                console.log('all', currentRoom, event, ...data);
+
+                const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
+
+                console.log('room', thisRoomPeers.length)
+
+                thisRoomPeers.forEach(peer => {
+                    try {
+                        peer.ws.send(JSON.stringify({ event, data }));
+                    } catch (e) {
+                        console.error(e)
+                    }
+                })
+            },
+        },
+    };
+
+    return socket;
+}
+
+const onConnect = (socket) => {
+        console.log('a client is connected', socket.id)
+
+        console.log('players', players)
+        console.log('players socket id', socket.id)
+
         // Initiate the connection process as soon as the client connects
 
         peers[socket.id] = socket
@@ -36,20 +140,24 @@ module.exports = (io) => {
 
             socket.join(room);
 
-            var sortPlayers = [];
-            for (var player in players) {
-                if (players[player].room == room) {
-                    sortPlayers.push(players[player]);
-                }
-            }
-            socket.emit('currentPlayers', sortPlayers);
+            const filteredPlayers = Object.values(players).filter(player => player.room == room)
+            // var sortPlayers = [];
+            // for (var player in players) {
+            //     if (players[player].room == room) {
+            //         sortPlayers.push(players[player]);
+            //     }
+            // }
+            socket.emit('currentPlayers', filteredPlayers);
 
             // update all other players of the new player
-            socket.broadcast.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
-        });
-        
+            socket.room.emit('newPlayer', players[socket.id]);
 
-        
+            // socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
+
+            // socket.broadcast.emit('newPlayer', players[socket.id]);
+        });
+
+        // update all other players of the new player
 
         // when a player moves, update the player data
         socket.on('playerMovement', function (movementData) {
@@ -57,15 +165,20 @@ module.exports = (io) => {
             players[socket.id].y = movementData.y;
             players[socket.id].rotation = movementData.rotation;
             // emit a message to all players about the player that moved
-            socket.broadcast.to(players[socket.id].room).emit('playerMoved', players[socket.id]);
+            socket.room.emit('playerMoved', players[socket.id]);
         });
 
 
         socket.on('updatePlayerInfo', (data, socket_id) => {
+            console.log('updatePlayerInfo', data, socket_id)
+            // if (!players[socket_id]) {
+            //     return
+            // }
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
-            io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
+            // TODO: update locally
+            socket.room.all('updatePlayerInfo', players[socket_id]);
         })
 
 
@@ -91,14 +204,17 @@ module.exports = (io) => {
         /**
          * remove the disconnected peer connection from all other connected clients
          */
-        socket.on('disconnect', async function () {
+        const onDisconnect = async function () {
             console.log('user disconnected: ', socket.id);
             // emit a message to all players to remove this player
-            io.to(players[socket.id].room).emit('disconnected', socket.id);
+            socket.room.emit('disconnected', socket.id);
+
             delete players[socket.id];
             delete peers[socket.id];
-            
-        });
+        };
+
+        socket.ws.onclose = onDisconnect;
+        socket.on('disconnect', onDisconnect);
 
         /**
          * Send message to client to initiate a connection
@@ -127,5 +243,10 @@ module.exports = (io) => {
             if (peers[id]) peers[id].emit('removeFromTalk', socket.id);
             if (peers[socket.id] )peers[socket.id].emit('removeFromTalk', id);
         });
-});
-};
+}
+
+module.exports = {
+    onConnect,
+    buildSocket,
+}
+

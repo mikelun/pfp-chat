@@ -3,6 +3,8 @@ import { Moralis } from 'moralis'
 import { ailoverseLevel0, ailoverseLevel1, ailoverseLevel2 } from './StartScene/ailoverse/ailoverse';
 import { buildshipLevel0, buildshipLevel1, buildshipLevel2, updateBuildship } from './StartScene/buildship/buildship';
 
+import { tryOr } from '../utils/utils';
+
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
         super({ key: "microphone" });
@@ -37,7 +39,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                     this.showCurrentLevel();
                     // this.progress.setAlpha(1);
                     // this.label = this.add.text(500, 480, 'CHECKING YOUR NFT...', { fill: "#ffffff", fontSize: "24px", align: "center" });
-                    // this.checkNFT();
+                    // this.checkAiloverseNFT();
                     //this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address });
                 });
             } catch (e) {
@@ -118,8 +120,21 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
     }
 
-    async checkNFT() {
-        const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address: "0x35a31fc46eed1f29ba18977e8a963325da882609" });
+    async checkAiloverseNFT() {
+        // take nft from location query
+        const ailoverse_token_address = "0xa0C7F1ae5B5A317B04e5b060c8fc1cfaCaB03F85";
+        const buildship_early_bird = "0x35a31fc46eed1f29ba18977e8a963325da882609";
+
+        // // parse querystring
+        // const query = window.location.search.substring(1);
+        // const [ nft ] = query.split("&");
+        // const [, token_address = ailoverse_token_address ] = nft.split("=");
+        const token_address = ailoverse_token_address
+
+        console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
+
+        const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
+
         if (total > 0) {
             this.label.text = 'YOU HAVE AILOVERSE NFT'
             this.step = 3;

@@ -40,7 +40,7 @@ module.exports = (app) => {
     });
 
     // get parametres after / 
-    app.get('/:param', (req, res) => {
+    app.get('/:room', (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'))
     })
 }

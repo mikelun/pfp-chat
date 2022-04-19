@@ -180,6 +180,6 @@ export function ailoverseLevel2(self, Moralis) {
         self.cats.setAlpha(0);
         self.robots.setAlpha(0);
         self.label.text = 'CHECKING YOUR NFT...'
-        self.checkNFT(self);
+        self.checkAiloverseNFT(self);
     });
 }
