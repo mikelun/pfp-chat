@@ -188,10 +188,10 @@ const onConnect = (socket) => {
         const onDisconnect = async function () {
             console.log('user disconnected: ', socket.id);
             // emit a message to all players to remove this player
+            socket.room.emit('disconnected', socket.id);
+
             delete players[socket.id];
             delete peers[socket.id];
-            // emit a message to all players to remove this player
-            socket.room.emit('disconnected', socket.id);
         };
 
         socket.ws.onclose = onDisconnect;
