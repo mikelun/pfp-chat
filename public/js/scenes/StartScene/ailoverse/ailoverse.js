@@ -4,7 +4,7 @@ export function ailoverseLevel0(self, Moralis) {
 
     // TEXT
     var text = 'Hello from OpenMetaverse!\nHere you can chat and chill with other players\nIf you want to say something, we need your microphone access\n';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px" });
+    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px"});
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
@@ -154,7 +154,7 @@ export function ailoverseLevel2(self, Moralis) {
     self.levelGroup.add(self.robots);
     // TEXT
     var text = 'TO ENTER THE ROOM YOU SHOULD HAVE AILOVERSE NFT';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px" });
+    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 

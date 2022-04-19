@@ -87,7 +87,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.skip = true;
         });
-        
+
         // SHOW LEVELS
         if (this.step < this.levels.length) {
             for (let i = 0; i < this.levels.length; i++) {
@@ -99,7 +99,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             const address = this.user.get('ethAddress');
             localStorage.setItem('lastVisit', 'true');
             // go to mainscene
-            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address, room: this.room});
+            this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address, room: this.room });
 
         }
 
@@ -122,28 +122,50 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
     async checkAiloverseNFT() {
         // take nft from location query
-        const ailoverse_token_address = "0xa0C7F1ae5B5A317B04e5b060c8fc1cfaCaB03F85";
+        const ailoverse_token_address_robots = "0xa4ccd65a4d2b07b5f5573ba97876ac640a4d45a5";
+        const ailoverse_token_address_cats = "0xb9288fc06e7e10f6a14c528d7f1f226810a81a1f";
         const buildship_early_bird = "0x35a31fc46eed1f29ba18977e8a963325da882609";
 
         // // parse querystring
         // const query = window.location.search.substring(1);
         // const [ nft ] = query.split("&");
         // const [, token_address = ailoverse_token_address ] = nft.split("=");
-        const token_address = ailoverse_token_address
+        //const token_address = ailoverse_token_address
+        const result1 = await this.checkNFT(ailoverse_token_address_cats);
+        const result2 = await this.checkNFT(ailoverse_token_address_robots)
 
-        console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
-
-        const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
-
-        if (total > 0) {
+        if (result1 || result2) {
             this.label.text = 'YOU HAVE AILOVERSE NFT'
             this.step = 3;
             this.showCurrentLevel();
             this.progress.setAlpha(0);
         } else {
-            this.label.text = 'YOU DONT HAVE AILOVERSE NFT'
+            this.label.x -= 100;
+            this.label.text = 'YOU DONT HAVE AILOVERSE NFT\nYOU CAN VISIT MAIN ROOM WITHOUT NFT'
+            // BUTTON WITH HREF TEXT
+            this.continueButton = this.rexUI.add.label({
+                background: this.add.image(0, 0, 'background-button'),
+                text: this.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px" }),
+                space: {
+                    left: 90,
+                    right: 90,
+                    top: 20,
+                    bottom: 30
+                }
+            }).layout().setPosition(650, 600);
+
+            this.continueButton.setInteractive().on('pointerdown', () => {
+                // load page href
+                window.location.href = window.location.origin;
+            });
             //self.progress.setAlpha(0);
         }
+    }
+
+    async checkNFT(token_address) {
+        console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
+        const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
+        return total > 0;
     }
 
     typeTextWithDelay(text) {

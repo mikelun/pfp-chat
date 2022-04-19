@@ -142,7 +142,7 @@ export function buildshipLevel1(self, Moralis) {
 export function buildshipLevel2(self, Moralis) {
     // MAKE GROUP FOR LEVEL
     self.levelGroup = self.add.group();
-    
+
     self.buildship = self.add.image(700, 600, 'buildship').setScale(0.3);
     self.fire = self.add.sprite(100, 100, 'blue-fire').setRotation(-3.14 / 4 + 3 * 3.14 / 2).setScale(0.3);
     // add animation with 6 frames
@@ -156,7 +156,7 @@ export function buildshipLevel2(self, Moralis) {
     self.levelGroup.add(self.buildship);
     self.levelGroup.add(self.fire);
 
-    self.buildshipText = self.add.text(500, 100, 'BUILDSHIP.XYZ', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
+    self.buildshipText = self.add.text(470, 60, 'BUILDSHIP.XYZ', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
 
     // TEXT
     var text = 'This is the main room! You can enter without any NFT :)';
