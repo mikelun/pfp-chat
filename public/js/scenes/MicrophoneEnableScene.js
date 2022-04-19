@@ -296,10 +296,19 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     async checkNFT() {
-        // take token_address from location query
-        const ailoverse_token_address = "0x35a31fc46eed1f29ba18977e8a963325da882609";
-        const token_address = tryOr(() => this.location.search.split('token_address=')[1], ailoverse_token_address);
+        // take nft from location query
+        const ailoverse_token_address = "0xa0C7F1ae5B5A317B04e5b060c8fc1cfaCaB03F85";
+        const buildship_early_bird = "0x35a31fc46eed1f29ba18977e8a963325da882609";
+
+        // parse querystring
+        const query = window.location.search.substring(1);
+        const [ nft ] = query.split("&");
+        const [ , token_address = ailoverse_token_address ] = nft.split("=");
+
+        console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
+
         const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
+
         if (total > 0) {
             this.label.text = 'YOU HAVE AILOVERSE NFT'
             this.step = 3;

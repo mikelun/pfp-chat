@@ -4,9 +4,9 @@
  */
 import Phaser from "phaser";
 
-export const tryOr = (fn, defaultValue) => {
+export const tryOr = async (fn, defaultValue) => {
     try {
-        return fn();
+        return await fn();
     }
     catch (e) {
         return defaultValue;
