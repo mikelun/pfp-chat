@@ -128,7 +128,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         // parse querystring
         const query = window.location.search.substring(1);
         const [ nft ] = query.split("&");
-        const [ , token_address = ailoverse_token_address ] = nft.split("=");
+        const [, token_address = buildship_early_bird ] = nft.split("=");
 
         console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
 
