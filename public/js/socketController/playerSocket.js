@@ -107,6 +107,7 @@ function removePeer(socket_id) {
 //////////////////// INTERECTING WITH GAME
 
 function addPlayer(self, playerInfo) {
+    sceneEvents.emit('updateRoomText', self.room)    
     // IF PLAYER DISCONNECTED AND AFTER RECONNECTED
     if (self.errors) {
         if (self.errors.getChildren().length > 0) {

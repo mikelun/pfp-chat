@@ -28,7 +28,7 @@ export class GameUi extends Phaser.Scene {
         const height = this.game.config.height;
 
         // ADD ROOM TEXT
-        this.roomText = this.add.text(width / 2 - 100, 50, 'Room:  AILOVERSE', { fontSize: '24px', fill: "#ffffff", fontFamily: 'PixelFont' });
+        this.roomText = this.add.text(width / 2 - 100, 50, '', { fontSize: '24px', fill: "#ffffff", fontFamily: 'PixelFont' });
 
         // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
@@ -84,11 +84,16 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('getNFTsFromPageResult', this.addNFTsForPage, this);
 
+        sceneEvents.on('updateRoomText', this.updateRoomText, this);
+
         // ADD PANEL FOR NFTS
         this.makePanelForNFTs();
 
     }
 
+    updateRoomText(room) {
+        this.roomText.setText(`Room: ${room.toUpperCase()}`);
+    }
     getNFTPanelStatus() {
         return this.panelNFTs.getChildren()[0].alpha == 0 ? false : true;
     }

@@ -1,3 +1,4 @@
+const { join, filter, values } = require("./data/nicknames");
 const nicknames = require("./data/nicknames");
 
 
@@ -18,6 +19,7 @@ const buildSocket = (wss, ws) => {
     const socket = {
         id,
         ws,
+        room: null,
         emit: (event, ...data) => {
             console.log('emit', event, ...data);
             ws.send(JSON.stringify({ event, data }));
@@ -35,6 +37,9 @@ const buildSocket = (wss, ws) => {
                 }
 
             });
+        },
+        join: function (roomName) {
+            this.room = roomName
         },
         broadcast: {
             emit: (event, ...data) => {
@@ -57,6 +62,27 @@ const buildSocket = (wss, ws) => {
                 });
             },
         },
+        room: {
+            emit: function (event, ...data) {
+                const thisRoomPeers = Object.values(peers).filter(p => p.room === this.room)
+
+                thisRoomPeers.forEach(client => {
+                    if (client === ws) {
+                        // skip broadcast to yourself
+                        return
+                    }
+
+                    client.send(JSON.stringify({ event, data }));
+                })
+            },
+            all: function (roomName, event, ...data) {
+                const thisRoomPeers = Object.values(peers).filter(p => p.room === this.room)
+
+                thisRoomPeers.forEach(client => {
+                    client.send(JSON.stringify({ event, data }));
+                })
+            },
+        },
     };
 
     return socket;
@@ -73,13 +99,13 @@ const onConnect = (socket) => {
         peers[socket.id] = socket
 
         // create new player and add him to players
-        socket.on('addPlayer', address => {
-            for (test in players) {
-                if (players[test].address == address) {
-                    socket.emit('playerExists')
-                    return;
-                }
-            }
+        socket.on('addPlayer', (address, room) => {
+            // for (test in players) {
+            //     if (players[test].address == address) {
+            //         socket.emit('playerExists')
+            //         return;
+            //     }
+            // }
             players[socket.id] = {
                 rotation: 0,
                 x: Math.floor(Math.random() * 100) + 100,
@@ -89,12 +115,27 @@ const onConnect = (socket) => {
                 playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
                 textureId: Math.floor(Math.random() * 50),
                 nft: null,
-                address: address
+                address: address,
+                room: room
             };
 
-            socket.emit('currentPlayers', players);
+            socket.join(room);
 
-            socket.broadcast.emit('newPlayer', players[socket.id]);
+            const filteredPlayers = Object.values(players).filter(player => player.room == room)
+            // var sortPlayers = [];
+            // for (var player in players) {
+            //     if (players[player].room == room) {
+            //         sortPlayers.push(players[player]);
+            //     }
+            // }
+            socket.emit('currentPlayers', filteredPlayers);
+
+            // update all other players of the new player
+            socket.room.emit('newPlayer', players[socket.id]);
+
+            // socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
+
+            // socket.broadcast.emit('newPlayer', players[socket.id]);
         });
 
         // update all other players of the new player
@@ -105,7 +146,7 @@ const onConnect = (socket) => {
             players[socket.id].y = movementData.y;
             players[socket.id].rotation = movementData.rotation;
             // emit a message to all players about the player that moved
-            socket.broadcast.emit('playerMoved', players[socket.id]);
+            socket.room.emit('playerMoved', players[socket.id]);
         });
 
 
@@ -117,7 +158,8 @@ const onConnect = (socket) => {
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
-            socket.broadcast.all('updatePlayerInfo', players[socket_id]);
+            // TODO: update locally
+            socket.room.all('updatePlayerInfo', players[socket_id]);
         })
 
 
@@ -145,10 +187,11 @@ const onConnect = (socket) => {
          */
         const onDisconnect = async function () {
             console.log('user disconnected: ', socket.id);
+            // emit a message to all players to remove this player
             delete players[socket.id];
             delete peers[socket.id];
             // emit a message to all players to remove this player
-            socket.broadcast.all('disconnected', socket.id);
+            socket.room.emit('disconnected', socket.id);
         };
 
         socket.ws.onclose = onDisconnect;

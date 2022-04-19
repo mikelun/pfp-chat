@@ -16,7 +16,7 @@ export async function initializeSocket(self, peers) {
     // Initialize player socket
     initializePlayersSocket(self, peers);
 
-    self.socket.emit('addPlayer', self.address);
+    self.socket.emit('addPlayer', self.address, self.room);
 
     self.socket.on('playerExists', () => {
         self.cameras.main.shake(500, 0.01);

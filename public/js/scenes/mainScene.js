@@ -37,6 +37,7 @@ export class MainScene extends Phaser.Scene {
             }
         }
         
+        this.room = data.room;
         // ADD MORALIS FOR BLOCKCHAIN
         this.moralis = data.moralis;
 
@@ -52,6 +53,8 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+
+
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
 
