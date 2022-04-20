@@ -17,9 +17,15 @@ export async function initializeSocket(self, peers) {
     // Initialize player socket
     initializePlayersSocket(self, peers);
 
-    const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
+    var playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
 
-    console.log('fetched player info from local storage', playerInfo)
+    // if player has changed room, remove old player
+    if (playerInfo && playerInfo.room !== self.room) {
+        // remove playerInfo from localStorage
+        localStorage.removeItem('playerInfo');
+        playerInfo = null;
+    }
+    
 
     self.socket.emit('addPlayer', self.address, self.room, playerInfo);
 
@@ -43,13 +49,11 @@ export async function initializeSocket(self, peers) {
         // if (self.errors.getChildren().length) { return }
         // save player avatar and coordinates to local storage
         const playerInfo = {
-            playerName: self.player.name,
             x: self.player.x - self.playerAddX,
             y: self.player.y - self.playerAddY,
             textureId: self.textureId,
-            // address: self.address, // TODO: check if better to save
-            room: self.room,
-            nft: self.nft
+            nft: self.nft, 
+            room: self.room
         };
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
 

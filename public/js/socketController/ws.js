@@ -33,22 +33,22 @@ export const connect = async (sec = 1, isReconnect = false) => {
     }
 
     socket.emit = (event, ...data) => {
-        console.log('emit', event, ...data);
+        //console.log('emit', event, ...data);
         ws.send(JSON.stringify({ event, data }));
     }
 
     socket.on = function (event, callback) {
-        console.log('on', event);
+        //console.log('on', event);
         socket.events.push({ event, callback });
     }
 
     socket.off = function (event) {
-        console.log('off', event);
+        //console.log('off', event);
         socket.events = socket.events.filter(e => e.event !== event);
     }
 
     socket.forceEvent = async function (event, ...data) {
-        console.log('forceEvent', event, ...data);
+        //console.log('forceEvent', event, ...data);
 
         const hasEvent = socket.events.find(e => e.event === event);
 
@@ -94,7 +94,7 @@ export const connect = async (sec = 1, isReconnect = false) => {
 
             if (data.id) {
                 socket.id = data.id;
-                console.log('received id', data.id);
+                //console.log('received id', data.id);
                 resolve(data.id);
 
                 if (isReconnect) {
@@ -119,7 +119,7 @@ export const connect = async (sec = 1, isReconnect = false) => {
                 return;
             }
 
-            console.log('received event', data.event, ...data.data);
+            //console.log('received event', data.event, ...data.data);
 
             socket.events.forEach(({ event: _event, callback: _callback }) => {
                 if (data.event === _event) {

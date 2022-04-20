@@ -36,7 +36,7 @@ export class MainScene extends Phaser.Scene {
                 this.localStream.getAudioTracks()[index].enabled = false;
             }
         }
-        
+
         this.room = data.room;
         // ADD MORALIS FOR BLOCKCHAIN
         this.moralis = data.moralis;
@@ -114,6 +114,10 @@ export class MainScene extends Phaser.Scene {
             sendPlayerPosition(this, time);
 
             updatePeopleForTalk(this);
+
+            // update local storage every 1 second
+            updateLocalStorage(this, time);
+
         }
 
         // update other players positions with interpolation
@@ -184,6 +188,19 @@ function updatePeopleForTalk(self) {
             }
         });
     }
+}
 
-
+function updateLocalStorage(self, time) {
+    let currentTime = Math.floor(time / 1000);
+    if (currentTime != self.lastTimeLocalStorage) {
+        const playerInfo = {
+            x: self.player.x - self.playerAddX,
+            y: self.player.y - self.playerAddY,
+            textureId: self.textureId,
+            nft: self.nft,
+            room: self.room
+        };
+        localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
+    }
+    self.lastTimeLocalStorage = currentTime;
 }
