@@ -2,6 +2,7 @@ import { initializeAudio, removePeer } from '../socketController/audioSocket';
 import { initializePlayersSocket } from '../socketController/playerSocket';
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
 import { connect } from './ws';
+import { tryOr } from '../utils/utils';
 
 /**
  * Initialize socket and connect to server by socket.io
@@ -16,19 +17,19 @@ export async function initializeSocket(self, peers) {
     // Initialize player socket
     initializePlayersSocket(self, peers);
 
-    // const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
+    const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
 
-    // console.log('fetched player info from local storage', playerInfo)
+    console.log('fetched player info from local storage', playerInfo)
 
-    self.socket.emit('addPlayer', self.address, self.room);
+    self.socket.emit('addPlayer', self.address, self.room, playerInfo);
 
     self.socket.on('reconnect', async () => {
         // fetch player avatar and coordinates from local storage
-        // const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
+        const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
 
-        // console.log('fetched player info from local storage', playerInfo)
+        console.log('fetched player info from local storage', playerInfo)
 
-        self.socket.emit('addPlayer', self.address, self.room);
+        self.socket.emit('addPlayer', self.address, self.room, playerInfo);
     })
 
     self.socket.on('playerExists', () => {
@@ -39,6 +40,19 @@ export async function initializeSocket(self, peers) {
 
     // IF PLAYER DISCONNECTED
     self.socket.on('disconnect', () => {
+        // if (self.errors.getChildren().length) { return }
+        // save player avatar and coordinates to local storage
+        const playerInfo = {
+            playerName: self.player.name,
+            x: self.player.x - self.playerAddX,
+            y: self.player.y - self.playerAddY,
+            textureId: self.textureId,
+            // address: self.address, // TODO: check if better to save
+            room: self.room,
+            nft: self.nft
+        };
+        localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
+
         self.errors = self.add.group();
         self.errors.add(self.add.rectangle(0, 0, 10_000, 10_000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));

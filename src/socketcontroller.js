@@ -118,7 +118,7 @@ const onConnect = (socket) => {
         peers[socket.id] = socket
 
         // create new player and add him to players
-        socket.on('addPlayer', (address, room) => {
+        socket.on('addPlayer', (address, room, playerInfo) => {
             // for (test in players) {
             //     if (players[test].address == address) {
             //         socket.emit('playerExists')
@@ -126,16 +126,19 @@ const onConnect = (socket) => {
             //     }
             // }
             players[socket.id] = {
-                rotation: 0,
-                x: Math.floor(Math.random() * 100) + 100,
-                y: 850,
-                playerId: socket.id,
-                microphoneStatus: false,
-                playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
-                textureId: Math.floor(Math.random() * 50),
-                nft: null,
-                address: address,
-                room: room
+                ...{
+                    rotation: 0,
+                    x: Math.floor(Math.random() * 100) + 100,
+                    y: 850,
+                    playerId: socket.id,
+                    microphoneStatus: false,
+                    playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
+                    textureId: Math.floor(Math.random() * 50),
+                    nft: null,
+                    address: address,
+                    room: room
+                },
+                ...playerInfo,
             };
 
             socket.join(room);
