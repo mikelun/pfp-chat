@@ -119,12 +119,12 @@ const onConnect = (socket) => {
 
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
-            // for (test in players) {
-            //     if (players[test].address == address) {
-            //         socket.emit('playerExists')
-            //         return;
-            //     }
-            // }
+            for (test in players) {
+                if (players[test].address == address) {
+                    socket.emit('playerExists')
+                    return;
+                }
+            }
             players[socket.id] = {
                 ...{
                     rotation: 0,
