@@ -85,6 +85,9 @@ export class PreloadScene extends Phaser.Scene {
             frameHeight: 556,
         })
 
+        // LOAD PENGUIN
+        this.load.image('penguin', 'assets/penguin/penguin.png');
+
         this.load.image('buildship', 'assets/buildship/buildship.png')
 
 

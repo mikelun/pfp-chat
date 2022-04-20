@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import { Moralis } from 'moralis'
 import { ailoverseLevel0, ailoverseLevel1, ailoverseLevel2 } from './StartScene/ailoverse/ailoverse';
 import { buildshipLevel0, buildshipLevel1, buildshipLevel2, updateBuildship } from './StartScene/buildship/buildship';
-
+import { pinguinLevel0, pinguinLevel1, pinguinLevel2 } from './StartScene/pinguins/pinguin';
 import { tryOr } from '../utils/utils';
 
 const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffE06cb4807917bd79382981f23d16A70C102c3B", "0x653d8554B690d54EA447aD82C933A6851CC35BF2"];
@@ -67,7 +67,10 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
         if (this.room == 'ailoverse') {
             this.levels = [ailoverseLevel0, ailoverseLevel1, ailoverseLevel2];
-        } else {
+        } else if (this.room == 'pudgy-penguin') {
+            this.levels = [pinguinLevel0, pinguinLevel1, pinguinLevel2];
+        }
+        else {
             this.room = 'buildship';
             this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
         }
@@ -123,7 +126,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
     async checkAiloverseNFT() {
         const address = this.user.get('ethAddress');
-        
+
         // take nft from location query
         const ailoverse_token_address_robots = "0xa4ccd65a4d2b07b5f5573ba97876ac640a4d45a5";
         const ailoverse_token_address_cats = "0xb9288fc06e7e10f6a14c528d7f1f226810a81a1f";
@@ -164,6 +167,40 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             //self.progress.setAlpha(0);
         }
     }
+
+    async checkNFTForProject(token_address) {
+        const address = this.user.get('ethAddress');
+
+        const result1 = await this.checkNFT(token_address);
+
+        if (result1 || creators.includes(address)) {
+            this.label.text = 'YOU HAVE PUDGY PENGUIN NFT'
+            this.step = 3;
+            this.showCurrentLevel();
+            this.progress.setAlpha(0);
+        } else {
+            this.label.x -= 100;
+            this.label.text = 'YOU DONT HAVE PUDGY PENGUIN NFT\nYOU CAN VISIT MAIN ROOM WITHOUT NFT'
+            // BUTTON WITH HREF TEXT
+            this.continueButton = this.rexUI.add.label({
+                background: this.add.image(0, 0, 'background-button'),
+                text: this.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px" }),
+                space: {
+                    left: 90,
+                    right: 90,
+                    top: 20,
+                    bottom: 30
+                }
+            }).layout().setPosition(650, 600);
+
+            this.continueButton.setInteractive().on('pointerdown', () => {
+                // load page href
+                window.location.href = window.location.origin;
+            });
+            //self.progress.setAlpha(0);
+        }
+    }
+
 
     async checkNFT(token_address) {
         console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
