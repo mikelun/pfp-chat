@@ -3,7 +3,7 @@ import { Moralis } from 'moralis'
 import { ailoverseLevel0, ailoverseLevel1, ailoverseLevel2 } from './StartScene/ailoverse/ailoverse';
 import { buildshipLevel0, buildshipLevel1, buildshipLevel2, updateBuildship } from './StartScene/buildship/buildship';
 import { pinguinLevel0, pinguinLevel1, pinguinLevel2 } from './StartScene/pinguins/pinguin';
-import { tryOr } from '../utils/utils';
+import { witchesLevel0, witchesLevel1, witchesLevel2 } from './StartScene/witches/witches';
 
 const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffE06cb4807917bd79382981f23d16A70C102c3B", "0x653d8554B690d54EA447aD82C933A6851CC35BF2"];
 export class MicrophoneEnableScene extends Phaser.Scene {
@@ -67,10 +67,11 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
         if (this.room == 'ailoverse') {
             this.levels = [ailoverseLevel0, ailoverseLevel1, ailoverseLevel2];
-        } else if (this.room == 'pudgy-penguin') {
+        } else if (this.room == 'pudgy-penguin' || this.room == 'pudgy-penguins') {
             this.levels = [pinguinLevel0, pinguinLevel1, pinguinLevel2];
-        }
-        else {
+        } else if (this.room == 'cryptocoven') {
+            this.levels = [witchesLevel0, witchesLevel1, witchesLevel2];
+        } else {
             this.room = 'buildship';
             this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
         }
