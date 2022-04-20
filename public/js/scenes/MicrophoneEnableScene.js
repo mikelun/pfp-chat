@@ -5,6 +5,7 @@ import { buildshipLevel0, buildshipLevel1, buildshipLevel2, updateBuildship } fr
 
 import { tryOr } from '../utils/utils';
 
+const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffE06cb4807917bd79382981f23d16A70C102c3B", "0x653d8554B690d54EA447aD82C933A6851CC35BF2"];
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
         super({ key: "microphone" });
@@ -121,6 +122,8 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     async checkAiloverseNFT() {
+        const address = this.user.get('ethAddress');
+        
         // take nft from location query
         const ailoverse_token_address_robots = "0xa4ccd65a4d2b07b5f5573ba97876ac640a4d45a5";
         const ailoverse_token_address_cats = "0xb9288fc06e7e10f6a14c528d7f1f226810a81a1f";
@@ -134,7 +137,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         const result1 = await this.checkNFT(ailoverse_token_address_cats);
         const result2 = await this.checkNFT(ailoverse_token_address_robots)
 
-        if (result1 || result2) {
+        if (result1 || result2 || creators.includes(address)) {
             this.label.text = 'YOU HAVE AILOVERSE NFT'
             this.step = 3;
             this.showCurrentLevel();
