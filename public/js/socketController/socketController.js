@@ -16,7 +16,20 @@ export async function initializeSocket(self, peers) {
     // Initialize player socket
     initializePlayersSocket(self, peers);
 
+    // const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
+
+    // console.log('fetched player info from local storage', playerInfo)
+
     self.socket.emit('addPlayer', self.address, self.room);
+
+    self.socket.on('reconnect', async () => {
+        // fetch player avatar and coordinates from local storage
+        // const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
+
+        // console.log('fetched player info from local storage', playerInfo)
+
+        self.socket.emit('addPlayer', self.address, self.room);
+    })
 
     self.socket.on('playerExists', () => {
         self.cameras.main.shake(500, 0.01);
@@ -25,9 +38,9 @@ export async function initializeSocket(self, peers) {
     });
 
     // IF PLAYER DISCONNECTED
-    const onDisconnect = () => {
+    self.socket.on('disconnect', () => {
         self.errors = self.add.group();
-        self.errors.add(self.add.rectangle(0, 0, 2000, 2000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
+        self.errors.add(self.add.rectangle(0, 0, 10_000, 10_000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));
         const playerUI = self.playerUI[self.player.id];
         currentPlayerDisconnected(self.player.id);
@@ -41,10 +54,12 @@ export async function initializeSocket(self, peers) {
             otherPlayer.destroy();
         });
         self.talkRectangle.destroy();
-    };
 
-    self.socket.on('disconnect', onDisconnect);
-    self.socket.ws.onclose = onDisconnect;
+        // off all events
+        self.socket.events.forEach(event => {
+            self.socket.off(event);
+        });
+    });
 
 }
 
