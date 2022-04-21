@@ -27,7 +27,7 @@ export const connect = async (sec = 1, isReconnect = false) => {
         console.log(`Reconnecting to server in ${sec} seconds...`)
 
         setTimeout(() => {
-            const cappedTimeout = Math.min(60, sec * 2)
+            const cappedTimeout = Math.min(4, sec * 2)
             connect(cappedTimeout, true)
         }, sec * 1000)
     }

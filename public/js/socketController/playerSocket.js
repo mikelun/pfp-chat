@@ -21,7 +21,6 @@ export function initializePlayersSocket(anotherSelf, _peers) {
         Object.keys(players).forEach(function (id) {
             if (players[id].playerId === self.socket.id) {
                 addPlayer(self, players[id]);
-                sceneEvents.emit('currentPlayers', players[id]);
             } else {
                 addOtherPlayers(self, players[id]);
             }
@@ -153,6 +152,8 @@ function addPlayer(self, playerInfo) {
             }
         });
     });
+
+    showPlayersToTalk();
 
     addPhysicsForScene(self, self.mapId);
 

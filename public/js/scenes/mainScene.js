@@ -53,8 +53,8 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
-        localStorage.removeItem('playerInfo');
-        
+        //localStorage.removeItem('playerInfo');
+        //localStorage.clear();
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
 
@@ -198,7 +198,7 @@ function updateLocalStorage(self, time) {
             y: self.player.y,
             textureId: self.textureId,
             nft: self.nft,
-            room: self.room
+            room: self.room,
         };
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
         console.log(playerInfo.x, playerInfo.y);
