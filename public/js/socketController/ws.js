@@ -24,7 +24,6 @@ export const connect = async (sec = 1, isReconnect = false) => {
     window.socket.id = null;
 
     const reconnect = () => {
-        window.location.reload();
         console.log(`Reconnecting to server in ${sec} seconds...`)
 
         setTimeout(() => {
