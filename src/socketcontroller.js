@@ -17,7 +17,7 @@ const startPoints = {
         "x": 830,
         "y": 2430
     },
-    "pudgy-penguin":{
+    "pudgy-penguins":{
         "x": 830,
         "y": 2430
     },

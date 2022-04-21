@@ -148,13 +148,13 @@ export function pinguinLevel2(self, Moralis) {
 
     self.penguin = self.add.image(600, 500, 'penguin').setScale(0.5);
     //self.robots = self.add.image(600, 600, 'ailoverse-robots').setScale(0.2);
-    self.ailoverseText = self.add.text(470, 100, 'PUDGY PENGUIN', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
+    self.ailoverseText = self.add.text(440, 100, 'PUDGY PENGUINS', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
     
     //self.levelGroup.add(self.cats);
     //self.levelGroup.add(self.robots);
     // TEXT
-    var text = 'TO ENTER THE ROOM YOU SHOULD HAVE PUDGY PENGUIN NFT';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
+    var text = 'TO ENTER THE ROOM YOU SHOULD HAVE PUDGY PENGUINS NFT';
+    self.label = self.add.text(270, 200, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
@@ -168,7 +168,7 @@ export function pinguinLevel2(self, Moralis) {
             top: 20,
             bottom: 30
         }
-    }).layout().setPosition(325, 300).setAlpha(0);
+    }).layout().setPosition(650, 300).setAlpha(0);
 
     // SET BUTTONS INTERCTIVE
     self.button1.setInteractive().on('pointerdown', () => {
