@@ -18,7 +18,7 @@ export async function initializeSocket(self, peers) {
     initializePlayersSocket(self, peers);
 
     var playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
-
+    
     // if player has changed room, remove old player
     if (playerInfo && playerInfo.room !== self.room) {
         // remove playerInfo from localStorage
