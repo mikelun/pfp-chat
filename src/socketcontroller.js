@@ -167,14 +167,12 @@ const onConnect = (socket) => {
 
             socket.join(room);
 
-            const filteredPlayers = Object.values(players).filter(player => player.room == room)
-            // var sortPlayers = [];
-            // for (var player in players) {
-            //     if (players[player].room == room) {
-            //         sortPlayers.push(players[player]);
-            //     }
-            // }
+            const filteredPlayers = Object.values(players).filter(player => player.room === room)
+
             console.log("FILTERED PLAYERS -------------------", filteredPlayers);
+            console.log('ALL PLAYERS ---------', Object.values(players))
+            console.log('CURRENT ROOM -----', room);
+            console.log('ALL CURRENT ROOMS', Object.values(players).map(p => p.room));
         
             socket.emit('currentPlayers', filteredPlayers);
 
@@ -207,6 +205,9 @@ const onConnect = (socket) => {
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
+            // TODO: do we need this?
+            if (data.room != null) players[socket_id].room = data.room;
+
             // TODO: update locally
             socket.room.all('updatePlayerInfo', players[socket_id]);
         })
@@ -243,7 +244,6 @@ const onConnect = (socket) => {
             delete peers[socket.id];
         };
 
-        socket.ws.onclose = onDisconnect;
         socket.on('disconnect', onDisconnect);
 
         /**
