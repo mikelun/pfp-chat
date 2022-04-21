@@ -40,16 +40,16 @@ const buildSocket = (wss, ws) => {
         id,
         ws,
         emit: (event, ...data) => {
-            //console.log('emit', event, ...data);
+            console.log('emit', event, ...data);
             ws.send(JSON.stringify({ event, data }));
         },
         on: (event, callback) => {
-            //console.log('on', event);
+            console.log('on', event);
 
             ws.on('message', (_event) => {
                 const data = JSON.parse(_event);
 
-                //console.log('received event', data.event, ...data.data);
+                console.log('received event', data.event, ...data.data);
 
                 if (data.event === event) {
                     callback(...data.data);
@@ -63,7 +63,7 @@ const buildSocket = (wss, ws) => {
         },
         broadcast: {
             emit: (event, ...data) => {
-                //console.log('broadcast emit', event, ...data)
+                console.log('broadcast emit', event, ...data)
 
                 wss.clients.forEach(client => {
                     if (client === ws) {
@@ -75,7 +75,7 @@ const buildSocket = (wss, ws) => {
                 });
             },
             all: (event, ...data) => {
-                //console.log('broadcast all', event, ...data)
+                console.log('broadcast all', event, ...data)
 
                 wss.clients.forEach(client => {
                     client.send(JSON.stringify({ event, data }));
@@ -89,12 +89,12 @@ const buildSocket = (wss, ws) => {
 
                 const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
 
-                //console.log(thisRoomPeers);
-                //console.log('room', thisRoomPeers.length);
+                console.log(thisRoomPeers);
+                console.log('room', thisRoomPeers.length);
 
 
                 thisRoomPeers.forEach(peer => {
-                    //console.log("SENDING TO PEER", peer.id, peer.getRoom(), event);
+                    console.log("SENDING TO PEER", peer.id, peer.getRoom(), event);
                     if (peer.ws === ws) {
                         // skip broadcast to yourself
                         return
@@ -102,7 +102,7 @@ const buildSocket = (wss, ws) => {
 
                     try {
                         // trying to send to peer
-                        //console.log("SENDING TO PEER", peer.id, peer.getRoom(), event);
+                        console.log("SENDING TO PEER", peer.id, peer.getRoom(), event);
                         peer.ws.send(JSON.stringify({ event, data }));
                     } catch (e) {
                         console.error(e)
@@ -110,11 +110,11 @@ const buildSocket = (wss, ws) => {
                 })
             },
             all: (event, ...data) => {
-                //console.log('all', currentRoom, event, ...data);
+                console.log('all', currentRoom, event, ...data);
 
                 const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
 
-                //console.log('room', thisRoomPeers.length)
+                console.log('room', thisRoomPeers.length)
 
                 thisRoomPeers.forEach(peer => {
                     try {
@@ -200,7 +200,7 @@ const onConnect = (socket) => {
 
 
         socket.on('updatePlayerInfo', (data, socket_id) => {
-            //console.log('updatePlayerInfo', data, socket_id)
+            console.log('updatePlayerInfo', data, socket_id)
             // if (!players[socket_id]) {
             //     return
             // }

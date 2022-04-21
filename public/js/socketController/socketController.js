@@ -18,7 +18,7 @@ export async function initializeSocket(self, peers) {
     initializePlayersSocket(self, peers);
 
     var playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
-    
+
     // if player has changed room, remove old player
     if (playerInfo && playerInfo.room !== self.room) {
         // remove playerInfo from localStorage
@@ -33,7 +33,7 @@ export async function initializeSocket(self, peers) {
         // fetch player avatar and coordinates from local storage
         const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
 
-        //console.log('fetched player info from local storage', playerInfo)
+        console.log('fetched player info from local storage', playerInfo)
 
         self.socket.emit('addPlayer', self.address, self.room, playerInfo);
     })
