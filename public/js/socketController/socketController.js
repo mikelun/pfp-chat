@@ -33,7 +33,7 @@ export async function initializeSocket(self, peers) {
         // fetch player avatar and coordinates from local storage
         const playerInfo = await tryOr(() => JSON.parse(localStorage.getItem('playerInfo')), null);
 
-        console.log('fetched player info from local storage', playerInfo)
+        //console.log('fetched player info from local storage', playerInfo)
 
         self.socket.emit('addPlayer', self.address, self.room, playerInfo);
     })
@@ -49,8 +49,8 @@ export async function initializeSocket(self, peers) {
         // if (self.errors.getChildren().length) { return }
         // save player avatar and coordinates to local storage
         const playerInfo = {
-            x: self.player.x - self.playerAddX,
-            y: self.player.y - self.playerAddY,
+            x: self.player.x,
+            y: self.player.y,
             textureId: self.textureId,
             nft: self.nft, 
             room: self.room

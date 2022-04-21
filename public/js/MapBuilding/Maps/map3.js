@@ -43,8 +43,8 @@ export function addMap3(self) {
    addAnimationForMap(self, surfVibeMap, pierTileset);
 
     // fix player position
-    self.playerAddX = 670;
-    self.playerAddY = 1580;
+    //self.playerAddX = 670;
+    //self.playerAddY = 1580;
 
     // ADDING ANIMALS
     self.dog2 = self.add.sprite(1100, 1340 + 850, 'cat1-Idle');

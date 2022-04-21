@@ -107,7 +107,8 @@ function removePeer(socket_id) {
 //////////////////// INTERECTING WITH GAME
 
 function addPlayer(self, playerInfo) {
-    sceneEvents.emit('updateRoomText', self.room)    
+    console.log("NEW PLAYER WITH COORDINATES: ", playerInfo.x, playerInfo.y);
+    sceneEvents.emit('updateRoomText', self.room)
     // IF PLAYER DISCONNECTED AND AFTER RECONNECTED
     if (self.errors) {
         if (self.errors.getChildren().length > 0) {
@@ -122,7 +123,7 @@ function addPlayer(self, playerInfo) {
     self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);
 
     self.textureId = playerInfo.textureId;
-    self.player = self.add.player(playerInfo.x + self.playerAddX, playerInfo.y + self.playerAddY, `characters${playerInfo.textureId}`);
+    self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     self.layer1.add(self.player);
     self.cameras.main.startFollow(self.player);
 
@@ -138,7 +139,7 @@ function addPlayer(self, playerInfo) {
 
     // END PLAYER UI
 
-    sceneEvents.emit("currentPlayers", playersList);
+    //sceneEvents.emit("currentPlayers", playersList);
 
     getPlayerNFT(self.moralis);
 
@@ -192,7 +193,7 @@ function addOtherPlayers(self, playerInfo) {
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor });
-    showPlayersToTalk()
+    //showPlayersToTalk()
 }
 
 const randColor = () => {

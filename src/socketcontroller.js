@@ -8,6 +8,24 @@ players = {};
 
 hashChats = [];
 
+const startPoints = {
+    "buildship":{
+        "x": 840,
+        "y": 2430
+    },
+    "cryptocoven":{
+        "x": 830,
+        "y": 2430
+    },
+    "pudgy-penguin":{
+        "x": 830,
+        "y": 2430
+    },
+    "ailoverse": {
+        "x": 830,
+        "y": 2430
+    }
+}
 
 const buildSocket = (wss, ws) => {
 
@@ -22,16 +40,16 @@ const buildSocket = (wss, ws) => {
         id,
         ws,
         emit: (event, ...data) => {
-            console.log('emit', event, ...data);
+            //console.log('emit', event, ...data);
             ws.send(JSON.stringify({ event, data }));
         },
         on: (event, callback) => {
-            console.log('on', event);
+            //console.log('on', event);
 
             ws.on('message', (_event) => {
                 const data = JSON.parse(_event);
 
-                console.log('received event', data.event, ...data.data);
+                //console.log('received event', data.event, ...data.data);
 
                 if (data.event === event) {
                     callback(...data.data);
@@ -41,11 +59,11 @@ const buildSocket = (wss, ws) => {
         },
         join: (roomName) => {
             currentRoom = roomName
-            console.log('joined', this.id, currentRoom)
+            //onsole.log('joined', this.id, currentRoom)
         },
         broadcast: {
             emit: (event, ...data) => {
-                console.log('broadcast emit', event, ...data)
+                //console.log('broadcast emit', event, ...data)
 
                 wss.clients.forEach(client => {
                     if (client === ws) {
@@ -57,7 +75,7 @@ const buildSocket = (wss, ws) => {
                 });
             },
             all: (event, ...data) => {
-                console.log('broadcast all', event, ...data)
+                //console.log('broadcast all', event, ...data)
 
                 wss.clients.forEach(client => {
                     client.send(JSON.stringify({ event, data }));
@@ -67,19 +85,24 @@ const buildSocket = (wss, ws) => {
         getRoom: () => currentRoom,
         room: {
             emit: (event, ...data) => {
-                console.log('emit', currentRoom, event, ...data);
+                //onsole.log('emit', currentRoom, event, ...data);
 
                 const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
 
-                console.log('room', thisRoomPeers.length)
+                //console.log(thisRoomPeers);
+                //console.log('room', thisRoomPeers.length);
+
 
                 thisRoomPeers.forEach(peer => {
+                    //console.log("SENDING TO PEER", peer.id, peer.getRoom(), event);
                     if (peer.ws === ws) {
                         // skip broadcast to yourself
                         return
                     }
 
                     try {
+                        // trying to send to peer
+                        //console.log("SENDING TO PEER", peer.id, peer.getRoom(), event);
                         peer.ws.send(JSON.stringify({ event, data }));
                     } catch (e) {
                         console.error(e)
@@ -87,11 +110,11 @@ const buildSocket = (wss, ws) => {
                 })
             },
             all: (event, ...data) => {
-                console.log('all', currentRoom, event, ...data);
+                //console.log('all', currentRoom, event, ...data);
 
                 const thisRoomPeers = Object.values(peers).filter(p => p.getRoom() === currentRoom)
 
-                console.log('room', thisRoomPeers.length)
+                //console.log('room', thisRoomPeers.length)
 
                 thisRoomPeers.forEach(peer => {
                     try {
@@ -108,10 +131,10 @@ const buildSocket = (wss, ws) => {
 }
 
 const onConnect = (socket) => {
-        console.log('a client is connected', socket.id)
+        // console.log('a client is connected', socket.id)
 
-        console.log('players', players)
-        console.log('players socket id', socket.id)
+        // console.log('players', players)
+        // console.log('players socket id', socket.id)
 
         // Initiate the connection process as soon as the client connects
 
@@ -119,17 +142,18 @@ const onConnect = (socket) => {
 
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
-            for (test in players) {
-                if (players[test].address == address) {
-                    socket.emit('playerExists')
-                    return;
-                }
-            }
+            // for (test in players) {
+            //     if (players[test].address == address) {
+            //         socket.emit('playerExists')
+            //         return;
+            //     }
+            // }
+            console.log(startPoints[room]);
             players[socket.id] = {
                 ...{
                     rotation: 0,
-                    x: Math.floor(Math.random() * 100) + 100,
-                    y: 850,
+                    x: startPoints[room].x,
+                    y: startPoints[room].y,
                     playerId: socket.id,
                     microphoneStatus: false,
                     playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
@@ -150,9 +174,12 @@ const onConnect = (socket) => {
             //         sortPlayers.push(players[player]);
             //     }
             // }
+            console.log("FILTERED PLAYERS -------------------", filteredPlayers);
+        
             socket.emit('currentPlayers', filteredPlayers);
 
             // update all other players of the new player
+            console.log("SENDING NEW PLAYER EMIT TO ROOM");
             socket.room.emit('newPlayer', players[socket.id]);
 
             // socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
@@ -173,7 +200,7 @@ const onConnect = (socket) => {
 
 
         socket.on('updatePlayerInfo', (data, socket_id) => {
-            console.log('updatePlayerInfo', data, socket_id)
+            //console.log('updatePlayerInfo', data, socket_id)
             // if (!players[socket_id]) {
             //     return
             // }

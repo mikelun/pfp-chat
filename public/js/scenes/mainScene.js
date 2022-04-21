@@ -194,13 +194,14 @@ function updateLocalStorage(self, time) {
     let currentTime = Math.floor(time / 1000);
     if (currentTime != self.lastTimeLocalStorage) {
         const playerInfo = {
-            x: self.player.x - self.playerAddX,
-            y: self.player.y - self.playerAddY,
+            x: self.player.x,
+            y: self.player.y,
             textureId: self.textureId,
             nft: self.nft,
             room: self.room
         };
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
+        console.log(playerInfo.x, playerInfo.y);
     }
     self.lastTimeLocalStorage = currentTime;
 }

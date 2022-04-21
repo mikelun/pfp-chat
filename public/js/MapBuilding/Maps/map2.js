@@ -17,8 +17,8 @@ export function addMap2(self) {
     addAnimationForMap(self, mapNight, tilesetNight);
 
     // fix player position
-    self.playerAddX = 140;
-    self.playerAddY = -700;
+    //self.playerAddX = 140;
+    //self.playerAddY = -700;
 }
 
 // add physics when player added to map
