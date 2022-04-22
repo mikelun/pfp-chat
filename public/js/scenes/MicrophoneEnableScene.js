@@ -17,7 +17,9 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     create() {
         var room = window.location.href.split('/');
         this.room = room[room.length - 1];
-
+        if (!rooms.includes(this.room)) {
+            this.room = "guest";
+        }
         this.progress = this.add.sprite(640, 300, 'loading').setScale(0.7).setAlpha(0);
         this.anims.create({
             key: 'loading',
