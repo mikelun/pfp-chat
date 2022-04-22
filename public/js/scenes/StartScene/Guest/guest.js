@@ -18,7 +18,7 @@ export function guestLevel0(self, Moralis) {
             top: 20,
             bottom: 30
         }
-    }).layout().setPosition(325, 350).setAlpha(0);
+    }).layout().setPosition(325 - 10, 350).setAlpha(0);
 
     // BUTTON WITH "NO, CONTINUE" TEXT
     self.button2 = self.rexUI.add.label({
@@ -62,7 +62,7 @@ export function guestLevel1(self, Moralis) {
 
     // TEXT
     var text = "It's Guest room. You should't connect Metamask";
-    self.label = self.add.text(300, 250, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
+    self.label = self.add.text(300, 250-30, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
@@ -79,7 +79,7 @@ export function guestLevel1(self, Moralis) {
             top: 20,
             bottom: 30
         }
-    }).layout().setPosition(600, 370).setAlpha(0);
+    }).layout().setPosition(600, 370-30).setAlpha(0);
 
     self.button1.setInteractive().on('pointerdown', () => {
         if (self.step != 1) return;
