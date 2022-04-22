@@ -117,7 +117,6 @@ function addPlayer(self, playerInfo) {
         self.errors = null;
     }
 
-    console.log("NEW PLAYER ADDRESS + ", playerInfo.address);
     // TRIGGERS FOR TVS
     self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
     self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);

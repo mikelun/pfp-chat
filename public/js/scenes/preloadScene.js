@@ -87,10 +87,18 @@ export class PreloadScene extends Phaser.Scene {
 
         // LOAD PENGUIN
         this.load.image('penguin', 'assets/penguin/penguin.png');
+       
+        // THIS LOAD CRYPTO COVEN
         this.load.image('witches', 'assets/witches/witches.png');
 
+        // THIS LOAD BUILDSHIP
         this.load.image('buildship', 'assets/buildship/buildship.png')
 
+        // THIS LOAD CRYPTO DUCKIES
+        this.load.image('duckies', 'assets/crypto-duckies/duckies.png')
+
+        
+        this.load.image('twitter', 'assets/game-ui/twitter.png');
 
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();

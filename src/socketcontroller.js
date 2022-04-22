@@ -24,6 +24,10 @@ const startPoints = {
     "ailoverse": {
         "x": 830,
         "y": 2430
+    },
+    "crypto-duckies": {
+        "x": 830,
+        "y": 2430
     }
 }
 

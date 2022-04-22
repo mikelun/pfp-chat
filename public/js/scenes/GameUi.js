@@ -45,7 +45,7 @@ export class GameUi extends Phaser.Scene {
         this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
 
         // add nft panel
-        this.add.image(width / 3 + 1 * (width / 8), height * 0.90, '2').setScale(1.5).setInteractive()
+        this.add.image(width / 3 + 1 * (width / 8), height * 0.90 - 5, '2').setScale(1.5).setInteractive()
             .on('pointerdown', () => {
                 if (this.backgroundNFTs) {
                     this.backgroundNFTs.clear(true);
@@ -69,7 +69,12 @@ export class GameUi extends Phaser.Scene {
 
         // add next buttons (dont make sense)
         this.add.image(width / 3 + 2 * (width / 8), height * 0.90, '3').setScale(1.5);
-        this.add.image(width / 3 + 3 * (width / 8), height * 0.90, '4').setScale(1.5);
+        this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'twitter').setScale(0.2).setInteractive()
+            .on('pointerdown', () => {
+                // open twitter link
+                window.open('https://twitter.com/mikelun_eth');
+            });
+
 
 
 
@@ -88,6 +93,7 @@ export class GameUi extends Phaser.Scene {
 
         // ADD PANEL FOR NFTS
         this.makePanelForNFTs();
+
 
     }
 
