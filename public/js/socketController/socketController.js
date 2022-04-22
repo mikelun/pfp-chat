@@ -9,11 +9,12 @@ import { currentPlayerDisconnected } from '../socketController/playerSocket';
 export function initializeSocket(self, peers) {
 
     // log port
+    // log port
     const port = process.env.PORT || 3000;
     const site = window.location.hostname;
-    const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}:8080`;
+    const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}`;
     
-    self.socket = io();    
+    self.socket = io(connectLink, {transports: ['websocket']});    
 
     // Initialize audio stream for socket
     initializeAudio(self.socket, peers, self);
