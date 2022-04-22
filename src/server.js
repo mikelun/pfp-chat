@@ -16,17 +16,10 @@ var port = process.env.PORT || 3000; // set our port
 
 // build server
 const server = require('http').Server(app);
-const WebSocket = require('ws');
+const io = require('socket.io')(server);
+require('./socketcontroller.js')(io)
 
-const wss = new WebSocket.Server({ server });
 
-const { onConnect, buildSocket } = require('./socketcontroller.js');
-
-wss.on('connection', (ws) => {
-    const socket = buildSocket(wss, ws);
-
-    onConnect(socket);
-});
 
 server.listen(port, function(){
     console.log('listening on *:' + port);
