@@ -41,17 +41,21 @@ module.exports = (io) => {
             //         return;
             //     }
             // }
+            console.log(playerInfo);
             players[socket.id] = {
-                rotation: 0,
-                x: startPoints[room].x,
-                y: startPoints[room].y,
-                playerId: socket.id,
-                microphoneStatus: false,
-                playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
-                textureId: Math.floor(Math.random() * 50),
-                nft: null,
-                address: address,
-                room: room
+                ...{
+                    rotation: 0,
+                    x: startPoints[room].x,
+                    y: startPoints[room].y,
+                    playerId: socket.id,
+                    microphoneStatus: false,
+                    playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
+                    textureId: Math.floor(Math.random() * 50),
+                    nft: null,
+                    address: address,
+                    room: room
+                },
+                ...playerInfo,
             };
 
             socket.join(room);

@@ -53,7 +53,8 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
-        //localStorage.removeItem('playerInfo');
+
+        localStorage.removeItem('playerInfo');
         //localStorage.clear();
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
