@@ -9,9 +9,8 @@ import { currentPlayerDisconnected } from '../socketController/playerSocket';
 export function initializeSocket(self, peers) {
 
     // log port
-    const port = process.env.PORT || 3000;
     const site = window.location.hostname;
-    const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}:${port}`;
+    const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}:8080`;
     
     self.socket = io(connectLink, {transports: ['websocket']});    
 
