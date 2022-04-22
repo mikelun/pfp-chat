@@ -32,6 +32,10 @@ const startPoints = {
     "guest": {
         "x": 830,
         "y": 2430
+    },
+    "dobby": {
+        "x": 830,
+        "y": 2430
     }
 }
 

@@ -100,6 +100,8 @@ export class PreloadScene extends Phaser.Scene {
         
         this.load.image('twitter', 'assets/game-ui/twitter.png');
 
+        this.load.image('dobby', 'assets/dobby/dobby.jpeg');
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
