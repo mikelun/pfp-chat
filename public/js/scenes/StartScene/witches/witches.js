@@ -147,9 +147,9 @@ export function witchesLevel2(self, Moralis) {
     self.levelGroup = self.add.group();
 
     self.witch = self.add.image(600, 500, 'witches').setScale(0.5);
-
+    self.levelGroup.add(self.witch);
     self.ailoverseText = self.add.text(400, 100, 'CRYPTO COVEN', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
-
+    self.levelGroup.add(self.ailoverseText);
     //self.levelGroup.add(self.cats);
     //self.levelGroup.add(self.robots);
     // TEXT

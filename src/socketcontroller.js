@@ -28,6 +28,10 @@ const startPoints = {
     "crypto-duckies": {
         "x": 830,
         "y": 2430
+    },
+    "guest": {
+        "x": 830,
+        "y": 2430
     }
 }
 
@@ -45,7 +49,9 @@ module.exports = (io) => {
             //         return;
             //     }
             // }
-            console.log(playerInfo);
+            if (!address) {
+                address = socket.id;
+            }
             players[socket.id] = {
                 ...{
                     rotation: 0,

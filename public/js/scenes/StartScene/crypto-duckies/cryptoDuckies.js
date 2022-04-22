@@ -147,9 +147,10 @@ export function cryptoDuckiesLevel2(self, Moralis) {
     self.levelGroup = self.add.group();
 
     self.penguin = self.add.image(650, 520, 'duckies').setScale(0.25);
+    self.levelGroup.add(self.penguin);
     //self.robots = self.add.image(600, 600, 'ailoverse-robots').setScale(0.2);
     self.ailoverseText = self.add.text(300, 100, 'CRYPTO DUCKIES (on-chain)', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
-    
+    self.levelGroup.add(self.ailoverseText);
     //self.levelGroup.add(self.cats);
     //self.levelGroup.add(self.robots);
     // TEXT
