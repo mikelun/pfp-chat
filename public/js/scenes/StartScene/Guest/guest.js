@@ -18,7 +18,7 @@ export function guestLevel0(self, Moralis) {
             top: 20,
             bottom: 30
         }
-    }).layout().setPosition(325 - 10, 350).setAlpha(0);
+    }).layout().setPosition(325, 350).setAlpha(0);
 
     // BUTTON WITH "NO, CONTINUE" TEXT
     self.button2 = self.rexUI.add.label({

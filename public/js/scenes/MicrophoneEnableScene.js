@@ -79,11 +79,12 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             this.levels = [witchesLevel0, witchesLevel1, witchesLevel2];
         } else if (this.room == 'crypto-duckies') {
             this.levels = [cryptoDuckiesLevel0, cryptoDuckiesLevel1, cryptoDuckiesLevel2];
-        } else if (this.room == 'guest') {
-            this.levels = [guestLevel0, guestLevel1];
-        } else {
+        } else if (this.room == 'buildship') {
             this.room = 'buildship';
             this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
+        } else {      
+            this.room = 'guest';
+            this.levels = [guestLevel0, guestLevel1];
         }
 
         // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
