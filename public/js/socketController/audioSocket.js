@@ -66,6 +66,9 @@ function addPeer(socket_id, am_initiator, self) {
         peers[socket_id].addStream(stream)
     } else {
         peers[socket_id] = new SimplePeer({
+            reconnectTimer: 100,
+            iceTransportPolicy: 'relay',
+            trickle: false,
             initiator: am_initiator,
             stream: self.localStream,
             config: configuration
