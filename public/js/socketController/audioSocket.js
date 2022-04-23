@@ -8,6 +8,9 @@ const configuration = {
     // Using From https://www.metered.ca/tools/openrelay/
     "iceServers": [
         {
+            urls: 'stun:stun.l.google.com:19302'
+        },
+        {
             urls: "stun:openrelay.metered.ca:80"
         },
         {

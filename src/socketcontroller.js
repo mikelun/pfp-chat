@@ -51,10 +51,12 @@ module.exports = (io) => {
                     sortPlayers.push(players[player]);
                 }
             }
+
+            console.log('SORTED PLAYERS: ',sortPlayers);
             socket.emit('currentPlayers', sortPlayers);
 
             // update all other players of the new player
-            socket.broadcast.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
+            socket.to(room).emit('newPlayer', players[socket.id]);
         });
         
 
@@ -66,7 +68,7 @@ module.exports = (io) => {
             players[socket.id].y = movementData.y;
             players[socket.id].rotation = movementData.rotation;
             // emit a message to all players about the player that moved
-            socket.broadcast.to(players[socket.id].room).emit('playerMoved', players[socket.id]);
+            socket.to(players[socket.id].room).emit('playerMoved', players[socket.id]);
         });
 
 
@@ -115,14 +117,14 @@ module.exports = (io) => {
          */
         socket.on('initSend', init_socket_id => {
             console.log('INIT SEND by ' + socket.id + ' for ' + init_socket_id)
-            peers[init_socket_id].emit('initSend', socket.id)
+            if (peers[init_socket_id]) peers[init_socket_id].emit('initSend', socket.id)
         });
 
 
         socket.on('addToTalk', id => {
             if (hashChats.includes(socket.id + '$' + id)) return;
             console.log('sending init receive to ' + socket.id)
-            peers[id].emit('initReceive', socket.id)
+            if (peers[id]) peers[id].emit('initReceive', socket.id)
             hashChats.push(id + '$' + socket.id);
             console.log(`TRYING TO CHAT ${id} with ${socket.id}`)
         });
