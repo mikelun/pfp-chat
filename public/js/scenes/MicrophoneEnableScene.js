@@ -9,7 +9,7 @@ import { guestLevel0, guestLevel1 } from './StartScene/Guest/guest';
 import { dobbyLevel0, dobbyLevel1 } from './StartScene/dobby/dobby';
 
 const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffE06cb4807917bd79382981f23d16A70C102c3B", "0x653d8554B690d54EA447aD82C933A6851CC35BF2", "0xD74197Ed1535cfDAb59D6e6Ec8Abe92A1f31C6Dd"];
-const rooms = ["guest", "buildship", "pudgy-penguins", "crypto-duckies", "cryptocoven", "dobby"];
+const rooms = ["guest", "buildship", "pudgy-penguins", "crypto-duckies", "cryptocoven", "dobey"];
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
         super({ key: "microphone" });
@@ -41,7 +41,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                     this.user = Moralis.User.current();
                     // const address = this.user.get('ethAddress');
                     // this.address 
-                    if (this.room != 'guest') 
+                    if (this.room != 'guest' && this.room != 'dobey') 
                         this.step = 2;
                     else {
                         this.step = 1;
@@ -85,8 +85,8 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         } else if (this.room == 'buildship') {
             this.room = 'buildship';
             this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
-        } else if (this.room == 'dobby') {
-            this.room = 'dobby';
+        } else if (this.room == 'dobey') {
+            this.room = 'dobey';
             this.levels = [dobbyLevel0, dobbyLevel1];
         } else {      
             this.room = 'guest';

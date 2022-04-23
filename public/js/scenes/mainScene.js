@@ -53,13 +53,15 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
-
+        if (this.room == 'dobey') {
+            this.mapId = 2;
+        } else {
+            this.mapId = 3;
+        }
         localStorage.removeItem('playerInfo');
         //localStorage.clear();
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
-
-        this.mapId = 3;
 
         // add main camera zoom
         this.cameras.main.setZoom(1.5);
