@@ -97,9 +97,13 @@ export class PreloadScene extends Phaser.Scene {
         // THIS LOAD CRYPTO DUCKIES
         this.load.image('duckies', 'assets/crypto-duckies/duckies.png')
 
-        
+        // LOAD TWITTER
         this.load.image('twitter', 'assets/game-ui/twitter.png');
 
+        // LOAD GITHUB
+        this.load.image('github', 'assets/game-ui/github.png');
+
+        // ROOM FOR DOBBY
         this.load.image('dobby', 'assets/dobby/dobby.jpeg');
 
         var progressBar = this.add.graphics();

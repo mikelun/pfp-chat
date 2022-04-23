@@ -68,7 +68,11 @@ export class GameUi extends Phaser.Scene {
             });
 
         // add next buttons (dont make sense)
-        this.add.image(width / 3 + 2 * (width / 8), height * 0.90, '3').setScale(1.5);
+        this.add.image(width / 3 + 2 * (width / 8), height * 0.90 - 3, 'github').setScale(0.08).setInteractive()
+        .on('pointerdown', () => {
+            // open twitter link
+            window.open('https://github.com/mikelun/open-metaverse');
+        });
         this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'twitter').setScale(0.2).setInteractive()
             .on('pointerdown', () => {
                 // open twitter link

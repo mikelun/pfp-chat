@@ -156,6 +156,7 @@ export function buildshipLevel2(self, Moralis) {
     self.fire.play('blue-fire');
     self.levelGroup.add(self.buildship);
     self.levelGroup.add(self.fire);
+    
     self.buildshipText = self.add.text(470, 60, 'BUILDSHIP.XYZ', { fill: "#ffffff", fontSize: "48px", fontFamily: "PixelFont" });
     self.levelGroup.add(self.buildshipText);
     // TEXT

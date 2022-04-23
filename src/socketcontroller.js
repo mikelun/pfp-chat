@@ -1,6 +1,6 @@
 const { join, filter, values } = require("./data/nicknames");
 const nicknames = require("./data/nicknames");
-
+const startPoints = require("./data/startPoints");
 
 peers = {};
 
@@ -8,36 +8,7 @@ players = {};
 
 hashChats = [];
 
-const startPoints = {
-    "buildship":{
-        "x": 840,
-        "y": 2430
-    },
-    "cryptocoven":{
-        "x": 830,
-        "y": 2430
-    },
-    "pudgy-penguins":{
-        "x": 830,
-        "y": 2430
-    },
-    "ailoverse": {
-        "x": 830,
-        "y": 2430
-    },
-    "crypto-duckies": {
-        "x": 830,
-        "y": 2430
-    },
-    "guest": {
-        "x": 830,
-        "y": 2430
-    },
-    "dobby": {
-        "x": 830,
-        "y": 2430
-    }
-}
+
 
 module.exports = (io) => {
     io.on('connect', (socket) => {
