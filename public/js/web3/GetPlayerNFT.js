@@ -37,6 +37,7 @@ export async function getPlayerNFT(moralis) {
                         }
     
                         if (data && data.image) {
+                            console.log(data);
                             return { image: fixImageURL(data.image), name: data.name };
                         }
     

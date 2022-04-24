@@ -84,6 +84,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
         // remove peer from talk
         removePeer(playerId);
     });
+
 }
 
 function removePeer(socket_id) {

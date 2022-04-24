@@ -121,6 +121,9 @@ export class MainScene extends Phaser.Scene {
             // update local storage every 1 second
             updateLocalStorage(this, time);
 
+            // if player on scene
+            updatePlayerScenePositon(this);
+
         }
 
         // update other players positions with interpolation
@@ -207,4 +210,10 @@ function updateLocalStorage(self, time) {
         console.log(playerInfo.x, playerInfo.y);
     }
     self.lastTimeLocalStorage = currentTime;
+}
+
+function updatePlayerScenePositon(self) {
+    // if (checkOverlap(self.player, self.talkScene)) {
+    //     self.socket.emit('AddToAllPeers');
+    // }
 }

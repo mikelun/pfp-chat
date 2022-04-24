@@ -129,6 +129,14 @@ module.exports = (io) => {
             console.log(`TRYING TO CHAT ${id} with ${socket.id}`)
         });
 
+        socket.on('addToAllPeers', () => {
+            for (var peer in peers) {
+                if (hashChats.includes(socket.id + '$' + peer)) return;
+                if (peers[peer]) peers[id].emit('initeReceive', socket.id);
+                hashChats.push(peers + '$' + socket.id);
+            }
+        }) 
+
         socket.on('removeFromTalk', id => {
             if (hashChats.includes(id + '$' + socket.id)) hashChats.splice(hashChats.indexOf(id + '$' + socket.id), 1);
             if (hashChats.includes(socket.id + '$' + id)) hashChats.splice(hashChats.indexOf(socket.id + '$' + id), 1);
