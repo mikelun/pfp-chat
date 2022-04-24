@@ -53,7 +53,18 @@ export function addMap3(self) {
     self.dog2.addX = 0;
 
     self.lastVisit = 0;
+
+    // adding object to map
+    addObjectsToMap(self);
     
+}
+
+function addObjectsToMap(self) {
+    
+    // ADDING SCENE RECTANGLE
+    console.log('added rectangle');
+    self.scene = self.add.rectangle(850, 2050, 200, 200, 0x000000).setOrigin(0, 0).setAlpha(0.5);
+
 }
 
 // add physics when player added to map

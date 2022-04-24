@@ -213,7 +213,11 @@ function updateLocalStorage(self, time) {
 }
 
 function updatePlayerScenePositon(self) {
-    // if (checkOverlap(self.player, self.talkScene)) {
-    //     self.socket.emit('AddToAllPeers');
-    // }
+    if (checkOverlap(self.player, self.scene)) {
+        if (self.onScene) return;
+        self.onScene = true;
+        //self.socket.emit('AddToAllPeers');
+    } else {
+        self.onScene = false;
+    }
 }
