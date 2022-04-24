@@ -213,6 +213,7 @@ function updateLocalStorage(self, time) {
 }
 
 function updatePlayerScenePositon(self) {
+    if (!self.scene) return;
     if (checkOverlap(self.player, self.scene)) {
         if (self.onScene) return;
         self.onScene = true;
