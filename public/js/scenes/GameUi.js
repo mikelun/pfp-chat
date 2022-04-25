@@ -260,7 +260,7 @@ export class GameUi extends Phaser.Scene {
             //this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333);
             let nft = this.add.dom(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, dom).setInteractive()
             let nftBackground = this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333).setInteractive().on('pointerdown', () => {
-                sceneEvents.emit('nftSelected', nfts[i].image);
+                sceneEvents.emit('nftSelected', nfts[i]);
             });
             this.backgroundNFTs.add(nftBackground);
             let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '14px', fill: '#ffffff' });

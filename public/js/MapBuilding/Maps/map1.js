@@ -8,21 +8,22 @@ import { addAnimationForMap } from "../AnimatedTile";
 export function addMap1(self) {
     const dungeon = self.make.tilemap({ key: 'dungeon' });
     const tileset = dungeon.addTilesetImage('TilemapDay', 'tiles');
-    
+
     // Create layers and collides for physics
-    dungeon.createStaticLayer('floor', tileset);
-    
+    self.layer1.add(dungeon.createStaticLayer('floor', tileset));
+
     self.stairsUpFloorLayer = dungeon.createStaticLayer('stairs-up-floor', tileset);
     self.stairsUpFloorLayer.setCollisionByProperty({ collides: true })//.renderDebug(debugGraphics, debugConfig);
+    self.layer1.add(self.stairsUpFloorLayer);
 
     self.objectsLayer = dungeon.createDynamicLayer('objects', tileset);
     self.objectsLayer.setCollisionByProperty({ collides: true })//.renderDebug(debugGraphics, debugConfig);
-
-    dungeon.createStaticLayer('next-objects', tileset);
+    self.layer1.add(self.objectsLayer);
+    self.layer1.add(dungeon.createStaticLayer('next-objects', tileset));
 
     self.wallsLayer = dungeon.createStaticLayer('walls', tileset);
     self.wallsLayer.setCollisionByProperty({ collides: true })//.renderDebug(debugGraphics, debugConfig);
-    
+    self.layer1.add(self.wallsLayer);
     addAnimationForMap(self, dungeon, tileset);
 
     // fix player position
@@ -37,7 +38,7 @@ export function addPhysicsForMap1(self) {
     self.physics.add.collider(self.player, self.wallsLayer);
     self.physics.add.collider(self.player, self.stairsUpFloorLayer);
     self.physics.add.collider(self.player, self.objectsLayer);
-    
+
     // add colliders for ball
     self.physics.add.collider(self.ball, self.player);
     self.physics.add.collider(self.ball, self.wallsLayer);
@@ -51,14 +52,21 @@ function addObjectForMap(self) {
     self.musicMachineGroup = self.add.group();
     self.musicMachineShadowGroup = self.add.group();
 
-     // adding music machine image to main map
-     self.add.image(230, 680, 'machine').setScale(0.1);
+    // adding music machine image to main map
+    self.add.image(230, 680, 'machine').setScale(0.1);
 
-     // add iframe game(You can see it upstairs on main map) and music machine - rainbow TV ;)
-     addIframeGameAndMusicMachine(self);
+    // add iframe game(You can see it upstairs on main map) and music machine - rainbow TV ;)
+    addIframeGameAndMusicMachine(self);
 
-     // add ball for fun with physics
-     self.ball = self.physics.add.image(550, 910, 'ball').setScale(0.08).setBounce(0.9).setVelocity(0, 0);
+    // add ball for fun with physics
+    self.ball = self.physics.add.image(550, 910, 'ball').setScale(0.08).setBounce(0.9).setVelocity(0, 0);
+    // add animation for boss
+    self.anims.create({
+        key: 'boss-anim',
+        frames: self.anims.generateFrameNumbers('boss', { start: 0, end: 5 }),
+        frameRate: 8,
+        repeat: -1
+    });
 }
 
 export function addUpdateForMap1(self) {

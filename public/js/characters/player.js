@@ -6,7 +6,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
     }
 
-    update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift) {
+    update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift, playerShadow) {
         let velY = 0;
         
         if (shift.isDown) {
@@ -31,13 +31,22 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
         if (keyLeft.isDown || jLeft.isDown) {
             this.setVelocity(-spriteSpeed, velY);
+            // flip the sprite
+            if (type == 'nft') {
+                this.flipX = true;
+            }
             //this.x -= spriteSpeed;
         }
         if (keyRight.isDown || jRight.isDown) {
             this.setVelocity(+spriteSpeed, velY);
+            if (type == 'nft') {
+                this.flipX = false;
+            }
             //this.x += spriteSpeed;
         }
-        if (this.anims) {
+        playerShadow.setPosition(this.x, this.y);
+        //playerShadow.setVelocity(this.velocity);
+        if (this.anims && type != 'nft') {
             if (keyUp.isDown || jUp.isDown) {
                 this.anims.play(`player-walk-up${type}`, true);
             } else if (keyDown.isDown || jDown.isDown) {
@@ -47,11 +56,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             } else if (keyRight.isDown || jRight.isDown) {
                 this.anims.play(`player-walk-right${type}`, true);
             }      
-
-            if (!(keyUp.isDown || jUp.isDown) && !(keyDown.isDown || jDown.isDown) && !(keyLeft.isDown || jLeft.isDown) && !(keyRight.isDown || jRight.isDown)) {
-                this.anims.stop();
-                this.setVelocity(0, 0)
-            }
+        }
+        if (!(keyUp.isDown || jUp.isDown) && !(keyDown.isDown || jDown.isDown) && !(keyLeft.isDown || jLeft.isDown) && !(keyRight.isDown || jRight.isDown)) {
+            if (this.anims) this.anims.stop();
+            this.setVelocity(0, 0)
         }
     }
 }

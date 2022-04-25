@@ -15,12 +15,36 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         super({ key: "microphone" });
     }
 
+    initializeRooms() {
+        if (this.room == 'ailoverse') {
+            this.levels = [ailoverseLevel0, ailoverseLevel1, ailoverseLevel2];
+        } else if (this.room == 'pudgy-penguin' || this.room == 'pudgy-penguins') {
+            this.levels = [pinguinLevel0, pinguinLevel1, pinguinLevel2];
+        } else if (this.room == 'cryptocoven') {
+            this.levels = [witchesLevel0, witchesLevel1, witchesLevel2];
+        } else if (this.room == 'crypto-duckies') {
+            this.levels = [cryptoDuckiesLevel0, cryptoDuckiesLevel1, cryptoDuckiesLevel2];
+        } else if (this.room == 'buildship') {
+            this.room = 'buildship';
+            this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
+        } else if (this.room == 'dobey') {
+            this.room = 'dobey';
+            this.levels = [dobbyLevel0, dobbyLevel1];
+        } else {      
+            this.room = 'guest';
+            this.levels = [guestLevel0, guestLevel1];
+        }
+    }
     create() {
         var room = window.location.href.split('/');
         this.room = room[room.length - 1];
         if (!rooms.includes(this.room)) {
             this.room = "guest";
         }
+
+         // intialize levels of rooms
+         this.initializeRooms();
+
         this.progress = this.add.sprite(640, 300, 'loading').setScale(0.7).setAlpha(0);
         this.anims.create({
             key: 'loading',
@@ -73,26 +97,6 @@ export class MicrophoneEnableScene extends Phaser.Scene {
     }
 
     showCurrentLevel() {
-
-        if (this.room == 'ailoverse') {
-            this.levels = [ailoverseLevel0, ailoverseLevel1, ailoverseLevel2];
-        } else if (this.room == 'pudgy-penguin' || this.room == 'pudgy-penguins') {
-            this.levels = [pinguinLevel0, pinguinLevel1, pinguinLevel2];
-        } else if (this.room == 'cryptocoven') {
-            this.levels = [witchesLevel0, witchesLevel1, witchesLevel2];
-        } else if (this.room == 'crypto-duckies') {
-            this.levels = [cryptoDuckiesLevel0, cryptoDuckiesLevel1, cryptoDuckiesLevel2];
-        } else if (this.room == 'buildship') {
-            this.room = 'buildship';
-            this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
-        } else if (this.room == 'dobey') {
-            this.room = 'dobey';
-            this.levels = [dobbyLevel0, dobbyLevel1];
-        } else {      
-            this.room = 'guest';
-            this.levels = [guestLevel0, guestLevel1];
-        }
-
         // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
         if (this.levelGroup) {
             this.levelGroup.clear(true);
@@ -134,6 +138,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             this.scene.start('MainScene', { stream: this.stream, moralis: Moralis, address: address, room: this.room });
 
         }
+
         if (this.step == this.levels.length - 1) {
             // ADDING SHOW ROOMS TEXT
             this.otherRooms = this.rexUI.add.label({
@@ -161,49 +166,6 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
     }
 
-    async checkAiloverseNFT() {
-        const address = this.user.get('ethAddress');
-
-        // take nft from location query
-        const ailoverse_token_address_robots = "0xa4ccd65a4d2b07b5f5573ba97876ac640a4d45a5";
-        const ailoverse_token_address_cats = "0xb9288fc06e7e10f6a14c528d7f1f226810a81a1f";
-        const buildship_early_bird = "0x35a31fc46eed1f29ba18977e8a963325da882609";
-
-        // // parse querystring
-        // const query = window.location.search.substring(1);
-        // const [ nft ] = query.split("&");
-        // const [, token_address = ailoverse_token_address ] = nft.split("=");
-        //const token_address = ailoverse_token_address
-        const result1 = await this.checkNFT(ailoverse_token_address_cats);
-        const result2 = await this.checkNFT(ailoverse_token_address_robots)
-
-        if (result1 || result2 || creators.includes(address)) {
-            this.label.text = 'YOU HAVE AILOVERSE NFT'
-            this.step = 3;
-            this.showCurrentLevel();
-            this.progress.setAlpha(0);
-        } else {
-            this.label.x -= 100;
-            this.label.text = 'YOU DONT HAVE AILOVERSE NFT\nYOU CAN VISIT MAIN ROOM WITHOUT NFT'
-            // BUTTON WITH HREF TEXT
-            this.continueButton = this.rexUI.add.label({
-                background: this.add.image(0, 0, 'background-button'),
-                text: this.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px" }),
-                space: {
-                    left: 90,
-                    right: 90,
-                    top: 20,
-                    bottom: 30
-                }
-            }).layout().setPosition(650, 600);
-
-            this.continueButton.setInteractive().on('pointerdown', () => {
-                // load page href
-                window.location.href = window.location.origin;
-            });
-            //self.progress.setAlpha(0);
-        }
-    }
 
     showRooms() {
         this.add.text(600, 50, 'ROOMS', { fill: "#ffffff", fontSize: "32px", align: "center", fontFamily: "PixelFont" });

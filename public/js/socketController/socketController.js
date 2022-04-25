@@ -1,5 +1,5 @@
 import { initializeAudio, removePeer } from '../socketController/audioSocket';
-import { initializePlayersSocket } from '../socketController/playerSocket';
+import { destroyPlayer, initializePlayersSocket } from '../socketController/playerSocket';
 import { io } from "socket.io-client";
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
 
@@ -26,6 +26,7 @@ export function initializeSocket(self, peers) {
         console.log('Connected to server');
         if (localStorage.getItem('playerInfo')) {
             const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+            console.log('TEXTURE ',playerInfo.textureId);
             self.socket.emit('addPlayer', self.address, self.room, playerInfo);
         } else {
             self.socket.emit('addPlayer', self.address, self.room);
@@ -56,10 +57,10 @@ export function initializeSocket(self, peers) {
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));
         const playerUI = self.playerUI[self.player.id];
         currentPlayerDisconnected(self.player.id);
-        playerUI.playerText.destroy();
-        playerUI.microphone.destroy();
-        self.player.destroy();
-        self.player = null;
+        
+        // destroy main player
+        destroyPlayer();
+        
         self.otherPlayers.getChildren().forEach(otherPlayer => {
             self.playerUI[otherPlayer.playerId].playerText.destroy();
             self.playerUI[otherPlayer.playerId].microphone.destroy();

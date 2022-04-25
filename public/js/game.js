@@ -17,6 +17,7 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
+  
   scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene],
   plugins: {
     scene: [{

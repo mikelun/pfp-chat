@@ -3,9 +3,9 @@ import { sceneEvents } from "../Events/EventsCenter";
 export async function getPlayerNFT(moralis) {
     const playerAddress1 = '0xeac41D05531770b85ad1E0f145b94BFE205bDa78';
     const playerAddress2 = '0xffE06cb4807917bd79382981f23d16A70C102c3B';
-    //const result = await moralis.Web3.getNFTs({ chain: 'eth', address: playerAddress1 });
-    
-    const {result} = await moralis.Web3API.account.getNFTs();
+    const duckAddress = '0xA92e08909a0C3FB1cE52F84bDA8Db98439C857eD'
+    const result = await moralis.Web3.getNFTs({ chain: 'eth', address: duckAddress });
+    //const {result} = await moralis.Web3API.account.getNFTs();
     
     var pageResults = [];
     var currentPage;
@@ -35,10 +35,8 @@ export async function getPlayerNFT(moralis) {
                             const proxiedURL = `/metadata?uri=${encodeURIComponent(url)}`;
                             data = await fetch(proxiedURL).then(r => { return r.json() });
                         }
-    
                         if (data && data.image) {
-                            console.log(data);
-                            return { image: fixImageURL(data.image), name: data.name };
+                            return { image: fixImageURL(data.image), name: data.name, tokenId: r.token_id };
                         }
     
                     } catch (err) {

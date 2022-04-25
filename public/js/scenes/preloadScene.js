@@ -106,6 +106,12 @@ export class PreloadScene extends Phaser.Scene {
         // ROOM FOR DOBBY
         this.load.image('dobby', 'assets/dobby/dobby.jpeg');
 
+        // LOAD CHARACTERS
+        this.load.image('duckie', 'assets/characters/153.png');
+
+        // LOAD SHADOW
+        this.load.image('shadow', 'assets/shadow.png');
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);

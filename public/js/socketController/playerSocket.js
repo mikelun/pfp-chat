@@ -122,9 +122,17 @@ function addPlayer(self, playerInfo) {
     self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
     self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);
 
+    // ADD PLAYER SHADOW
+    self.playerShadow = self.add.image(playerInfo.x, playerInfo.y, 'shadow').setScale(0.02, 0.05).setAlpha(0.7);
+    self.playerShadow.setOrigin(0.5, -1.2);
+    self.layer1.add(self.playerShadow);
+
+    // SETUP PLAYER
     self.textureId = playerInfo.textureId;
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     self.layer1.add(self.player);
+
+    // START FOLLOWING
     self.cameras.main.startFollow(self.player);
 
     self.player.id = playerInfo.playerId;
@@ -169,7 +177,32 @@ function addPlayer(self, playerInfo) {
     sceneEvents.on('nftSelected', nftSelected, this);
 }
 
-function nftSelected(nftImage) {
+export function destroyPlayer() {
+    const playerUI = self.playerUI[self.player.id];
+    playerUI.playerText.destroy();
+    playerUI.microphone.destroy();
+    self.player.destroy();
+    self.player = null;
+}
+
+function nftSelected(nft) {
+    const nftImage = nft.image;
+    // if nft started with 'Duckie'
+    if (nft.name.startsWith('Duckie')) {
+        // get id after #
+        const id = nft.name.split('#')[1];
+
+        self.load.image(nft.name, `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`)
+        self.load.once(Phaser.Loader.Events.COMPLETE, (bla) => {
+            console.log('BLA', bla);
+            if (self.player) {
+                self.player.setTexture(nft.name);
+                self.textureId = 'nft';
+            }
+        })
+        self.load.start();
+    }
+
     playersList.forEach(player => {
         if (player.id == self.socket.id) {
             player.nft = nftImage;

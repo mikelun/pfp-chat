@@ -55,6 +55,8 @@ export class MainScene extends Phaser.Scene {
     create() {
         if (this.room == 'dobey') {
             this.mapId = 2;
+        } else if(this.room == 'buildship') {
+            this.mapId = 1;
         } else {
             this.mapId = 3;
         }
@@ -213,12 +215,12 @@ function updateLocalStorage(self, time) {
 }
 
 function updatePlayerScenePositon(self) {
-    if (!self.scene) return;
-    if (checkOverlap(self.player, self.scene)) {
-        if (self.onScene) return;
-        self.onScene = true;
-        //self.socket.emit('AddToAllPeers');
-    } else {
-        self.onScene = false;
-    }
+    // if (!self.scene) return;
+    // if (checkOverlap(self.player, self.scene)) {
+    //     if (self.onScene) return;
+    //     self.onScene = true;
+    //     //self.socket.emit('AddToAllPeers');
+    // } else {
+    //     self.onScene = false;
+    // }
 }
