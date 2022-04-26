@@ -8,7 +8,7 @@ import { cryptoDuckiesLevel0, cryptoDuckiesLevel1, cryptoDuckiesLevel2 } from '.
 import { guestLevel0, guestLevel1 } from './StartScene/Guest/guest';
 import { dobbyLevel0, dobbyLevel1 } from './StartScene/dobby/dobby';
 
-const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffE06cb4807917bd79382981f23d16A70C102c3B", "0x653d8554B690d54EA447aD82C933A6851CC35BF2", "0xD74197Ed1535cfDAb59D6e6Ec8Abe92A1f31C6Dd"];
+const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffe06cb4807917bd79382981f23d16a70c102c3b", "0x653d8554B690d54EA447aD82C933A6851CC35BF2", "0xD74197Ed1535cfDAb59D6e6Ec8Abe92A1f31C6Dd"];
 const rooms = ["guest", "buildship", "pudgy-penguins", "crypto-duckies", "cryptocoven", "dobey"];
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
@@ -207,7 +207,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             this.progress.setAlpha(0);
         } else {
             this.label.x -= 100;
-            this.label.text = 'YOU DONT HAVE PUDGY PENGUIN NFT\nYOU CAN VISIT MAIN ROOM WITHOUT NFT'
+            this.label.text = 'YOU DONT HAVE NFT OF THIS COLLECTION\nYOU CAN VISIT MAIN ROOM WITHOUT NFT'
             // BUTTON WITH HREF TEXT
             this.continueButton = this.rexUI.add.label({
                 background: this.add.image(0, 0, 'background-button'),
