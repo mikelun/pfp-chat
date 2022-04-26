@@ -4,6 +4,7 @@ var spriteSpeed = 100;
 export class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
+        this.walkEffect = 0.05;
     }
 
     update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift, playerShadow) {
@@ -12,10 +13,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         let textureFromInternet = this.textureId ? true : false;
         if (shift.isDown) {
             spriteSpeed = 150;
-            this.walkEffect = 0.1 * (this.walkEffect > 0 ? 1 : -1);
         } else {
             spriteSpeed = 100;
-            this.walkEffect = 0.05 * (this.walkEffect > 0 ? 1 : -1);
         }
         if (keyUp.isDown || jUp.isDown) {
             velY = -spriteSpeed;

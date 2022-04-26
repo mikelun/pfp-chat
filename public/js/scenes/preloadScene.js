@@ -112,6 +112,9 @@ export class PreloadScene extends Phaser.Scene {
         // LOAD SHADOW
         this.load.image('shadow', 'assets/shadow.png');
 
+        // LOAD DISCORD ICON
+        this.load.image('discord', 'assets/game-ui/discord.png');
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);

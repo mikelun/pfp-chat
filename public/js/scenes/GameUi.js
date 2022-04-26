@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 
@@ -41,6 +42,7 @@ export class GameUi extends Phaser.Scene {
             .on('pointerdown', () => {
                 sceneEvents.emit('toggleMute');
             });
+
         // if microphone doesn't work show a red icon
         this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
 
@@ -73,12 +75,18 @@ export class GameUi extends Phaser.Scene {
             // open twitter link
             window.open('https://github.com/mikelun/open-metaverse');
         });
-        this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'twitter').setScale(0.2).setInteractive()
+        // this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'twitter').setScale(0.2).setInteractive()
+        //     .on('pointerdown', () => {
+        //         // open twitter link
+        //         window.open('https://twitter.com/mikelun_eth');
+        // });
+
+        this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'discord').setScale(0.25).setInteractive()
             .on('pointerdown', () => {
                 // open twitter link
-                window.open('https://twitter.com/mikelun_eth');
-            });
-
+                sendEventToAmplitude('Tap on discord button');
+                window.open('https://discord.com/invite/k23acdEASb');
+        });
 
 
 
