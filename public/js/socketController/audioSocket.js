@@ -11,20 +11,15 @@ const configuration = {
             urls: "stun:openrelay.metered.ca:80"
         },
         {
-            urls: "turn:openrelay.metered.ca:80",
-            username: "openrelayproject",
-            credential: "openrelayproject"
+            urls: "stun:159.89.17.72:3478",
+            username: "mikelun",
+            credential: "123456"
         },
         {
-            urls: "turn:openrelay.metered.ca:443",
-            username: "openrelayproject",
-            credential: "openrelayproject"
+            urls: "turn:159.89.17.72:3478",
+            username: "mikelun",
+            credential: "123456"
         },
-        {
-            urls: "turn:openrelay.metered.ca:443?transport=tcp",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-        }
     ]
 }
 

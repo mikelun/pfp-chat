@@ -173,7 +173,7 @@ function addPlayer(self, playerInfo) {
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
     const textColor = randColor();
-    self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '36px', fontFamily: 'monospace', fill: textColor }).setScale(0.3);
+    self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '36px', fontFamily: 'PixelFont', fill: textColor }).setScale(0.3);
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
 
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor, nft: playerInfo.nft, textureId: playerInfo.textureId });
@@ -261,7 +261,7 @@ function addOtherPlayers(self, playerInfo) {
     otherPlayer.name = playerInfo.playerName;
     const textColor = randColor();
     self.playerUI[playerInfo.playerId] = {
-        playerText: self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '24px', fontFamily: 'monospace', fill: textColor }).setScale(0.5)
+        playerText: self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '24px', fontFamily: 'PixelFont', fill: textColor }).setScale(0.5)
     };
     self.otherPlayers.add(otherPlayer);
     self.layer1.add(otherPlayer);

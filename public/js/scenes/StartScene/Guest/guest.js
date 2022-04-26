@@ -4,14 +4,14 @@ export function guestLevel0(self, Moralis) {
 
     // TEXT
     var text = 'Hello from OpenMetaverse!\nHere you can chat and chill with other players\nIf you want to say something, we need your microphone access\n';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px"});
+    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
     // BUTTON WITH ALLOW TEXT
     self.button1 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'ALLOW', { fill: "#000000", fontSize: "24px" }),
+        text: self.add.text(0, 0, 'ALLOW', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 90,
             right: 90,
@@ -23,7 +23,7 @@ export function guestLevel0(self, Moralis) {
     // BUTTON WITH "NO, CONTINUE" TEXT
     self.button2 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'NO, CONTINUE', { fill: "#000000", fontSize: "24px" }),
+        text: self.add.text(0, 0, 'NO, CONTINUE', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 40,
             right: 40,
@@ -62,7 +62,7 @@ export function guestLevel1(self, Moralis) {
 
     // TEXT
     var text = "It's Guest room. You should't connect Metamask";
-    self.label = self.add.text(300, 250-30, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
+    self.label = self.add.text(330, 250-30, '', { fill: "#ffffff", fontSize: "24px", align: "center", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
@@ -72,7 +72,7 @@ export function guestLevel1(self, Moralis) {
     // BUTTON WITH CONNECT TEXT
     self.button1 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px"}),
+        text: self.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 100,
             right: 100,

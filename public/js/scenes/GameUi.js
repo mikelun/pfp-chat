@@ -146,10 +146,10 @@ export class GameUi extends Phaser.Scene {
                 dom.style.height = '40px';
                 const playerNFT = self.add.dom(60, 60 + i * 65, dom);
                 this.playerNFTIcons.push(playerNFT);
-                this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'monospace' }));
+                this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'PixelFont' }));
                 //console.log(player.name + " HAS NFT");
             } else {
-                this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'monospace' }));
+                this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'PixelFont' }));
             }
         }
     }
@@ -161,9 +161,9 @@ export class GameUi extends Phaser.Scene {
 
         // ADD PANEL UI
         this.panelNFTs.add(this.add.image(675, 300, 'background-nfts').setScale(2.5,));
-        this.panelNFTs.add(this.add.text(590, 40, "YOUR NFTs", { fontSize: '24px', fill: '#ffffff' }));
-        this.panelNFTs.add(this.loadingText = this.add.text(550, 260, 'LOADING...', { fontSize: '40px', fill: '#ffffff' }));
-        this.pageText = this.add.text(630 - (0) * 7, 530, '0/0', { fontSize: '20px', fill: '#ffffff' });
+        this.panelNFTs.add(this.add.text(580, 40, "YOUR NFTs", { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }));
+        this.panelNFTs.add(this.loadingText = this.add.text(550, 260, 'LOADING...', { fontSize: '40px', fill: '#ffffff', fontFamily: 'PixelFont' }));
+        this.pageText = this.add.text(630 - (0) * 7, 530, '0/0', { fontSize: '20px', fill: '#ffffff', fontFamily: 'PixelFont' });
         this.panelNFTs.add(this.pageText);
 
         const self = this;
@@ -271,7 +271,7 @@ export class GameUi extends Phaser.Scene {
                 sceneEvents.emit('nftSelected', nfts[i]);
             });
             this.backgroundNFTs.add(nftBackground);
-            let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '14px', fill: '#ffffff' });
+            let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '14px', fill: '#ffffff', fontFamily: 'PixelFont' });
             this.currentNFTs.push(nft);
             this.currentNFTs.push(nftName);
         }

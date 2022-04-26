@@ -143,7 +143,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             // ADDING SHOW ROOMS TEXT
             this.otherRooms = this.rexUI.add.label({
                 background: this.add.image(0, 0, 'background-button'),
-                text: this.add.text(0, 0, 'SHOW OTHER ROOMS', { fill: "#000000", fontSize: "18px" }),
+                text: this.add.text(0, 0, 'SHOW OTHER ROOMS', { fill: "#000000", fontSize: "18px", fontFamily: "PixelFont" }),
                 space: {
                     left: 20,
                     right: 30,
@@ -176,15 +176,15 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             } else if (text == 'BUILDSHIP') {
                 text = 'BUILDSHIP MAIN ROOM';
             }
-            this.add.text(100, 140 + i * 100, text, { fill: "#ffffff", fontSize: "24px" });
+            this.add.text(100, 140 + i * 100, text, { fill: "#ffffff", fontSize: "24px", fontFamily: "PixelFont" });
             // BUTTON WITH CONNECT TEXT
             this.rexUI.add.label({
                 background: this.add.image(0, 0, 'background-button'),
-                text: this.add.text(0, 0, 'ENTER', { fill: "#000000", fontSize: "24px" }),
+                text: this.add.text(0, 0, 'ENTER', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
                 space: {
                     left: 30,
                     right: 30,
-                    top: 10,
+                    top: 15,
                     bottom: 20
                 }
             }).layout().setPosition(470, 140 + i * 100 + 17).setInteractive()
@@ -211,7 +211,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             // BUTTON WITH HREF TEXT
             this.continueButton = this.rexUI.add.label({
                 background: this.add.image(0, 0, 'background-button'),
-                text: this.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px" }),
+                text: this.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
                 space: {
                     left: 90,
                     right: 90,

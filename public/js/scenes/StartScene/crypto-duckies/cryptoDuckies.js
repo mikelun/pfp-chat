@@ -4,14 +4,14 @@ export function cryptoDuckiesLevel0(self, Moralis) {
 
     // TEXT
     var text = 'Hello from OpenMetaverse!\nHere you can chat and chill with other players\nIf you want to say something, we need your microphone access\n';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px"});
+    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
     // BUTTON WITH ALLOW TEXT
     self.button1 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'ALLOW', { fill: "#000000", fontSize: "24px" }),
+        text: self.add.text(0, 0, 'ALLOW', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 90,
             right: 90,
@@ -23,7 +23,7 @@ export function cryptoDuckiesLevel0(self, Moralis) {
     // BUTTON WITH "NO, CONTINUE" TEXT
     self.button2 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'NO, CONTINUE', { fill: "#000000", fontSize: "24px" }),
+        text: self.add.text(0, 0, 'NO, CONTINUE', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 40,
             right: 40,
@@ -69,7 +69,7 @@ export function cryptoDuckiesLevel1(self, Moralis) {
     // BUTTON WITH CONNECT TEXT
     self.button1 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'CONNECT', { fill: "#000000", fontSize: "24px" }),
+        text: self.add.text(0, 0, 'CONNECT', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 100,
             right: 100,
@@ -155,14 +155,14 @@ export function cryptoDuckiesLevel2(self, Moralis) {
     //self.levelGroup.add(self.robots);
     // TEXT
     var text = 'TO ENTER THE ROOM YOU SHOULD HAVE CRYPTO DUCKIES (on-chain) NFT';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px", align: "center" });
+    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "24px", align: "center", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     self.typeTextWithDelay(text);
 
     // BUTTON WITH START TEXT
     self.button1 = self.rexUI.add.label({
         background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'CHECK NFT', { fill: "#000000", fontSize: "24px" }),
+        text: self.add.text(0, 0, 'CHECK NFT', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
         space: {
             left: 90,
             right: 90,

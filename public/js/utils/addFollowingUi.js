@@ -5,7 +5,7 @@ export function addFollowingUI(self) {
         const playerText = playerUI.playerText;
         if (playerText) {
             const textSize = playerText.text.length;
-            playerText.x = self.player.x - textSize * 3.5;
+            playerText.x = self.player.x - textSize * 2.8;
             playerText.y = self.player.y - 27;
         }
         playerUI.microphone.x = self.player.x;
