@@ -1,5 +1,7 @@
 # OpenMetaverse
 
+Author: [mikelun.eth](https://twitter.com/mikelun_eth)
+
 ## Site
 https://meet.buildship.xyz
 
