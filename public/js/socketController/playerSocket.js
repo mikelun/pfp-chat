@@ -68,12 +68,26 @@ export function initializePlayersSocket(anotherSelf, _peers) {
     self.socket.on('updatePlayerInfo', (playerInfo) => {
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerInfo.playerId) {
+                // change player text
                 self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
-                self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone" : "microphoneMuted");
                 playersList[i].name = playerInfo.playerName;
+
+                // change mircrophone status
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
+                self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone" : "microphoneMuted");
+
                 playersList[i].nft = playerInfo.nft;
 
+
+                if (playerInfo.textureId && playerInfo.textureId != playersList[i].textureId) {
+                    // TODO: ADD FUNCTION FOR LOADING TEXTURE
+                    // get otherPlayer with id
+                    self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+                        if (playerInfo.playerId === otherPlayer.playerId) {
+                            loadTexture(otherPlayer, playerInfo.textureId);
+                        }
+                    });
+                }
                 showPlayersToTalk()
                 break;
             }
@@ -118,18 +132,37 @@ function addPlayer(self, playerInfo) {
         self.errors = null;
     }
 
+    // check if texture from internet
+    var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
+
+    console.log("ADDING PLAYER WITH TEXTURE", playerInfo.textureId);
     // TRIGGERS FOR TVS
     self.rectangleTrigger = self.add.rectangle(200, 630, 100, 60, 0xff0000).setAlpha(0);
     self.machineTrigger = self.add.rectangle(225, 680, 40, 40, 0xff0000).setAlpha(0);
 
-    // ADD PLAYER SHADOW
-    self.playerShadow = self.add.image(playerInfo.x, playerInfo.y, 'shadow').setScale(0.02, 0.05).setAlpha(0.7);
-    self.playerShadow.setOrigin(0.5, -1.2);
-    self.layer1.add(self.playerShadow);
+    // ADD PLAYER SHADOW FOR NFT FROM INTERNET
+    if (textureFromInternet) {
+        console.log("ADDING SHADOW FOR TEXTURE FROM INTERNET");
+        addShadowForTextureFromInternet();
+    }
 
     // SETUP PLAYER
     self.textureId = playerInfo.textureId;
-    self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
+
+    // check if texture exist
+    if (self.textures.exists(playerInfo.textureId)) {
+        console.log('Texture exist', playerInfo.textureId);
+    } else {
+        //console.log('FAILED TEXTURE', playerInfo.textureId);
+    }
+
+    if (textureFromInternet) {
+        self.player = self.add.player(playerInfo.x, playerInfo.y, playerInfo.textureId);
+        self.player.textureId = playerInfo.textureId;
+    } else {
+        self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
+    }
+
     self.layer1.add(self.player);
 
     // START FOLLOWING
@@ -143,7 +176,7 @@ function addPlayer(self, playerInfo) {
     self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '36px', fontFamily: 'monospace', fill: textColor }).setScale(0.3);
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
 
-    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor, nft: playerInfo.nft });
+    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor, nft: playerInfo.nft, textureId: playerInfo.textureId });
 
     // END PLAYER UI
 
@@ -168,19 +201,18 @@ function addPlayer(self, playerInfo) {
     self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, 200, 200, 0x000000).setAlpha(0);
 
     self.connected = [];
-    // // ADD BALL TO SCENE
-    // self.physics.add.collider(self.player, self.ball);
-    // self.physics.add.collider(self.wallsLayer, self.ball);
-    // self.physics.add.collider(self.ball, self.stairsUpFloorLayer);
-    // self.physics.add.collider(self.ball, self.objectsLayer);
 
     sceneEvents.on('nftSelected', nftSelected, this);
 }
 
+// DESTROYING MAIN PLAYER
 export function destroyPlayer() {
     const playerUI = self.playerUI[self.player.id];
     playerUI.playerText.destroy();
     playerUI.microphone.destroy();
+    if (self.playerShadwow) {
+        self.playerShadow.destroy();
+    }
     self.player.destroy();
     self.player = null;
 }
@@ -188,34 +220,42 @@ export function destroyPlayer() {
 function nftSelected(nft) {
     const nftImage = nft.image;
     // if nft started with 'Duckie'
+    var id;
     if (nft.name.startsWith('Duckie')) {
         // get id after #
-        const id = nft.name.split('#')[1];
+        id = nft.name.split('#')[1];
 
-        self.load.image(nft.name, `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`)
-        self.load.once(Phaser.Loader.Events.COMPLETE, (bla) => {
-            console.log('BLA', bla);
-            if (self.player) {
-                self.player.setTexture(nft.name);
-                self.textureId = 'nft';
-            }
-        })
+        loadTexture(self.player, `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`)
+
         self.load.start();
     }
 
     playersList.forEach(player => {
         if (player.id == self.socket.id) {
             player.nft = nftImage;
-            self.socket.emit("updatePlayerInfo", { nft: nftImage }, self.socket.id);
-            sceneEvents.emit("currentPlayers", playersList);
+            const textureId = id ? `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png` : null;
+            self.socket.emit("updatePlayerInfo", { nft: nftImage, textureId: textureId }, self.socket.id);
         }
     });
+
+    showPlayersToTalk();
+    console.log(nft.name, nft.image, ' HAS BEEN SELECTED');
 }
 
 
 
 function addOtherPlayers(self, playerInfo) {
-    const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self);
+
+    // define other player with 0 character
+    const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters0`, self)
+
+    const textureFromInternet = isTextureFromInternet(playerInfo.textureId);
+    if (textureFromInternet) {
+        loadTexture(otherPlayer, playerInfo.textureId);
+    } else {
+        otherPlayer.setTexture(`characters${playerInfo.textureId}`);
+    }
+
     //const otherPlayerName = self.add.text(playerInfo.x, playerInfo.y, playerInfo.account, { fontSize: '20px', color: '#ffffff' });
     otherPlayer.playerId = playerInfo.playerId;
     otherPlayer.name = playerInfo.playerName;
@@ -227,7 +267,7 @@ function addOtherPlayers(self, playerInfo) {
     self.layer1.add(otherPlayer);
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
-    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor });
+    playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor, textureId: playerInfo.textureId });
     //showPlayersToTalk()
 }
 
@@ -261,4 +301,38 @@ export function showPlayersToTalk() {
         }
     });
     sceneEvents.emit("currentPlayers", sortedPlayersList);
+}
+
+
+export function loadTexture(object, textureLink) {
+    if (self.textures.exists(textureLink)) {
+        object.setTexture(textureLink);
+        object.textureId = textureLink;
+        return;
+    }
+
+    self.load.image(textureLink, textureLink)
+    self.load.on('filecomplete', function (key, file) {
+        if (key == textureLink) {
+            object.setTexture(textureLink);
+            object.textureId = textureLink;
+            //console.log(textureLink);
+            //addShadowForTextureFromInternet();
+        }
+    });
+    self.load.start();
+}
+
+function isTextureFromInternet(texture) {
+    return (texture + '').startsWith('https');
+}
+
+function addShadowForTextureFromInternet() {
+    if (self.playerShadow) {
+        self.playerShadow.destroy();
+    }
+
+    self.playerShadow = self.add.image(-100, -100, 'shadow').setScale(0.02, 0.05).setAlpha(0.7);
+    self.playerShadow.setOrigin(0.5, -1.2);
+    self.layer1.add(self.playerShadow);
 }

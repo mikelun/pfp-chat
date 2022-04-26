@@ -66,8 +66,10 @@ export class MainScene extends Phaser.Scene {
         this.layer2 = this.add.layer();
 
         // add main camera zoom
-        this.cameras.main.setZoom(1.5);
+        this.cameras.main.setZoom(2);
 
+        // add keyboard events
+        keyboardEvents(this);
         // fix problem with touching space
         var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
         keyObj.on('down', function (event) { });
@@ -223,4 +225,8 @@ function updatePlayerScenePositon(self) {
     // } else {
     //     self.onScene = false;
     // }
+}
+
+function keyboardEvents(self) {
+    //TODO: ADD ZOOM OUT AND ZOOM IN FOR CAMERA, IF KEY V TAPPED
 }

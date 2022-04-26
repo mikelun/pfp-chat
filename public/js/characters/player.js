@@ -9,6 +9,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift, playerShadow) {
         let velY = 0;
         
+        let textureFromInternet = this.textureId ? true : false;
         if (shift.isDown) {
             spriteSpeed = 150;
         } else {
@@ -32,21 +33,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         if (keyLeft.isDown || jLeft.isDown) {
             this.setVelocity(-spriteSpeed, velY);
             // flip the sprite
-            if (type == 'nft') {
+            if (textureFromInternet) {
                 this.flipX = true;
             }
             //this.x -= spriteSpeed;
         }
         if (keyRight.isDown || jRight.isDown) {
             this.setVelocity(+spriteSpeed, velY);
-            if (type == 'nft') {
+            if (textureFromInternet) {
                 this.flipX = false;
             }
             //this.x += spriteSpeed;
         }
-        playerShadow.setPosition(this.x, this.y);
+        if (playerShadow) playerShadow.setPosition(this.x, this.y);
         //playerShadow.setVelocity(this.velocity);
-        if (this.anims && type != 'nft') {
+        if (this.anims && !textureFromInternet) {
             if (keyUp.isDown || jUp.isDown) {
                 this.anims.play(`player-walk-up${type}`, true);
             } else if (keyDown.isDown || jDown.isDown) {

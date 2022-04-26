@@ -1,5 +1,5 @@
 import { initializeAudio, removePeer } from '../socketController/audioSocket';
-import { destroyPlayer, initializePlayersSocket } from '../socketController/playerSocket';
+import { destroyPlayer, initializePlayersSocket, loadTexture } from '../socketController/playerSocket';
 import { io } from "socket.io-client";
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
 
@@ -46,12 +46,12 @@ export function initializeSocket(self, peers) {
         const playerInfo = {
             x : self.player.x,
             y : self.player.y,
-            textureId : self.textureId,
+            textureId : self.player.textureId,
             address : self.address,
             room : self.room,
         }
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
-
+        
         self.errors = self.add.group();
         self.errors.add(self.add.rectangle(self.player.x - 2000, self.player.y- 2000, 4000, 4000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));

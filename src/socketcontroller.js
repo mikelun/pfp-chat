@@ -76,6 +76,8 @@ module.exports = (io) => {
             if (data.microphoneStatus != null) players[socket_id].microphoneStatus = data.microphoneStatus;
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
+            if (data.textureId) players[socket_id].textureId = data.textureId;
+
             io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
         })
 
