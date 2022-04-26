@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@ensdomains/ensjs": "^2.1.0",
+        "amplitude-js": "^8.18.1",
         "bulma": "^0.9.3",
         "cors": "^2.8.5",
         "express": "^4.17.3",
@@ -30,10 +31,10 @@
         "phaser3-rex-plugins": "^1.1.67",
         "signalhub": "^4.9.0",
         "simple-peer": "^9.11.1",
-        "web3": "^1.7.1",
-        "webrtc-swarm": "^2.9.0",
         "socket.io": "^4.4.1",
-        "socket.io-client": "^4.4.1"
+        "socket.io-client": "^4.4.1",
+        "web3": "^1.7.1",
+        "webrtc-swarm": "^2.9.0"
     },
     "staticFiles": {
         "staticPath": [

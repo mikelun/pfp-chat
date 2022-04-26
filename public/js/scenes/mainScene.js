@@ -13,7 +13,7 @@ import { addAudioTimer } from '../utils/addAudioTimer';
 import { toggleMute } from '../utils/microphoneUtils';
 import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 import { showPlayersToTalk } from '../socketController/playerSocket';
-
+import { initializeAmplitude } from '../Analytics/amplitude';
 /**
  * All peer connections
  */
@@ -53,6 +53,10 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
+
+        // INITIAlIZE AMPLITUDE (Util for analytics)
+        initializeAmplitude();
+
         if (this.room == 'dobey') {
             this.mapId = 2;
         } else if(this.room == 'buildship') {
