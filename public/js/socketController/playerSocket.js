@@ -142,8 +142,8 @@ function addPlayer(self, playerInfo) {
 
     // ADD PLAYER SHADOW FOR NFT FROM INTERNET
     if (textureFromInternet) {
-        console.log("ADDING SHADOW FOR TEXTURE FROM INTERNET");
-        addShadowForTextureFromInternet();
+        //console.log("ADDING SHADOW FOR TEXTURE FROM INTERNET");
+        //addShadowForTextureFromInternet();
     }
 
     // SETUP PLAYER
@@ -198,7 +198,11 @@ function addPlayer(self, playerInfo) {
 
     addPhysicsForScene(self, self.mapId);
 
-    self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, 200, 200, 0x000000).setAlpha(0);
+    var talkSize = 200;
+    if (self.room == 'buildship' || self.room == 'dobey') {
+        talkSize = 10000;
+    }
+    self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, talkSize, talkSize, 0x000000).setAlpha(0);
 
     self.connected = [];
 
@@ -247,7 +251,7 @@ function nftSelected(nft) {
 function addOtherPlayers(self, playerInfo) {
 
     // define other player with 0 character
-    const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters0`, self)
+    const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self)
 
     const textureFromInternet = isTextureFromInternet(playerInfo.textureId);
     if (textureFromInternet) {

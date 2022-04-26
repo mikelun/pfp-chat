@@ -1,7 +1,7 @@
 module.exports =  {
     "buildship":{
-        "x": 200,
-        "y": 800
+        "x": 830,
+        "y": 2430
     },
     "cryptocoven":{
         "x": 830,

@@ -10,7 +10,7 @@ export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
         this.walkEffect = 0.025;
     }
     update(x, y) {
-        const textureFromInternet = this.textureId ? true : false;
+        const textureFromInternet = (this.textureId + "").startsWith('https') ? true : false;
         if (y < this.oldY) {
             if (textureFromInternet) {
                 // DO SOMETHING
