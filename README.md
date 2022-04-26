@@ -1,5 +1,8 @@
 # OpenMetaverse
 
+## Site
+https://meet.buildship.xyz
+
 ## Clone repo, install deps
 
 ```
