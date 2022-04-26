@@ -7,6 +7,7 @@ export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
         this.oldX = x;
         this.oldY = y;
         this.textureId = textureId.replace('characters', '');
+        this.walkEffect = 0.025;
     }
     update(x, y) {
         const textureFromInternet = this.textureId ? true : false;
@@ -35,12 +36,21 @@ export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play(`player-walk-right${this.textureId}`, true);
             }
         }
-
+        if (textureFromInternet) {
+            if (this.oldX !== x || this.oldY !== y) {
+                this.rotation += this.walkEffect;
+                if (Math.abs(this.rotation) > 0.1) {
+                    this.walkEffect *= -1;
+                }
+            }
+        }
         if (this.oldX === x && this.oldY === y) {
             this.anims.stop();
+            this.rotation = 0;
         }
         this.oldX = x;
         this.oldY = y;
+
 
     }
 }

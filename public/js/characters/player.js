@@ -12,8 +12,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         let textureFromInternet = this.textureId ? true : false;
         if (shift.isDown) {
             spriteSpeed = 150;
+            this.walkEffect = 0.1 * (this.walkEffect > 0 ? 1 : -1);
         } else {
             spriteSpeed = 100;
+            this.walkEffect = 0.05 * (this.walkEffect > 0 ? 1 : -1);
         }
         if (keyUp.isDown || jUp.isDown) {
             velY = -spriteSpeed;
@@ -58,9 +60,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play(`player-walk-right${type}`, true);
             }      
         }
+        if (textureFromInternet) {
+            if (keyUp.isDown || jUp.isDown || keyDown.isDown || jDown.isDown || keyLeft.isDown || jLeft.isDown || keyRight.isDown || jRight.isDown) {
+                this.rotation += this.walkEffect;
+                if (Math.abs(this.rotation) > 0.1) {
+                    this.walkEffect *= -1;
+                }
+            }
+        }
         if (!(keyUp.isDown || jUp.isDown) && !(keyDown.isDown || jDown.isDown) && !(keyLeft.isDown || jLeft.isDown) && !(keyRight.isDown || jRight.isDown)) {
             if (this.anims) this.anims.stop();
             this.setVelocity(0, 0)
+            this.rotation = 0;
         }
     }
 }
