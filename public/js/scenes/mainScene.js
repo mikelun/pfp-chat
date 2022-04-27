@@ -73,8 +73,8 @@ export class MainScene extends Phaser.Scene {
         // add keyboard events
         keyboardEvents(this);
         // fix problem with touching space
-        var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
-        keyObj.on('down', function (event) { });
+        //var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
+        //keyObj.on('down', function (event) { });
 
         // add UI for each player (microphone, name, etc)
         this.playerUI = {};

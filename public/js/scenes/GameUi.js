@@ -3,6 +3,7 @@ import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 import { addTextBox } from './GameUI-elements/textBox';
+import { addChat } from './GameUI-elements/textChat';
 
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
@@ -14,7 +15,8 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
-        //this.addChat();
+
+        this.tipOpenChat = this.add.text(1000, 630, 'Press enter to open chat', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
         // NFTs dom objects on page
         this.currentNFTs = [];
 
@@ -114,27 +116,13 @@ export class GameUi extends Phaser.Scene {
         // ADD PANEL FOR NFTS
         this.makePanelForNFTs();
 
+        // ADD TEXT CHAT
+        addChat(this);
+
 
     }
     addMessageToChat(message, playerName) {
 
-    }
-
-    addChat() {
-        var sizer = this.rexUI.add.sizer({
-            x: 230, y: 300,
-            width: 400, height: 400,
-            orientation: 'y',
-        }).add(addTextBox(this, 'mikelun.eth: HI!'));
-        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
-        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
-        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
-        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
-        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
-        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!')).layout();
-        
-
-        // const child = this.addTextBox('asdfasdf');
     }
 
     updateRoomText(room) {
@@ -152,7 +140,9 @@ export class GameUi extends Phaser.Scene {
         }
     }
 
-    updateCurrentPlayers(players) {
+    updateCurrentPlayers(players, playerName) {
+        this.playerName = playerName;
+
         // CLEAR ALL PLAYER LIST
         this.playerNFTIcons.forEach(nft => {
             nft.destroy();

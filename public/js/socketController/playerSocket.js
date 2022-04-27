@@ -169,6 +169,7 @@ function addPlayer(self, playerInfo) {
     self.cameras.main.startFollow(self.player);
 
     self.player.id = playerInfo.playerId;
+    self.playerName = playerInfo.playerName;
 
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
@@ -188,8 +189,9 @@ function addPlayer(self, playerInfo) {
         playersList.forEach(player => {
             if (player.id == self.socket.id) {
                 player.name = domain;
+                self.playerName = domain;
                 self.socket.emit("updatePlayerInfo", { playerName: domain }, self.socket.id);
-                sceneEvents.emit("currentPlayers", playersList);
+                showPlayersToTalk();
             }
         });
     });
@@ -304,7 +306,7 @@ export function showPlayersToTalk() {
             sortedPlayersList.push(player);
         }
     });
-    sceneEvents.emit("currentPlayers", sortedPlayersList);
+    sceneEvents.emit("currentPlayers", sortedPlayersList, self.playerName);
 }
 
 
