@@ -20,7 +20,7 @@ export function updateOtherPlayersPositions(self, delta) {
         const playerUI = self.playerUI[otherPlayer.playerId];
         const otherPlayerText = playerUI.playerText;
         otherPlayerText.x = otherPlayer.x - otherPlayerText.text.length * 2.8;
-        otherPlayerText.y = otherPlayer.y - 25;
+        otherPlayerText.y = otherPlayer.y - 28;
         playerUI.microphone.x = otherPlayer.x;
         playerUI.microphone.y = otherPlayer.y - 32;
     });

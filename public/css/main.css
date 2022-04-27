@@ -7,6 +7,6 @@ body {
 
 @font-face {
     font-family: PixelFont;
-    src: url('../assets/Minecraft.ttf');
+    src: url('../assets/fonts/monogram.ttf');
     font-weight:100;
   }

@@ -2,6 +2,11 @@ import Phaser from 'phaser'
 import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
+import { addTextBox } from './GameUI-elements/textBox';
+
+const COLOR_PRIMARY = 0x4e342e;
+const COLOR_LIGHT = 0x7b5e57;
+const COLOR_DARK = 0x260e04;
 
 export class GameUi extends Phaser.Scene {
     constructor() {
@@ -9,6 +14,7 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
+        //this.addChat();
         // NFTs dom objects on page
         this.currentNFTs = [];
 
@@ -29,7 +35,7 @@ export class GameUi extends Phaser.Scene {
         const height = this.game.config.height;
 
         // ADD ROOM TEXT
-        this.roomText = this.add.text(width / 2 - 100, 50, '', { fontSize: '24px', fill: "#ffffff", fontFamily: 'PixelFont' });
+        this.roomText = this.add.text(width / 2 - 50, 50, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont' });
 
         // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
@@ -71,10 +77,10 @@ export class GameUi extends Phaser.Scene {
 
         // add next buttons (dont make sense)
         this.add.image(width / 3 + 2 * (width / 8), height * 0.90 - 3, 'github').setScale(0.08).setInteractive()
-        .on('pointerdown', () => {
-            // open twitter link
-            window.open('https://github.com/mikelun/open-metaverse');
-        });
+            .on('pointerdown', () => {
+                // open twitter link
+                window.open('https://github.com/mikelun/open-metaverse');
+            });
         // this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'twitter').setScale(0.2).setInteractive()
         //     .on('pointerdown', () => {
         //         // open twitter link
@@ -86,7 +92,7 @@ export class GameUi extends Phaser.Scene {
                 // open twitter link
                 sendEventToAmplitude('Tap on discord button');
                 window.open('https://discord.com/invite/k23acdEASb');
-        });
+            });
 
 
 
@@ -103,14 +109,36 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('updateRoomText', this.updateRoomText, this);
 
+        sceneEvents.on('newMessage', this.addMessageToChat, this)
+
         // ADD PANEL FOR NFTS
         this.makePanelForNFTs();
 
 
     }
+    addMessageToChat(message, playerName) {
+
+    }
+
+    addChat() {
+        var sizer = this.rexUI.add.sizer({
+            x: 230, y: 300,
+            width: 400, height: 400,
+            orientation: 'y',
+        }).add(addTextBox(this, 'mikelun.eth: HI!'));
+        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
+        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
+        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
+        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
+        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!'))
+        sizer.add(addTextBox(this, 'notmikelun.eth: BYE!')).layout();
+        
+
+        // const child = this.addTextBox('asdfasdf');
+    }
 
     updateRoomText(room) {
-        this.roomText.setText(`Room: ${room.toUpperCase()}`);
+        this.roomText.setText(`Room:${room.toUpperCase()}`);
     }
     getNFTPanelStatus() {
         return this.panelNFTs.getChildren()[0].alpha == 0 ? false : true;
@@ -136,6 +164,7 @@ export class GameUi extends Phaser.Scene {
         // ADD PLAYERS
         for (let i = 0; i < players.length; i++) {
             let player = players[i];
+            const playerNameText = player.name;
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
             this.playerList.add(this.add.image(190, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted").setScale(0.7));
             if (player.nft) {
@@ -146,10 +175,10 @@ export class GameUi extends Phaser.Scene {
                 dom.style.height = '40px';
                 const playerNFT = self.add.dom(60, 60 + i * 65, dom);
                 this.playerNFTIcons.push(playerNFT);
-                this.playerList.add(this.add.text(82, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'PixelFont' }));
+                this.playerList.add(this.add.text(82, 60 + i * 65 - 15, playerNameText, { fontSize: '24px', fill: "#fffffff", fontFamily: 'PixelFont' }));
                 //console.log(player.name + " HAS NFT");
             } else {
-                this.playerList.add(this.add.text(50, 60 + i * 65 - 5, player.name, { fontSize: '12px', fill: "#fffffff", fontFamily: 'PixelFont' }));
+                this.playerList.add(this.add.text(50, 60 + i * 65 - 15, playerNameText, { fontSize: '24px', fill: "#fffffff", fontFamily: 'PixelFont' }));
             }
         }
     }
@@ -161,9 +190,9 @@ export class GameUi extends Phaser.Scene {
 
         // ADD PANEL UI
         this.panelNFTs.add(this.add.image(675, 300, 'background-nfts').setScale(2.5,));
-        this.panelNFTs.add(this.add.text(580, 40, "YOUR NFTs", { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }));
-        this.panelNFTs.add(this.loadingText = this.add.text(550, 260, 'LOADING...', { fontSize: '40px', fill: '#ffffff', fontFamily: 'PixelFont' }));
-        this.pageText = this.add.text(630 - (0) * 7, 530, '0/0', { fontSize: '20px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.panelNFTs.add(this.add.text(580 , 40, "YOUR NFTs", { fontSize: '35px', fill: '#ffffff', fontFamily: 'PixelFont' }));
+        this.panelNFTs.add(this.loadingText = this.add.text(570, 260, 'LOADING...', { fontSize: '50px', fill: '#ffffff', fontFamily: 'PixelFont' }));
+        this.pageText = this.add.text(635 - (0) * 7, 523, '0/0', { fontSize: '30px', fill: '#ffffff', fontFamily: 'PixelFont' });
         this.panelNFTs.add(this.pageText);
 
         const self = this;
@@ -271,10 +300,9 @@ export class GameUi extends Phaser.Scene {
                 sceneEvents.emit('nftSelected', nfts[i]);
             });
             this.backgroundNFTs.add(nftBackground);
-            let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '14px', fill: '#ffffff', fontFamily: 'PixelFont' });
+            let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
             this.currentNFTs.push(nft);
             this.currentNFTs.push(nftName);
         }
     }
-
 }

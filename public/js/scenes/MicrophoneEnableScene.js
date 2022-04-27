@@ -1,15 +1,16 @@
 import Phaser from 'phaser'
 import { Moralis } from 'moralis'
-import { ailoverseLevel0, ailoverseLevel1, ailoverseLevel2 } from './StartScene/ailoverse/ailoverse';
-import { buildshipLevel0, buildshipLevel1, buildshipLevel2, updateBuildship } from './StartScene/buildship/buildship';
-import { pinguinLevel0, pinguinLevel1, pinguinLevel2 } from './StartScene/pinguins/pinguin';
-import { witchesLevel0, witchesLevel1, witchesLevel2 } from './StartScene/witches/witches';
-import { cryptoDuckiesLevel0, cryptoDuckiesLevel1, cryptoDuckiesLevel2 } from './StartScene/crypto-duckies/cryptoDuckies';
-import { guestLevel0, guestLevel1 } from './StartScene/Guest/guest';
-import { dobbyLevel0, dobbyLevel1 } from './StartScene/dobby/dobby';
+import {ailoverseLevel2 } from './StartScene/ailoverse/ailoverse';
+import {buildshipLevel2, updateBuildship } from './StartScene/buildship/buildship';
+import {pinguinLevel2 } from './StartScene/pinguins/pinguin';
+import {witchesLevel2 } from './StartScene/witches/witches';
+import {cryptoDuckiesLevel2 } from './StartScene/crypto-duckies/cryptoDuckies';
+import {guestLevel1 } from './StartScene/Guest/guest';
+import {dobbyLevel1 } from './StartScene/dobby/dobby';
+import {defaultLevel0, defaultLevel1 } from './StartScene/default-levels/defaultLevels';
 
 const creators = ["0x59e1fac2faf72765ad41ae1bfac53d5cd80acb91", "0x7a5F6EA3be6dB9dbe2bf436715a278b284ADeF61", "0xffe06cb4807917bd79382981f23d16a70c102c3b", "0x653d8554B690d54EA447aD82C933A6851CC35BF2", "0xD74197Ed1535cfDAb59D6e6Ec8Abe92A1f31C6Dd"];
-const rooms = ["guest", "buildship", "pudgy-penguins", "crypto-duckies", "cryptocoven", "dobey"];
+const rooms = ["guest", "buildship", "crypto-duckies"];
 export class MicrophoneEnableScene extends Phaser.Scene {
     constructor() {
         super({ key: "microphone" });
@@ -17,22 +18,22 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
     initializeRooms() {
         if (this.room == 'ailoverse') {
-            this.levels = [ailoverseLevel0, ailoverseLevel1, ailoverseLevel2];
+            this.levels = [defaultLevel0, defaultLevel1, ailoverseLevel2];
         } else if (this.room == 'pudgy-penguin' || this.room == 'pudgy-penguins') {
-            this.levels = [pinguinLevel0, pinguinLevel1, pinguinLevel2];
+            this.levels = [defaultLevel0, defaultLevel1, pinguinLevel2];
         } else if (this.room == 'cryptocoven') {
-            this.levels = [witchesLevel0, witchesLevel1, witchesLevel2];
+            this.levels = [defaultLevel0, defaultLevel1, witchesLevel2];
         } else if (this.room == 'crypto-duckies') {
-            this.levels = [cryptoDuckiesLevel0, cryptoDuckiesLevel1, cryptoDuckiesLevel2];
+            this.levels = [defaultLevel0, defaultLevel1, cryptoDuckiesLevel2];
         } else if (this.room == 'buildship') {
             this.room = 'buildship';
-            this.levels = [buildshipLevel0, buildshipLevel1, buildshipLevel2];
+            this.levels = [defaultLevel0, defaultLevel1, buildshipLevel2];
         } else if (this.room == 'dobey') {
             this.room = 'dobey';
-            this.levels = [dobbyLevel0, dobbyLevel1];
+            this.levels = [defaultLevel0, dobbyLevel1];
         } else {      
             this.room = 'guest';
-            this.levels = [guestLevel0, guestLevel1];
+            this.levels = [defaultLevel0, guestLevel1];
         }
     }
     create() {
@@ -143,12 +144,12 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             // ADDING SHOW ROOMS TEXT
             this.otherRooms = this.rexUI.add.label({
                 background: this.add.image(0, 0, 'background-button'),
-                text: this.add.text(0, 0, 'SHOW OTHER ROOMS', { fill: "#000000", fontSize: "18px", fontFamily: "PixelFont" }),
+                text: this.add.text(0, 0, 'SHOW OTHER ROOMS', { fill: "#000000", fontSize: "25px", fontFamily: "PixelFont" }),
                 space: {
                     left: 20,
                     right: 30,
                     top: 20,
-                    bottom: 30
+                    bottom: 35
                 }
             }).layout().setPosition(1100, 80).setAlpha(0.8);
             this.otherRooms.setInteractive()
@@ -168,7 +169,7 @@ export class MicrophoneEnableScene extends Phaser.Scene {
 
 
     showRooms() {
-        this.add.text(600, 50, 'ROOMS', { fill: "#ffffff", fontSize: "32px", align: "center", fontFamily: "PixelFont" });
+        this.add.text(600, 50, 'ROOMS', { fill: "#ffffff", fontSize: "60px", align: "center", fontFamily: "PixelFont" });
         for (let i = 0; i < rooms.length; i++) {
             var text = rooms[i].toUpperCase();
             if (text == 'GUEST') {
@@ -176,18 +177,18 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             } else if (text == 'BUILDSHIP') {
                 text = 'BUILDSHIP MAIN ROOM';
             }
-            this.add.text(100, 140 + i * 100, text, { fill: "#ffffff", fontSize: "24px", fontFamily: "PixelFont" });
+            this.add.text(100, 140 + i * 100, text, { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
             // BUTTON WITH CONNECT TEXT
             this.rexUI.add.label({
                 background: this.add.image(0, 0, 'background-button'),
-                text: this.add.text(0, 0, 'ENTER', { fill: "#000000", fontSize: "24px", fontFamily: "PixelFont" }),
+                text: this.add.text(0, 0, 'ENTER', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
                 space: {
                     left: 30,
                     right: 30,
                     top: 15,
-                    bottom: 20
+                    bottom: 35
                 }
-            }).layout().setPosition(470, 140 + i * 100 + 17).setInteractive()
+            }).layout().setPosition(470, 140 + i * 100 + 25).setInteractive()
             .on('pointerdown', () => {
                 // load page href
                 window.location.href = window.location.origin + '/' + rooms[i];
