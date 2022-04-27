@@ -2,6 +2,7 @@ import { initializeAudio, removePeer } from '../socketController/audioSocket';
 import { destroyPlayer, initializePlayersSocket, loadTexture } from '../socketController/playerSocket';
 import { io } from "socket.io-client";
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
+import { initializeChatSocket } from './textChatSocket';
 
 /**
  * Initialize socket and connect to server by socket.io
@@ -22,6 +23,8 @@ export function initializeSocket(self, peers) {
     // Initialize player socket
     initializePlayersSocket(self, peers);
 
+    // Initialize text chat socket
+    initializeChatSocket(self);
     self.socket.on('connect', () => {
         console.log('Connected to server');
         if (localStorage.getItem('playerInfo')) {

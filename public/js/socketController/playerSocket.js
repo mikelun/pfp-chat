@@ -16,7 +16,6 @@ export function initializePlayersSocket(anotherSelf, _peers) {
     peers = _peers;
     self.otherPlayers = self.physics.add.group();
 
-
     self.socket.on('currentPlayers', function (players) {
         Object.keys(players).forEach(function (id) {
             if (players[id].playerId === self.socket.id) {

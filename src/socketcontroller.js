@@ -148,5 +148,10 @@ module.exports = (io) => {
             if (peers[id]) peers[id].emit('removeFromTalk', socket.id);
             if (peers[socket.id] )peers[socket.id].emit('removeFromTalk', id);
         });
+
+        // ADD TEXT CHAT
+        socket.on('textChatMessage', (message) => {
+            socket.to(players[socket.id].room).emit('textChatMessage', message);
+        });
 });
 };

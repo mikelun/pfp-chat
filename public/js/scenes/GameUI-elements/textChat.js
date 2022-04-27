@@ -3,6 +3,7 @@ import { TextEdit } from 'phaser3-rex-plugins/plugins/textedit.js';
 
 import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
 import { blockMovement, unblockMovement } from "../../utils/utils";
+import { sendTextChatMessage } from "../../socketController/textChatSocket";
 
 const defaultText = 'Type your message here';
 
@@ -23,7 +24,8 @@ export function addChat(newSelf) {
         if (self.printText.alpha == 1) {
             var text = self.printText.text;
             if (text.length > 0 && text != defaultText) {
-                addMessage(text);
+                const message = self.playerName + ': ' + text;
+                addMessage(message, true);
             } else {
                 self.printText.text = defaultText;
                 self.printText.alpha = 0;
@@ -37,15 +39,15 @@ export function addChat(newSelf) {
     // const child = this.addTextBox('asdfasdf');
 }
 
-export function addMessage(text) {
+export function addMessage(message, sendToServer) {
     if (sizer.children.length > 8) {
         // destroy the first one
         sizer.children[0].destroy();
     }
-    const message = self.playerName + ': ' + text;
     const child = addTextBox(self, message);
     sizer.add(child).layout();
     
+    if (sendToServer) sendTextChatMessage(message);
     // remove this child after 10 seconds
     self.time.delayedCall(10000, function () {
         sizer.remove(child, true).layout();
@@ -53,7 +55,7 @@ export function addMessage(text) {
 }
 
 function addEditText() {
-        self.tipsText = self.add.text(500, 530, 'To close the chat, press enter', { fontSize: '35px', fill: "#ffffff", fontFamily: 'PixelFont' });
+        self.tipsText = self.add.text(500, 530, 'To close the chat, press enter', { fontSize: '35px', fill: "#ffffff", fontFamily: 'PixelFont' }).setAlpha(0);
         self.printText = new BBCodeText(self, 700, 500, defaultText, {
             color: '#ffffff',
             fontSize: '35px',
@@ -93,7 +95,7 @@ function addEditText() {
                 editor.open(config);
             }, self);
         self.add.existing(self.printText);
-        self.printText.setAlpha(1);
+        self.printText.setAlpha(0);
     }
 
 
