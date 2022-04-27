@@ -24,10 +24,12 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 addOtherPlayers(self, players[id]);
             }
         });
+        sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
     self.socket.on('newPlayer', function (playerInfo) {
         addOtherPlayers(self, playerInfo);
+        sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
     self.socket.on('playerMoved', function (playerInfo) {
@@ -62,6 +64,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
         }
         showPlayersToTalk()
         removePeer(playerId);
+        sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
     self.socket.on('updatePlayerInfo', (playerInfo) => {

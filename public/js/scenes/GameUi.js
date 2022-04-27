@@ -15,8 +15,13 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
-
+        
+        // tip how to open text chat
         this.tipOpenChat = this.add.text(1000, 630, 'Press enter to open chat', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
+
+        // write count of online players 
+        this.onlinePlayers = this.add.text(1000, 650, 'Online: 1', { fontSize: '24px', fill: '#00FF66', fontFamily: 'PixelFont' });
+        
         // NFTs dom objects on page
         this.currentNFTs = [];
 
@@ -37,7 +42,7 @@ export class GameUi extends Phaser.Scene {
         const height = this.game.config.height;
 
         // ADD ROOM TEXT
-        this.roomText = this.add.text(width / 2 - 50, 50, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont' });
+        this.roomText = this.add.text(width / 2 - 50, 50, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont', align: 'center' });
 
         // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
@@ -83,11 +88,6 @@ export class GameUi extends Phaser.Scene {
                 // open twitter link
                 window.open('https://github.com/mikelun/open-metaverse');
             });
-        // this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'twitter').setScale(0.2).setInteractive()
-        //     .on('pointerdown', () => {
-        //         // open twitter link
-        //         window.open('https://twitter.com/mikelun_eth');
-        // });
 
         this.add.image(width / 3 + 3 * (width / 8), height * 0.90 - 5, 'discord').setScale(0.25).setInteractive()
             .on('pointerdown', () => {
@@ -113,11 +113,13 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('newMessage', this.addMessageToChat, this)
 
+        sceneEvents.on('updateOnlinePlayers', this.updateOnlinePlayers, this);
         // ADD PANEL FOR NFTS
         this.makePanelForNFTs();
 
         // ADD TEXT CHAT
         addChat(this);
+
 
 
     }
@@ -126,6 +128,7 @@ export class GameUi extends Phaser.Scene {
     }
 
     updateRoomText(room) {
+        this.roomText.x -= room.length * 4;
         this.roomText.setText(`Room:${room.toUpperCase()}`);
     }
     getNFTPanelStatus() {
@@ -140,6 +143,10 @@ export class GameUi extends Phaser.Scene {
         }
     }
 
+    updateOnlinePlayers(onlinePlayers) {
+        this.onlinePlayers.setText(`Online: ${onlinePlayers}`);
+    }
+    
     updateCurrentPlayers(players, playerName) {
         this.playerName = playerName;
 
