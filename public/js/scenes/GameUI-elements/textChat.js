@@ -12,6 +12,9 @@ var self;
 export function addChat(newSelf) {
     self = newSelf;
 
+    // const dom = document.createElement('INPUT');
+    // dom.setAttribute("type", "text");
+    // const editText = self.add.dom(200, 200, dom);
     addEditText();
 
     sizer = self.rexUI.add.sizer({

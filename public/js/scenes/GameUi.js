@@ -119,7 +119,8 @@ export class GameUi extends Phaser.Scene {
 
         // ADD TEXT CHAT
         addChat(this);
-
+        
+        
 
 
     }

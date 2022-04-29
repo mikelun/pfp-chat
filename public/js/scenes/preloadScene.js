@@ -5,6 +5,14 @@ export class PreloadScene extends Phaser.Scene {
 
     preload() {
 
+        // LOAD PLANETS
+        this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
+            frameWidth: 50,
+            frameHeight: 50, 
+            margin: 0,
+            spacing: 0
+        });
+
         // LOADING ANIMALS
         const animalsFolders = ['cat1', 'dog2'];
         for (let i = 0; i < animalsFolders.length; i++) {
@@ -21,6 +29,9 @@ export class PreloadScene extends Phaser.Scene {
         }
 
         // GAME UI
+        this.load.image('button', 'assets/game-ui/button.png');
+        this.load.image('buttonpress', 'assets/game-ui/buttonpress.png');
+        this.load.image('instructions', 'assets/game-ui/instructions.png');
         this.load.image('1', 'assets/game-ui/1.png');
         this.load.image('2', 'assets/game-ui/2.png');
         this.load.image('3', 'assets/game-ui/3.png');
@@ -32,6 +43,17 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('arrow', 'assets/game-ui/arrow.png');
 
         this.load.image('background-nfts', 'assets/game-ui/background-nfts.jpg');
+
+        // LOAD START SCENE ELEMENTS
+        this.load.image('bg-1', 'assets/game-ui/bg-1.png');
+        this.load.image('bg-2', 'assets/game-ui/bg-2.png');
+        this.load.image('press-enter-text', 'assets/game-ui/press-enter-text.png');
+        this.load.spritesheet('thunder', 'assets/thunder.png', {
+            frameWidth: 64,
+            frameHeight: 64,
+            margin: 0,
+            spacing: 0
+        });
 
         // LOAD PROGRESS BAR
         this.load.spritesheet('loading', 'assets/game-ui/loading.png', {
@@ -92,10 +114,18 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('witches', 'assets/witches/witches.png');
 
         // THIS LOAD BUILDSHIP
-        this.load.image('buildship', 'assets/buildship/buildship.png')
+        this.load.image('buildship', 'assets/buildship/buildship.png');
+        this.load.spritesheet('buildship-planet', 'assets/buildship/buildship-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
 
         // THIS LOAD CRYPTO DUCKIES
-        this.load.image('duckies', 'assets/crypto-duckies/duckies.png')
+        this.load.image('duckies', 'assets/crypto-duckies/duckies.png');
+        this.load.spritesheet('crypto-duckies-planet', 'assets/crypto-duckies/crypto-duckies-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
 
         // LOAD TWITTER
         this.load.image('twitter', 'assets/game-ui/twitter.png');
@@ -188,6 +218,6 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start('microphone');
+        this.scene.start('start');
     }
 }

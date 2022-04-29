@@ -3,6 +3,7 @@ import { PreloadScene } from './scenes/preloadScene.js';
 import { GameUi } from './scenes/GameUi.js';
 import { MicrophoneEnableScene } from './scenes/MicrophoneEnableScene.js';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import { StartScene } from './scenes/StartScene.js';
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
@@ -18,7 +19,7 @@ const config = {
     height: DEFAULT_HEIGHT
   },
   pixelArt: true,
-  scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene],
+  scene: [PreloadScene, MainScene, GameUi, MicrophoneEnableScene, StartScene],
   plugins: {
     scene: [{
         key: 'rexUI',

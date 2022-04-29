@@ -1,51 +1,54 @@
-export function buildshipLevel2(self, Moralis) {
-    // MAKE GROUP FOR LEVEL
-    self.levelGroup = self.add.group();
+// export function buildshipLevel2(self, Moralis) {
+//     // MAKE GROUP FOR LEVEL
+//     self.levelGroup = self.add.group();
 
-    self.buildship = self.add.image(700, 600, 'buildship').setScale(0.3);
-    self.fire = self.add.sprite(100, 100, 'blue-fire').setRotation(-3.14 / 4 + 3 * 3.14 / 2).setScale(0.3);
-    
-    // add animation with 6 frames
-    self.anims.create({
-        key: 'blue-fire',
-        frames: self.anims.generateFrameNumbers('blue-fire', { start: 0, end: 5 }),
-        frameRate: 16,
-        repeat: -1
-    })
-    self.fire.play('blue-fire');
-    self.levelGroup.add(self.buildship);
-    self.levelGroup.add(self.fire);
-    
-    self.buildshipText = self.add.text(470, 60, 'BUILDSHIP.XYZ', { fill: "#ffffff", fontSize: "60px", fontFamily: "PixelFont" });
-    self.levelGroup.add(self.buildshipText);
-    // TEXT
-    var text = 'This is the main room! You can enter without any NFT :)';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
-    self.levelGroup.add(self.label);
-    self.typeTextWithDelay(text);
+import { createAnimForPlanet, createButton } from "../default-levels/level-utils";
+import { showCurrentLevel, typeTextWithDelay } from "../default-levels/showLevels";
 
-    self.levelGroup.add(self.buildshipText);
+//     self.buildship = self.add.image(700, 600, 'buildship').setScale(0.3);
+//     self.fire = self.add.sprite(100, 100, 'blue-fire').setRotation(-3.14 / 4 + 3 * 3.14 / 2).setScale(0.3);
+
+//     // add animation with 6 frames
+//     self.anims.create({
+//         key: 'blue-fire',
+//         frames: self.anims.generateFrameNumbers('blue-fire', { start: 0, end: 5 }),
+//         frameRate: 16,
+//         repeat: -1
+//     })
+//     self.fire.play('blue-fire');
+//     self.levelGroup.add(self.buildship);
+//     self.levelGroup.add(self.fire);
+
+//     self.buildshipText = self.add.text(470, 60, 'BUILDSHIP.XYZ', { fill: "#ffffff", fontSize: "60px", fontFamily: "PixelFont" });
+//     self.levelGroup.add(self.buildshipText);
+//     // TEXT
+//     var text = 'This is the main room! You can enter without any NFT :)';
+//     self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
+//     self.levelGroup.add(self.label);
+//     self.typeTextWithDelay(text);
+
+//     self.levelGroup.add(self.buildshipText);
 
 
-    // BUTTON WITH START TEXT
-    self.button1 = self.rexUI.add.label({
-        background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
-        space: {
-            left: 90,
-            right: 90,
-            top: 20,
-            bottom: 40
-        }
-    }).layout().setPosition(335, 300).setAlpha(0);
+//     // BUTTON WITH START TEXT
+//     self.button1 = self.rexUI.add.label({
+//         background: self.add.image(0, 0, 'background-button'),
+//         text: self.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
+//         space: {
+//             left: 90,
+//             right: 90,
+//             top: 20,
+//             bottom: 40
+//         }
+//     }).layout().setPosition(335, 300).setAlpha(0);
 
-    // SET BUTTONS INTERCTIVE
-    self.button1.setInteractive().on('pointerdown', () => {
-        if (self.step != 2) return;
-        self.step = 3;
-        self.showCurrentLevel();
-    });
-}
+//     // SET BUTTONS INTERCTIVE
+//     self.button1.setInteractive().on('pointerdown', () => {
+//         if (self.step != 2) return;
+//         self.step = 3;
+//         self.showCurrentLevel();
+//     });
+// }
 
 export function updateBuildship(self) {
     if (self.fire) {
@@ -54,4 +57,23 @@ export function updateBuildship(self) {
         self.fire.x = self.buildship.x - 70;
         self.fire.y = self.buildship.y + 85;
     }
+}
+
+export function buildshipLevel2(self, Moralis) {
+    self.levelGroup = self.add.group();
+    const text = 'PLANET: BUILDSHIP.XYZ\nMAP: APARTMENTS\nENTRENCE BY NFT: NO';
+    self.label = self.add.text(530, 240, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
+    self.levelGroup.add(self.label);
+    typeTextWithDelay(self, text);
+    self.buildshipPlanet = self.add.sprite(420, 300, 'buildship-planet').setScale(3);
+    self.levelGroup.add(self.buildshipPlanet);
+    createAnimForPlanet(self, 'buildship-planet');
+    self.buildshipPlanet.play('buildship-planet');
+
+    self.button1 = createButton(self, 480, 450, "START FLIGHT", { left: 20, right: 20, top: 40, bottom: 55 });
+    self.button1.setInteractive().on('pointerdown', () => {
+        if (self.step != 2) return;
+        self.step = 3;
+        showCurrentLevel(self);
+    });
 }

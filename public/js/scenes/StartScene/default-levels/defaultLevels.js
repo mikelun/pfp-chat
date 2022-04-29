@@ -1,37 +1,26 @@
+import { createButton } from "./level-utils";
+import { showCurrentLevel, typeTextWithDelay } from "./showLevels";
+
 // Get microphone access
 export function defaultLevel0(self, Moralis) {
     // MAKE GROUP FOR LEVEL
     self.levelGroup = self.add.group();
 
     // TEXT
-    var text = 'Hello from OpenMetaverse!\nHere you can chat and chill with other players\nIf you want to say something, we need your microphone access\n';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
+    var text = 'Hello from Open Metaverse!\nIf you want to talk with people on planets\nwe need your microphone access\n';
+    var newText = 'Hello from Open Metaverse!\nAre you ready to see the most cozy place with\nBEAUTIFUL music?\nIf you want to talk with people on planets\nwe need your microphone access\n';
+    newText = newText.toUpperCase();
+    
+    self.label = self.add.text(330, 210, '', { fill: "#ffb900", fontSize: "35px", fontFamily: "PixelFont", align : "left" });
+    
     self.levelGroup.add(self.label);
-    self.typeTextWithDelay(text);
 
-    // BUTTON WITH ALLOW TEXT
-    self.button1 = self.rexUI.add.label({
-        background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'ALLOW', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
-        space: {
-            left: 90,
-            right: 90,
-            top: 20,
-            bottom: 40
-        }
-    }).layout().setPosition(315, 360).setAlpha(0);
+    typeTextWithDelay(self,  text)
 
-    // BUTTON WITH "NO, CONTINUE" TEXT
-    self.button2 = self.rexUI.add.label({
-        background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'NO, CONTINUE', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
-        space: {
-            left: 45,
-            right: 45,
-            top: 20,
-            bottom: 40
-        }
-    }).layout().setPosition(315, 440).setAlpha(0);
+    self.button1 = createButton(self, 435, 450, "ALLOW", {left: 60, right: 60, top: 30, bottom: 45});
+
+    self.button2 = createButton(self, 700, 450, "NGMI(NO)", {left: 40, right: 40, top: 30, bottom: 45});
+
 
     // SET BUTTONS INTERCTIVE
     self.button1.setInteractive().on('pointerdown', () => {
@@ -41,7 +30,7 @@ export function defaultLevel0(self, Moralis) {
                 self.stream = stream;
                 localStorage.setItem('microphone', 'true');
                 self.step = 1;
-                self.showCurrentLevel();
+                showCurrentLevel(self);
             });
         } catch (e) {
             alert("YOUR MICROPHONE DOESN'T WORKING! " + e);
@@ -52,7 +41,7 @@ export function defaultLevel0(self, Moralis) {
         if (self.step != 0) return;
         self.step = 1;
         self.stream = null;
-        self.showCurrentLevel();
+        showCurrentLevel(self);
     });
 
 }
@@ -60,33 +49,22 @@ export function defaultLevel0(self, Moralis) {
 // get metamask
 export function defaultLevel1(self, Moralis) {
     // TEXT
-    var text = 'IF YOU WANT TO SHOW OFF YOUR NFT\nOR FIND YOUR NFT COMMUNITY ROOM\nPLEASE CONNECT METAMASK';
-    self.label = self.add.text(200, 200, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
+    var text = 'IF YOU WANT TO SHOW OFF YOUR NFT\nOR FIND YOUR NFT COMMUNITY PLANET\nPLEASE CONNECT METAMASK';
+    self.label = self.add.text(330, 210, '', { fill: "#ffb900", fontSize: "35px", fontFamily: "PixelFont", align : "left" });
     self.levelGroup.add(self.label);
-    self.typeTextWithDelay(text);
+    typeTextWithDelay(self, text);
 
-    // BUTTON WITH CONNECT TEXT
-    self.button1 = self.rexUI.add.label({
-        background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'CONNECT', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
-        space: {
-            left: 100,
-            right: 100,
-            top: 20,
-            bottom: 40
-        }
-    }).layout().setPosition(335, 360).setAlpha(0);
+   self.button1 = createButton(self, 450, 450, 'CONNECT', {left: 60, right: 60, top: 40, bottom: 50});
 
     // SET BUTTONS INTERCTIVE
     self.button1.setInteractive().on('pointerdown', () => {
         if (self.step != 1) return;
 
         // connect to Moralis
-        self.startMoralis();
+        startMoralis(Moralis);
 
         async function login() {
             var user = Moralis.User.current();
-            self.progress.setAlpha(1);
             if (!user) {
                 self.label.setPosition(480, 470);
                 self.label.text = 'CONNECTING YOUR METAMASK...'
@@ -97,24 +75,30 @@ export function defaultLevel1(self, Moralis) {
                         localStorage.setItem('Moralis', 'true');
                         self.step = 2;
                         self.user = user;
-                        self.showCurrentLevel();
+                        showCurrentLevel(self);
                         self.progress.setAlpha(0);
                     })
                     .catch(function (error) {
-                        self.progress.setAlpha(0);
-                        self.label.text = 'ERROR, TRY AGAIN'
+                        self.label.text = 'ERROR, RESTART THE PAGE'
                         alert(error);
                     });
             } else {
                 self.user = user;
                 localStorage.setItem('Moralis', 'true');
                 self.step = 2;
-                self.progress.setAlpha(0);
-                self.showCurrentLevel();
+                showCurrentLevel(self);
             }
         }
         login();
         self.button1.setAlpha(0);
 
     });
+}
+
+
+// START Moralis
+function startMoralis(Moralis) {
+    const serverUrl = "https://aehuzyu1u1bu.useMoralis.com:2053/server";
+    const appId = "qjkycuFOWtZY1v6bpU8N2e4oxTqdvxNt6ajnsNIm";
+    Moralis.start({ serverUrl, appId });
 }
