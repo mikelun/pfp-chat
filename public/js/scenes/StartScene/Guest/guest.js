@@ -1,33 +1,25 @@
+// export function buildshipLevel2(self, Moralis) {
+//     // MAKE GROUP FOR LEVEL
+//     self.levelGroup = self.add.group();
+
+import { createAnimForPlanet, createButton } from "../default-levels/level-utils";
+import { showCurrentLevel, typeTextWithDelay } from "../default-levels/showLevels";
+
+
 export function guestLevel1(self, Moralis) {
-    // MAKE GROUP FOR LEVEL
-    self.levelGroup = self.add.group();
-
     // TEXT
-    var text = "It's Guest room. You should't connect Metamask";
-    self.label = self.add.text(330, 250-30, '', { fill: "#ffffff", fontSize: "35px", align: "center", fontFamily: "PixelFont" });
+    var text = "IT'S A GUEST TEST PLANET";
+    self.levelGroup = self.add.group();
+    self.label = self.add.text(330, 210, '', { fill: "#ffb900", fontSize: "35px", fontFamily: "PixelFont", align: "left" });
     self.levelGroup.add(self.label);
-    self.typeTextWithDelay(text);
+    typeTextWithDelay(self, text);
 
-    self.header = self.add.text(540, 60, 'GUEST', { fill: "#ffffff", fontSize: "60px", fontFamily: "PixelFont", align: "center" });
-    self.levelGroup.add(self.header);
+    self.button1 = createButton(self, 450, 450, 'CONTINUE', { left: 50, right: 50, top: 40, bottom: 50 });
 
-    // BUTTON WITH CONNECT TEXT
-    self.button1 = self.rexUI.add.label({
-        background: self.add.image(0, 0, 'background-button'),
-        text: self.add.text(0, 0, 'CONTINUE', { fill: "#000000", fontSize: "35px", fontFamily: "PixelFont" }),
-        space: {
-            left: 100,
-            right: 100,
-            top: 20,
-            bottom: 40
-        }
-    }).layout().setPosition(600, 370-30).setAlpha(0);
-
+    // SET BUTTONS INTERCTIVE
     self.button1.setInteractive().on('pointerdown', () => {
         if (self.step != 1) return;
         self.step = 2;
-        self.showCurrentLevel();
-        }
-    );
-
+        showCurrentLevel(self);
+    });
 }

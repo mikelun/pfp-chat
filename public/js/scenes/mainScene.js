@@ -57,11 +57,9 @@ export class MainScene extends Phaser.Scene {
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
 
-        if (this.room == 'dobey') {
+        if (this.room == 'buildship' || this.room == 'coffeebar') {
             this.mapId = 2;
-        } else if (this.room == 'buildship') {
-            this.mapId = 2;
-        } 
+        }
         else {
             this.mapId = 3;
         }

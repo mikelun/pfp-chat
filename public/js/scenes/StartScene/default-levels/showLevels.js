@@ -1,6 +1,7 @@
 import { defaultLevel0 } from "./defaultLevels";
-import {Moralis} from 'moralis';
+import { Moralis } from 'moralis';
 import { initializeRooms } from "../initializeRooms";
+import { startMoralis } from "./level-utils";
 
 export function showCurrentLevel(self) {
     // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
@@ -29,15 +30,37 @@ export function showCurrentLevel(self) {
             }
         }
     } else {
-        var address = null;
-        if (self.user) {
-            address = self.user.get('ethAddress');
-            //localStorage.setItem('lastVisit', 'true');
-        }
-        // go to mainscene
-        console.log("HERE");
-        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room });
+        goToPlanet(self);
+    }
+}
 
+export function goToPlanet(self) {
+    var address = null;
+    if (self.user) {
+        address = self.user.get('ethAddress');
+        localStorage.setItem('lastVisit', 'true');
+    } else {
+        localStorage.setItem('lastVisit', 'false');
+    }
+    // go to mainscene
+    console.log("HERE");
+    self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room });
+}
+
+export function playerWasAtPlanet(self) {
+    try {
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
+            self.stream = stream;
+            startMoralis(Moralis);
+            self.user = Moralis.User.current();
+            if (self.user && self.room != 'guest') {
+                self.step = 2;
+            } else {
+                self.step = 1;
+            }
+        });
+    } catch (e) {
+        localStorage.setItem('microphone', 'false');
     }
 }
 

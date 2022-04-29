@@ -15,13 +15,13 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
-        
+
         // tip how to open text chat
         this.tipOpenChat = this.add.text(1000, 630, 'Press enter to open chat', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
 
         // write count of online players 
         this.onlinePlayers = this.add.text(1000, 650, 'Online: 1', { fontSize: '24px', fill: '#00FF66', fontFamily: 'PixelFont' });
-        
+
         // NFTs dom objects on page
         this.currentNFTs = [];
 
@@ -119,9 +119,6 @@ export class GameUi extends Phaser.Scene {
 
         // ADD TEXT CHAT
         addChat(this);
-        
-        
-
 
     }
     addMessageToChat(message, playerName) {
@@ -147,7 +144,7 @@ export class GameUi extends Phaser.Scene {
     updateOnlinePlayers(onlinePlayers) {
         this.onlinePlayers.setText(`Online: ${onlinePlayers}`);
     }
-    
+
     updateCurrentPlayers(players, playerName) {
         this.playerName = playerName;
 
@@ -188,7 +185,7 @@ export class GameUi extends Phaser.Scene {
 
         // ADD PANEL UI
         this.panelNFTs.add(this.add.image(675, 300, 'background-nfts').setScale(2.5,));
-        this.panelNFTs.add(this.add.text(580 , 40, "YOUR NFTs", { fontSize: '35px', fill: '#ffffff', fontFamily: 'PixelFont' }));
+        this.panelNFTs.add(this.add.text(580, 40, "YOUR NFTs", { fontSize: '35px', fill: '#ffffff', fontFamily: 'PixelFont' }));
         this.panelNFTs.add(this.loadingText = this.add.text(570, 260, 'LOADING...', { fontSize: '50px', fill: '#ffffff', fontFamily: 'PixelFont' }));
         this.pageText = this.add.text(635 - (0) * 7, 523, '0/0', { fontSize: '30px', fill: '#ffffff', fontFamily: 'PixelFont' });
         this.panelNFTs.add(this.pageText);

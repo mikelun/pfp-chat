@@ -4,7 +4,7 @@ export function createAnimForPlanet(self, key) {
     self.anims.create({
         key: key,
         frames: self.anims.generateFrameNumbers(key, { start: 0, end: 49 }),
-        frameRate: 10,
+        frameRate: 9,
         repeat: -1
     });
 }
@@ -47,4 +47,11 @@ async function checkNFT(token_address, Moralis) {
     console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
     const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
     return total > 0;
+}
+
+// START Moralis
+export function startMoralis(Moralis) {
+    const serverUrl = "https://aehuzyu1u1bu.useMoralis.com:2053/server";
+    const appId = "qjkycuFOWtZY1v6bpU8N2e4oxTqdvxNt6ajnsNIm";
+    Moralis.start({ serverUrl, appId });
 }

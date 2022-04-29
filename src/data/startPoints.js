@@ -3,27 +3,15 @@ module.exports =  {
         "x": 450,
         "y": 83
     },
-    "cryptocoven":{
-        "x": 830,
-        "y": 2430
-    },
-    "pudgy-penguins":{
-        "x": 830,
-        "y": 2430
-    },
-    "ailoverse": {
-        "x": 830,
-        "y": 2430
-    },
     "crypto-duckies": {
-        "x": 830,
-        "y": 2430
+        "x": 1030,
+        "y": 2120
     },
     "guest": {
-        "x": 830,
-        "y": 2430
+        "x": 1030,
+        "y": 2120
     },
-    "dobey": {
+    "coffeebar": {
         "x": 450,
         "y": 83
     }

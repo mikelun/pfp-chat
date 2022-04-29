@@ -13,6 +13,11 @@ export class PreloadScene extends Phaser.Scene {
             spacing: 0
         });
 
+        this.load.spritesheet('coffeebar-planet', 'assets/coffeebar/coffeebar-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
+
         // LOADING ANIMALS
         const animalsFolders = ['cat1', 'dog2'];
         for (let i = 0; i < animalsFolders.length; i++) {

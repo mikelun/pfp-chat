@@ -1,4 +1,4 @@
-import { createButton } from "./level-utils";
+import { createButton, startMoralis } from "./level-utils";
 import { showCurrentLevel, typeTextWithDelay } from "./showLevels";
 
 // Get microphone access
@@ -8,6 +8,7 @@ export function defaultLevel0(self, Moralis) {
 
     // TEXT
     var text = 'Hello from Open Metaverse!\nIf you want to talk with people on planets\nwe need your microphone access\n';
+    text = text.toUpperCase();
     var newText = 'Hello from Open Metaverse!\nAre you ready to see the most cozy place with\nBEAUTIFUL music?\nIf you want to talk with people on planets\nwe need your microphone access\n';
     newText = newText.toUpperCase();
     
@@ -76,7 +77,6 @@ export function defaultLevel1(self, Moralis) {
                         self.step = 2;
                         self.user = user;
                         showCurrentLevel(self);
-                        self.progress.setAlpha(0);
                     })
                     .catch(function (error) {
                         self.label.text = 'ERROR, RESTART THE PAGE'
@@ -95,10 +95,3 @@ export function defaultLevel1(self, Moralis) {
     });
 }
 
-
-// START Moralis
-function startMoralis(Moralis) {
-    const serverUrl = "https://aehuzyu1u1bu.useMoralis.com:2053/server";
-    const appId = "qjkycuFOWtZY1v6bpU8N2e4oxTqdvxNt6ajnsNIm";
-    Moralis.start({ serverUrl, appId });
-}

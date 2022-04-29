@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { showCurrentLevel } from './StartScene/default-levels/showLevels';
+import { goToPlanet, lastVisitSetup, microphoneWasInitialized, playerWasAtPlanet, showCurrentLevel } from './StartScene/default-levels/showLevels';
 import { initializeRooms } from './StartScene/initializeRooms';
 
 var bg1, bg2;
@@ -32,23 +32,26 @@ export class StartScene extends Phaser.Scene {
         // Add Open Metaverse text
         this.addOpenMetaverseText();
 
-        // add enter text
-        this.addEnterText();
-
-        // add key events
-        this.addKeyEvents();
-
         // add levels for text
         this.addLevelsPanel();
-
-        // for test
-        //this.moveText = true;
 
         // ADD OPPORTUNITY TO SKIP TEXT
         this.skip = false;
         this.input.on('pointerdown', () => {
             this.skip = true;
         });
+
+        // IF PLAYER WAS AT PLANET
+        if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('lastVisit') == 'true') {
+            playerWasAtPlanet(this);
+        }
+        // add enter text
+        this.addEnterText();
+
+        // add key events
+        this.addKeyEvents();
+
+
     }
 
     update() {

@@ -71,7 +71,6 @@ export class MicrophoneEnableScene extends Phaser.Scene {
                     else {
                         this.step = 1;
                     }
-                    this.showCurrentLevel();
                     // this.progress.setAlpha(1);
                     // this.label = this.add.text(500, 480, 'CHECKING YOUR NFT...', { fill: "#ffffff", fontSize: "24px", align: "center" });
                     // this.checkAiloverseNFT();
@@ -115,11 +114,6 @@ export class MicrophoneEnableScene extends Phaser.Scene {
         if (this.step == -1) {
            this.showRooms();
         }
-        // ADD OPPORTUNITY TO SKIP TEXT
-        this.skip = false;
-        this.input.on('pointerdown', () => {
-            this.skip = true;
-        });
 
         // SHOW LEVELS
         if (this.step < this.levels.length) {
@@ -133,6 +127,8 @@ export class MicrophoneEnableScene extends Phaser.Scene {
             if (this.user) {
                 address = this.user.get('ethAddress');
                 localStorage.setItem('lastVisit', 'true');
+            } else {
+                localStorage.setItem('lastVisit', 'false');
             }
             // go to mainscene
             console.log("HERE");
