@@ -8,7 +8,7 @@ import { showCurrentLevel, typeTextWithDelay } from "../default-levels/showLevel
 
 export function buildshipLevel2(self, Moralis) {
     self.levelGroup = self.add.group();
-    const text = 'PLANET: BUILDSHIP.XYZ\nMAP: APARTMENTS\nENTRENCE BY NFT: NO';
+    const text = 'PLANET: BUILDSHIP.XYZ\nMAP: APARTMENTS\nENTRANCE BY NFT: NO';
     self.label = self.add.text(530, 240, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     typeTextWithDelay(self, text);

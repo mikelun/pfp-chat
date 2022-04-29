@@ -46,7 +46,7 @@ import { typeTextWithDelay } from "../default-levels/showLevels";
 
 export function cryptoDuckiesLevel2(self, Moralis) {
     self.levelGroup = self.add.group();
-    const text = 'PLANET: CRYPTO-DUCKIES\nMAP: ISLAND\nENTRENCE BY NFT: YES';
+    const text = 'PLANET: CRYPTO-DUCKIES\nMAP: ISLAND\nENTRANCE BY NFT: YES';
     self.label = self.add.text(530, 240, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     typeTextWithDelay(self, text);
