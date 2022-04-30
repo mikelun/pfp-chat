@@ -34,6 +34,11 @@ export class PreloadScene extends Phaser.Scene {
         }
 
         // GAME UI
+        this.load.image('helm', 'assets/game-ui/helm.png');
+        this.load.image('headphones', 'assets/game-ui/headphones.png');
+        this.load.image('headphones-off', 'assets/game-ui/headphones-off.png');
+        this.load.image('microphone1', 'assets/game-ui/microphone1.png');
+        this.load.image('microphone1-off', 'assets/game-ui/microphone1-off.png');
         this.load.image('button', 'assets/game-ui/button.png');
         this.load.image('buttonpress', 'assets/game-ui/buttonpress.png');
         this.load.image('instructions', 'assets/game-ui/instructions.png');
@@ -102,9 +107,6 @@ export class PreloadScene extends Phaser.Scene {
 
         this.load.image('ball', 'assets/ball.png');
 
-        // Load AI Loverse
-        this.load.image('ailoverse-cats', 'assets/ailoverse/cats.png');
-        this.load.image('ailoverse-robots', 'assets/ailoverse/robots.png');
 
         // LOAD BUILDSHIP XYZ
         this.load.spritesheet('blue-fire', 'assets/buildship/blue-fire.png', {
@@ -137,9 +139,6 @@ export class PreloadScene extends Phaser.Scene {
 
         // LOAD GITHUB
         this.load.image('github', 'assets/game-ui/github.png');
-
-        // ROOM FOR DOBBY
-        this.load.image('dobby', 'assets/dobby/dobby.jpeg');
 
         // LOAD CHARACTERS
         this.load.image('duckie', 'assets/characters/153.png');

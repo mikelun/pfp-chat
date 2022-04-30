@@ -86,6 +86,12 @@ function addPeer(socket_id, am_initiator, self) {
 
 }
 
+export function removeAllPeers() {
+    for (var peer in peers) {
+        removePeer(peer);
+    }
+}
+
 export function removePeer(socket_id) {
 
     let videoEl = document.getElementById(socket_id)
@@ -101,5 +107,6 @@ export function removePeer(socket_id) {
         videoEl.parentNode.removeChild(videoEl)
     }
     if (peers[socket_id]) peers[socket_id].destroy()
-    delete peers[socket_id]
+    delete peers[socket_id];
 }
+

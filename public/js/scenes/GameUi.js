@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
+import { createTalkIcons } from './GameUI-elements/talkIcons';
 import { addTextBox } from './GameUI-elements/textBox';
 import { addChat } from './GameUI-elements/textChat';
 
@@ -51,13 +52,13 @@ export class GameUi extends Phaser.Scene {
 
 
         // add microphone
-        this.add.image(width / 3 + 0 * (width / 8), height * 0.90 - 5, '1').setScale(0.2).setInteractive()
+        this.add.image(width / 3 + 0 * (width / 8) - 2, height * 0.90 - 5, 'coffeebar-planet').setScale(1).setInteractive()
             .on('pointerdown', () => {
-                sceneEvents.emit('toggleMute');
-            });
-
+                
+        });
+ 
         // if microphone doesn't work show a red icon
-        this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
+        //this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
 
         // add nft panel
         this.add.image(width / 3 + 1 * (width / 8), height * 0.90 - 5, '2').setScale(1.5).setInteractive()
@@ -119,6 +120,10 @@ export class GameUi extends Phaser.Scene {
 
         // ADD TEXT CHAT
         addChat(this);
+
+        // create microphone and headphones
+        createTalkIcons(this);
+
 
     }
     addMessageToChat(message, playerName) {

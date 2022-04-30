@@ -51,6 +51,7 @@ export function playerWasAtPlanet(self) {
     try {
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
             self.stream = stream;
+
             startMoralis(Moralis);
             self.user = Moralis.User.current();
             if (self.user && self.room != 'guest') {

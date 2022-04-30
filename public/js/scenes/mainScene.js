@@ -10,10 +10,10 @@ import { addPlayerOverlap, checkOverlap } from '../utils/playerOverlap';
 import { updateOtherPlayersPositions } from '../utils/updatePlayersPositions';
 import { addFollowingUI } from '../utils/addFollowingUi';
 import { addAudioTimer } from '../utils/addAudioTimer';
-import { toggleMute } from '../utils/microphoneUtils';
 import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 import { showPlayersToTalk } from '../socketController/playerSocket';
 import { initializeAmplitude } from '../Analytics/amplitude';
+import { initializeAudioStream } from './Audio/audioMicrophoneStream';
 /**
  * All peer connections
  */
@@ -71,6 +71,8 @@ export class MainScene extends Phaser.Scene {
         // add main camera zoom
         this.cameras.main.setZoom(2);
 
+        initializeAudioStream(this);
+
         // add keyboard events
         keyboardEvents(this);
         // fix problem with touching space
@@ -98,12 +100,6 @@ export class MainScene extends Phaser.Scene {
         // add joystic if android
         addJoysticIfAndroid(this);
 
-        // if user touch microphone on Game UI scene -> toggle microphone stream
-        sceneEvents.on('toggleMute', () => {
-            if (this.localStream) {
-                toggleMute(this);
-            };
-        });
     }
 
     update(time, delta) {
@@ -175,6 +171,9 @@ function sendPlayerPosition(self, time) {
 
 
 function updatePeopleForTalk(self) {
+    // if player turn off headphones(deafen mode)
+    if (self.deafen) return;
+
     // update player rectangle
     if (self.player) {
         self.talkRectangle.x = self.player.x;
@@ -201,6 +200,14 @@ function updatePeopleForTalk(self) {
             }
         });
     }
+}
+
+export function removeAllPeopleFromTalk(self) {
+    self.connected.forEach(otherPlayer => {
+        self.socket.emit('removeFromTalk', otherPlayer.playerId);
+    });
+    self.connected = [];
+    showPlayersToTalk();
 }
 
 function updateLocalStorage(self, time) {
