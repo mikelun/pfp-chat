@@ -72,9 +72,4 @@ function addMicrophone(self) {
         tipText.setText(getTextByTexture(microphone));
     });
 
-    // if enter is pressed
-    self.input.keyboard.on('keydown-M', () => {
-        sceneEvents.emit('toggleMute');
-    });
-
 }
