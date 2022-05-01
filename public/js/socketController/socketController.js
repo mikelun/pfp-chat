@@ -55,6 +55,10 @@ export function initializeSocket(self, peers) {
         }
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
         
+        if (self.particles) {
+            self.particles.destroy();
+        }
+
         self.errors = self.add.group();
         self.errors.add(self.add.rectangle(self.player.x - 2000, self.player.y- 2000, 4000, 4000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));

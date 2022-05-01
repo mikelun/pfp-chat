@@ -54,6 +54,22 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+        
+
+        var myAudio = new Audio('https://cdn.pixabay.com/download/audio/2021/12/15/audio_2c108c888f.mp3?filename=notes-piano-lofi-hiphop-12209.mp3');
+        if (typeof myAudio.loop == 'boolean') {
+            myAudio.loop = true;
+        }
+        else {
+            myAudio.addEventListener('ended', function () {
+                this.currentTime = 0;
+                this.play();
+            }, false);
+        }
+        // add speed 4x
+        //myAudio.playbackRate = 10;
+        myAudio.play();
+
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
 

@@ -34,6 +34,43 @@ export function initializeAudioStream(self) {
     });
 }
 
+export function initializeUserOnOtherTab(self) {
+    document.addEventListener("visibilitychange", (event) => {
+        if (document.visibilityState == "visible") {
+        
+        } else {
+          console.log("tab is inactive");
+          if (self.localStream) {
+            // remove all tracks from stream
+              self.localStream.getTracks().forEach(track => {
+                  track.stop();
+              })
+              
+        }
+        }
+      });
+}
+
+export function onOtherTab(self) {
+    document.addEventListener("visibilitychange", (event) => {
+            if (document.visibilityState == "visible") {
+            
+            } else {
+              console.log("tab is inactive");
+              if (self.localStream) {
+                // remove all tracks from stream
+                  self.localStream.getTracks().forEach(track => {
+                      track.stop();
+                  })
+                  
+            }
+            }
+          });
+}
+
+export function connectToAllPeople(self) {
+}
+
 function toggleMute(self) {
     let localStream = self.localStream;
     for (let index in localStream.getAudioTracks()) {

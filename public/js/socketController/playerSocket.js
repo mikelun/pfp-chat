@@ -366,12 +366,10 @@ function addShadowForTextureFromInternet() {
 }
 
 function createParticles(self) {
-    if (self.particles) return;
-    self.particles = true; 
     var width = 1280;
     var height = 720;
-    const particles = self.add.particles('snow-particle');
-    particles.createEmitter({
+    self.particles = self.add.particles('snow-particle');
+    self.particles.createEmitter({
         x: 0,
         y: 0,
         // emitZone
