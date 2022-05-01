@@ -366,6 +366,8 @@ function addShadowForTextureFromInternet() {
 }
 
 function createParticles(self) {
+    if (self.particles) return;
+    self.particles = true; 
     var width = 1280;
     var height = 720;
     const particles = self.add.particles('snow-particle');
@@ -383,7 +385,7 @@ function createParticles(self) {
         accelerationY: { random: [10, 15] },
         // lifespan
         lifespan: { min: 8000, max: 9000 },
-        scale: { random: [0.25, 0.75] },
+        scale: { random: [0.1, 0.25] },
         alpha: { random: [0.1, 0.8] },
         gravityY: 4,
         frequency: 10,
