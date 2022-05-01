@@ -31,6 +31,7 @@ export class MainScene extends Phaser.Scene {
             // local stream of user microphone
             this.localStream = data.stream;
 
+            this.microphoneEnabled = true;
             // DISABLE MICROPHONE AT FIRST
             for (let index in this.localStream.getAudioTracks()) {
                 this.localStream.getAudioTracks()[index].enabled = false;
