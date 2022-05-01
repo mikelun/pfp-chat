@@ -132,7 +132,10 @@ function removePeer(socket_id) {
 
 function addPlayer(self, playerInfo) {
     console.log("NEW PLAYER WITH COORDINATES: ", playerInfo.x, playerInfo.y);
-    sceneEvents.emit('updateRoomText', self.room)
+    if (!self.addedRoomText) {
+        sceneEvents.emit('updateRoomText', self.room);
+        self.addedRoomText = true;
+    }
     // IF PLAYER DISCONNECTED AND AFTER RECONNECTED
     if (self.errors) {
         if (self.errors.getChildren().length > 0) {
@@ -171,6 +174,8 @@ function addPlayer(self, playerInfo) {
     } else {
         self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     }
+
+    createParticles(self);
 
     self.layer1.add(self.player);
 
@@ -358,4 +363,33 @@ function addShadowForTextureFromInternet() {
     self.playerShadow = self.add.image(-100, -100, 'shadow').setScale(0.02, 0.05).setAlpha(0.7);
     self.playerShadow.setOrigin(0.5, -1.2);
     self.layer1.add(self.playerShadow);
+}
+
+function createParticles(self) {
+    var width = 1280;
+    var height = 720;
+    const particles = self.add.particles('snow-particle');
+    particles.createEmitter({
+        x: 0,
+        y: 0,
+        // emitZone
+        emitZone: {
+            source: new Phaser.Geom.Rectangle(-500, 400, 2000, 100),
+            type: 'random',
+            quantity: 70
+        },
+        speedY: { min: 30, max: 50 },
+        speedX: { min: -20, max: 20 },
+        accelerationY: { random: [10, 15] },
+        // lifespan
+        lifespan: { min: 8000, max: 9000 },
+        scale: { random: [0.25, 0.75] },
+        alpha: { random: [0.1, 0.8] },
+        gravityY: 4,
+        frequency: 10,
+        blendMode: 'ADD',
+        // follow the player at an offiset
+        follow: self.player,
+        followOffset: { x: -width * 0.5, y: -height - 100 }
+    })
 }

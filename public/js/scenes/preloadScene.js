@@ -154,6 +154,8 @@ export class PreloadScene extends Phaser.Scene {
         // LOAD DISCORD ICON
         this.load.image('discord', 'assets/game-ui/discord.png');
 
+        // LOAD SNOW PARTICLE
+        this.load.image('snow-particle', 'assets/snow.png');
         // !!! LOAD EFFECTS
         this.load.spritesheet('fire-effect', 'assets/effects/fire-effect.png', {frameWidth: 100, frameHeight: 100});
 

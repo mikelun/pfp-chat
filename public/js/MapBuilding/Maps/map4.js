@@ -58,6 +58,7 @@ function addEffect(self, x, y, name) {
     }
 
 
+
 }
 function addLightsToMap(self) {
     const warmLight = { r: 255, g: 160, b: 0 };
