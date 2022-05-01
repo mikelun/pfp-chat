@@ -13,7 +13,7 @@ import { addAudioTimer } from '../utils/addAudioTimer';
 import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 import { showPlayersToTalk } from '../socketController/playerSocket';
 import { initializeAmplitude } from '../Analytics/amplitude';
-import { initializeAudioStream } from './Audio/audioMicrophoneStream';
+import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMicrophoneStream';
 /**
  * All peer connections
  */
@@ -54,7 +54,8 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
-        
+        // if user of other tab, stop microphone stream
+        initializeUserOnOtherTab(this);
 
         var myAudio = new Audio('https://cdn.pixabay.com/download/audio/2021/12/15/audio_2c108c888f.mp3?filename=notes-piano-lofi-hiphop-12209.mp3');
         if (typeof myAudio.loop == 'boolean') {
@@ -66,8 +67,6 @@ export class MainScene extends Phaser.Scene {
                 this.play();
             }, false);
         }
-        // add speed 4x
-        //myAudio.playbackRate = 10;
         myAudio.play();
 
         // INITIAlIZE AMPLITUDE (Util for analytics)

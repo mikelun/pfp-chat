@@ -7,27 +7,14 @@ export function initializeAudioStream(self) {
     sceneEvents.on('setDeafen', function (makeDeafen) {
         if (makeDeafen) {
             removeAllPeopleFromTalk(self);
-            self.deafen = true;
-            let localStream = self.localStream;
-            // destroy stream
-            localStream.getTracks().forEach(track => {
-                track.stop();
-            });
-            self.localStream = null;
-            sceneEvents.emit('updateMicStatus', false);
-            self.socket.emit("updatePlayerInfo", { deafen: true, microphoneStatus: false }, self.socket.id);
-            
+            setDeafen(self);
+
         } else {
-            navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
-                self.localStream = stream;
-                toggleMute(self);
-                self.deafen = false;
-                self.socket.emit("updatePlayerInfo", { deafen: false, microphoneStatus: false }, self.socket.id);
-            });
+            setUndeafen(self);
         }
     });
-     // if user touch microphone on Game UI scene -> toggle microphone stream
-     sceneEvents.on('toggleMute', () => {
+    // if user touch microphone on Game UI scene -> toggle microphone stream
+    sceneEvents.on('toggleMute', () => {
         if (self.localStream) {
             toggleMute(self);
         };
@@ -37,38 +24,21 @@ export function initializeAudioStream(self) {
 export function initializeUserOnOtherTab(self) {
     document.addEventListener("visibilitychange", (event) => {
         if (document.visibilityState == "visible") {
-        
+            setUndeafen(self);
         } else {
-          console.log("tab is inactive");
-          if (self.localStream) {
-            // remove all tracks from stream
-              self.localStream.getTracks().forEach(track => {
-                  track.stop();
-              })
-              
+            // remove all peers, than add stream
+            removeAllPeopleFromTalk(self);
+            setDeafen(self);
         }
-        }
-      });
+    });
 }
 
 export function onOtherTab(self) {
-    document.addEventListener("visibilitychange", (event) => {
-            if (document.visibilityState == "visible") {
-            
-            } else {
-              console.log("tab is inactive");
-              if (self.localStream) {
-                // remove all tracks from stream
-                  self.localStream.getTracks().forEach(track => {
-                      track.stop();
-                  })
-                  
-            }
-            }
-          });
+    setDeafen(self);
 }
 
 export function connectToAllPeople(self) {
+    setUndeafen(self);
 }
 
 function toggleMute(self) {
@@ -85,4 +55,26 @@ function toggleMute(self) {
 
         sceneEvents.emit('updateMicStatus', localStreamEnabled);
     }
+}
+
+
+function setDeafen(self) {
+    self.deafen = true;
+    let localStream = self.localStream;
+    // destroy stream
+    localStream.getTracks().forEach(track => {
+        track.stop();
+    });
+    self.localStream = null;
+    sceneEvents.emit('updateMicStatus', false);
+    self.socket.emit("updatePlayerInfo", { deafen: true, microphoneStatus: false }, self.socket.id);
+}
+
+function setUndeafen(self) {
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
+        self.localStream = stream;
+        toggleMute(self);
+        self.deafen = false;
+        self.socket.emit("updatePlayerInfo", { deafen: false, microphoneStatus: false }, self.socket.id);
+    });
 }
