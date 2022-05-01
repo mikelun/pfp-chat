@@ -37,7 +37,7 @@ export function addMap4(self) {
     addEffect(self, 800 , 1115, 'fire-effect');
     addEffect(self, 925 , 1115, 'fire-effect');
 
-    self.add.caffeinumText = self.add.text(320, 1443, 'caffeinum.', { fontSize: '26px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(1);
+    self.layer1.add(self.add.text(320, 1443, 'caffeinum.', { fontSize: '26px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(1));
 
 }
 
