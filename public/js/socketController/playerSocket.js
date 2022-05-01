@@ -183,7 +183,7 @@ function addPlayer(self, playerInfo) {
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
     const textColor = randColor();
-    self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(self.player.x, self.player.y - 20, playerInfo.playerName.length * 6, 15, 5, "#ffffff").setAlpha(0.5);
+    self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(self.player.x, self.player.y - 20, playerInfo.playerName.length * 6, 12, 8, 0x000000).setAlpha(0.5);
     self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '50px', fontFamily: 'PixelFont', fill: textColor }).setScale(0.3);
     self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphone1-off").setScale(0.45);
     self.playerUI[self.socket.id].headphones = self.add.image(playerInfo.x + 50, playerInfo.y, "headphones").setScale(0.5);
@@ -292,7 +292,10 @@ function addOtherPlayers(self, playerInfo) {
 }
 
 const randColor = () => {
-    return "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0').toUpperCase();
+    // get random light color
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff', '#FFFF33', '#0099FF', '#33FFCC', '#99FFCC', '#00FF99', '#33FF66', '#33FF33', '#99FF33', '#CCFF33'];
+    const rand = Math.floor(Math.random() * colors.length);
+    return colors[rand];
 }
 
 export function currentPlayerDisconnected(playerId) {
