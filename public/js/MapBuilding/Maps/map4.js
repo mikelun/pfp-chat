@@ -17,10 +17,10 @@ export function addMap4(self) {
     self.layer1.add(cafe.createStaticLayer('objects-3', [bakeryTileset, tilemapDayTileset]));
     self.layer1.add(cafe.createStaticLayer('walls', bakeryTileset));
     self.layer1.add(cafe.createStaticLayer('walls-2', bakeryTileset));
-    
+
     self.invisibleWalls = cafe.createLayer('invisibleWalls', interiorTileset).setCollisionByProperty({ collides: true });;
     self.invisibleWalls.setVisible(false);
-    
+
 
     // add animation for tileset day
     addAnimationForMap(self, cafe, tilemapDayTileset);
@@ -33,9 +33,9 @@ export function addMap4(self) {
 
     addLightsToMap(self);
 
-    addEffect(self, 670 , 1115, 'fire-effect');
-    addEffect(self, 800 , 1115, 'fire-effect');
-    addEffect(self, 925 , 1115, 'fire-effect');
+    addEffect(self, 670, 1115, 'fire-effect');
+    addEffect(self, 800, 1115, 'fire-effect');
+    addEffect(self, 925, 1115, 'fire-effect');
 
     self.layer1.add(self.add.text(320, 1443, 'caffeinum.', { fontSize: '26px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(1));
 
@@ -44,25 +44,31 @@ export function addMap4(self) {
 function addEffect(self, x, y, name) {
     let effect = self.add.sprite(x, y, name);
     // add animation for effect
-    self.anims.create({
-        key: name,
-        frames: self.anims.generateFrameNumbers(name, { start: 0, end: 60 }),
-        frameRate: 30,
-        repeat: -1
-    });
-    effect.play(name);
+    // if animation exist
+    if (self.anims.get(name)) {
+        effect.play(name);
+    } else {
+        self.anims.create({
+            key: name,
+            frames: self.anims.generateFrameNumbers(name, { start: 0, end: 60 }),
+            frameRate: 30,
+            repeat: -1
+        });
+        effect.play(name);
+    }
+
 
 }
 function addLightsToMap(self) {
-    const warmLight = {r: 255, g: 160, b: 0};
+    const warmLight = { r: 255, g: 160, b: 0 };
     createLight(self, 700, 430, warmLight);
     createLight(self, 800, 430, warmLight);
     createLight(self, 900, 430, warmLight);
-    
 
-    const purpleLightColor = {r:102, g: 0, b: 153};
-    const blueLightColor = {r: 0, g: 0, b: 230};
-    const orangeLightColor = {r: 255, g: 40, b: 0};
+
+    const purpleLightColor = { r: 102, g: 0, b: 153 };
+    const blueLightColor = { r: 0, g: 0, b: 230 };
+    const orangeLightColor = { r: 255, g: 40, b: 0 };
     createLight(self, 623, 602 + 50, blueLightColor, 0.1, 200);
     createLight(self, 746, 602, orangeLightColor, 0.05, 200);
     createLight(self, 875, 602, blueLightColor, 0.1, 200);
@@ -86,7 +92,7 @@ function addLightsToMap(self) {
     createLight(self, 923, 1124, orangeLightColor, 0.05, 200);
 
 
-    const cafeLightColor = {r: 204, g: 204, b: 204};
+    const cafeLightColor = { r: 204, g: 204, b: 204 };
     // lights for the first cafe
     createLight(self, 340, 1007, warmLight, 0.05);
     createLight(self, 416, 1189, warmLight, 0.02);
@@ -113,7 +119,7 @@ export function addPhysicsForMap4(self) {
 }
 
 function addObjectForMap(self) {
-   
+
 }
 
 export function addUpdateForMap4(self, time, delta) {
