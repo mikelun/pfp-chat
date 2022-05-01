@@ -34,6 +34,7 @@ module.exports = (io) => {
                     y: startPoints[room].y,
                     playerId: socket.id,
                     microphoneStatus: false,
+                    deafen: false,
                     playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
                     textureId: Math.floor(Math.random() * 50),
                     nft: null,
@@ -77,7 +78,7 @@ module.exports = (io) => {
             if (data.playerName != null) players[socket_id].playerName = data.playerName;
             if (data.nft != null) players[socket_id].nft = data.nft;
             if (data.textureId) players[socket_id].textureId = data.textureId;
-
+            if (data.deafen != null) players[socket_id].deafen = data.deafen;
             io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
         })
 

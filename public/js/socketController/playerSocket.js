@@ -51,8 +51,10 @@ export function initializePlayersSocket(anotherSelf, _peers) {
 
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (playerId === otherPlayer.playerId) {
-                self.playerUI[otherPlayer.playerId].microphone.destroy();
                 self.playerUI[otherPlayer.playerId].playerText.destroy();
+                self.playerUI[otherPlayer.playerId].microphone.destroy();
+                self.playerUI[otherPlayer.playerId].background.destroy();
+                self.playerUI[otherPlayer.playerId].headphones.destroy();
                 otherPlayer.destroy();
             }
         });
@@ -71,12 +73,17 @@ export function initializePlayersSocket(anotherSelf, _peers) {
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerInfo.playerId) {
                 // change player text
-                self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
+                if (self.playerUI[playerInfo.playerId].playerText.text != playerInfo.playerName) {
+                    self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
+                    self.playerUI[playerInfo.playerId].background.width = playerInfo.playerName.length * 6;
+                }
                 playersList[i].name = playerInfo.playerName;
 
                 // change mircrophone status
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
-                self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone" : "microphoneMuted");
+
+                self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
+                self.playerUI[playerInfo.playerId].headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
 
                 playersList[i].nft = playerInfo.nft;
 
@@ -176,9 +183,10 @@ function addPlayer(self, playerInfo) {
     // ADD PLAYER UI
     self.playerUI[self.socket.id] = {};
     const textColor = randColor();
+    self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(self.player.x, self.player.y - 20, playerInfo.playerName.length * 6, 15, 5, "#ffffff").setAlpha(0.5);
     self.playerUI[self.socket.id].playerText = self.add.text(self.player.x, self.player.y, playerInfo.playerName, { fontSize: '50px', fontFamily: 'PixelFont', fill: textColor }).setScale(0.3);
-    self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphoneMuted").setScale(0.5);
-
+    self.playerUI[self.socket.id].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, "microphone1-off").setScale(0.45);
+    self.playerUI[self.socket.id].headphones = self.add.image(playerInfo.x + 50, playerInfo.y, "headphones").setScale(0.5);
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, textColor: textColor, nft: playerInfo.nft, textureId: playerInfo.textureId });
 
     // END PLAYER UI
@@ -268,13 +276,17 @@ function addOtherPlayers(self, playerInfo) {
     otherPlayer.playerId = playerInfo.playerId;
     otherPlayer.name = playerInfo.playerName;
     const textColor = randColor();
-    self.playerUI[playerInfo.playerId] = {
-        playerText: self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '50px', fontFamily: 'PixelFont', fill: textColor }).setScale(0.3)
-    };
+    let microphoneTexture = playerInfo.microphoneStatus ? "microphone1" : "microphone1-off";
+    let headphonesTexture = playerInfo.deafen ? "headphones-off" : "headphones";
+    self.playerUI[playerInfo.playerId] = {};
+
+    self.playerUI[playerInfo.playerId].background = self.rexUI.add.roundRectangle(playerInfo.x, playerInfo.y - 20, playerInfo.playerName.length * 6, 15, 5, "#ffffff").setAlpha(0.5);
+    self.playerUI[playerInfo.playerId].playerText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '50px', fontFamily: 'PixelFont', fill: textColor }).setScale(0.3)
+    self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
+    self.playerUI[playerInfo.playerId].headphones = self.add.image(playerInfo.x + 50, playerInfo.y, "headphones").setScale(0.5);
+
     self.otherPlayers.add(otherPlayer);
     self.layer1.add(otherPlayer);
-    let microphoneTexture = playerInfo.microphoneStatus ? "microphone" : "microphoneMuted";
-    self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor, textureId: playerInfo.textureId });
     //showPlayersToTalk()
 }

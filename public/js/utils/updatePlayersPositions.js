@@ -18,10 +18,19 @@ export function updateOtherPlayersPositions(self, delta) {
         }
 
         const playerUI = self.playerUI[otherPlayer.playerId];
-        const otherPlayerText = playerUI.playerText;
-        otherPlayerText.x = otherPlayer.x - otherPlayerText.text.length * 2.8;
-        otherPlayerText.y = otherPlayer.y - 28;
-        playerUI.microphone.x = otherPlayer.x;
-        playerUI.microphone.y = otherPlayer.y - 32;
+        
+        const playerText = playerUI.playerText;
+        if (playerText) {
+            const textSize = playerText.text.length;
+            playerText.x = otherPlayer.x - textSize * 2.8;
+            playerText.y = otherPlayer.y - 35;
+        }
+        
+        playerUI.background.x = otherPlayer.x;
+        playerUI.background.y = otherPlayer.y - 25;
+        playerUI.microphone.x = otherPlayer.x - 8;
+        playerUI.microphone.y = otherPlayer.y - 40;
+        playerUI.headphones.x = otherPlayer.x + 7;
+        playerUI.headphones.y = otherPlayer.y - 38;
     });
 }

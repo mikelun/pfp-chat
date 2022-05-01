@@ -27,7 +27,7 @@ module.exports =  [
     "Monday morning",
     "Odd duck",
     "Rocket man",
-    "Sarcasm Provider ",
+    "Sarcasm Provider",
     "Tiger toes",
     "Toxic alien",
     "No_Pain_No_Gain",

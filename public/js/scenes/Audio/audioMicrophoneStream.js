@@ -15,13 +15,15 @@ export function initializeAudioStream(self) {
             });
             self.localStream = null;
             sceneEvents.emit('updateMicStatus', false);
+            self.socket.emit("updatePlayerInfo", { deafen: true, microphoneStatus: false }, self.socket.id);
             
         } else {
             navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
                 self.localStream = stream;
                 toggleMute(self);
                 self.deafen = false;
-            })
+                self.socket.emit("updatePlayerInfo", { deafen: false, microphoneStatus: false }, self.socket.id);
+            });
         }
     });
      // if user touch microphone on Game UI scene -> toggle microphone stream

@@ -60,6 +60,10 @@ export function initializeSocket(self, peers) {
         self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));
         const playerUI = self.playerUI[self.player.id];
         currentPlayerDisconnected(self.player.id);
+        playerUI.microphone.destroy();
+        playerUI.playerText.destroy();
+        playerUI.headphones.destroy();
+        playerUI.background.destroy();
         
         // destroy main player
         destroyPlayer();
@@ -67,6 +71,8 @@ export function initializeSocket(self, peers) {
         self.otherPlayers.getChildren().forEach(otherPlayer => {
             self.playerUI[otherPlayer.playerId].playerText.destroy();
             self.playerUI[otherPlayer.playerId].microphone.destroy();
+            self.playerUI[otherPlayer.playerId].background.destroy();
+            self.playerUI[otherPlayer.playerId].headphones.destroy();
             otherPlayer.destroy();
         });
         self.talkRectangle.destroy();

@@ -166,7 +166,6 @@ export class GameUi extends Phaser.Scene {
             let player = players[i];
             const playerNameText = player.name;
             this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
-            this.playerList.add(this.add.image(190, 60 + i * 65, player.microphoneStatus ? "microphone" : "microphoneMuted").setScale(0.7));
             if (player.nft) {
                 const nft = player.nft;
                 const dom = document.createElement('img');
