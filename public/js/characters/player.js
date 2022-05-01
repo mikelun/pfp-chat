@@ -81,7 +81,7 @@ Phaser.GameObjects.GameObjectFactory.register('player', function (x, y, texture,
 	this.updateList.add(sprite);
 
     this.scene.physics.world.enableBody(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    sprite.setOffset(0, sprite.height * 0.7);
-    sprite.setBodySize(sprite.width * 0.85, sprite.height * 0.3, false);
+    sprite.setOffset(10, sprite.height * 0.7);
+    sprite.setBodySize(sprite.width * 0.4, sprite.height * 0.4, false);
 	return sprite;
 })

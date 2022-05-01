@@ -80,7 +80,7 @@ export class PreloadScene extends Phaser.Scene {
 
         // LOAD SURF VIBE MAP
         //this.load.image('3_frame_animated_shoreline_and_cliffs', 'assets/tiles/surf-tiles/3_frame_animated_shoreline_and_cliffs.png');
-
+        
         this.load.image('Animated_Doors', 'assets/tiles/surf-tiles/Animated_Doors_Extruded.png');
         this.load.image('Animated_Netting', 'assets/tiles/surf-tiles/Animated_Netting_Extruded.png');
         this.load.image('Animated_Pier', 'assets/tiles/surf-tiles/Animated_Pier_Extruded.png');
@@ -92,6 +92,11 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('Animated_Dolphin', 'assets/tiles/surf-tiles/Animated_Dolphin.png');
         this.load.tilemapTiledJSON('surf-vibe', 'assets/tiles/surf-vibe.json');
         // END LOADING SURF VIBE MAP
+
+        // LOADING COFFEEBAR MAP
+        this.load.image('Bakery', 'assets/tiles/Bakery.png');
+        this.load.image('Interior', 'assets/tiles/Interior.png');
+        this.load.tilemapTiledJSON('cafe', 'assets/tiles/cafe.json');
 
         this.load.image('play-button', 'assets/game-ui/button-play.png');
 
@@ -148,6 +153,9 @@ export class PreloadScene extends Phaser.Scene {
 
         // LOAD DISCORD ICON
         this.load.image('discord', 'assets/game-ui/discord.png');
+
+        // !!! LOAD EFFECTS
+        this.load.spritesheet('fire-effect', 'assets/effects/fire-effect.png', {frameWidth: 100, frameHeight: 100});
 
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();

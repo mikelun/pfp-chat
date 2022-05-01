@@ -8,7 +8,7 @@ import { showCurrentLevel, typeTextWithDelay } from "../default-levels/showLevel
 
 export function coffeebarLevel2(self, Moralis) {
     self.levelGroup = self.add.group();
-    const text = 'PLANET: COFFEEBAR\nMAP: APARTMENTS\nENTRANCE BY NFT: NO';
+    const text = 'PLANET: COFFEEBAR\nMAP: CAFFEEBAR\nENTRANCE BY NFT: NO';
     self.label = self.add.text(530, 240, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
     self.levelGroup.add(self.label);
     typeTextWithDelay(self, text);
