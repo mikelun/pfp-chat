@@ -1,5 +1,7 @@
-import { createButton, startMoralis } from "./level-utils";
+import { createButton } from "./level-utils";
+import { startMoralis } from "./web3-utils";
 import { showCurrentLevel, typeTextWithDelay } from "./showLevels";
+import { login } from "./web3-utils";
 
 // Get microphone access
 export function defaultLevel0(self, Moralis) {
@@ -65,32 +67,7 @@ export function defaultLevel1(self, Moralis) {
         // connect to Moralis
         startMoralis(Moralis);
 
-        async function login() {
-            var user = Moralis.User.current();
-            if (!user) {
-                self.label.setPosition(480, 470);
-                self.label.text = 'CONNECTING YOUR METAMASK...'
-                user = await Moralis.authenticate({
-                    signingMessage: "Log in using Moralis",
-                })
-                    .then(function (user) {
-                        localStorage.setItem('Moralis', 'true');
-                        self.step = 2;
-                        self.user = user;
-                        showCurrentLevel(self);
-                    })
-                    .catch(function (error) {
-                        self.label.text = 'ERROR, RESTART THE PAGE'
-                        alert(error);
-                    });
-            } else {
-                self.user = user;
-                localStorage.setItem('Moralis', 'true');
-                self.step = 2;
-                showCurrentLevel(self);
-            }
-        }
-        login();
+        login(self, Moralis);
         self.button1.setAlpha(0);
 
     });

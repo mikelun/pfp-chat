@@ -1,7 +1,8 @@
 import { defaultLevel0 } from "./defaultLevels";
 import { Moralis } from 'moralis';
 import { initializeRooms } from "../initializeRooms";
-import { startMoralis } from "./level-utils";
+import { getUserMoralis } from "./web3-utils";
+import { startMoralis } from "./web3-utils";
 
 export function showCurrentLevel(self) {
     // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
@@ -37,7 +38,7 @@ export function showCurrentLevel(self) {
 export function goToPlanet(self) {
     var address = null;
     if (self.user) {
-        address = self.user.get('ethAddress');
+        address = getUserMoralis(Moralis);
         localStorage.setItem('lastVisit', 'true');
     } else {
         localStorage.setItem('lastVisit', 'false');
@@ -53,7 +54,8 @@ export function playerWasAtPlanet(self) {
             self.stream = stream;
 
             startMoralis(Moralis);
-            self.user = Moralis.User.current();
+            self.user = getUserMoralis(Moralis);
+
             if (self.user && self.room != 'guest') {
                 self.step = 2;
             } else {

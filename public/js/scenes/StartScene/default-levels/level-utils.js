@@ -23,35 +23,3 @@ export function createButton(self, x, y, text, padding = {left: 0, right: 0, top
     }).layout().setPosition(x, y).setAlpha(0);
 }
 
-export async function checkNFTForProject(self, token_address, Moralis) {
-    const address = self.user.get('ethAddress');
-
-    const result1 = await checkNFT(token_address, Moralis);
-
-    if ((result1 || creators.includes(address))) {
-        self.step = 3;
-        showCurrentLevel(self);
-    } else {
-        self.label.x -= 125;
-        self.label.y -= 100;
-        self.label.text = 'YOU DONT HAVE NFT OF THIS COLLECTION\nYOU CAN VISIT MAIN ROOM WITHOUT NFT\n';
-        self.linkText = self.add.text(self.label.x, self.label.y + 70, 'https://meet.buildship.xyz', { fill: "#ffb900", fontSize: "50px", fontFamily: "PixelFont" });
-        self.linkText.setInteractive().on('pointerdown', () => {
-            // load page origin
-            window.location.href = window.location.origin;
-        });
-    }
-}
-
-async function checkNFT(token_address, Moralis) {
-    console.log('Checking NFT', token_address, `https://etherscan.io/address/${token_address}`)
-    const { total } = await Moralis.Web3API.account.getNFTsForContract({ token_address });
-    return total > 0;
-}
-
-// START Moralis
-export function startMoralis(Moralis) {
-    const serverUrl = "https://aehuzyu1u1bu.useMoralis.com:2053/server";
-    const appId = "qjkycuFOWtZY1v6bpU8N2e4oxTqdvxNt6ajnsNIm";
-    Moralis.start({ serverUrl, appId });
-}
