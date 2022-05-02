@@ -3,7 +3,36 @@ export class PreloadScene extends Phaser.Scene {
         super({ key: 'PreloadScene' })
     }
 
+    // LOAD YOUR PLANET SPRITE
+    loadPlanets() {
+        // coffeebar-planet
+        this.load.spritesheet('coffeebar-planet', 'assets/projects/coffeebar/coffeebar-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
+
+        // buildship-planet
+        this.load.spritesheet('buildship-planet', 'assets/buildship/buildship-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
+
+        // crypto-duckies-planet
+        this.load.spritesheet('crypto-duckies-planet', 'assets/crypto-duckies/crypto-duckies-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
+
+        // HERE LOAD YOUR PLANET SPRITE
+
+
+
+
+    }
+
     preload() {
+
+        this.loadPlanets();
 
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
@@ -13,10 +42,7 @@ export class PreloadScene extends Phaser.Scene {
             spacing: 0
         });
 
-        this.load.spritesheet('coffeebar-planet', 'assets/coffeebar/coffeebar-planet.png', {
-            frameWidth: 50,
-            frameHeight: 50,
-        });
+        
 
         // LOADING ANIMALS
         const animalsFolders = ['cat1', 'dog2'];
@@ -113,31 +139,14 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('ball', 'assets/ball.png');
 
 
-        // LOAD BUILDSHIP XYZ
-        this.load.spritesheet('blue-fire', 'assets/buildship/blue-fire.png', {
-            frameWidth: 300,
-            frameHeight: 556,
-        })
-
-        // LOAD PENGUIN
-        this.load.image('penguin', 'assets/penguin/penguin.png');
-       
-        // THIS LOAD CRYPTO COVEN
-        this.load.image('witches', 'assets/witches/witches.png');
 
         // THIS LOAD BUILDSHIP
-        this.load.image('buildship', 'assets/buildship/buildship.png');
-        this.load.spritesheet('buildship-planet', 'assets/buildship/buildship-planet.png', {
-            frameWidth: 50,
-            frameHeight: 50,
-        });
+        this.load.image('buildship', 'assets/projects/buildship/buildship.png');
+        
 
         // THIS LOAD CRYPTO DUCKIES
-        this.load.image('duckies', 'assets/crypto-duckies/duckies.png');
-        this.load.spritesheet('crypto-duckies-planet', 'assets/crypto-duckies/crypto-duckies-planet.png', {
-            frameWidth: 50,
-            frameHeight: 50,
-        });
+        this.load.image('duckies', 'assets/projects/crypto-duckies/duckies.png');
+        
 
         // LOAD TWITTER
         this.load.image('twitter', 'assets/game-ui/twitter.png');

@@ -32,6 +32,7 @@ export function initKeysForController(newSelf) {
         self.input.keyboard.on('keydown-' + keysNames[i], function (event) {
             if (!self.blockedMovement) {
                 keys[i].isDown = true;
+                if (i < 4) keys[i + ((i % 2) == 0 ? 1 : -1)].isDown = false;
             }
         });
         self.input.keyboard.on('keyup-' + keysNames[i], function (event) {

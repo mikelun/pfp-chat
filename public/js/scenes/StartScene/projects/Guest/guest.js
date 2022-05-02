@@ -2,8 +2,8 @@
 //     // MAKE GROUP FOR LEVEL
 //     self.levelGroup = self.add.group();
 
-import { createAnimForPlanet, createButton } from "../default-levels/level-utils";
-import { showCurrentLevel, typeTextWithDelay } from "../default-levels/showLevels";
+import { createAnimForPlanet, createButton } from "../../default-levels/level-utils";
+import { showCurrentLevel, typeTextWithDelay } from "../../default-levels/showLevels";
 
 
 export function guestLevel1(self, Moralis) {
