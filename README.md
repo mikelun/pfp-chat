@@ -36,16 +36,17 @@ public/js/scenes/StartScene/projects/example.js
 ``` 
 to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```example``` to ```[YOUR COLLECTION NAME]```. You can check example in crypto-duckies folder.  
 
-3. 
+3. Add import for your planet here  ```public/scenes/StartScene/initializeRooms.js```
 ```
 import { [YOUR COLLECTION NAME] } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js
 ```
-Add import for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add to rooms variable
+   And at the end add to rooms variable
 ```
 [YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]]
 ``` 
 
-Congrats! Now you have your own room for your NFT collection. You can run code and check it here: localhost:3000/[YOUR COLLECTION NAME]. **If you don't see your planet, restart parcel**
+Congrats! Now you have your own room for your NFT collection. You can run code and check it here: ```localhost:3000/[YOUR COLLECTION NAME]```
+**If you don't see your planet, restart parcel**
 
 ## How to change UI 
 ### Adding simple text
