@@ -53,6 +53,13 @@ function addHeadphones(self) {
         tipText.setText(getTextByTexture(headphones));
     });
     addHooverForObject(headphones, hooverHeadphones, tipText);
+    sceneEvents.on('updateDeafenStatus', (status) => {
+        if (status) {
+            headphones.setTexture('headphones-off');
+        } else {
+            headphones.setTexture('headphones');
+        }
+    });
 }
 
 function addMicrophone(self) {

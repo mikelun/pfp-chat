@@ -366,6 +366,7 @@ function addShadowForTextureFromInternet() {
 }
 
 function createParticles(self) {
+    if (self.mapId != 4) return;
     var width = 1280;
     var height = 720;
     self.particles = self.add.particles('snow-particle');

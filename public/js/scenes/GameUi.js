@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
+import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
 import { createTalkIcons } from './GameUI-elements/talkIcons';
 import { addTextBox } from './GameUI-elements/textBox';
 import { addChat } from './GameUI-elements/textChat';
@@ -42,6 +43,8 @@ export class GameUi extends Phaser.Scene {
         const width = this.game.config.width;
         const height = this.game.config.height;
 
+        initializeMusicPlayerPanel(this);
+
         // ADD ROOM TEXT
         this.roomText = this.add.text(width / 2 - 50, 50, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont', align: 'center' });
 
@@ -54,9 +57,9 @@ export class GameUi extends Phaser.Scene {
         // add microphone
         this.add.image(width / 3 + 0 * (width / 8) - 2, height * 0.90 - 5, 'coffeebar-planet').setScale(1).setInteractive()
             .on('pointerdown', () => {
-                
-        });
- 
+
+            });
+
         // if microphone doesn't work show a red icon
         //this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
 
@@ -125,6 +128,18 @@ export class GameUi extends Phaser.Scene {
         createTalkIcons(this);
 
 
+    }
+
+    update(time, delta) {
+        if (this.myAudio) {
+            // to format XX:YY
+            if (!this.myAudio.duration) {
+                this.timeMusic.setText('LOADING...');
+            } else {
+                var timeText = Phaser.Utils.String.Pad(Math.floor(this.myAudio.currentTime / 60), 2, '0', 1) + ':' + Phaser.Utils.String.Pad(Math.floor(this.myAudio.currentTime % 60), 2, '0', 1) + ' / ' + Phaser.Utils.String.Pad(Math.floor(this.myAudio.duration / 60), 2, '0', 1) + ':' + Phaser.Utils.String.Pad(Math.floor(this.myAudio.duration % 60), 2, '0', 1);
+                this.timeMusic.setText(timeText);
+            }
+        }
     }
     addMessageToChat(message, playerName) {
 

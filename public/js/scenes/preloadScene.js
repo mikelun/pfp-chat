@@ -159,6 +159,16 @@ export class PreloadScene extends Phaser.Scene {
         // !!! LOAD EFFECTS
         this.load.spritesheet('fire-effect', 'assets/effects/fire-effect.png', {frameWidth: 100, frameHeight: 100});
 
+
+        // LOAD ICONS
+        this.load.spritesheet('icons', 'assets/game-ui/icons.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            margin: 8,
+            spacing: 8
+        });
+
+
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);

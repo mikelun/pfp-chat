@@ -9,4 +9,10 @@ body {
     font-family: PixelFont;
     src: url('../assets/fonts/monogram.ttf');
     font-weight:100;
-  }
+}
+
+@font-face {
+    font-family: PixelMonoFont;
+    src: url('../assets/fonts/PixelMonoFont.ttf');
+    font-weight:100;
+}

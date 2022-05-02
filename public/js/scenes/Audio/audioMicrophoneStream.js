@@ -25,8 +25,10 @@ export function initializeUserOnOtherTab(self) {
     if (!self.microphoneEnabled) return;
     document.addEventListener("visibilitychange", (event) => {
         if (document.visibilityState == "visible") {
+            if (self.deafen) return;
             setUndeafen(self);
         } else {
+            if (self.deafen) return;
             // remove all peers, than add stream
             removeAllPeopleFromTalk(self);
             setDeafen(self);
@@ -68,6 +70,7 @@ function setDeafen(self) {
     });
     self.localStream = null;
     sceneEvents.emit('updateMicStatus', false);
+    sceneEvents.emit('updateDeafenStatus', true);
     self.socket.emit("updatePlayerInfo", { deafen: true, microphoneStatus: false }, self.socket.id);
 }
 
