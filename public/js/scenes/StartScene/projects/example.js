@@ -21,9 +21,9 @@ function setUpYourPlanet() {
 }
 
 
-// change name of function to your collection name + Level2
+// change name of function to your collection name
 
-export function exampleLevel2(self, Moralis) {
+export function example(self, Moralis) {
     const settings = setUpYourPlanet();
 
     self.levelGroup = self.add.group();

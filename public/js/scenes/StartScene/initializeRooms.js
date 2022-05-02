@@ -1,13 +1,13 @@
-import { buildshipLevel2 } from "./projects/buildship/buildship";
-import { coffeebarLevel2 } from "./projects/coffeebar/coffeebar";
-import { cryptoDuckiesLevel2 } from "./projects/crypto-duckies/cryptoDuckies";
+import { buildship } from "./projects/buildship/buildship";
+import { coffeebar } from "./projects/coffeebar/coffeebar";
+import { cryptoDuckies } from "./projects/crypto-duckies/cryptoDuckies";
 import { defaultLevel0, defaultLevel1 } from "./default-levels/defaultLevels";
 import { guestLevel1 } from "./projects/Guest/guest";
 
 const rooms = {
-    "buildship": buildshipLevel2,
-    "crypto-duckies": cryptoDuckiesLevel2,
-    "coffeebar": coffeebarLevel2,
+    "buildship": buildship,
+    "crypto-duckies": cryptoDuckies,
+    "coffeebar": coffeebar
 };
 export function initializeRooms(self) {
     var room = window.location.href.split('/');
@@ -18,7 +18,7 @@ export function initializeRooms(self) {
         self.levels = [defaultLevel0, defaultLevel1, rooms[self.room]];
     } else {
         self.room = "coffeebar";
-        self.levels = [defaultLevel0, defaultLevel1, coffeebarLevel2];
+        self.levels = [defaultLevel0, defaultLevel1, coffeebar];
     }
 
 }

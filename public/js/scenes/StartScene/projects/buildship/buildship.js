@@ -6,7 +6,7 @@ import { createAnimForPlanet, createButton } from "../../default-levels/level-ut
 import { showCurrentLevel, typeTextWithDelay } from "../../default-levels/showLevels";
 
 
-export function buildshipLevel2(self, Moralis) {
+export function buildship(self, Moralis) {
     self.levelGroup = self.add.group();
     const text = 'PLANET: BUILDSHIP.XYZ\nMAP: APARTMENTS\nENTRANCE BY NFT: NO';
     self.label = self.add.text(530, 240, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });

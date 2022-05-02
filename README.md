@@ -23,8 +23,8 @@ npm run start
             frameWidth: 50,
             frameHeight: 50,
         });``` to loadPlanets function.
-2. Go to ```public/js/scenes/StartScene/projects```. Make folder with your NFT collection name and copy file ```public/js/scenes/StartScene/projects/example.js``` to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```exampleLevel2``` to ```[YOUR COLLECTION NAME]Level2```. You can check example in crypto-duckies folder.
-3. Add ```import { [YOUR COLLECTION NAME]Level2 } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js``` for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add ```[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]Level2]``` to rooms
+2. Go to ```public/js/scenes/StartScene/projects```. Make folder with your NFT collection name and copy file ```public/js/scenes/StartScene/projects/example.js``` to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```example``` to ```[YOUR COLLECTION NAME]```. You can check example in crypto-duckies folder.
+3. Add ```import { [YOUR COLLECTION NAME] } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js``` for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add ```[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]]``` to rooms
 
 Congrats! Now you have your own room for your NFT collection. You can run code and check it here: localhost:3000/[YOUR COLLECTION NAME]
 

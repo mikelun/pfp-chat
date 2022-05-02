@@ -6,7 +6,7 @@ import { createAnimForPlanet, createButton } from "../../default-levels/level-ut
 import { showCurrentLevel, typeTextWithDelay } from "../../default-levels/showLevels";
 
 
-export function coffeebarLevel2(self, Moralis) {
+export function coffeebar(self, Moralis) {
     self.levelGroup = self.add.group();
     const text = 'PLANET: COFFEEBAR\nMAP: CAFFEEBAR\nENTRANCE BY NFT: NO';
     self.label = self.add.text(530, 240, '', { fill: "#ffffff", fontSize: "35px", fontFamily: "PixelFont" });
