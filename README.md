@@ -19,14 +19,32 @@ npm run start
 
 ## How to add room for your NFT collection?
 Сurrently, collections are supported only from eth mainnet. 
-1. Generate the planet for your NFT collection here: [Planet Generator](https://deep-fold.itch.io/pixel-planet-generator). Make the field Pixels equal to 50. Generate your planet, then select spritesheet and set Frames(Width) equal to 50, Frames(Height) equal to 1. Then create the folder in ```public/assets/projects/``` with your collection name and save your planet there. You will have something like this ```public/assets/projects/[YOUR COLLECTION NAME]/`[YOUR PLANET NAME]-planet.png```  Go to ```public/js/scenes/preloadScene.js``` and add this code ```this.load.spritesheet('[YOUR PLANET NAME]', '[YOUR PLANET NAME]-planet.png', {
-            frameWidth: 50,
-            frameHeight: 50,
-        });``` to loadPlanets function.
-2. Go to ```public/js/scenes/StartScene/projects```. Make folder with your NFT collection name and copy file ```public/js/scenes/StartScene/projects/example.js``` to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```example``` to ```[YOUR COLLECTION NAME]```. You can check example in crypto-duckies folder.
-3. Add ```import { [YOUR COLLECTION NAME] } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js``` for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add ```[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]]``` to rooms
+1. Generate the planet for your NFT collection here: [Planet Generator](https://deep-fold.itch.io/pixel-planet-generator). Make the field Pixels equal to 50. Generate your planet, then select spritesheet and set Frames(Width) equal to 50, Frames(Height) equal to 1. Then create the folder in ```public/assets/projects/``` with your collection name and save your planet there. You will have something like this 
+```
+public/assets/projects/[YOUR COLLECTION NAME]/`[YOUR PLANET NAME]-planet.png
+```
+Go to ```public/js/scenes/preloadScene.js``` and add this code to loadPlanets function.: 
+```
+this.load.spritesheet('[YOUR PLANET NAME]', '[YOUR PLANET NAME]-planet.png', {
+    frameWidth: 50,
+    frameHeight: 50,
+});
+``` 
+2. Go to ```public/js/scenes/StartScene/projects```. Make folder with your NFT collection name and copy file 
+```
+public/js/scenes/StartScene/projects/example.js
+``` 
+to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```example``` to ```[YOUR COLLECTION NAME]```. You can check example in crypto-duckies folder.
+3. 
+```
+import { [YOUR COLLECTION NAME] } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js
+```
+Add import for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add to rooms variable
+```
+[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]]
+``` 
 
-Congrats! Now you have your own room for your NFT collection. You can run code and check it here: localhost:3000/[YOUR COLLECTION NAME]
+Congrats! Now you have your own room for your NFT collection. You can run code and check it here: localhost:3000/[YOUR COLLECTION NAME]. **If you don't see your planet, restart parcel**
 
 ## How to change UI 
 ### Adding simple text
