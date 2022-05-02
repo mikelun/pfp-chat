@@ -203,8 +203,8 @@ function addPlayer(self, playerInfo) {
     getEnsDomain(self.moralis).then(domain => {
         playersList.forEach(player => {
             if (player.id == self.socket.id) {
-                player.name = domain;
-                self.playerName = domain;
+                if (domain) player.name = domain;
+                if (domain) self.playerName = domain;
                 self.socket.emit("updatePlayerInfo", { playerName: domain }, self.socket.id);
                 showPlayersToTalk();
             }
