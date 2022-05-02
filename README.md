@@ -1,6 +1,6 @@
 # [OpenMetaverse](https://meet.buildship.xyz)
 
-OpenMetaverse is a project where people with NFTs can find their communities. In my plans, I want to add a role and story for each person, this will help to liberate them in voice chat. My goal is to make a cozy place with chill&relax vibe.
+OpenMetaverse is a project where people with NFTs can find their communities. In my plans, I want to add a role and story for each person, that will help to liberate them in voice chat. My goal is to make a cozy place with chill&relax vibe.
 
 
 ## Clone repo, install deps
