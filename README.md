@@ -17,7 +17,7 @@ npm run parcel
 npm run start
 ```
 
-## How to add planet for your NFT collection?
+## How to add planet for your NFT collection?s
 Сurrently, collections are supported only from eth mainnet. 
 1. Generate the planet for your NFT collection here: [Planet Generator](https://deep-fold.itch.io/pixel-planet-generator). Make the field Pixels equal to 50. Generate your planet, then select spritesheet and set Frames(Width) equal to 50, Frames(Height) equal to 1. Then create the folder in ```public/assets/projects/``` with your collection name and save your planet there. You will have something like this 
 ```
@@ -34,7 +34,8 @@ this.load.spritesheet('[YOUR PLANET NAME]', '[YOUR PLANET NAME]-planet.png', {
 ```
 public/js/scenes/StartScene/projects/example.js
 ``` 
-to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```example``` to ```[YOUR COLLECTION NAME]```. You can check example in crypto-duckies folder.
+to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```example``` to ```[YOUR COLLECTION NAME]```. You can check example in crypto-duckies folder.  
+
 3. 
 ```
 import { [YOUR COLLECTION NAME] } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js
