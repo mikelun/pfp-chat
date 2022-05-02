@@ -42,7 +42,7 @@ import { [YOUR COLLECTION NAME] } from "./projects/[YOUR COLLECTION NAME]/[YOUR 
 ```
    And at the end add to rooms variable
 ```
-[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]]
+"[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]]
 ``` 
 
 Congrats! Now you have your own room for your NFT collection. You can run code and check it here: ```localhost:3000/[YOUR COLLECTION NAME]```
