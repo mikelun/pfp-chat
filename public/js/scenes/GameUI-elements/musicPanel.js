@@ -112,7 +112,7 @@ function onTwitterPointerDown(object) {
 function onInstagramPointerDown(object) {
     object.on('pointerdown', function (pointer) {
         // open twitter page
-        window.open('https://www.instagram.com/mikelun.eth/');
+        window.open('https://twitter.com/mikelun_eth');
     });
 }
 
