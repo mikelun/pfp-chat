@@ -1,6 +1,6 @@
 # [OpenMetaverse](https://meet.buildship.xyz)
 
-OpenMetaverse is a project where people with NFTs can find their communities. In my plans, I want to add a role and story for each person, this will help to liberate them in voice chat. My goal is to make a cozy place with chill&relax vibe.
+OpenMetaverse is a project where people with NFTs can find their communities. In my plans, I want to add a role and story for each person, that will help to liberate them in voice chat. My goal is to make a cozy place with chill&relax vibe.
 
 
 ## Clone repo, install deps
@@ -17,7 +17,7 @@ npm run parcel
 npm run start
 ```
 
-## How to add room for your NFT collection?
+## How to add planet for your NFT collection?
 Сurrently, collections are supported only from eth mainnet. 
 1. Generate the planet for your NFT collection here: [Planet Generator](https://deep-fold.itch.io/pixel-planet-generator). Make the field Pixels equal to 50. Generate your planet, then select spritesheet and set Frames(Width) equal to 50, Frames(Height) equal to 1. Then create the folder in ```public/assets/projects/``` with your collection name and save your planet there. You will have something like this 
 ```
