@@ -2,16 +2,6 @@
 
 OpenMetaverse is a project where people with NFTs can find their communities. In my plans, I want to add a role and story for each person, this will help to liberate them in voice chat. My goal is to make a cozy place with chill&relax vibe.
 
-## How to add room for your NFT collection?
-Сurrently, collections are supported only from eth mainnet. 
-1. Generate the planet for your NFT collection here: [Planet Generator](https://deep-fold.itch.io/pixel-planet-generator). Make the field Pixels equal to 50. Generate your planet, then select spritesheet and set Frames(Width) equal to 50, Frames(Height) equal to 1. Then create the folder in ```public/assets/projects/``` with your collection name and save your planet there. You will have something like this ```public/assets/projects/[YOUR COLLECTION NAME]/`[YOUR PLANET NAME]-planet.png```  Go to ```public/js/scenes/preloadScene.js``` and add this code ```this.load.spritesheet('[YOUR PLANET NAME]', '[YOUR PLANET NAME]-planet.png', {
-            frameWidth: 50,
-            frameHeight: 50,
-        });``` to loadPlanets function.
-2. Go to ```public/js/scenes/StartScene/projects```. Make folder with your NFT collection name and copy file ```public/js/scenes/StartScene/projects/example.js``` to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```exampleLevel2``` to ```[YOUR COLLECTION NAME]Level2```. You can check example in crypto-duckies folder.
-3. Add ```import { [YOUR COLLECTION NAME]Level2 } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js``` for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add ```[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]Level2]``` to rooms
-
-Congrats! Now you have your own room for your NFT collection. You can run code and check it here: localhost:3000/[YOUR COLLECTION NAME]
 
 ## Clone repo, install deps
 
@@ -26,6 +16,17 @@ cd open-metaverse && npm install
 npm run parcel
 npm run start
 ```
+
+## How to add room for your NFT collection?
+Сurrently, collections are supported only from eth mainnet. 
+1. Generate the planet for your NFT collection here: [Planet Generator](https://deep-fold.itch.io/pixel-planet-generator). Make the field Pixels equal to 50. Generate your planet, then select spritesheet and set Frames(Width) equal to 50, Frames(Height) equal to 1. Then create the folder in ```public/assets/projects/``` with your collection name and save your planet there. You will have something like this ```public/assets/projects/[YOUR COLLECTION NAME]/`[YOUR PLANET NAME]-planet.png```  Go to ```public/js/scenes/preloadScene.js``` and add this code ```this.load.spritesheet('[YOUR PLANET NAME]', '[YOUR PLANET NAME]-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });``` to loadPlanets function.
+2. Go to ```public/js/scenes/StartScene/projects```. Make folder with your NFT collection name and copy file ```public/js/scenes/StartScene/projects/example.js``` to your folder. Change variables in setUpYourPlanet function. And finally change the name of function ```exampleLevel2``` to ```[YOUR COLLECTION NAME]Level2```. You can check example in crypto-duckies folder.
+3. Add ```import { [YOUR COLLECTION NAME]Level2 } from "./projects/[YOUR COLLECTION NAME]/[YOUR COLLECTION NAME].js``` for your planet here  ```public/scenes/StartScene/initializeRooms.js```   And at the end add ```[YOUR COLLECTION NAME]": [YOUR COLLECTION NAME]Level2]``` to rooms
+
+Congrats! Now you have your own room for your NFT collection. You can run code and check it here: localhost:3000/[YOUR COLLECTION NAME]
 
 ## How to change UI 
 ### Adding simple text
