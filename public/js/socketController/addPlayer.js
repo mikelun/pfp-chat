@@ -80,8 +80,8 @@ function addUIForPlayer(self, playerInfo) {
     const textColor = randColor();
     self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(0, 0 - 10, playerInfo.playerName.length * 6, 12, 8, 0x000000).setAlpha(0.5);
     self.playerUI[self.socket.id].playerText = self.add.text(0, -13, playerInfo.playerName, { fontSize: '50px', fontFamily: 'PixelFont', fill: textColor, align: 'center' }).setScale(0.3).setOrigin(0.5  );
-    self.playerUI[self.socket.id].microphone = self.add.image(8, -27, "microphone1-off").setScale(0.45);
-    self.playerUI[self.socket.id].headphones = self.add.image(-8, -25, "headphones").setScale(0.5);
+    self.playerUI[self.socket.id].microphone = self.add.image(-8, -27, "microphone1-off").setScale(0.45);
+    self.playerUI[self.socket.id].headphones = self.add.image(8, -25, "headphones").setScale(0.5);
     var container = self.add.container(0, 0, [self.playerUI[self.socket.id].background, self.playerUI[self.socket.id].playerText, self.playerUI[self.socket.id].microphone, self.playerUI[self.socket.id].headphones]);
     
 //    container.setPosition(self.player.x, self.player.y);
