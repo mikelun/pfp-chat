@@ -22,17 +22,24 @@ export class PreloadScene extends Phaser.Scene {
             frameWidth: 50,
             frameHeight: 50,
         });
+        
+        // crypto-duckies-planet
+        this.load.spritesheet('moonbirds-planet', 'assets/projects/moonbirds/moonbirds-planet.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
 
-        // HERE LOAD YOUR PLANET SPRITE
+    }
 
-
-
-
+    loadMaps() {
+        // for moonbirds planet
+        this.load.tilemapTiledJSON('moonbirds-map', 'assets/tiles/moonbirds.json');
     }
 
     preload() {
 
         this.loadPlanets();
+        this.loadMaps();
 
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {

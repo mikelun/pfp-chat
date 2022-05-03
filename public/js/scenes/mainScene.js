@@ -65,7 +65,10 @@ export class MainScene extends Phaser.Scene {
             this.mapId = 2;
         } else if (this.room == 'coffeebar') {
             this.mapId = 4;
-        } else {
+        } else if (this.room == 'moonbirds') {
+            this.mapId = 5;
+        }  
+        else {
             this.mapId = 3;
         }
         localStorage.removeItem('playerInfo');

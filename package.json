@@ -29,6 +29,7 @@
         "phaser": "^3.55.2",
         "phaser-animated-tiles": "^2.0.2",
         "phaser3-rex-plugins": "^1.1.67",
+        "sharp": "^0.30.4",
         "signalhub": "^4.9.0",
         "simple-peer": "^9.11.1",
         "socket.io": "^4.4.1",

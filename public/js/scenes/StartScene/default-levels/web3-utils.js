@@ -48,6 +48,18 @@ export function getUserMoralis(Moralis) {
 // Check NFT for your project
 export async function checkNFTForProject(self, token_address, Moralis) {
     const address = self.user.get('ethAddress');
+    
+    // creators to lower case
+    creators.forEach(creator => {
+        creator = creator.toLowerCase();
+        console.log(creator, address);
+        if (creator == address.toLowerCase()) {
+
+            self.step = 3;
+            showCurrentLevel(self);
+            return;
+        }
+    });
 
     const result = await checkNFT(token_address, Moralis);
 

@@ -87,7 +87,7 @@ function addUIForPlayer(self, playerInfo) {
 //    container.setPosition(self.player.x, self.player.y);
     // add UI following
     self.events.on("postupdate", function () {
-        Phaser.Display.Align.To.TopCenter(container, self.player, 0, 0);
+        if (self.player) Phaser.Display.Align.To.TopCenter(container, self.player, 0, 0);
       });
     
     pushToPlayerList(playerInfo);
