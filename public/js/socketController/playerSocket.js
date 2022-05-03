@@ -94,7 +94,16 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                     // get otherPlayer with id
                     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
                         if (playerInfo.playerId === otherPlayer.playerId) {
-                            loadTexture(otherPlayer, playerInfo.textureId);
+                            var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
+                            console.log(playerInfo.textureId);
+                            if (textureFromInternet) {
+                                var type = 'crypto-duckies';
+                                if (playerInfo.textureId.startsWith('https://buildship')) {
+                                    type = 'moonbirds';
+                                }
+                                console.log(type);
+                                loadTexture(otherPlayer, playerInfo.textureId, type);
+                            }
                         }
                     });
                 }
@@ -265,11 +274,11 @@ export function updateEnsInPlayerList(domain) {
     });
 }
 
-export function updateNFTInPlayerList(nftImage, id) {
+export function updateNFTInPlayerList(nftImage, id, link) {
     playersList.forEach(player => {
         if (player.id == self.socket.id) {
             player.nft = nftImage;
-            const textureId = id ? `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png` : null;
+            const textureId = id ? link : null;
             self.socket.emit("updatePlayerInfo", { nft: nftImage, textureId: textureId }, self.socket.id);
         }
     });
