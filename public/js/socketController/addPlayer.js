@@ -14,15 +14,24 @@ export function addPlayer(newSelf, playerInfo) {
     configureAddPlayer(self);
     // check if texture from internet
     var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
-
-    
-
     if (textureFromInternet) {
         self.player = self.add.player(playerInfo.x, playerInfo.y, playerInfo.textureId);
         self.player.textureId = playerInfo.textureId;
     } else {
         self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
     }
+
+    if (textureFromInternet) {
+        var type = 'crypto-duckies';
+        if (playerInfo.textureId.startsWith('https://buildship')) {
+            type = 'moonbirds';
+        }
+        loadTexture(self.player, playerInfo.textureId, type);
+    } else {
+        self.player.setTexture(`characters${playerInfo.textureId}`);
+    }
+
+    
 
     // SETUP PLAYER
     self.textureId = playerInfo.textureId;
@@ -59,6 +68,7 @@ export function addPlayer(newSelf, playerInfo) {
     self.connected = [];
 
     sceneEvents.on('nftSelected', nftSelected, this);
+    
 }
 
 function configureAddPlayer(self) {
@@ -87,7 +97,7 @@ function addUIForPlayer(self, playerInfo) {
 //    container.setPosition(self.player.x, self.player.y);
     // add UI following
     self.events.on("postupdate", function () {
-        if (self.player) Phaser.Display.Align.To.TopCenter(container, self.player, 0, 0);
+        if (self.player) Phaser.Display.Align.To.TopCenter(container, self.player, 0, (self.player.yAdd ? -100 : 0));
       });
     
     pushToPlayerList(playerInfo);
@@ -97,14 +107,21 @@ function nftSelected(nft) {
     const nftImage = nft.image;
     // if nft started with 'Duckie'
     var id;
+    console.log(nft);
     if (nft.name.startsWith('Duckie')) {
         // get id after #
         id = nft.name.split('#')[1];
-
-        loadTexture(self.player, `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`)
+        
+        loadTexture(self.player, `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`, 'crypto-duckies')
 
         self.load.start();
+    } else {
+        if (nft.name.startsWith('Moonbirds')) {
+            id = nft.name.split('#')[1]; 
+            loadTexture(self.player, `https://buildship.mypinata.cloud/ipfs/QmVqLVBe6f5af634DMEEuW3x7taiVM78yUvy5Eh7mFGXMZ/${id}.png`, 'moonbirds')
+        }
     }
+
 
     updateNFTInPlayerList(nftImage, id);
 

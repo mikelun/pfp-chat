@@ -17,6 +17,8 @@ export function addMap5(self) {
     
     self.invisibleWalls = moonbirds.createLayer('invisibleWalls', tileset).setCollisionByProperty({ collides: true });;
     self.invisibleWalls.setVisible(false);
+
+    self.cameras.main.setBounds(0, 0, moonbirds.widthInPixels, moonbirds.heightInPixels);
 }
 
 // add physics when player added to map

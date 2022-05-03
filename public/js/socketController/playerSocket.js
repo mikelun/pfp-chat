@@ -154,7 +154,11 @@ function addOtherPlayers(self, playerInfo) {
 
     const textureFromInternet = isTextureFromInternet(playerInfo.textureId);
     if (textureFromInternet) {
-        loadTexture(otherPlayer, playerInfo.textureId);
+        var type = 'crypto-duckies';
+        if (playerInfo.textureId.startsWith('https://buildship')) {
+            type = 'moonbirds';
+        }
+        loadTexture(otherPlayer, playerInfo.textureId, type);
     } else {
         otherPlayer.setTexture(`characters${playerInfo.textureId}`);
     }
@@ -214,18 +218,29 @@ export function showPlayersToTalk() {
 }
 
 
-export function loadTexture(object, textureLink) {
+export function loadTexture(object, textureLink, type) {
+    object.textureId = textureLink;
+    object.nftType = type;
+
+    if (type == 'moonbirds') {
+        object.yAdd = -100;
+        object.setScale(0.2);
+        object.setOrigin(0.5, 0.5);
+    } else {
+        object.setScale(1);
+        object.setOrigin(0.5, 0.5);
+        object.yAdd = 0;
+    }
+
     if (self.textures.exists(textureLink)) {
         object.setTexture(textureLink);
-        object.textureId = textureLink;
         return;
     }
 
     self.load.image(textureLink, textureLink)
     self.load.on('filecomplete', function (key, file) {
         if (key == textureLink) {
-            object.setTexture(textureLink);
-            object.textureId = textureLink;
+            object.setTexture(textureLink); 
         }
     });
     self.load.start();

@@ -67,7 +67,7 @@ export class MainScene extends Phaser.Scene {
             this.mapId = 4;
         } else if (this.room == 'moonbirds') {
             this.mapId = 5;
-        }  
+        }
         else {
             this.mapId = 3;
         }
@@ -131,6 +131,13 @@ export class MainScene extends Phaser.Scene {
 
             // if player on scene
             updatePlayerScenePositon(this);
+
+            // add flight sin
+            // if (this.player.nftType == 'moonbirds') {
+            //     if (this.player.movingX) {
+            //         this.player.y += Math.sin(time / 100) * 0.5;
+            //     }
+            // }
 
         }
 
