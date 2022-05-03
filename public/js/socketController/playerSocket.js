@@ -15,8 +15,6 @@ export function initializePlayersSocket(anotherSelf, _peers) {
     self.otherPlayers = self.physics.add.group();
 
     self.socket.on('currentPlayers', function (players) {
-        // create snow effect 
-        createParticles(self);
 
         Object.keys(players).forEach(function (id) {
             if (players[id].playerId === self.socket.id) {
@@ -25,6 +23,8 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 addOtherPlayers(self, players[id]);
             }
         });
+        // create snow effect 
+        createParticles(self);
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
