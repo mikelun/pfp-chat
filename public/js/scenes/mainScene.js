@@ -115,9 +115,6 @@ export class MainScene extends Phaser.Scene {
             // update function for map
             addUpdateForMap(this, this.mapId, time, delta);
 
-            // update a position of player UI
-            addFollowingUI(this);
-
             // update a player position
             updatePlayerPosition(this);
 
