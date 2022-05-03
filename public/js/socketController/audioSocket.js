@@ -11,12 +11,12 @@ const configuration = {
             urls: "stun:openrelay.metered.ca:80"
         },
         {
-            urls: "stun:159.89.17.72:3478",
+            urls: "stun:46.101.125.218:3478",
             username: "mikelun",
             credential: "123456"
         },
         {
-            urls: "turn:159.89.17.72:3478",
+            urls: "turn:46.101.125.218:3478",
             username: "mikelun",
             credential: "123456"
         },
