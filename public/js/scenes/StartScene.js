@@ -41,8 +41,8 @@ export class StartScene extends Phaser.Scene {
             this.skip = true;
         });
         
-        this.step = 3;
-        showCurrentLevel(this);
+        // this.step = 3;
+        // showCurrentLevel(this);
         
         // IF PLAYER WAS AT PLANET
         if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('lastVisit') == 'true') {
