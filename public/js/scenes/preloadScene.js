@@ -12,13 +12,13 @@ export class PreloadScene extends Phaser.Scene {
         });
 
         // buildship-planet
-        this.load.spritesheet('buildship-planet', 'assets/buildship/buildship-planet.png', {
+        this.load.spritesheet('buildship-planet', 'assets/projects/buildship/buildship-planet.png', {
             frameWidth: 50,
             frameHeight: 50,
         });
 
         // crypto-duckies-planet
-        this.load.spritesheet('crypto-duckies-planet', 'assets/crypto-duckies/crypto-duckies-planet.png', {
+        this.load.spritesheet('crypto-duckies-planet', 'assets/projects/crypto-duckies/crypto-duckies-planet.png', {
             frameWidth: 50,
             frameHeight: 50,
         });
