@@ -78,6 +78,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 if (self.playerUI[playerInfo.playerId].playerText.text != playerInfo.playerName) {
                     self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
                     self.playerUI[playerInfo.playerId].background.width = playerInfo.playerName.length * 6;
+                    getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
                 }
                 playersList[i].name = playerInfo.playerName;
 
@@ -188,6 +189,8 @@ function addOtherPlayers(self, playerInfo) {
     self.layer1.add(otherPlayer);
     playersList.push({ name: playerInfo.playerName, microphoneStatus: playerInfo.microphoneStatus, id: playerInfo.playerId, nft: playerInfo.nft, textColor: textColor, textureId: playerInfo.textureId });
     //showPlayersToTalk()
+
+    getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
 }
 
 export const randColor = () => {
@@ -236,8 +239,14 @@ export function pushToPlayerList(playerInfo) {
 export function updateEnsInPlayerList(domain) {
     playersList.forEach(player => {
         if (player.id == self.socket.id) {
-            if (domain) player.name = domain;
-            if (domain) self.playerName = domain;
+            if (domain) { 
+                player.name = domain;
+                self.playerName = domain;
+                self.player.setInteractive().on('pointerdown', () => {
+                    // open link twitter
+                    window.open(`https://context.app/${domain}`);
+                })
+            }
             self.socket.emit("updatePlayerInfo", { playerName: domain }, self.socket.id);
             showPlayersToTalk();
         }
@@ -250,6 +259,21 @@ export function updateNFTInPlayerList(nftImage, id, link) {
             player.nft = nftImage;
             const textureId = id ? link : null;
             self.socket.emit("updatePlayerInfo", { nft: nftImage, textureId: textureId }, self.socket.id);
+        }
+    });
+}
+
+function getInterectionForEns(id, domain) {
+    // if ends on .eth
+    if (!domain.endsWith('.eth')) return;
+
+    // find in other players
+    self.otherPlayers.getChildren().forEach(otherPlayer => {
+        if (otherPlayer.playerId == id) {
+            otherPlayer.setInteractive().on('pointerdown', () => {
+                // open link twitter
+                window.open(`https://context.app/${domain}`);
+            });
         }
     });
 }
