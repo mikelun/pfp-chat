@@ -2,7 +2,8 @@ import { Player } from "../characters/player";
 import { OtherPlayer } from "../characters/otherPlayer";
 import { sceneEvents } from '../Events/EventsCenter';
 import { createParticles } from "../utils/particles";
-import { addPlayer } from "./addPlayer";
+import { addPlayer } from "../scenes/GameView/addPlayer";
+import { loadTexture } from "../scenes/GameView/loadTexture";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -100,7 +101,7 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                                 if (playerInfo.textureId.startsWith('https://buildship')) {
                                     type = 'moonbirds';
                                 }
-                                loadTexture(otherPlayer, playerInfo.textureId, type);
+                                loadTexture(self, otherPlayer, playerInfo.textureId, type);
                             }
                         }
                     });
@@ -165,7 +166,7 @@ function addOtherPlayers(self, playerInfo) {
         if (playerInfo.textureId.startsWith('https://buildship')) {
             type = 'moonbirds';
         }
-        loadTexture(otherPlayer, playerInfo.textureId, type);
+        loadTexture(self, otherPlayer, playerInfo.textureId, type);
     } else {
         otherPlayer.setTexture(`characters${playerInfo.textureId}`);
     }
@@ -222,47 +223,6 @@ export function showPlayersToTalk() {
         }
     });
     sceneEvents.emit("currentPlayers", sortedPlayersList, self.playerName);
-}
-
-
-export function loadTexture(object, textureLink, type, isMainPlayer = false) {
-    object.textureId = textureLink;
-    object.nftType = type;
-
-
-    if (type == 'moonbirds') {
-        object.yAdd = -100;
-        object.setScale(0.2);
-        object.setOrigin(0.5, 0.5);
-        if (isMainPlayer) {
-            object.setBodySize(self.player.startWidth * 2, self.player.startHeight * 2, false)
-            object.setOffset(100, 100);
-        }
-    } else {
-        console.log("TRYING TO FIX");
-        object.setOrigin(0.5, 0.5);
-        object.yAdd = 0;
-        if (isMainPlayer) {
-        //     console.log("HERE");
-            object.setScale(1);
-            object.setBodySize(object.startWidth * 0.4, object.startHeight * 0.4, false)
-            self.player.setOffset(10, self.player.startHeight * 0.7);
-         }
-        
-    }
-
-    if (self.textures.exists(textureLink)) {
-        object.setTexture(textureLink);
-        return;
-    }
-
-    self.load.image(textureLink, textureLink)
-    self.load.on('filecomplete', function (key, file) {
-        if (key == textureLink) {
-            object.setTexture(textureLink);
-        }
-    });
-    self.load.start();
 }
 
 export function isTextureFromInternet(texture) {

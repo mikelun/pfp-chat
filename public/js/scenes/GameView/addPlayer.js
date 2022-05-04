@@ -1,9 +1,10 @@
-import { Player } from "../characters/player";
-import { sceneEvents } from "../Events/EventsCenter";
-import { addPhysicsForScene } from "../MapBuilding/showMap";
-import { getEnsDomain } from "../web3/GetEnsDomain";
-import { getPlayerNFT } from "../web3/GetPlayerNFT";
-import { isTextureFromInternet, loadTexture, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "./playerSocket";
+import { Player } from "../../characters/player";
+import { sceneEvents } from "../../Events/EventsCenter";
+import { addPhysicsForScene } from "../../MapBuilding/showMap";
+import { getEnsDomain } from "../../web3/GetEnsDomain";
+import { getPlayerNFT } from "../../web3/GetPlayerNFT";
+import { loadTexture } from "./loadTexture";
+import { isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
 
 var self;
 
@@ -26,7 +27,7 @@ export function addPlayer(newSelf, playerInfo) {
         if (playerInfo.textureId.startsWith('https://buildship')) {
             type = 'moonbirds';
         }
-        loadTexture(self.player, playerInfo.textureId, type);
+        loadTexture(self, self.player, playerInfo.textureId, type);
     } else {
         self.player.setTexture(`characters${playerInfo.textureId}`);
     }
@@ -112,7 +113,7 @@ function nftSelected(nft) {
         id = nft.name.split('#')[1];
         link = `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`;
         console.log('Loading: ' + link + ' for Crypto Duckies');
-        loadTexture(self.player, link, 'crypto-duckies', true)
+        loadTexture(self, self.player, link, 'crypto-duckies', true)
 
         self.load.start();
     } else {
@@ -120,7 +121,7 @@ function nftSelected(nft) {
             id = nft.name.split('#')[1]; 
             link = `https://buildship.mypinata.cloud/ipfs/QmVqLVBe6f5af634DMEEuW3x7taiVM78yUvy5Eh7mFGXMZ/${id}.png`;
             console.log('Loading: ' + link + ' for Moonbirds');
-            loadTexture(self.player, link, 'moonbirds', true)
+            loadTexture(self, self.player, link, 'moonbirds', true)
         }
     }
 
