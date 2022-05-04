@@ -107,19 +107,20 @@ function nftSelected(nft) {
     const nftImage = nft.image;
     // if nft started with 'Duckie'
     var id, link;
-    console.log(nft);
     if (nft.name.startsWith('Duckie')) {
         // get id after #
         id = nft.name.split('#')[1];
         link = `https://raw.githubusercontent.com/cryptoduckies/webb3/main/${id}.png`;
-        loadTexture(self.player, link, 'crypto-duckies')
+        console.log('Loading: ' + link + ' for Crypto Duckies');
+        loadTexture(self.player, link, 'crypto-duckies', true)
 
         self.load.start();
     } else {
         if (nft.name.startsWith('Moonbirds')) {
             id = nft.name.split('#')[1]; 
             link = `https://buildship.mypinata.cloud/ipfs/QmVqLVBe6f5af634DMEEuW3x7taiVM78yUvy5Eh7mFGXMZ/${id}.png`;
-            loadTexture(self.player, link, 'moonbirds')
+            console.log('Loading: ' + link + ' for Moonbirds');
+            loadTexture(self.player, link, 'moonbirds', true)
         }
     }
 
@@ -127,5 +128,4 @@ function nftSelected(nft) {
     updateNFTInPlayerList(nftImage, id, link);
 
     showPlayersToTalk();
-    console.log(nft.name, nft.image, ' HAS BEEN SELECTED');
 }

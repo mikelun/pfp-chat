@@ -87,9 +87,10 @@ Phaser.GameObjects.GameObjectFactory.register('player', function (x, y, texture,
     var sprite = new Player(this.scene, x, y, texture, frame).setScale(1);
     this.displayList.add(sprite);
     this.updateList.add(sprite);
-
     this.scene.physics.world.enableBody(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
     sprite.setOffset(10, sprite.height * 0.7);
     sprite.setBodySize(sprite.width * 0.4, sprite.height * 0.4, false);
+    sprite.startWidth = sprite.width;
+    sprite.startHeight = sprite.height;
     return sprite;
 })

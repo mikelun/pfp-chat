@@ -95,13 +95,11 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
                         if (playerInfo.playerId === otherPlayer.playerId) {
                             var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
-                            console.log(playerInfo.textureId);
                             if (textureFromInternet) {
                                 var type = 'crypto-duckies';
                                 if (playerInfo.textureId.startsWith('https://buildship')) {
                                     type = 'moonbirds';
                                 }
-                                console.log(type);
                                 loadTexture(otherPlayer, playerInfo.textureId, type);
                             }
                         }
@@ -227,18 +225,30 @@ export function showPlayersToTalk() {
 }
 
 
-export function loadTexture(object, textureLink, type) {
+export function loadTexture(object, textureLink, type, isMainPlayer = false) {
     object.textureId = textureLink;
     object.nftType = type;
+
 
     if (type == 'moonbirds') {
         object.yAdd = -100;
         object.setScale(0.2);
         object.setOrigin(0.5, 0.5);
+        if (isMainPlayer) {
+            object.setBodySize(self.player.startWidth * 2, self.player.startHeight * 2, false)
+            object.setOffset(100, 100);
+        }
     } else {
-        object.setScale(1);
+        console.log("TRYING TO FIX");
         object.setOrigin(0.5, 0.5);
         object.yAdd = 0;
+        if (isMainPlayer) {
+        //     console.log("HERE");
+            object.setScale(1);
+            object.setBodySize(object.startWidth * 0.4, object.startHeight * 0.4, false)
+            self.player.setOffset(10, self.player.startHeight * 0.7);
+         }
+        
     }
 
     if (self.textures.exists(textureLink)) {
@@ -249,7 +259,7 @@ export function loadTexture(object, textureLink, type) {
     self.load.image(textureLink, textureLink)
     self.load.on('filecomplete', function (key, file) {
         if (key == textureLink) {
-            object.setTexture(textureLink); 
+            object.setTexture(textureLink);
         }
     });
     self.load.start();
