@@ -73,3 +73,37 @@ export function defaultLevel1(self, Moralis) {
     });
 }
 
+// get metamask
+export function defaultLevel1WithGuestEnter(self, Moralis) {
+    // TEXT
+    var text = 'IF YOU WANT TO SHOW OFF YOUR NFT\nOR FIND YOUR NFT COMMUNITY PLANET\nPLEASE CONNECT METAMASK';
+    self.label = self.add.text(330, 210, '', { fill: "#ffb900", fontSize: "35px", fontFamily: "PixelFont", align : "left" });
+    self.levelGroup.add(self.label);
+    typeTextWithDelay(self, text);
+
+    self.button1 = createButton(self, 450, 450, "CONNECT", {left: 60, right: 60, top: 30, bottom: 45});
+
+    self.button2 = createButton(self, 715, 450, "AS GUEST", {left: 50, right: 50, top: 30, bottom: 45});
+
+    // SET BUTTONS INTERCTIVE
+    self.button1.setInteractive().on('pointerdown', () => {
+        if (self.step != 1) return;
+
+        // connect to Moralis
+        startMoralis(Moralis);
+
+        login(self, Moralis);
+        self.button1.setAlpha(0);
+        self.button2.setAlpha(0);
+
+    });
+
+    self.button2.setInteractive().on('pointerdown', () => {
+        if (self.step != 1) return;
+
+        self.step = 2;
+        showCurrentLevel(self);
+    });
+}
+
+
