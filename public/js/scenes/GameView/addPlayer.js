@@ -15,6 +15,7 @@ export function addPlayer(newSelf, playerInfo) {
     configureAddPlayer(self);
     // check if texture from internet
     var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
+
     if (textureFromInternet) {
         self.player = self.add.player(playerInfo.x, playerInfo.y, playerInfo.textureId);
         self.player.textureId = playerInfo.textureId;

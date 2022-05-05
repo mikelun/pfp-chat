@@ -1,16 +1,25 @@
 <html>
+
 <head>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="./css/main.css">
+    <script type="text/javascript">
+        // if host name is equal to meet.buildship.xyz redirect to pfpchat.com
+        if (window.location.hostname === 'meet.buildship.xyz') {
+            window.location.href = 'https://pfpchat.com' + window.location.pathname;
+        }
+    </script>
 </head>
 
 <body>
     <div style="font-family:PixelFont; position:absolute; left:-1000px; visibility:hidden;">.</div>
     <div style="font-family:PixelMonoFont; position:absolute; left:-1000px; visibility:hidden;">.</div>
+
     <script type="module" src='./js/game.js'></script>
 
 
     <!-- <iframe src="https://drawbattle.io" title="W3Schools Free Online Web Tutorials"></iframe> -->
     <!-- <div style="font-family:'PixelFont'; display: none;">PixelFont</div> -->
 </body>
+
 </html>
