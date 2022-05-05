@@ -97,7 +97,7 @@ export class GameUi extends Phaser.Scene {
             .on('pointerdown', () => {
                 // open twitter link
                 sendEventToAmplitude('Tap on discord button');
-                window.open('https://discord.com/invite/k23acdEASb');
+                window.open('https://discord.gg/aU6QhyK8jZ');
             });
 
 
