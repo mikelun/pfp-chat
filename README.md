@@ -1,6 +1,6 @@
-# [OpenMetaverse](https://meet.buildship.xyz)
+# [PFPCHAT](https://meet.buildship.xyz)
 
-OpenMetaverse is a project where people with NFTs can find their communities. In my plans, I want to add a role and story for each person, that will help to liberate them in voice chat. My goal is to make a cozy place with chill&relax vibe.
+Dress up your NFT & Talk. Here you can create your own planets with it's own logic. You can do from mmorpg to coffee shop! 
 
 
 ## Clone repo, install deps
