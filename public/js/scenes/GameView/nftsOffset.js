@@ -8,10 +8,10 @@ export function resizeObjectForNFT(object, type, isMainPlayer) {
             object.setOffset(100, 100);
         }
     } else if (type == 'crypto-duckies') {
-        object.setOrigin(0.5, 0.5);
         object.yAdd = 0;
+        object.setScale(1);
+        object.setOrigin(0.5, 0.5);
         if (isMainPlayer) {
-            object.setScale(1);
             object.setBodySize(object.startWidth * 0.4, object.startHeight * 0.4, false)
             object.setOffset(10, object.startHeight * 0.7);
          }
