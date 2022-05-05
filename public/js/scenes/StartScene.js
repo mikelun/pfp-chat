@@ -69,11 +69,11 @@ export class StartScene extends Phaser.Scene {
             // move text to left corner
             //this.oText.x = 49;
             this.oText.x -= 10;
-            this.mText.x -= 10;
+            this.mText.x -= 13.7;
             this.oText.y -= 2.5;
-            this.mText.y -= 4.3;
-            this.oText.scale -= 0.01;
-            this.mText.scale -= 0.01;
+            this.mText.y -= 2.5;
+            this.oText.scale -= 0.015;
+            this.mText.scale -= 0.015;
             this.levelsPanel.y -= 13;
             if (this.oText.x < 50) {
                 this.levelsPanel.y = 2;
@@ -86,10 +86,10 @@ export class StartScene extends Phaser.Scene {
     }
 
     addOpenMetaverseText() {
-        this.oText = this.add.text(500, 100, 'OPEN', { fill: "#00cfe5", fontSize: "220px", align: "center", fontFamily: "PixelFont" });
+        this.oText = this.add.text(400, 100, 'PFP', { fill: "#00cfe5", fontSize: "220px", align: "center", fontFamily: "PixelFont" });
         this.oText.setShadow(5, 5, "#00cfe5", 0);
 
-        this.mText = this.add.text(503, 270, 'METAVERSE', { fill: "#c200db", fontSize: "95px", align: "center", fontFamily: "PixelFont" });
+        this.mText = this.add.text(650, 100, 'CHAT', { fill: "#c200db", fontSize: "220px", align: "center", fontFamily: "PixelFont" });
         this.mText.setShadow(3, 3, "#c200db", 0);
     }
 
