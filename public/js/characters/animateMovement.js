@@ -39,9 +39,9 @@ function animateBackgroundForNFT(object, directionX, directionY, type) {
 }
 
 function animateMainCharacter(object, directionX, directionY, type) {
-    if (directionX) {
-        object.play(`${type}-${directionX}`, true);
-    }  else {
+    if (directionY) {
         object.play(`${type}-${directionY}`, true);
+    }  else {
+        object.play(`${type}-${directionX}`, true);
     }
 } 
