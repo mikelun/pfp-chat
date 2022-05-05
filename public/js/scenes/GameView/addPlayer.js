@@ -5,6 +5,8 @@ import { getEnsDomain } from "../../web3/GetEnsDomain";
 import { getPlayerNFT } from "../../web3/GetPlayerNFT";
 import { loadTexture } from "./loadTexture";
 import { isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
+import { resizeObjectForNFT } from "./nftsOffset";
+import { createImageNFT } from "./gameViewUtils";
 
 var self;
 
@@ -29,8 +31,11 @@ export function addPlayer(newSelf, playerInfo) {
             type = 'moonbirds';
         }
         loadTexture(self, self.player, playerInfo.textureId, type);
+    } else if ((playerInfo.textureId + '').startsWith('nft')){
+        resizeObjectForNFT(self.player, playerInfo.textureId);
+        self.player.setTexture(textureId); 
     } else {
-        self.player.setTexture(`characters${playerInfo.textureId}`);
+        self.player.setTexture('characters' + playerInfo.textureId);
     }
 
     
@@ -99,8 +104,14 @@ function addUIForPlayer(self, playerInfo) {
 //    container.setPosition(self.player.x, self.player.y);
     // add UI following
     self.events.on("postupdate", function () {
-        if (self.player) Phaser.Display.Align.To.TopCenter(container, self.player, 0, (self.player.yAdd ? -100 : 0));
-      });
+        if (self.player) { 
+            Phaser.Display.Align.To.TopCenter(container, self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
+            if (self.playerUI[self.socket.id].nftImage) {
+                Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id].nftImage, self.player, (self.player.xAddNFT ? self.player.xAddNFT  : 0), (self.player.yAddNFT ? self.player.yAddNFT : 0));
+            }
+        }
+    
+    });
     
     pushToPlayerList(playerInfo);
 }
@@ -117,13 +128,13 @@ function nftSelected(nft) {
         loadTexture(self, self.player, link, 'crypto-duckies', true)
 
         self.load.start();
-    } else {
-        if (nft.name.startsWith('Moonbirds')) {
+    } else if (nft.name.startsWith('Moonbirds')) {
             id = nft.name.split('#')[1]; 
             link = `https://buildship.mypinata.cloud/ipfs/QmVqLVBe6f5af634DMEEuW3x7taiVM78yUvy5Eh7mFGXMZ/${id}.png`;
             console.log('Loading: ' + link + ' for Moonbirds');
             loadTexture(self, self.player, link, 'moonbirds', true)
-        }
+    } else {
+       //createImageNFT(self, nftImage);
     }
 
 

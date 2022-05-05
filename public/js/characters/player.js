@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { animateMovement } from "./animateMovement";
 var spriteSpeed = 100;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
@@ -8,6 +9,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift, playerShadow) {
+        // if player doesn't moving
+        const playerMoved = keyUp.isDown || jUp.isDown || keyDown.isDown || jDown.isDown || keyLeft.isDown || jLeft.isDown || keyRight.isDown || jRight.isDown;
+        if (!playerMoved) {
+            if (this.anims) this.anims.stop();
+            this.setVelocity(0, 0)
+            this.rotation = 0;
+            return;
+        }
+
         let velY = 0;
 
         let textureFromInternet = this.textureId ? true : false;
@@ -24,61 +34,35 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (keyUp.isDown || jUp.isDown) {
-            //this.setVelocity(0, -spriteSpeed)
             this.setVelocity(0, -spriteSpeed);
-            this.movingX = false;
         }
         if (keyDown.isDown || jDown.isDown) {
             this.setVelocity(0, +spriteSpeed)
-            this.movingX = false;
-            //this.y += spriteSpeed;
         }
         if (keyLeft.isDown || jLeft.isDown) {
-            this.movingX = true;
             this.setVelocity(-spriteSpeed, velY);
-            // flip the sprite
-            if (textureFromInternet) {
-                this.flipX = true;
-            }
-            //this.x -= spriteSpeed;
         }
         if (keyRight.isDown || jRight.isDown) {
-            this.movingX = true;
             this.setVelocity(+spriteSpeed, velY);
-            if (textureFromInternet) {
-                this.flipX = false;
-            }
-            //this.x += spriteSpeed;
         }
-        if (playerShadow) playerShadow.setPosition(this.x, this.y);
-        //playerShadow.setVelocity(this.velocity);
-        if (this.anims && !textureFromInternet) {
+
+        if (this.anims) {
+            // get direction of player
+            var directionX, directionY;
             if (keyUp.isDown || jUp.isDown) {
-                this.anims.play(`player-walk-up${type}`, true);
-            } else if (keyDown.isDown || jDown.isDown) {
-                this.anims.play(`player-walk-down${type}`, true);
-            } else if (keyLeft.isDown || jLeft.isDown) {
-                this.anims.play(`player-walk-left${type}`, true);
-            } else if (keyRight.isDown || jRight.isDown) {
-                this.anims.play(`player-walk-right${type}`, true);
+                directionY = "up";
             }
-        }
-        const playerMoved = keyUp.isDown || jUp.isDown || keyDown.isDown || jDown.isDown || keyLeft.isDown || jLeft.isDown || keyRight.isDown || jRight.isDown;
-        if (textureFromInternet) {
-            if (playerMoved) {
-                if (this.nftType == 'crypto-duckies' || this.nftType == 'moonbirds') {
-                    this.rotation += this.walkEffect;
-                    if (Math.abs(this.rotation) > 0.1) {
-                        this.walkEffect *= -1;
-                    }
-                }
+            if (keyDown.isDown || jDown.isDown) {
+                directionY = "down";
             }
-        }
-        if (!(keyUp.isDown || jUp.isDown) && !(keyDown.isDown || jDown.isDown) && !(keyLeft.isDown || jLeft.isDown) && !(keyRight.isDown || jRight.isDown)) {
-            if (this.anims) this.anims.stop();
-            this.movingX = false;
-            this.setVelocity(0, 0)
-            this.rotation = 0;
+            if (keyLeft.isDown || jLeft.isDown) {
+                directionX = "left";
+            }
+            if (keyRight.isDown || jRight.isDown) {
+                directionX = "right";
+            }
+
+            animateMovement(this, directionX, directionY, type, this.nftType);
         }
     }
 }

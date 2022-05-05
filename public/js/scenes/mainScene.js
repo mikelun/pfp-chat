@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { initializeSocket } from '../socketController/socketController';
 import { initMainMap, updatePlayerPosition, initKeysForController } from '../utils/utils';
-import { createAnimationForPlayer } from "../anims/characterAnims";
+import { createAnimationForNFTBackround, createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 import { sceneEvents } from '../Events/EventsCenter';
 import { addJoysticIfAndroid } from '../utils/pluginJoystic';
@@ -94,6 +94,9 @@ export class MainScene extends Phaser.Scene {
         for (let i = 0; i < 33; i++) {
             createAnimationForPlayer(this.anims, i);
         }
+        
+        createAnimationForNFTBackround(this.anims, 1);
+
 
         // Add Game Ui
         this.scene.run('game-ui');

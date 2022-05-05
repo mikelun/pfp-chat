@@ -15,25 +15,25 @@ export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
             if (textureFromInternet) {
                 // DO SOMETHING
             } else {
-                this.anims.play(`player-walk-up${this.textureId}`, true);
+                this.anims.play(`${this.textureId}-up`, true);
             }
         } else if (y > this.oldY) {
             if (textureFromInternet) {
                 // DO SOMETHING
             } else {
-                this.anims.play(`player-walk-down${this.textureId}`, true);
+                this.anims.play(`${this.textureId}-down`, true);
             }
         } else if (x < this.oldX) {
             if (textureFromInternet) {
                 this.flipX = true;
             } else {
-                this.anims.play(`player-walk-left${this.textureId}`, true);
+                this.anims.play(`${this.textureId}-left`, true);
             }
         } else if (x > this.oldX) {
             if (textureFromInternet) { 
                 this.flipX = false;
             } else {
-                this.anims.play(`player-walk-right${this.textureId}`, true);
+                this.anims.play(`${this.textureId}-right`, true);
             }
         }
         if (textureFromInternet) {

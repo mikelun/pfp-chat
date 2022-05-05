@@ -14,7 +14,14 @@ export function resizeObjectForNFT(object, type, isMainPlayer) {
         if (isMainPlayer) {
             object.setBodySize(object.startWidth * 0.4, object.startHeight * 0.4, false)
             object.setOffset(10, object.startHeight * 0.7);
-         }
-        
+        }
+    } else if ((type + '').startsWith('nft')) {
+        object.yAdd = 0;
+        object.setScale(2);
+        object.setOrigin(0.5, 0.5);
+        if (isMainPlayer) {
+            object.setBodySize(object.startWidth * 0.4, object.startHeight * 0.4, false)
+            object.setOffset(10, object.startHeight * 0.7);
+        }
     }
 }

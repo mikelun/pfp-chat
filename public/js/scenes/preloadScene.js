@@ -151,8 +151,6 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('buildship', 'assets/projects/buildship/buildship.png');
         
 
-        // THIS LOAD CRYPTO DUCKIES
-        this.load.image('duckies', 'assets/projects/crypto-duckies/duckies.png');
         
 
         // LOAD TWITTER
@@ -161,8 +159,6 @@ export class PreloadScene extends Phaser.Scene {
         // LOAD GITHUB
         this.load.image('github', 'assets/game-ui/github.png');
 
-        // LOAD CHARACTERS
-        this.load.image('duckie', 'assets/characters/153.png');
 
         // LOAD SHADOW
         this.load.image('shadow', 'assets/shadow.png');
@@ -244,9 +240,9 @@ export class PreloadScene extends Phaser.Scene {
         });
 
         // LOADING CHARACTERS
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 33; i++) {
             this.load.spritesheet(`characters${i}`,
-                `assets/Other/${i}.png`,
+                `assets/characters/cats/${i}.png`,
                 {
                     frameWidth: 32,
                     frameHeight: 32,
@@ -254,6 +250,14 @@ export class PreloadScene extends Phaser.Scene {
                     spacing: 0
                 });
         }
+
+        // LOAD BACKGROUND CHARACTERS FOR NFTs Images
+        this.load.spritesheet('nft-1', 'assets/characters/nft-background-characters/nft-1.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            margin: 0,
+            spacing: 0
+        });
 
     }
 
