@@ -1,6 +1,6 @@
 # [PFPCHAT](https://meet.buildship.xyz)
 
-Dress up your NFTs, create planets, bars and NPCs. This project is about creativity
+Dress up your NFT & Talk. Here you can create your own planets with it's own logic. You can do from mmorpg to coffee shop! 
 
 
 ## Clone repo, install deps
