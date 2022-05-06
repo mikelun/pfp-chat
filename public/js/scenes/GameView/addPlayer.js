@@ -1,6 +1,6 @@
 import { Player } from "../../characters/player";
 import { sceneEvents } from "../../Events/EventsCenter";
-import { addPhysicsForScene } from "../../MapBuilding/showMap";
+import { addPhysicsForScene, showMap } from "../../MapBuilding/showMap";
 import { getEnsDomain } from "../../web3/GetEnsDomain";
 import { getPlayerNFT } from "../../web3/GetPlayerNFT";
 import { loadTexture } from "./loadTexture";
@@ -11,8 +11,15 @@ import { createImageNFT } from "./gameViewUtils";
 var self;
 
 export function addPlayer(newSelf, playerInfo) {
-
     self = newSelf;
+
+    // initialize with id
+    console.log(self.mapId, "    ,", playerInfo.mapId);
+
+    if (self.mapId != playerInfo.mapId) {
+        self.mapId = playerInfo.mapId;
+        showMap(self, self.mapId);
+    }
 
     configureAddPlayer(self);
     // check if texture from internet
@@ -35,6 +42,7 @@ export function addPlayer(newSelf, playerInfo) {
         resizeObjectForNFT(self.player, playerInfo.textureId);
         self.player.setTexture(textureId); 
     } else {
+        resizeObjectForNFT(self.player, playerInfo.textureId);
         self.player.setTexture('characters' + playerInfo.textureId);
     }
 
@@ -101,7 +109,7 @@ function addUIForPlayer(self, playerInfo) {
     self.playerUI[self.socket.id].headphones = self.add.image(8, -25, "headphones").setScale(0.5);
     var container = self.add.container(0, 0, [self.playerUI[self.socket.id].background, self.playerUI[self.socket.id].playerText, self.playerUI[self.socket.id].microphone, self.playerUI[self.socket.id].headphones]);
     
-//    container.setPosition(self.player.x, self.player.y);
+    // container.setPosition(self.player.x, self.player.y);
     // add UI following
     self.events.on("postupdate", function () {
         if (self.player) { 

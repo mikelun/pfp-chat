@@ -14,11 +14,11 @@ export function addMapID (self) {
 }
 
 // add physics when player added to map
-export function addPhysicsForMap1(self) {
+export function addPhysicsForMapID(self) {
 
 }
 
 
-export function addUpdateForMap1(self) {
+export function addUpdateForMapID(self) {
 
 }

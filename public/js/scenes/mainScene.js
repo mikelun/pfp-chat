@@ -56,7 +56,7 @@ export class MainScene extends Phaser.Scene {
     create() {
 
         // Initialize socket for client - server application
-        initializeSocket(this, peers);
+        initializeSocket(this, peers);  
 
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
@@ -64,17 +64,7 @@ export class MainScene extends Phaser.Scene {
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
 
-        if (this.room == 'buildship') {
-            this.mapId = 2;
-        } else if (this.room == 'coffeebar') {
-            this.mapId = 4;
-        } else if (this.room == 'moonbirds') {
-            this.mapId = 5;
-        }
-        else {
-            this.mapId = 3;
-        }
-        localStorage.removeItem('playerInfo');
+        //localStorage.removeItem('playerInfo');
         //localStorage.clear();
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
@@ -104,8 +94,6 @@ export class MainScene extends Phaser.Scene {
         // Add Game Ui
         this.scene.run('game-ui');
 
-        // initialize with id
-        showMap(this, this.mapId);
 
         // add joystic if android
         addJoysticIfAndroid(this);

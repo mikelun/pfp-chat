@@ -3,6 +3,7 @@ import { destroyPlayer, initializePlayersSocket, loadTexture } from '../socketCo
 import { io } from "socket.io-client";
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
 import { initializeChatSocket } from './textChatSocket';
+import { disconnectPlayerBadInternet } from '../scenes/GameView/disconnectPlayer';
 
 /**
  * Initialize socket and connect to server by socket.io
@@ -14,8 +15,8 @@ export function initializeSocket(self, peers) {
     const port = process.env.PORT || 3000;
     const site = window.location.hostname;
     const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}`;
-    
-    self.socket = io(connectLink, {transports: ['websocket']});    
+
+    self.socket = io(connectLink, { transports: ['websocket'] });
 
     // Initialize audio stream for socket
     initializeAudio(self.socket, peers, self);
@@ -29,57 +30,23 @@ export function initializeSocket(self, peers) {
         console.log('Connected to server');
         if (localStorage.getItem('playerInfo')) {
             const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-            console.log('TEXTURE ',playerInfo.textureId);
+            console.log('TEXTURE ', playerInfo.textureId);
             self.socket.emit('addPlayer', self.address, self.room, playerInfo);
         } else {
             self.socket.emit('addPlayer', self.address, self.room);
         }
-    }) 
+    })
 
     self.socket.on('playerExists', () => {
         self.cameras.main.shake(500, 0.01);
         self.add.rectangle(0, 0, 5000, 5000, 0x000000).setAlpha(0.5);
-        self.add.text(330, 300, "You have been logged in!\nPlease close other tab with this metaverse\nand reset the page", { fontSize: "30px", fill: "#ffffff", align: "center", fontFamily: "PixelFont"});
+        self.add.text(330, 300, "You have been logged in!\nPlease close other tab with this metaverse\nand reset the page", { fontSize: "30px", fill: "#ffffff", align: "center", fontFamily: "PixelFont" });
     });
 
     // IF PLAYER DISCONNECTED
     self.socket.on('disconnect', () => {
+        disconnectPlayerBadInternet(self);
+    })
 
-        // IF PLAYER DISCONNECT SAVE PLAYER INFO FOR RECONNETING
-        const playerInfo = {
-            x : self.player.x,
-            y : self.player.y,
-            textureId : self.player.textureId,
-            address : self.address,
-            room : self.room,
-        }
-        localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
-        
-        if (self.particles) {
-            self.particles.destroy();
-        }
-
-        self.errors = self.add.group();
-        self.errors.add(self.add.rectangle(self.player.x - 2000, self.player.y- 2000, 4000, 4000, 0x000000).setOrigin(0, 0).setAlpha(0.5));
-        self.errors.add(self.add.text(self.player.x - 250, self.player.y - 100, 'Trying to reconnect...\n\nPlease check your internet\nconnection', { fontSize: '32px', fill: '#fff' }));
-        const playerUI = self.playerUI[self.player.id];
-        currentPlayerDisconnected(self.player.id);
-        playerUI.microphone.destroy();
-        playerUI.playerText.destroy();
-        playerUI.headphones.destroy();
-        playerUI.background.destroy();
-        
-        // destroy main player
-        destroyPlayer();
-        
-        self.otherPlayers.getChildren().forEach(otherPlayer => {
-            self.playerUI[otherPlayer.playerId].playerText.destroy();
-            self.playerUI[otherPlayer.playerId].microphone.destroy();
-            self.playerUI[otherPlayer.playerId].background.destroy();
-            self.playerUI[otherPlayer.playerId].headphones.destroy();
-            otherPlayer.destroy();
-        });
-        self.talkRectangle.destroy();
-    });
 
 }

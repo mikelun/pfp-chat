@@ -34,6 +34,18 @@ export class PreloadScene extends Phaser.Scene {
     loadMaps() {
         // for moonbirds planet
         this.load.tilemapTiledJSON('moonbirds-map', 'assets/tiles/moonbirds.json');
+
+        // for coffeebar planet
+        this.load.tilemapTiledJSON('coffeebar-map', 'assets/tiles/main-planet.json');
+        this.load.image('CP_WallsA4', 'assets/tiles/cyber-punk/CP_WallsA4.png');
+        this.load.image('Low-TownA5', 'assets/tiles/cyber-punk/Low-TownA5.png');
+        this.load.image('Low-TownB', 'assets/tiles/cyber-punk/Low-TownB.png');
+        this.load.image('Low-TownC', 'assets/tiles/cyber-punk/Low-TownC.png');
+        this.load.image('Low-TownD', 'assets/tiles/cyber-punk/Low-TownD.png');
+        this.load.image('Mid-TownA5', 'assets/tiles/cyber-punk/Mid-TownA5.png');
+        this.load.image('Mid-TownB', 'assets/tiles/cyber-punk/Mid-TownB.png');
+        this.load.image('Mid-TownC', 'assets/tiles/cyber-punk/Mid-TownC.png');
+        this.load.image('Mid-TownD', 'assets/tiles/cyber-punk/Mid-TownD.png');
     }
 
     preload() {

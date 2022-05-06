@@ -23,5 +23,8 @@ export function resizeObjectForNFT(object, type, isMainPlayer) {
             object.setBodySize(object.startWidth * 0.4, object.startHeight * 0.4, false)
             object.setOffset(10, object.startHeight * 0.7);
         }
+    } else {
+        // object.setScale(1.5);
+        // object.setOrigin(0.5, 0.5);
     }
 }

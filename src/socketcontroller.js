@@ -1,6 +1,7 @@
 const { join, filter, values } = require("./data/nicknames");
 const nicknames = require("./data/nicknames");
-const startPoints = require("./data/startPoints");
+const maps = require("./data/maps");
+const mapsStartPoints = require("./data/mapsStartPoints");
 
 peers = {};
 
@@ -24,24 +25,31 @@ module.exports = (io) => {
             //         return;
             //     }
             // }
+            console.log()
             if (!address) {
                 address = socket.id;
             }
+            var x = mapsStartPoints[maps[room]].x;
+            var y = mapsStartPoints[maps[room]].y;
+            var mapId = maps[room];
+            if (playerInfo && playerInfo.mapId) {
+                x = mapsStartPoints[playerInfo.mapId].x;
+                y = mapsStartPoints[playerInfo.mapId].y;
+                mapId = playerInfo.mapId;
+            }
             players[socket.id] = {
-                ...{
-                    rotation: 0,
-                    x: startPoints[room].x,
-                    y: startPoints[room].y,
-                    playerId: socket.id,
-                    microphoneStatus: false,
-                    deafen: false,
-                    playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
-                    textureId: Math.floor(Math.random() * 33),
-                    nft: null,
-                    address: address,
-                    room: room
-                },
-                ...playerInfo,
+                rotation: 0,
+                x: x,
+                y: y,
+                playerId: socket.id,
+                microphoneStatus: false,
+                deafen: false,
+                playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
+                textureId: 20,
+                nft: null,
+                address: address,
+                room: room,
+                mapId: mapId
             };
 
             socket.join(room);
@@ -53,15 +61,15 @@ module.exports = (io) => {
                 }
             }
 
-            console.log('SORTED PLAYERS: ',sortPlayers);
+            console.log('SORTED PLAYERS: ', sortPlayers);
             socket.emit('currentPlayers', sortPlayers);
 
             // update all other players of the new player
             socket.to(room).emit('newPlayer', players[socket.id]);
         });
-        
 
-        
+
+
 
         // when a player moves, update the player data
         socket.on('playerMovement', function (movementData) {
@@ -111,7 +119,7 @@ module.exports = (io) => {
             io.to(players[socket.id].room).emit('disconnected', socket.id);
             delete players[socket.id];
             delete peers[socket.id];
-            
+
         });
 
         /**
@@ -138,7 +146,7 @@ module.exports = (io) => {
                 if (peers[peer]) peers[id].emit('initeReceive', socket.id);
                 hashChats.push(peers + '$' + socket.id);
             }
-        }) 
+        })
 
         socket.on('removeFromTalk', id => {
             if (hashChats.includes(id + '$' + socket.id)) hashChats.splice(hashChats.indexOf(id + '$' + socket.id), 1);
@@ -147,12 +155,12 @@ module.exports = (io) => {
             console.log('REMOVING PEER', id, socket.id);
             // emit player with socket id
             if (peers[id]) peers[id].emit('removeFromTalk', socket.id);
-            if (peers[socket.id] )peers[socket.id].emit('removeFromTalk', id);
+            if (peers[socket.id]) peers[socket.id].emit('removeFromTalk', id);
         });
 
         // ADD TEXT CHAT
         socket.on('textChatMessage', (message) => {
             socket.to(players[socket.id].room).emit('textChatMessage', message);
         });
-});
+    });
 };

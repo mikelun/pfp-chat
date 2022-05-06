@@ -72,7 +72,7 @@ export function initializeMusicPlayerPanel(self) {
         this.y = dragY;
 
     });
-
+    self.musicPanel = musicContainer;
     musicContainer.x = 900;
     musicContainer.y = 70;
 
@@ -140,4 +140,8 @@ function onPlayMusicPointerDown(object, self) {
         }
     });
     
+}
+
+export function destroyMusicPanel(self) {
+    self.musicPanel.destroy();
 }
