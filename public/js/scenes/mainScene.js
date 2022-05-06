@@ -55,6 +55,9 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+        // Initialize socket for client - server application
+        initializeSocket(this, peers);
+
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
 
@@ -103,10 +106,6 @@ export class MainScene extends Phaser.Scene {
 
         // initialize with id
         showMap(this, this.mapId);
-
-
-        // Initialize socket for client - server application
-        initializeSocket(this, peers);
 
         // add joystic if android
         addJoysticIfAndroid(this);
