@@ -13,14 +13,6 @@ var self;
 export function addPlayer(newSelf, playerInfo) {
     self = newSelf;
 
-    // initialize with id
-    console.log(self.mapId, "    ,", playerInfo.mapId);
-
-    if (self.mapId != playerInfo.mapId) {
-        self.mapId = playerInfo.mapId;
-        showMap(self, self.mapId);
-    }
-
     configureAddPlayer(self);
     // check if texture from internet
     var textureFromInternet = isTextureFromInternet(playerInfo.textureId);

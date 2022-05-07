@@ -142,6 +142,10 @@ function onPlayMusicPointerDown(object, self) {
     
 }
 
-export function destroyMusicPanel(self) {
-    self.musicPanel.destroy();
+export function toggleMusicPanel(self) {
+    if (self.musicPanel.visible) {
+        self.musicPanel.visible = false;
+    } else {
+        self.musicPanel.visible = true;
+    }
 }

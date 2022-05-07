@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
-import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
+import { initializeMusicPlayerPanel, toggleMusicPanel } from './GameUI-elements/musicPanel';
 import { createTalkIcons } from './GameUI-elements/talkIcons';
 import { addTextBox } from './GameUI-elements/textBox';
 import { addChat } from './GameUI-elements/textChat';
@@ -57,8 +57,8 @@ export class GameUi extends Phaser.Scene {
         // add microphone
         this.add.image(width / 3 + 0 * (width / 8) - 2, height * 0.90 - 5, 'coffeebar-planet').setScale(1).setInteractive()
             .on('pointerdown', () => {
-
-            });
+                toggleMusicPanel(this);
+        });
 
         // if microphone doesn't work show a red icon
         //this.microphoneIsWorking = this.add.image(width / 3 + 0 * (width / 8) - 3, height * 0.90 - 5, 'x').setScale(0.3).setAlpha(0.4);
@@ -126,7 +126,6 @@ export class GameUi extends Phaser.Scene {
 
         // create microphone and headphones
         createTalkIcons(this);
-
 
     }
 

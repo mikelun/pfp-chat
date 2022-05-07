@@ -25,7 +25,8 @@ module.exports = (io) => {
             //         return;
             //     }
             // }
-            console.log()
+            
+
             if (!address) {
                 address = socket.id;
             }
@@ -37,6 +38,9 @@ module.exports = (io) => {
                 y = mapsStartPoints[playerInfo.mapId].y;
                 mapId = playerInfo.mapId;
             }
+
+            const currentRoom = room + '$' + mapId;
+
             players[socket.id] = {
                 rotation: 0,
                 x: x,
@@ -48,15 +52,15 @@ module.exports = (io) => {
                 textureId: 20,
                 nft: null,
                 address: address,
-                room: room,
+                room: currentRoom,
                 mapId: mapId
             };
 
-            socket.join(room);
+            socket.join(currentRoom);
 
             var sortPlayers = [];
             for (var player in players) {
-                if (players[player].room == room) {
+                if (players[player].room == currentRoom) {
                     sortPlayers.push(players[player]);
                 }
             }
@@ -65,11 +69,14 @@ module.exports = (io) => {
             socket.emit('currentPlayers', sortPlayers);
 
             // update all other players of the new player
-            socket.to(room).emit('newPlayer', players[socket.id]);
+            socket.to(currentRoom).emit('newPlayer', players[socket.id]);
         });
 
 
 
+        socket.on('removeFromRoom', () => {
+            socket.to(players[socket.id].room).emit('disconnected', socket.id);
+        })
 
         // when a player moves, update the player data
         socket.on('playerMovement', function (movementData) {

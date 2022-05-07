@@ -67,6 +67,13 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 playersList.splice(i, 1);
             }
         }
+
+        // remove from self.connected
+        for (let i = 0; i < self.connected.length; i++) {
+            if (self.connected[i].playerId == playerId) {
+                self.connected.splice(i, 1);
+            }
+        }
         showPlayersToTalk()
         removePeer(playerId);
         sceneEvents.emit('updateOnlinePlayers', playersList.length);

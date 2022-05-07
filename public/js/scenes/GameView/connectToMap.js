@@ -1,3 +1,4 @@
+import { showMap } from "../../MapBuilding/showMap";
 import { disconnectPlayer } from "./disconnectPlayer";
 
 export function connectToOtherMap(self) {
@@ -6,5 +7,8 @@ export function connectToOtherMap(self) {
 
     const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     playerInfo.mapId = self.newMap;
+    self.mapId = playerInfo.mapId;
+    showMap(self, self.mapId);
+    self.socket.emit('removeFromRoom');
     self.socket.emit('addPlayer', self.address, self.room, playerInfo);
 }

@@ -55,6 +55,21 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+        //localStorage.removeItem('playerInfo');
+        //localStorage.clear();
+        this.layer1 = this.add.layer();
+        this.layer2 = this.add.layer();
+
+
+        // get mapId from local storage 
+        const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+        const mapId = playerInfo['mapId'];
+        if (mapId) {
+            this.mapId = mapId;
+            showMap(this, this.mapId);
+        }
+
+
         // Initialize socket for client - server application
         initializeSocket(this, peers);  
 
@@ -64,10 +79,7 @@ export class MainScene extends Phaser.Scene {
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
 
-        //localStorage.removeItem('playerInfo');
-        //localStorage.clear();
-        this.layer1 = this.add.layer();
-        this.layer2 = this.add.layer();
+        
 
         // add main camera zoom
         this.cameras.main.setZoom(2);
@@ -221,6 +233,7 @@ function updateLocalStorage(self, time) {
             textureId: self.textureId,
             nft: self.nft,
             room: self.room,
+            mapId: self.mapId,
         };
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
         console.log(playerInfo.x, playerInfo.y);
