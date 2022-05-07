@@ -55,21 +55,6 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
-        //localStorage.removeItem('playerInfo');
-        //localStorage.clear();
-        this.layer1 = this.add.layer();
-        this.layer2 = this.add.layer();
-
-
-        // get mapId from local storage 
-        const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-        const mapId = playerInfo['mapId'];
-        if (mapId) {
-            this.mapId = mapId;
-            showMap(this, this.mapId);
-        }
-
-
         // Initialize socket for client - server application
         initializeSocket(this, peers);  
 
@@ -79,7 +64,18 @@ export class MainScene extends Phaser.Scene {
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
 
-        
+        if (this.room == 'buildship') {
+            this.mapId = 2;
+        } else if (this.room == 'coffeebar') {
+            this.mapId = 6;
+        } 
+        else {
+            this.mapId = 3;
+        }
+        //localStorage.removeItem('playerInfo');
+        //localStorage.clear();
+        this.layer1 = this.add.layer();
+        this.layer2 = this.add.layer();
 
         // add main camera zoom
         this.cameras.main.setZoom(2);
@@ -106,6 +102,8 @@ export class MainScene extends Phaser.Scene {
         // Add Game Ui
         this.scene.run('game-ui');
 
+        // initialize with id
+        showMap(this, this.mapId);
 
         // add joystic if android
         addJoysticIfAndroid(this);
@@ -233,7 +231,6 @@ function updateLocalStorage(self, time) {
             textureId: self.textureId,
             nft: self.nft,
             room: self.room,
-            mapId: self.mapId,
         };
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
         console.log(playerInfo.x, playerInfo.y);

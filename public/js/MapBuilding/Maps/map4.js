@@ -4,7 +4,7 @@ import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicM
 import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
 import { showMap } from "../showMap";
-import { clearMapWithTransition } from "./maps-utils";
+import { clearMapWithTransition, startMapTransition } from "./maps-utils";
 
 
 // main map
@@ -60,6 +60,8 @@ export function addMap4(self) {
 
     entrances.push({ entrance: self.add.rectangle(544, 1483, 60, 40, 0x00cccc), mapId: 6 });
     self.layer1.add(entrances[0].entrance);
+
+    startMapTransition(self);
 }
 
 // add physics when player added to map
@@ -150,6 +152,8 @@ function addLightsToMap(self) {
     lights.push(createLight(self, 307, 1452, warmLight, 0.02));
 
     lights.push(createLight(self, 562, 1452, warmLight, 0.02));
+
+    lights.forEach(light => self.layer1.add(light));
     //createLight(self, 239, 1178, cafeLightColor, 0.02);
 }
 export function createLight(self, x, y, color, intensity = 0.05, radius = 200) {
@@ -207,7 +211,7 @@ function clearMap4(self) {
     blackoutRectangle.destroy();
     
     self.caffeinumText.destroy();
-    
+
     lights = [];
     entrances = [];
     self.spaceKey = false;

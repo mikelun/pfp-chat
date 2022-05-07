@@ -49,7 +49,7 @@ module.exports = (io) => {
                 microphoneStatus: false,
                 deafen: false,
                 playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
-                textureId: 20,
+                textureId: Math.floor(Math.random() * 33),
                 nft: null,
                 address: address,
                 room: currentRoom,

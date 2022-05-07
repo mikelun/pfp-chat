@@ -7,7 +7,7 @@ import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
 import { showMap } from "../showMap";
 import { createLight } from "./map4";
-import { clearMapWithTransition } from "./maps-utils";
+import { clearMapWithTransition, startMapTransition } from "./maps-utils";
 
 // lights for map
 var redLights = [];
@@ -44,6 +44,8 @@ export function addMap6(self) {
     addLightsToMap(self);
 
     addEntrances(self);
+
+    startMapTransition(self);
 }
 
 // add physics when player added to map
@@ -131,10 +133,24 @@ function addLightsToMap(self) {
 
     const warmLightColor = { r: 255, g: 160, b: 0 };
     warmLights.push(createLight(self, 961, 802, warmLightColor, 0.1, 150));
+
+    redLights.forEach(light => {
+        self.layer1.add(light);
+    });
+    blueLights.forEach(light => {
+        self.layer1.add(light);
+    });
+    warmLights.forEach(light => {
+        self.layer1.add(light);
+    });
+    
 }
 
 function addEntrances(self) {
     entrances.push({ entrance: createBackgroundEntrance(self, 800, 480, 190, 60), mapId: 4 });
+    entrances.forEach(entrance => {
+        self.layer1.add(entrance.entrance);
+    });
 }
 
 function createBackgroundEntrance(self, x, y, width, height) {
