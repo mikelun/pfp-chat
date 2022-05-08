@@ -2,7 +2,7 @@ export function initializeWeapon(self) {
     // Initialize weapon
     self.weapon = self.add.image(0, 0, 'p90');
 
-
+    //self.layer1.add(self.weapon);
     // add event on mouse down
     self.input.on('pointerdown', function (pointer) {
         if (!self.player) return;
@@ -34,6 +34,13 @@ export function initializeWeapon(self) {
             bullet.body.velocity.x = Math.cos(angle) * 500;
             bullet.body.velocity.y = Math.sin(angle) * 500;
             self.cameras.main.shake(50, 0.001);
+            // after 2 secs, destroy bullet
+            self.time.addEvent({
+                delay: 2000,
+                callback: () => {
+                    bullet.destroy();
+                }
+            });
         }
     });
 }
