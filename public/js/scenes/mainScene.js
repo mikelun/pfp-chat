@@ -14,6 +14,7 @@ import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 import { showPlayersToTalk } from '../socketController/playerSocket';
 import { initializeAmplitude } from '../Analytics/amplitude';
 import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMicrophoneStream';
+import { initializeWeapon, updateWeapon } from './Weapons/weapon';
 /**
  * All peer connections
  */
@@ -56,7 +57,7 @@ export class MainScene extends Phaser.Scene {
     create() {
 
         // Initialize socket for client - server application
-        initializeSocket(this, peers);  
+        initializeSocket(this, peers);
 
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
@@ -68,7 +69,7 @@ export class MainScene extends Phaser.Scene {
             this.mapId = 2;
         } else if (this.room == 'coffeebar') {
             this.mapId = 6;
-        } 
+        }
         else {
             this.mapId = 3;
         }
@@ -95,7 +96,7 @@ export class MainScene extends Phaser.Scene {
         for (let i = 0; i < 33; i++) {
             createAnimationForPlayer(this.anims, i);
         }
-        
+
         createAnimationForNFTBackround(this.anims, 1);
 
 
@@ -108,7 +109,8 @@ export class MainScene extends Phaser.Scene {
         // add joystic if android
         addJoysticIfAndroid(this);
 
-        this.weapon = this.add.rectangle(0, 0, 10, 10, 0xffffff);
+
+        initializeWeapon(this);
 
     }
 
@@ -134,18 +136,8 @@ export class MainScene extends Phaser.Scene {
             // if player on scene
             updatePlayerScenePositon(this);
 
-            // add flight sin
-            // if (this.player.nftType == 'moonbirds') {
-            //     if (this.player.movingX) {
-            //         this.player.y += Math.sin(time / 100) * 0.5;
-            //     }
-            // }
+            updateWeapon(this);
 
-            // log mouse point position
-            // const xPoint = this.input.activePointer.x;
-            // const yPoint = this.input.activePointer.y;
-            // // move this.weapon in circle with radius 100
-            // this.weapon.x = self.player.x + Math.cos(time / 100) * 100;
         }
 
         // update other players positions with interpolation

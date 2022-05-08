@@ -48,11 +48,22 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('Mid-TownD', 'assets/tiles/cyber-punk/Mid-TownD.png');
     }
 
+    loadWeapons() {
+        this.load.image('p90', 'assets/weapons/guns/p90.png');
+
+        this.load.spritesheet('bullet-effect-1', 'assets/weapons/effects/bullet-effect-1.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            spacing: 0,
+            margin: 0
+        });
+    }
+
     preload() {
 
         this.loadPlanets();
         this.loadMaps();
-
+        this.loadWeapons();
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
             frameWidth: 50,
