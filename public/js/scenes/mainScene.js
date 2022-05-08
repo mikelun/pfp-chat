@@ -108,6 +108,8 @@ export class MainScene extends Phaser.Scene {
         // add joystic if android
         addJoysticIfAndroid(this);
 
+        this.weapon = this.add.rectangle(0, 0, 10, 10, 0xffffff);
+
     }
 
     update(time, delta) {
@@ -139,6 +141,11 @@ export class MainScene extends Phaser.Scene {
             //     }
             // }
 
+            // log mouse point position
+            // const xPoint = this.input.activePointer.x;
+            // const yPoint = this.input.activePointer.y;
+            // // move this.weapon in circle with radius 100
+            // this.weapon.x = self.player.x + Math.cos(time / 100) * 100;
         }
 
         // update other players positions with interpolation
@@ -231,6 +238,7 @@ function updateLocalStorage(self, time) {
             textureId: self.textureId,
             nft: self.nft,
             room: self.room,
+            playerName: self.playerName,
         };
         localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
         console.log(playerInfo.x, playerInfo.y);
