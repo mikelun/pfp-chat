@@ -45,7 +45,7 @@ export function addMap6(self) {
 
     addEntrances(self);
 
-    startMapTransition(self);
+    startMapTransition(self, [redLights, blueLights, warmLights, entrances]);
 }
 
 // add physics when player added to map
@@ -134,15 +134,15 @@ function addLightsToMap(self) {
     const warmLightColor = { r: 255, g: 160, b: 0 };
     warmLights.push(createLight(self, 961, 802, warmLightColor, 0.1, 150));
 
-    redLights.forEach(light => {
-        self.layer1.add(light);
-    });
-    blueLights.forEach(light => {
-        self.layer1.add(light);
-    });
-    warmLights.forEach(light => {
-        self.layer1.add(light);
-    });
+    // redLights.forEach(light => {
+    //     self.layer1.add(light);
+    // });
+    // blueLights.forEach(light => {
+    //     self.layer1.add(light);
+    // });
+    // warmLights.forEach(light => {
+    //     self.layer1.add(light);
+    // });
     
 }
 
@@ -156,7 +156,7 @@ function addEntrances(self) {
 function createBackgroundEntrance(self, x, y, width, height) {
     const entranceColor = 0x00cccc;
     const entrance = self.add.rectangle(x, y, width, height, entranceColor).setAlpha(0.5);
-    self.layer1.add(entrance);
+    //self.layer1.add(entrance);
     return entrance;
 }
 

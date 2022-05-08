@@ -13,6 +13,7 @@ var self;
 export function addPlayer(newSelf, playerInfo) {
     self = newSelf;
 
+    console.log(playerInfo);
     configureAddPlayer(self);
     // check if texture from internet
     var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
@@ -94,7 +95,7 @@ function configureAddPlayer(self) {
 
 function addUIForPlayer(self, playerInfo) {
     self.playerUI[self.socket.id] = {};
-    const textColor = randColor();
+    const textColor = "#ffff00";
     self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(0, 0 - 10, playerInfo.playerName.length * 6, 12, 8, 0x000000).setAlpha(0.5);
     self.playerUI[self.socket.id].playerText = self.add.text(0, -13, playerInfo.playerName, { fontSize: '50px', fontFamily: 'PixelFont', fill: textColor, align: 'center' }).setScale(0.3).setOrigin(0.5  );
     self.playerUI[self.socket.id].microphone = self.add.image(-8, -27, "microphone1-off").setScale(0.45);

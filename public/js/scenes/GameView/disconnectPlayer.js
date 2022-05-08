@@ -16,10 +16,11 @@ export function disconnectPlayer(self) {
     const playerInfo = {
         x: self.player.x,
         y: self.player.y,
-        textureId: self.player.textureId,
+        textureId: self.textureId,
         address: self.address,
         room: self.room,
         mapId: self.mapId,
+        playerName: self.playerName,
     }
     localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
 

@@ -16,13 +16,25 @@ export function clearMapWithTransition(self, clearMapFunction) {
     });
 }
 
-export function startMapTransition(self) {
+export function startMapTransition(self, arrayLights) {
+    arrayLights.forEach(lights => {
+        lights.forEach(light => {
+            if (light.alpha) {
+                light.alpha = 0;
+            }
+        });
+    });
     const slowTransition = self.add.rectangle(0, 0, 10000, 10000, 0x000000).setAlpha(1);
     // add timer while slow Transition alpha < 1
     self.layer2.add(slowTransition);
     const timer = self.time.addEvent({
         delay: 10,
         callback: () => {
+            arrayLights.forEach(lights => {
+                lights.forEach(light => {
+                    light.alpha += 0.03;
+                });
+            })
             slowTransition.alpha -= 0.03;
             if (slowTransition.alpha <= 0) {
                 slowTransition.destroy();

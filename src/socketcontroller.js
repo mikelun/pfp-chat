@@ -25,18 +25,27 @@ module.exports = (io) => {
             //         return;
             //     }
             // }
-            
+
 
             if (!address) {
                 address = socket.id;
             }
+
             var x = mapsStartPoints[maps[room]].x;
             var y = mapsStartPoints[maps[room]].y;
             var mapId = maps[room];
-            if (playerInfo && playerInfo.mapId) {
-                x = mapsStartPoints[playerInfo.mapId].x;
-                y = mapsStartPoints[playerInfo.mapId].y;
-                mapId = playerInfo.mapId;
+            var textureId = Math.floor(Math.random() * 33);
+            var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
+            if (playerInfo) {
+                if (playerInfo.mapId) {
+                    x = mapsStartPoints[playerInfo.mapId].x;
+                    y = mapsStartPoints[playerInfo.mapId].y;
+                    mapId = playerInfo.mapId;
+                }
+                
+                if (playerInfo.textureId) textureId = playerInfo.textureId;
+                
+                if (playerInfo.playerName) playerName = playerInfo.playerName;
             }
 
             const currentRoom = room + '$' + mapId;
@@ -48,8 +57,8 @@ module.exports = (io) => {
                 playerId: socket.id,
                 microphoneStatus: false,
                 deafen: false,
-                playerName: nicknames[Math.floor(Math.random() * nicknames.length)],
-                textureId: Math.floor(Math.random() * 33),
+                playerName: playerName,
+                textureId: textureId,
                 nft: null,
                 address: address,
                 room: currentRoom,
