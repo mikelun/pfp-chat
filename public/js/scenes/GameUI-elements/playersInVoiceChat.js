@@ -10,7 +10,7 @@ export function buildVoiceChatPanel(self) {
     self.voiceChatPanel = self.rexUI.add.scrollablePanel({
         x: -10,
         y: 420,
-        width: 250,
+        width: 210,
         height: 250,
         background: self.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_DARK),
         scrollMode: 0,
@@ -30,7 +30,7 @@ export function buildVoiceChatPanel(self) {
             background: self.rexUI.add.roundRectangle(0, 0, 20, 20, 10, COLOR_LIGHT),
             text: self.add.text(0, 0, 'VOICE CHAT', {fontSize : '25px', fill: "#ffffff", fontFamily: 'PixelFont'}),
             space:{
-                left: 80,
+                left: 60,
                 bottom: 3,
             }
         }),
@@ -93,7 +93,7 @@ export function updateVoiceChatPanel(self, players, playerName) {
     // add new items to sizer
     for (var i = 0; i < players.length; i++) {
         sizer.add(scene.rexUI.add.label({
-            width: 250, height: 60,
+            width: 210, height: 60,
             background: scene.rexUI.add.roundRectangle(0, 0, 250, 60, 10, COLOR_DARK).setStrokeStyle(2, COLOR_LIGHT),
             text: scene.add.text(0, 0, players[i].name, {
                 fontSize: '25px',
