@@ -46,9 +46,12 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('Mid-TownB', 'assets/tiles/cyber-punk/Mid-TownB.png');
         this.load.image('Mid-TownC', 'assets/tiles/cyber-punk/Mid-TownC.png');
         this.load.image('Mid-TownD', 'assets/tiles/cyber-punk/Mid-TownD.png');
+        this.load.image('Low-TownD', 'assets/tiles/cyber-punk/Low-TownD.png');
 
         // 7 map
         this.load.tilemapTiledJSON('7', 'assets/tiles/7.json');
+        // 8 map
+        this.load.tilemapTiledJSON('8', 'assets/tiles/8.json');
     }
 
     loadWeapons() {

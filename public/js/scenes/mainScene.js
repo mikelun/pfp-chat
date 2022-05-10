@@ -73,7 +73,7 @@ export class MainScene extends Phaser.Scene {
         if (this.room == 'buildship') {
             this.mapId = 2;
         } else if (this.room == 'coffeebar') {
-            this.mapId = 4;
+            this.mapId = 8;
         }
         else {
             this.mapId = 3;
