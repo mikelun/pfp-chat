@@ -57,7 +57,10 @@ export function addPlayer(newSelf, playerInfo) {
     addUIForPlayer(self, playerInfo);
 
 
-    getPlayerNFT(self.moralis);
+    if (self.firstEntrance) {
+        getPlayerNFT(self.moralis);
+        self.firstEntrance = false;
+    }
 
     getEnsDomain(self.moralis).then(domain => {
         updateEnsInPlayerList(domain);
