@@ -73,12 +73,14 @@ export class GameUi extends Phaser.Scene {
                 }
                 if (!this.getNFTPanelStatus()) {
                     //this.roomText.setAlpha(0);
+                    this.blockNFTs = false;
                     this.panelNFTs.getChildren().forEach(child => {
                         child.alpha = 1;
                     });
                     sceneEvents.emit('getNFTsFromPage', this.page);
                 } else {
                     //this.roomText.setAlpha(1);
+                    this.blockNFTs = true;
                     this.panelNFTs.getChildren().forEach(child => {
                         child.alpha = 0;
                     })
@@ -186,7 +188,9 @@ export class GameUi extends Phaser.Scene {
 
         // PAGINATION
         this.panelNFTs.add(this.add.image(570, 543, 'arrow').setScale(1.5).setInteractive()
-            .on('pointerdown', () => {
+            .on('pointerdown', () => { 
+                console.log('here');
+                if (this.blockNFTs) return;
                 if (!this.pageIsReady) return;
                 if (this.backgroundNFTs) {
                     this.backgroundNFTs.clear(true);
@@ -214,7 +218,6 @@ export class GameUi extends Phaser.Scene {
 
         this.panelNFTs.add(this.add.image(725, 543, 'arrow').setScale(1.5).setFlipX(true).setInteractive()
             .on('pointerdown', () => {
-                if (!this.pageIsReady) return;
 
                 if (this.backgroundNFTs) {
                     this.backgroundNFTs.clear(true);
@@ -283,7 +286,10 @@ export class GameUi extends Phaser.Scene {
             dom.style.height = "100px";
             //this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333);
             let nft = this.add.dom(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, dom).setInteractive()
-            let nftBackground = this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333).setInteractive().on('pointerdown', () => {
+            
+            let nftBackground = this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333)
+            .setInteractive().on('pointerdown', () => {
+                if (this.blockNFTs) return;
                 sceneEvents.emit('nftSelected', nfts[i]);
             });
             this.backgroundNFTs.add(nftBackground);
