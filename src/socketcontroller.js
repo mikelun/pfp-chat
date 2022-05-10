@@ -31,23 +31,27 @@ module.exports = (io) => {
                 address = socket.id;
             }
 
-            var x = mapsStartPoints[maps[room]].x;
-            var y = mapsStartPoints[maps[room]].y;
+            var x = mapsStartPoints[maps[room]][0].x;
+            var y = mapsStartPoints[maps[room]][0].y;
             var mapId = maps[room];
             var textureId = Math.floor(Math.random() * 33);
             var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
             if (playerInfo) {
                 if (playerInfo.mapId) {
-                    x = mapsStartPoints[playerInfo.mapId].x;
-                    y = mapsStartPoints[playerInfo.mapId].y;
+                    x = mapsStartPoints[playerInfo.mapId][0].x;
+                    y = mapsStartPoints[playerInfo.mapId][0].y;
                     mapId = playerInfo.mapId;
                 }
-                
-                if (playerInfo.textureId) textureId = playerInfo.textureId;
-                if (playerInfo.x && !playerInfo.mapChanged) {
+                if (playerInfo.mapChanged) {
+                    if ( mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged]) {
+                        x = mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged].x;
+                        y = mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged].y;
+                    }
+                } else if (playerInfo.x) {
                     x = playerInfo.x;
                     y = playerInfo.y;
                 }
+                if (playerInfo.textureId) textureId = playerInfo.textureId;
                 if (playerInfo.playerName) playerName = playerInfo.playerName;
             }
 
