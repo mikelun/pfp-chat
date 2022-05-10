@@ -30,7 +30,6 @@ export function initializeSocket(self, peers) {
         console.log('Connected to server');
         if (localStorage.getItem('playerInfo')) {
             const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-            console.log('TEXTURE ', playerInfo.textureId);
             self.socket.emit('addPlayer', self.address, self.room, playerInfo);
         } else {
             self.socket.emit('addPlayer', self.address, self.room);

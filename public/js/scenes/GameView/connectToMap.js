@@ -7,6 +7,7 @@ export function connectToOtherMap(self) {
 
     const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     playerInfo.mapId = self.newMap;
+    playerInfo.mapChanged = true;
     self.mapId = playerInfo.mapId;
     showMap(self, self.mapId);
     self.socket.emit('removeFromRoom');

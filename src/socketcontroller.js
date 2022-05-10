@@ -44,7 +44,10 @@ module.exports = (io) => {
                 }
                 
                 if (playerInfo.textureId) textureId = playerInfo.textureId;
-                
+                if (playerInfo.x && !playerInfo.mapChanged) {
+                    x = playerInfo.x;
+                    y = playerInfo.y;
+                }
                 if (playerInfo.playerName) playerName = playerInfo.playerName;
             }
 
