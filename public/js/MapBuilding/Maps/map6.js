@@ -148,6 +148,7 @@ function addLightsToMap(self) {
 
 function addEntrances(self) {
     entrances.push({ entrance: createBackgroundEntrance(self, 800, 480, 190, 60), mapId: 4 });
+    entrances.push({ entrance: createBackgroundEntrance(self, 1200, 930, 40, 60), mapId: 7 });
     entrances.forEach(entrance => {
         self.layer1.add(entrance.entrance);
     });

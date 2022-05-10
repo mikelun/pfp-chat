@@ -20,8 +20,8 @@ var entranceMapId;
 
 var effects = [];
 
-export function addMapID(self) {
-    map = self.make.tilemap({ key: 'ID' });
+export function addMap7(self) {
+    map = self.make.tilemap({ key: '7' });
     
     const tileset1 = map.addTilesetImage('Mid-TownA5', 'Mid-TownA5');
     const tileset2 = map.addTilesetImage('Mid-TownC', 'Mid-TownC');
@@ -36,6 +36,7 @@ export function addMapID(self) {
     self.invisibleWalls.setVisible(false);
 
 
+    self.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     addLightsToMap(self);
  
@@ -45,7 +46,7 @@ export function addMapID(self) {
 }
 
 // add physics when player added to map
-export function addPhysicsForMapID(self) {
+export function addPhysicsForMap7(self) {
     self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls, () => {
         if (!self.spaceKey) {
             self.spaceKey = true;
@@ -70,11 +71,11 @@ function addLightsToMap(self) {
 }
 
 function addEntrancesToMap(self) {
-    entrances.push({ entrance: self.add.rectangle(1403, 69, 60, 40, 0x00cccc), mapId: 6 });
+    entrances.push({ entrance: self.add.rectangle(1410, 73, 50, 40, 0x00cccc), mapId: 6 });
     self.layer1.add(entrances[0].entrance);
 }
 
-export function addUpdateForMap4(self, time, delta) {
+export function addUpdateForMap7(self, time, delta) {
 
     // animate entrances
     entrances.forEach(object => {
@@ -100,9 +101,6 @@ function clearMap(self) {
         entrance.entrance.destroy();
     }); 
 
-    blackoutRectangle.destroy();
-    
-    self.caffeinumText.destroy();
 
     lights = [];
     entrances = [];
