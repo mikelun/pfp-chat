@@ -56,8 +56,8 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
-        // clear local storage
-        localStorage.clear();
+        // clear playerInfo from local storage
+        localStorage.removeItem('playerInfo');
         // Initialize socket for client - server application
         initializeSocket(this, peers);
 
@@ -138,7 +138,7 @@ export class MainScene extends Phaser.Scene {
             // if player on scene
             updatePlayerScenePositon(this);
 
-    updateWeapon(this);
+            updateWeapon(this);
 
         }
 
