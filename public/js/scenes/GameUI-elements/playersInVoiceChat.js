@@ -93,7 +93,7 @@ export function updateVoiceChatPanel(self, players, playerName) {
     // add new items to sizer
     for (var i = 0; i < players.length; i++) {
         sizer.add(scene.rexUI.add.label({
-            width: 210, height: 60,
+            width: 210, height: 40,
             background: scene.rexUI.add.roundRectangle(0, 0, 250, 60, 10, COLOR_DARK).setStrokeStyle(2, COLOR_LIGHT),
             text: scene.add.text(0, 0, players[i].name, {
                 fontSize: '25px',
