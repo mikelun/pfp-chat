@@ -58,7 +58,7 @@ export class MainScene extends Phaser.Scene {
 
         // first entrance
         this.firstEntrance = true;  
-        
+
         // clear playerInfo from local storage
         localStorage.removeItem('playerInfo');
         // Initialize socket for client - server application

@@ -77,6 +77,10 @@ export function initializeMusicPlayerPanel(self) {
     musicContainer.y = 70;
 
     startPlayingMusic(self);
+
+    sceneEvents.on('setVisibleMusicPanel', (visible) => {
+        setVisibleMusicPanel(self, visible);
+    });
 }
 
 function getIconFromSpritesheet(self, x, y, id) {
@@ -142,10 +146,12 @@ function onPlayMusicPointerDown(object, self) {
     
 }
 
-export function toggleMusicPanel(self) {
-    if (self.musicPanel.visible) {
+export function setVisibleMusicPanel(self, visible) {
+    if (!visible) {
         self.musicPanel.visible = false;
+        pauseMusic(self);
     } else {
         self.musicPanel.visible = true;
+        resumeMusic(self);
     }
 }

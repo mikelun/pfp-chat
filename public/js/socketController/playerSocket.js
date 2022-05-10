@@ -26,7 +26,14 @@ export function initializePlayersSocket(anotherSelf, _peers) {
             }
         });
         // create snow effect 
-        createParticles(self);
+
+        if (self.mapId == 4) {
+            createParticles(self);
+            sceneEvents.emit('setVisibleMusicPanel', true);
+        } else {
+            sceneEvents.emit('setVisibleMusicPanel', false);
+        }
+
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
