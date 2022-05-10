@@ -12,29 +12,27 @@ var self;
 export function addChat(newSelf) {
     self = newSelf;
 
-    // const dom = document.createElement('INPUT');
-    // dom.setAttribute("type", "text");
-    // const editText = self.add.dom(200, 200, dom);
     addEditText();
 
     sizer = self.rexUI.add.sizer({
-        x: 1050, y: 270,
-        width: 400, height: 400,
+        x: 0, y: 50,
         orientation: 'y',
-    });
+        align: 'left',
+
+    }).setOrigin(0);
 }
 
 export function addMessage(message, sendToServer) {
-    if (sizer.children.length > 8) {
+    if (sizer.children.length > 7) {
         // destroy the first one
         sizer.children[0].destroy();
     }
     const child = addTextBox(self, message);
-    sizer.add(child).layout();
+    sizer.add(child, 0, 'left').layout();
 
     if (sendToServer) sendTextChatMessage(message);
-    // remove this child after 10 seconds
-    self.time.delayedCall(10000, function () {
+    // remove this child after 60 seconds
+    self.time.delayedCall(30000, function () {
         sizer.remove(child, true).layout();
     }, [], self);
 }

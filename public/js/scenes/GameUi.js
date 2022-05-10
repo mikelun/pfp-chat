@@ -3,6 +3,7 @@ import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 import { initializeMusicPlayerPanel, toggleMusicPanel } from './GameUI-elements/musicPanel';
+import { buildVoiceChatPanel, playersInVoiceChat, updateVoiceChatPanel } from './GameUI-elements/playersInVoiceChat';
 import { createTalkIcons } from './GameUI-elements/talkIcons';
 import { addTextBox } from './GameUI-elements/textBox';
 import { addChat } from './GameUI-elements/textChat';
@@ -18,6 +19,7 @@ export class GameUi extends Phaser.Scene {
 
     create() {
 
+        buildVoiceChatPanel(this);
         // tip how to open text chat
         this.tipOpenChat = this.add.text(1000, 630, 'Press enter to open chat', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
 
@@ -46,7 +48,7 @@ export class GameUi extends Phaser.Scene {
         initializeMusicPlayerPanel(this);
 
         // ADD ROOM TEXT
-        this.roomText = this.add.text(width / 2 - 50, 50, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont', align: 'center' });
+        this.roomText = this.add.text(width / 2 - 50, 40, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont', align: 'center' });
 
         // add background for bottom buttons
         for (let i = 0; i < 4; i++) {
@@ -165,35 +167,7 @@ export class GameUi extends Phaser.Scene {
     }
 
     updateCurrentPlayers(players, playerName) {
-        this.playerName = playerName;
-
-        // CLEAR ALL PLAYER LIST
-        this.playerNFTIcons.forEach(nft => {
-            nft.destroy();
-        });
-        this.playerList.clear(true);
-
-
-        const self = this;
-        // ADD PLAYERS
-        for (let i = 0; i < players.length; i++) {
-            let player = players[i];
-            const playerNameText = player.name;
-            this.playerList.add(this.add.image(120, 60 + i * 65, "pixel-box").setScale(0.3, 0.3))
-            if (player.nft) {
-                const nft = player.nft;
-                const dom = document.createElement('img');
-                dom.src = nft;
-                dom.style.width = '40px';
-                dom.style.height = '40px';
-                const playerNFT = self.add.dom(60, 60 + i * 65, dom);
-                this.playerNFTIcons.push(playerNFT);
-                this.playerList.add(this.add.text(82, 60 + i * 65 - 15, playerNameText, { fontSize: '24px', fill: "#fffffff", fontFamily: 'PixelFont' }));
-                //console.log(player.name + " HAS NFT");
-            } else {
-                this.playerList.add(this.add.text(50, 60 + i * 65 - 15, playerNameText, { fontSize: '24px', fill: "#fffffff", fontFamily: 'PixelFont' }));
-            }
-        }
+        updateVoiceChatPanel(this, players, playerName);
     }
 
     // MAKE PANEL

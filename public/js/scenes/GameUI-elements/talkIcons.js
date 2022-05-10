@@ -2,7 +2,7 @@ import { sceneEvents } from "../../Events/EventsCenter";
 var tipText;
 
 export function createTalkIcons(self) {
-    self.rexUI.add.roundRectangle(0, 695, 230, 50, 10, 0x333366);
+    self.rexUI.add.roundRectangle(0, 695, 230, 50, 10, 0x191936);
     
     tipText = self.add.text(20, 630, '', { fill: "#ffffff", fontSize: "30px", fontFamily: "PixelFont", align: "center" });
 

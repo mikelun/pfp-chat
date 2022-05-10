@@ -56,6 +56,8 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+        // clear local storage
+        localStorage.clear();
         // Initialize socket for client - server application
         initializeSocket(this, peers);
 
@@ -110,7 +112,7 @@ export class MainScene extends Phaser.Scene {
         addJoysticIfAndroid(this);
 
 
-        initializeWeapon(this);
+        //initializeWeapon(this);
 
     }
 
@@ -136,7 +138,7 @@ export class MainScene extends Phaser.Scene {
             // if player on scene
             updatePlayerScenePositon(this);
 
-            updateWeapon(this);
+    updateWeapon(this);
 
         }
 
