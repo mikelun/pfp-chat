@@ -5,6 +5,7 @@ import { createParticles } from "../utils/particles";
 import { addPlayer } from "../scenes/GameView/addPlayer";
 import { loadTexture } from "../scenes/GameView/loadTexture";
 import { addOtherPlayers } from "../scenes/GameView/addOtherPlayers";
+import { addWeapon, removeWeapon } from "../scenes/Weapons/weapon";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -32,6 +33,12 @@ export function initializePlayersSocket(anotherSelf, _peers) {
             sceneEvents.emit('setVisibleMusicPanel', true);
         } else {
             sceneEvents.emit('setVisibleMusicPanel', false);
+        }
+
+        if (self.mapId == 8) {
+            addWeapon(self);
+        } else {
+            removeWeapon(self);
         }
 
         sceneEvents.emit('updateOnlinePlayers', playersList.length);

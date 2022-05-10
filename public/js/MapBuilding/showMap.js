@@ -33,5 +33,5 @@ export function addPhysicsForScene(self, id) {
 }
 
 export function addUpdateForMap(self, id, time, delta) {
-    mapsFunctions[id][2](self);
+    mapsFunctions[id][2](self, time, delta);
 }

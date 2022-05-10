@@ -1,10 +1,11 @@
 export function initializeWeapon(self) {
     // Initialize weapon
-    self.weapon = self.add.image(0, 0, 'p90');
+    self.weapon = self.add.image(0, 0, 'p90').setAlpha(0);
 
     //self.layer1.add(self.weapon);
     // add event on mouse down
     self.input.on('pointerdown', function (pointer) {
+        if (self.weapon.alpha !== 1) return; 
         if (!self.player) return;
 
         // log mouse point position
@@ -46,7 +47,7 @@ export function initializeWeapon(self) {
 }
 
 export function updateWeapon(self) {
-    if (self.weapon) {
+    if (self.weapon && self.weapon.alpha === 1) {
         // log mouse point position
         const x = self.input.activePointer.x + self.cameras.main.scrollX;
         const y = self.input.activePointer.y + self.cameras.main.scrollY;;
@@ -64,5 +65,17 @@ export function updateWeapon(self) {
         } else {
             self.weapon.flipY = false;
         }
+    }
+}
+
+export function removeWeapon(self) {
+    if (self.weapon.alpha === 1) {
+        self.weapon.alpha = 0;
+    }
+}
+
+export function addWeapon(self) {
+    if (self.weapon.alpha === 0) {
+        self.weapon.alpha = 1;
     }
 }

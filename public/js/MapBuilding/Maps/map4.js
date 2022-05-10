@@ -126,8 +126,8 @@ function addLightsToMap(self) {
     // lights for computers
     self.computerLight1 = createLight(self, 1059, 1123, blueLightColor);
     lights.push(self.computerLight1);
-    self.computeLight2 = createLight(self, 1059, 1203, purpleLightColor);
-    lights.push(self.computeLight2);
+    self.computerLight2 = createLight(self, 1059, 1203, purpleLightColor);
+    lights.push(self.computerLight2);
 
     self.blueLight = createLight(self, 400, 860, purpleLightColor, 0.1);
     lights.push(self.blueLight);
@@ -178,7 +178,7 @@ export function addUpdateForMap4(self, time, delta) {
         }
     });
     // // animate blue light
-    if (self.blueLight && self.purpleLight && self.computerLight1 && self.computeLight2) {
+    if (self.blueLight && self.purpleLight && self.computerLight1 && self.computerLight2) {
         self.blueLight.x = 802 - Math.cos(time / 1000) * 100;
         self.blueLight.y = 703 - Math.sin(time / 1000) * 100;
 
@@ -188,7 +188,7 @@ export function addUpdateForMap4(self, time, delta) {
 
         // add ficker to computer light
         self.computerLight1.intensity = 0.1 + Math.sin(time / 150) * 0.03;
-        self.computeLight2.intensity = 0.1 + Math.sin(time / 150) * 0.03;
+        self.computerLight2.intensity = 0.1 + Math.sin(time / 150) * 0.03;
     }
 }
 
