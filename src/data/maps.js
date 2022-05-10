@@ -1,7 +1,8 @@
+// INITIAL START POINTS OF PLANETS
 module.exports =  {
     "buildship": 2,
     "crypto-duckies": 3,
-    "coffeebar": 7
+    "coffeebar": 4
 }
 
 // MAP1 - 200,800 

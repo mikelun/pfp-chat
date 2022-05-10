@@ -36,6 +36,7 @@ module.exports = (io) => {
             var mapId = maps[room];
             var textureId = Math.floor(Math.random() * 33);
             var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
+
             if (playerInfo) {
                 if (playerInfo.mapId) {
                     x = mapsStartPoints[playerInfo.mapId][0].x;
