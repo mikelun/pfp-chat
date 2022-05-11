@@ -49,15 +49,24 @@ export function initializePlayersSocket(anotherSelf, _peers) {
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
-    self.socket.on('playerMoved', function (playerInfo) {
-        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+    // self.socket.on('playerMoved', function (playerInfo) {
+    //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
 
-            if (playerInfo.playerId === otherPlayer.playerId) {
-                otherPlayer.newX = playerInfo.x;
-                otherPlayer.newY = playerInfo.y;
-                //console.log(otherPlayer.newX, otherPlayer.x);
-                //otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-                //otherPlayer.update(otherPlayer.x, otherPlayer.y);
+    //         if (playerInfo.playerId === otherPlayer.playerId) {
+    //             otherPlayer.newX = playerInfo.x;
+    //             otherPlayer.newY = playerInfo.y;
+    //             //console.log(otherPlayer.newX, otherPlayer.x);
+    //             //otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+    //             //otherPlayer.update(otherPlayer.x, otherPlayer.y);
+    //         }
+    //     });
+    // });
+
+    self.socket.on('updatePlayers', function(data) {
+        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+            if (data[otherPlayer.playerId]) {
+                otherPlayer.newX = data[otherPlayer.playerId].x;
+                otherPlayer.newY = data[otherPlayer.playerId].y;
             }
         });
     });
@@ -240,6 +249,7 @@ export function updateNFTInPlayerList(nftImage, id, link) {
         if (player.id == self.socket.id) {
             player.nft = nftImage;
             const textureId = id ? link : null;
+            
             self.socket.emit("updatePlayerInfo", { nft: nftImage, textureId: textureId }, self.socket.id);
         }
     });

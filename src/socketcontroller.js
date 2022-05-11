@@ -1,7 +1,6 @@
 const { join, filter, values } = require("./data/nicknames");
-const nicknames = require("./data/nicknames");
-const maps = require("./data/maps");
-const mapsStartPoints = require("./data/mapsStartPoints");
+
+const playerController = require("./playerController");
 
 peers = {};
 
@@ -9,6 +8,7 @@ players = {};
 
 hashChats = [];
 
+rooms = {};
 
 
 module.exports = (io) => {
@@ -19,76 +19,8 @@ module.exports = (io) => {
 
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
-            // for (test in players) {
-            //     if (players[test].address == address) {
-            //         socket.emit('playerExists')
-            //         return;
-            //     }
-            // }
-
-
-            if (!address) {
-                address = socket.id;
-            }
-
-            var x = mapsStartPoints[maps[room]][0].x;
-            var y = mapsStartPoints[maps[room]][0].y;
-            var mapId = maps[room];
-            var textureId = Math.floor(Math.random() * 33);
-            var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
-
-            if (playerInfo) {
-                if (playerInfo.mapId) {
-                    x = mapsStartPoints[playerInfo.mapId][0].x;
-                    y = mapsStartPoints[playerInfo.mapId][0].y;
-                    mapId = playerInfo.mapId;
-                }
-                if (playerInfo.mapChanged) {
-                    if ( mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged]) {
-                        x = mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged].x;
-                        y = mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged].y;
-                    }
-                } else if (playerInfo.x) {
-                    x = playerInfo.x;
-                    y = playerInfo.y;
-                }
-                if (playerInfo.textureId) textureId = playerInfo.textureId;
-                if (playerInfo.playerName) playerName = playerInfo.playerName;
-            }
-
-            const currentRoom = room + '$' + mapId;
-
-            players[socket.id] = {
-                rotation: 0,
-                x: x,
-                y: y,
-                playerId: socket.id,
-                microphoneStatus: false,
-                deafen: false,
-                playerName: playerName,
-                textureId: textureId,
-                nft: null,
-                address: address,
-                room: currentRoom,
-                mapId: mapId
-            };
-
-            socket.join(currentRoom);
-
-            var sortPlayers = [];
-            for (var player in players) {
-                if (players[player].room == currentRoom) {
-                    sortPlayers.push(players[player]);
-                }
-            }
-
-            console.log('SORTED PLAYERS: ', sortPlayers);
-            socket.emit('currentPlayers', sortPlayers);
-
-            // update all other players of the new player
-            socket.to(currentRoom).emit('newPlayer', players[socket.id]);
+            playerController.addPlayer(io, socket, players, address, room, playerInfo, rooms);
         });
-
 
 
         socket.on('removeFromRoom', () => {
@@ -115,14 +47,6 @@ module.exports = (io) => {
         })
 
 
-
-        // // Asking all other clients to setup the peer connection receiver
-        // for(let id in peers) {
-        //     if(id === socket.id) continue
-        //     console.log('sending init receive to ' + socket.id)
-        //     peers[id].emit('initReceive', socket.id)
-        // }
-
         /**
          * relay a peerconnection signal to a specific socket
          */
@@ -139,11 +63,13 @@ module.exports = (io) => {
          */
         socket.on('disconnect', async function () {
             console.log('user disconnected: ', socket.id);
+
+            // remove from rooms
+            rooms[players[socket.id]] = rooms[players[socket.id]].filter(id => id !== socket.id);
             // emit a message to all players to remove this player
             io.to(players[socket.id].room).emit('disconnected', socket.id);
             delete players[socket.id];
             delete peers[socket.id];
-
         });
 
         /**
@@ -187,4 +113,23 @@ module.exports = (io) => {
             socket.to(players[socket.id].room).emit('textChatMessage', message);
         });
     });
+
+    // main timer
+
+    setInterval(() => {
+        // get for in object 
+        for (var room in rooms) {
+            const data = {};
+            rooms[room].forEach(socketId => {
+                console.log(socketId);
+                data[socketId] = {
+                    x: players[socketId].x,
+                    y: players[socketId].y,
+                };
+            });
+            // make room string value
+            const roomString = room.toString();
+            io.to(roomString).emit('updatePlayers', data);
+        }
+    }, 30);
 };
