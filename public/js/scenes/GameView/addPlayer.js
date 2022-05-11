@@ -12,17 +12,20 @@ var self;
 
 export function addPlayer(newSelf, playerInfo) {
     self = newSelf;
+    cleanPreviousInfoAboutPlayer(self);
 
-    console.log(playerInfo);
-    configureAddPlayer(self);
+    self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
+
     // check if texture from internet
-    var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
-
+    const textureFromInternet = isTextureFromInternet(playerInfo.textureId);
     if (textureFromInternet) {
-        self.player = self.add.player(playerInfo.x, playerInfo.y, playerInfo.textureId);
-        self.player.textureId = playerInfo.textureId;
+        var type = 'crypto-duckies';
+        if (playerInfo.textureId.startsWith('https://buildship')) {
+            type = 'moonbirds';
+        }
+        loadTexture(self, self.player, playerInfo.textureId, type);
     } else {
-        self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
+        self.player.setTexture(`characters${playerInfo.textureId}`);
     }
 
     if (textureFromInternet) {
@@ -30,12 +33,10 @@ export function addPlayer(newSelf, playerInfo) {
         if (playerInfo.textureId.startsWith('https://buildship')) {
             type = 'moonbirds';
         }
-        loadTexture(self, self.player, playerInfo.textureId, type);
+        loadTexture(self, self.player, playerInfo.textureId, type, true);
     } else if ((playerInfo.textureId + '').startsWith('nft')){
-        resizeObjectForNFT(self.player, playerInfo.textureId);
         self.player.setTexture(textureId); 
     } else {
-        resizeObjectForNFT(self.player, playerInfo.textureId);
         self.player.setTexture('characters' + playerInfo.textureId);
     }
 
@@ -43,6 +44,7 @@ export function addPlayer(newSelf, playerInfo) {
 
     // SETUP PLAYER
     self.textureId = playerInfo.textureId;
+    self.player.textureId = playerInfo.textureId;
     self.player.id = playerInfo.playerId;
     self.playerName = playerInfo.playerName;
 
@@ -82,7 +84,7 @@ export function addPlayer(newSelf, playerInfo) {
     
 }
 
-function configureAddPlayer(self) {
+function cleanPreviousInfoAboutPlayer(self) {
     if (!self.addedRoomText) {
         sceneEvents.emit('updateRoomText', self.room);
         self.addedRoomText = true;
