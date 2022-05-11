@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
-import { initializeMusicPlayerPanel, toggleMusicPanel } from './GameUI-elements/musicPanel';
+import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
 import { buildVoiceChatPanel, playersInVoiceChat, updateVoiceChatPanel } from './GameUI-elements/playersInVoiceChat';
 import { createTalkIcons } from './GameUI-elements/talkIcons';
 import { addTextBox } from './GameUI-elements/textBox';
