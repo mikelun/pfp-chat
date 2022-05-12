@@ -65,7 +65,7 @@ module.exports = (io) => {
             console.log('user disconnected: ', socket.id);
 
             // remove from rooms
-            rooms[players[socket.id]] = rooms[players[socket.id]].filter(id => id !== socket.id);
+            rooms[players[socket.id].room] = rooms[players[socket.id].room].filter(id => id !== socket.id);
             // emit a message to all players to remove this player
             io.to(players[socket.id].room).emit('disconnected', socket.id);
             delete players[socket.id];
@@ -121,7 +121,7 @@ module.exports = (io) => {
         for (var room in rooms) {
             const data = {};
             rooms[room].forEach(socketId => {
-                console.log(socketId);
+                if (!players[socketId]) return;
                 data[socketId] = {
                     x: players[socketId].x,
                     y: players[socketId].y,
