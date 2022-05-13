@@ -54,6 +54,14 @@ export class PreloadScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('8', 'assets/tiles/8.json');
     }
 
+
+    loadMoonsters() {
+        this.load.spritesheet('monster1', 'assets/monsters/monster1.png', {
+            frameWidth: 81.5, 
+            frameHeight: 69
+        });
+
+    }
     loadWeapons() {
         this.load.image('p90', 'assets/weapons/guns/p90.png');
 
@@ -70,6 +78,7 @@ export class PreloadScene extends Phaser.Scene {
         this.loadPlanets();
         this.loadMaps();
         this.loadWeapons();
+        this.loadMoonsters();
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
             frameWidth: 50,

@@ -1,7 +1,12 @@
-export function initializeWeapon(self) {
+export var bullets;
+export function initializeWeapon(self, weapon) {
     // Initialize weapon
-    self.weapon = self.add.image(0, 0, 'p90').setAlpha(0);
+    if (self.weapon) {
+        self.weapon.destroy();
+    }
+    self.weapon = self.add.image(0, 0, weapon.texture).setAlpha(0);
 
+    bullets = self.add.group();
     //self.layer1.add(self.weapon);
     // add event on mouse down
     self.input.on('pointerdown', function (pointer) {
@@ -23,6 +28,8 @@ export function initializeWeapon(self) {
         // if player touch left mouse
         if (self.input.activePointer.isDown) {
             const bullet = self.add.sprite(self.weapon.x, self.weapon.y, 'bullet-effect-1');
+            bullets.add(bullet);
+
             self.anims.create({
                 key: 'bullet',
                 frames: self.anims.generateFrameNumbers('bullet-effect-1', { start: 0 , end: 4 }),

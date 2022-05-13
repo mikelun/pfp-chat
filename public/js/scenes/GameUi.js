@@ -79,10 +79,8 @@ export class GameUi extends Phaser.Scene {
                     });
                     sceneEvents.emit('getNFTsFromPage', this.page);
                 } else {
-                    //this.roomText.setAlpha(1);
-                    this.blockNFTs = true;
                     this.panelNFTs.getChildren().forEach(child => {
-                        child.alpha = 0;
+                        child.setAlpha(0);
                     })
                     this.currentNFTs.forEach(nft => {
                         nft.destroy();
@@ -189,8 +187,6 @@ export class GameUi extends Phaser.Scene {
         // PAGINATION
         this.panelNFTs.add(this.add.image(570, 543, 'arrow').setScale(1.5).setInteractive()
             .on('pointerdown', () => { 
-                console.log('here');
-                if (this.blockNFTs) return;
                 if (!this.pageIsReady) return;
                 if (this.backgroundNFTs) {
                     this.backgroundNFTs.clear(true);
@@ -292,7 +288,7 @@ export class GameUi extends Phaser.Scene {
                 if (this.blockNFTs) return;
                 sceneEvents.emit('nftSelected', nfts[i]);
             });
-            this.backgroundNFTs.add(nftBackground);
+            this.currentNFTs.push(nftBackground);
             let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
             this.currentNFTs.push(nft);
             this.currentNFTs.push(nftName);

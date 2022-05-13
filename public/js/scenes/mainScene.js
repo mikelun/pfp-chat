@@ -73,7 +73,7 @@ export class MainScene extends Phaser.Scene {
         if (this.room == 'buildship') {
             this.mapId = 2;
         } else if (this.room == 'coffeebar') {
-            this.mapId = 4;
+            this.mapId = 8;
         }
         else {
             this.mapId = 3;
@@ -113,10 +113,6 @@ export class MainScene extends Phaser.Scene {
 
         // add joystic if android
         addJoysticIfAndroid(this);
-
-
-        initializeWeapon(this);
-
     }
 
     update(time, delta) {
@@ -135,13 +131,17 @@ export class MainScene extends Phaser.Scene {
 
             updatePeopleForTalk(this);
 
-            // update local storage every 1 second
+            // update local storage every 1 sec
             updateLocalStorage(this, time);
 
             // if player on scene
             updatePlayerScenePositon(this);
 
             updateWeapon(this);
+
+            if (this.monster) {
+                this.monster.update(this.player.x, this.player.y);
+            }
 
         }
 

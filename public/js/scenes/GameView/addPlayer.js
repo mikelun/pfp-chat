@@ -1,4 +1,5 @@
 import { Player } from "../../characters/player";
+import { Monsterd } from "../../characters/monster";
 import { sceneEvents } from "../../Events/EventsCenter";
 import { addPhysicsForScene, showMap } from "../../MapBuilding/showMap";
 import { getEnsDomain } from "../../web3/GetEnsDomain";
@@ -7,12 +8,16 @@ import { loadTexture } from "./loadTexture";
 import { isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
 import { resizeObjectForNFT } from "./nftsOffset";
 import { createImageNFT } from "./gameViewUtils";
+import { initializeWeapon } from "../Weapons/weapon";
 
 var self;
 
 export function addPlayer(newSelf, playerInfo) {
     self = newSelf;
     cleanPreviousInfoAboutPlayer(self);
+
+    // initialize weapon for player
+    initializeWeapon(self, playerInfo.weapon);
 
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
 

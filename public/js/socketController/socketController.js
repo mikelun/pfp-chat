@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { currentPlayerDisconnected } from '../socketController/playerSocket';
 import { initializeChatSocket } from './textChatSocket';
 import { disconnectPlayerBadInternet } from '../scenes/GameView/disconnectPlayer';
+import { initializeRPGSocket } from './mmorpgSocket';
 
 /**
  * Initialize socket and connect to server by socket.io
@@ -23,6 +24,9 @@ export function initializeSocket(self, peers) {
 
     // Initialize player socket
     initializePlayersSocket(self, peers);
+
+    // initialize mmorrpg socket
+    initializeRPGSocket(self);
 
     // Initialize text chat socket
     initializeChatSocket(self);

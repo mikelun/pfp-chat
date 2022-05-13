@@ -1,14 +1,23 @@
 const { join, filter, values } = require("./data/nicknames");
-
 const playerController = require("./playerController");
 
+const monstersInfo = require("./data/MMORPG/monsters");
+const mapTowers = require("./data/MMORPG/mapTowers");
+// peers for voice chat
 peers = {};
 
+// main players
 players = {};
 
+// for players who should have only one voice chat
 hashChats = [];
 
+// current rooms
 rooms = {};
+
+// monsters
+monstersList = {};
+
 
 
 module.exports = (io) => {
@@ -20,6 +29,10 @@ module.exports = (io) => {
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
             playerController.addPlayer(io, socket, players, address, room, playerInfo, rooms);
+            if (players[socket.id].room = 'coffeebar$8') {
+                socket.emit('currentMonsters', monstersList);
+            }
+            console.log('PLAYERS: ', players);
         });
 
 
@@ -65,7 +78,9 @@ module.exports = (io) => {
             console.log('user disconnected: ', socket.id);
 
             // remove from rooms
-            rooms[players[socket.id].room] = rooms[players[socket.id].room].filter(id => id !== socket.id);
+            if (rooms[players[socket.id].room]) {
+                rooms[players[socket.id].room] = rooms[players[socket.id].room].filter(id => id !== socket.id);
+            }
             // emit a message to all players to remove this player
             io.to(players[socket.id].room).emit('disconnected', socket.id);
             delete players[socket.id];
@@ -112,6 +127,18 @@ module.exports = (io) => {
         socket.on('textChatMessage', (message) => {
             socket.to(players[socket.id].room).emit('textChatMessage', message);
         });
+
+
+        // MMORPG 
+        socket.on('hitMonster', (monsterId) => {
+            const damage = players[socket.id].weapon.damage;
+            const monster = monstersList[monsterId];
+            if (!monster) return;
+            monster.hp -= damage;
+            if (monster.hp <= 0) {
+                delete monstersList[monsterId];
+            }
+        })
     });
 
     // main timer
@@ -131,5 +158,48 @@ module.exports = (io) => {
             const roomString = room.toString();
             io.to(roomString).emit('updatePlayers', data);
         }
+
+        Object.keys(monstersList).forEach(monsterId => {
+            const monster = monstersList[monsterId];
+            // go with hypotenuse of monster and finalX, finalY
+            const angle = Math.atan2(monster.finalY - monster.y, monster.finalX - monster.x);
+            // go until the monster is close to the final position
+            if (Math.hypot(monster.y - monster.finalY, monster.x - monster.finalX) > 0.5) {
+                monster.x += Math.cos(angle) * monster.speed;
+                monster.y += Math.sin(angle) * monster.speed;
+            } else {
+                // remove monster from list
+                delete monstersList[monsterId];
+            }
+        });
+        io.to('coffeebar$8').emit('updateMonsters', monstersList);
+
     }, 30);
+
+    // create monsters
+    setInterval(() => {
+        if (rooms["coffeebar$8"] && rooms["coffeebar$8"].length) {
+            // create monster
+            const monsterInfo = monstersInfo[Math.floor(Math.random() * monstersInfo.length)];
+            const monster = {
+                x: Math.random() * (800 - 100) + 100,
+                y : Math.random() * 1000 + 100,
+                ...monsterInfo,
+            }
+            
+            // make random id
+            monster.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            
+            // get random msonter position x and y
+            
+            monster.finalX = mapTowers[8].x;
+            monster.finalY = mapTowers[8].y;
+            
+            monster.room = "coffeebar$8";
+            
+            monstersList[monster.id] = monster;
+
+
+        }
+    }, 2000)
 };

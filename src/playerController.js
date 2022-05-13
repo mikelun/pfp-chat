@@ -1,6 +1,7 @@
 const maps = require("./data/maps");
 const mapsStartPoints = require("./data/mapsStartPoints");
 const nicknames = require("./data/nicknames");
+const guns = require('./data/MMORPG/guns');
 
 module.exports = {
     addPlayer: function (io, socket, players, address, room, playerInfo, rooms) {
@@ -82,7 +83,8 @@ function createPlayerData(socket, address, room, playerInfo) {
         nft: null,
         address: address,
         room: currentRoom,
-        mapId: mapId
+        mapId: mapId,
+        weapon: guns[0],
     }
 
     return player;
