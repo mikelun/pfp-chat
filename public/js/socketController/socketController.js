@@ -21,14 +21,9 @@ export function initializeSocket(self, peers, currentPlayers) {
 
     // Initialize text chat socket
     initializeChatSocket(self);
+
     self.socket.on('connect', () => {
-        console.log('Connected to server');
-        if (localStorage.getItem('playerInfo')) {
-            const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-            self.socket.emit('addPlayer', self.address, self.room, playerInfo);
-        } else {
-            self.socket.emit('addPlayer', self.address, self.room);
-        }
+        socket.emit('initializePlayer', self.address, self.room, false);
     })
 
     self.socket.on('playerExists', () => {

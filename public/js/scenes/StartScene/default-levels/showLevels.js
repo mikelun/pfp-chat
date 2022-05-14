@@ -50,7 +50,7 @@ export function goToPlanet(self) {
     // initialize socket and with info go to planet
     const socket = startSocket();
 
-    socket.emit('initializePlayer', address, self.room);
+    socket.emit('initializePlayer', address, self.room, true);
     socket.on('playerInitialized', (data) => {
         // find current player 
         var currentPlayer = null;
