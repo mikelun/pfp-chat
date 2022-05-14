@@ -6,6 +6,7 @@ import { addPlayer } from "../scenes/GameView/addPlayer";
 import { loadTexture } from "../scenes/GameView/loadTexture";
 import { addOtherPlayers } from "../scenes/GameView/addOtherPlayers";
 import { addWeapon, removeWeapon } from "../scenes/Weapons/weapon";
+import { updateLeaderboard } from "../MapBuilding/Maps/map8";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -144,6 +145,10 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     self.socket.on('removeFromTalk', (playerId) => {
         // remove peer from talk
         removePeer(playerId);
+    });
+
+    self.socket.on("updateLeaderboard", data => {
+        if (self.mapId == 8) updateLeaderboard(data);
     });
 
 }

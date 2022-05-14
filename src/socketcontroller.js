@@ -5,6 +5,9 @@ const monstersInfo = require("./data/MMORPG/monsters");
 const mapTowers = require("./data/MMORPG/mapTowers");
 const mapsStartPoints = require("./data/mapsStartPoints");
 
+
+const debug = true;
+
 // peers for voice chat
 peers = {};
 
@@ -201,6 +204,19 @@ module.exports = (io) => {
         socket.on('weaponShot', (data) => {
             socket.to(players[socket.id].room).emit('weaponShot', data);
         });
+
+        var gettingResult = false
+        setInterval(() => {
+            if (gettingResult) return;
+            gettingResult = true;
+            supabase.getPlayersKilledMonster().then(result => {
+                gettingResult = false;
+                if (!result || !result.data) return
+                // sort result by result.data.killed_monsters in descending order
+                result = result.data.sort((a, b) => b.killed_monsters - a.killed_monsters);
+                socket.emit('updateLeaderboard', result);
+            })
+        }, 5000)
     });
 
     // main timer
@@ -264,4 +280,5 @@ module.exports = (io) => {
 
         }
     }, 2000)
+
 };

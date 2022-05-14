@@ -22,12 +22,20 @@ module.exports = {
                 id: address,
             })
     },
+    
+    getPlayersKilledMonster: async function () {
+        return await supabase
+            .from('players')
+            .select(`id,
+            killed_monsters`)
+    },
 
     updatePlayerInfo: async function (player) {
         if (!player && !player.address) return;
 
         const address = player.address;
 
+        console.log("ADDRESS is ", address);
         const currentTime = Math.floor(Date.now() / 1000);
         
         // room - planet

@@ -5,7 +5,7 @@ export function startSocket() {
     const site = window.location.hostname;
     const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}`;
 
-    socket = io(connectLink, { transports: ['websocket'] });
+    const socket = io(connectLink, { transports: ['websocket'] });
 
     return socket;
 }

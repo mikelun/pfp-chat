@@ -21,6 +21,10 @@ var leaderboardGroup;
 
 var effects = [];
 
+var self;
+
+var sizer;
+
 export const addMap8 = addMap;
 export const addPhysicsForMap8 = addPhysicsForMap;
 export const addUpdateForMap8 = addUpdateForMap;
@@ -28,7 +32,7 @@ export const addUpdateForMap8 = addUpdateForMap;
 
 function addMap(self) {
     map = self.make.tilemap({ key: '8' });
-    
+
     const tileset1 = map.addTilesetImage('Low-TownA5', 'Low-TownA5');
     const tileset2 = map.addTilesetImage('Low-TownD', 'Low-TownD');
 
@@ -43,7 +47,7 @@ function addMap(self) {
 
 
     addLightsToMap(self);
- 
+
     addEntrancesToMap(self);
 
     startMapTransition(self, [lights, entrances, effects]);
@@ -61,9 +65,9 @@ function addPhysicsForMap(self) {
                 if (entranceMapId) {
                     self.newMap = entranceMapId;
                     self.input.keyboard.off('keydown-SPACE');
-                    
+
                     self.wallsCollider.destroy();
-                    
+
                     clearMapWithTransition(self, clearMap);
                 }
             });
@@ -96,22 +100,71 @@ function addUpdateForMap(self, time, delta) {
     });
 }
 
-function addLeaderboard(self) {
-    //const backgroundLeaderboard = self.add.rectangle(1000, 615, 200, 100, 0x000000);
-    //self.layer1.add(backgroundLeaderboard);
+function addLeaderboard(newSelf) {
+    self = newSelf;
+    sizer = self.rexUI.add.sizer({
+        x: 1000, y: 600,
+        backround: self.rexUI.add.roundRectangle(0, 0, 200, 100, 20, 0x0033333),
+        orientation: 'y',
+        align: 'left',
+        space: {
+        }
+    });
+
+    // add before self.player
+    self.layer1.add(sizer);
+}
+
+export function updateLeaderboard(data) {
+    sizer.removeAll(true);
+    // add new items to sizer
+    const addLabel = function (text) {
+        const label = self.rexUI.add.label({
+            align: 'center',
+            width: 150, height: 10,
+            background: self.rexUI.add.roundRectangle(0, 0, 150, 10, 10, 0x333333).setStrokeStyle(2, 0xfffff),
+            text: self.add.text(0, 0, text, {
+                fontSize: '16px',
+                fontFamily: 'PixelFont',
+                fill: "#ffffff",
+                align: 'center'
+
+            }),
+
+            space: {
+                bottom: 5,
+            },
+            // icon: scene.rexUI.add.roundRectangle(0, 0, 20, 20, 14, COLOR_PRIMARY),
+        });
+        sizer.add(label);
+        self.layer2.add(label);
+        sizer.layout();
+    }
+
+    addLabel("Leaderboard");
+    for (let i = 0; i < Math.min(data.length, 5); i++) {
+        var name = data[i].id;
+        if (name.length > 10) {
+            name = name.substring(0, 10) + "...";
+        }
+        addLabel(name + ": " + data[i].killed_monsters);
+    }
+
 }
 
 function clearMap(self) {
     map.destroy();
-    
+
+    sizer.destroy();
+
     lights.forEach(light => {
         light.destroy();
     });
-    
+
     entrances.forEach(entrance => {
         entrance.entrance.destroy();
-    }); 
-    
+    });
+
 
     lights = [];
     entrances = [];

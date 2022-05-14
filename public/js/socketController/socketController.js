@@ -23,7 +23,7 @@ export function initializeSocket(self, peers, currentPlayers) {
     initializeChatSocket(self);
 
     self.socket.on('connect', () => {
-        socket.emit('initializePlayer', self.address, self.room, false);
+        self.socket.emit('initializePlayer', self.address, self.room, false);
     })
 
     self.socket.on('playerExists', () => {
