@@ -7,9 +7,10 @@ export function connectToOtherMap(self) {
     playerInfo.textureId = self.player.textureId;
     // remove, player and other players. add to server mapId, and make emit addPlayer with mapId
     disconnectPlayer(self);
-    if (playerInfo.mapId == 8) {
-        removeAllMonsters();
-    } 
+
+    // remove monsters if mapId is 8
+    self.previousMap = self.mapId;
+    
     playerInfo.mapId = self.newMap;
     playerInfo.mapChanged = self.mapId;
     self.mapId = playerInfo.mapId;

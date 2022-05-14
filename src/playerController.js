@@ -16,6 +16,7 @@ module.exports = {
 
         socket.join(players[socket.id].room);
 
+        // adding to rooms
         if (!rooms[players[socket.id].room]) {
             rooms[players[socket.id].room] = [socket.id];
         } else {
@@ -30,9 +31,9 @@ module.exports = {
                 sortPlayers.push(players[player]);
             }
         }
-
-        console.log('SORTED PLAYERS: ', sortPlayers);
         socket.emit('currentPlayers', sortPlayers);
+
+        console.log("ROOM",players[socket.id].room);
 
         // update all other players of the new player
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);

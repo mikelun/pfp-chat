@@ -9,6 +9,7 @@ import { isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, 
 import { resizeObjectForNFT } from "./nftsOffset";
 import { createImageNFT } from "./gameViewUtils";
 import { initializeWeapon } from "../Weapons/weapon";
+import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 
 var self;
 
@@ -100,6 +101,10 @@ function cleanPreviousInfoAboutPlayer(self) {
             self.errors.clear(true);
         }
         self.errors = null;
+    }
+
+    if (self.previousMap == 8) {
+        removeAllMonsters();
     }
 }
 

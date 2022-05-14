@@ -29,15 +29,21 @@ module.exports = (io) => {
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
             playerController.addPlayer(io, socket, players, address, room, playerInfo, rooms);
-            if (players[socket.id].room = 'coffeebar$8') {
-                socket.emit('currentMonsters', monstersList);
-            }
-            console.log('PLAYERS: ', players);
         });
 
 
         socket.on('removeFromRoom', () => {
+            // remove from ojbect rooms 
+            for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
+                if (rooms[players[socket.id].room][i] == socket.id) {
+                    console.log("removing from room", rooms[players[socket.id].room][i]);
+                    rooms[players[socket.id].room].splice(i, 1);
+                }
+            }
+
             socket.to(players[socket.id].room).emit('disconnected', socket.id);
+
+            socket.leave(players[socket.id].room);
         })
 
         // when a player moves, update the player data
@@ -75,12 +81,14 @@ module.exports = (io) => {
          * remove the disconnected peer connection from all other connected clients
          */
         socket.on('disconnect', async function () {
-            console.log('user disconnected: ', socket.id);
-
-            // remove from rooms
-            if (rooms[players[socket.id].room]) {
-                rooms[players[socket.id].room] = rooms[players[socket.id].room].filter(id => id !== socket.id);
+            // remove from ojbect rooms 
+            for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
+                if (rooms[players[socket.id].room][i] == socket.id) {
+                    console.log("removing from room", rooms[players[socket.id].room][i]);
+                    rooms[players[socket.id].room].splice(i, 1);
+                }
             }
+
             // emit a message to all players to remove this player
             io.to(players[socket.id].room).emit('disconnected', socket.id);
             delete players[socket.id];
@@ -178,25 +186,26 @@ module.exports = (io) => {
 
     // create monsters
     setInterval(() => {
+        console.log(rooms['coffeebar$8'], rooms['coffeebar$6']);
         if (rooms["coffeebar$8"] && rooms["coffeebar$8"].length) {
             // create monster
             const monsterInfo = monstersInfo[Math.floor(Math.random() * monstersInfo.length)];
             const monster = {
                 x: Math.random() * (800 - 100) + 100,
-                y : Math.random() * 1000 + 100,
+                y: Math.random() * 1000 + 100,
                 ...monsterInfo,
             }
-            
+
             // make random id
             monster.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            
+
             // get random msonter position x and y
-            
+
             monster.finalX = mapTowers[8].x;
             monster.finalY = mapTowers[8].y;
-            
+
             monster.room = "coffeebar$8";
-            
+
             monstersList[monster.id] = monster;
 
 

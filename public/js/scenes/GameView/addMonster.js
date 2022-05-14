@@ -11,14 +11,5 @@ export function addMonster(self, monstersInfo) {
         bullet.destroy();
     });
     
-
-    // // add animation for monster
-    // self.anims.create({
-    //     key: 'monster1-fly',
-    //     frames: self.anims.generateFrameNumbers('monster1', { start: 0, end: 4 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-    // monster.play('monster1-fly');
     return monster;
 }

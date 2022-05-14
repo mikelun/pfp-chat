@@ -12,7 +12,6 @@ export function initializeRPGSocket(newSelf) {
     });
 
     self.socket.on('updateMonsters', monsters => {
-        console.log("HERE");
         Object.keys(monsters).forEach(monsterId => {
             const monster = monsters[monsterId];
             if (!monstersList[monster.id]) {
@@ -46,4 +45,5 @@ export function removeAllMonsters() {
         monstersList[monsterId].destroyMonster(monstersList[monsterId]);
         delete monstersList[monsterId];
     });
+    monstersList = {};
 }
