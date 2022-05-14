@@ -12,12 +12,12 @@ var peers;
 var playersList = [];
 
 var self;
-export function initializePlayersSocket(anotherSelf, _peers) {
+export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     self = anotherSelf;
     peers = _peers;
     self.otherPlayers = self.physics.add.group();
 
-    self.socket.on('currentPlayers', function (players) {
+    function showCurrentPlayers(players) {
 
         Object.keys(players).forEach(function (id) {
             if (players[id].playerId === self.socket.id) {
@@ -42,25 +42,19 @@ export function initializePlayersSocket(anotherSelf, _peers) {
         }
 
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
-    });
+    }
 
+    showCurrentPlayers(currentPlayers);
+
+    self.socket.on('currentPlayers', function (players) {
+        showCurrentPlayers(players);
+    });
+    
     self.socket.on('newPlayer', function (playerInfo) {
         addOtherPlayers(self, playerInfo);
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
 
-    // self.socket.on('playerMoved', function (playerInfo) {
-    //     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-
-    //         if (playerInfo.playerId === otherPlayer.playerId) {
-    //             otherPlayer.newX = playerInfo.x;
-    //             otherPlayer.newY = playerInfo.y;
-    //             //console.log(otherPlayer.newX, otherPlayer.x);
-    //             //otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-    //             //otherPlayer.update(otherPlayer.x, otherPlayer.y);
-    //         }
-    //     });
-    // });
 
     self.socket.on('updatePlayers', function(data) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -81,6 +75,9 @@ export function initializePlayersSocket(anotherSelf, _peers) {
                 self.playerUI[otherPlayer.playerId].microphone.destroy();
                 self.playerUI[otherPlayer.playerId].background.destroy();
                 self.playerUI[otherPlayer.playerId].headphones.destroy();
+                if (self.playerUI[otherPlayer.playerId].weapon) {
+                    self.playerUI[otherPlayer.playerId].weapon.destroy();
+                }
                 otherPlayer.destroy();
             }
         });

@@ -4,7 +4,7 @@ const nicknames = require("./data/nicknames");
 const guns = require('./data/MMORPG/guns');
 
 module.exports = {
-    addPlayer: function (io, socket, players, address, room, playerInfo, rooms) {
+    addPlayer: function (io, socket, players, address, room, playerInfo, rooms, initializePlayer) {
         // for (test in players) {
         //     if (players[test].address == address) {
         //         socket.emit('playerExists')
@@ -31,7 +31,11 @@ module.exports = {
                 sortPlayers.push(players[player]);
             }
         }
-        socket.emit('currentPlayers', sortPlayers);
+        if (initializePlayer) {
+            socket.emit('playerInitialized', sortPlayers);
+        } else {
+             socket.emit('currentPlayers', sortPlayers);
+        }
 
         console.log("ROOM",players[socket.id].room);
 
@@ -84,6 +88,9 @@ function createPlayerData(socket, address, room, playerInfo) {
         room: currentRoom,
         mapId: mapId,
         weapon: guns[0],
+        killedMonsters: 0,
+        timeInGame: 0,
+        enterTime:  Math.floor(Date.now() / 1000)
     }
 
     return player;

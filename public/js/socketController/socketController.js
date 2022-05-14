@@ -9,21 +9,12 @@ import { initializeRPGSocket } from './mmorpgSocket';
 /**
  * Initialize socket and connect to server by socket.io
  */
-export function initializeSocket(self, peers) {
-
-    // log port
-    // log port
-    const port = process.env.PORT || 3000;
-    const site = window.location.hostname;
-    const connectLink = site == 'localhost' ? `ws://localhost:${port}` : `wss://${site}`;
-
-    self.socket = io(connectLink, { transports: ['websocket'] });
-
+export function initializeSocket(self, peers, currentPlayers) {
     // Initialize audio stream for socket
     initializeAudio(self.socket, peers, self);
 
     // Initialize player socket
-    initializePlayersSocket(self, peers);
+    initializePlayersSocket(self, peers, currentPlayers);
 
     // initialize mmorrpg socket
     initializeRPGSocket(self);

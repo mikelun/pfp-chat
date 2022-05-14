@@ -20,6 +20,7 @@ import { initializeWeapon, updateWeapon } from './Weapons/weapon';
  */
 let peers = {};
 
+let currentPlayers;
 
 export class MainScene extends Phaser.Scene {
 
@@ -28,6 +29,12 @@ export class MainScene extends Phaser.Scene {
     }
 
     init(data) {
+
+        // clear playerInfo from local storage
+        localStorage.removeItem('playerInfo');
+
+
+
         if (data.stream) {
             // local stream of user microphone
             this.localStream = data.stream;
@@ -45,6 +52,14 @@ export class MainScene extends Phaser.Scene {
 
         // ADD METAMASK ADDRESS
         this.address = data.address;
+
+        this.socket = data.socket;
+
+
+        this.mapId = data.mapId;
+
+        currentPlayers = data.currentPlayers;
+
     }
 
     preload() {
@@ -56,13 +71,23 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+        
         // first entrance
-        this.firstEntrance = true;  
+        this.firstEntrance = true;
 
-        // clear playerInfo from local storage
-        localStorage.removeItem('playerInfo');
-        // Initialize socket for client - server application
-        initializeSocket(this, peers);
+        // add UI for each player (microphone, name, etc)
+        this.playerUI = {};
+
+        this.layer1 = this.add.layer();
+        this.layer2 = this.add.layer();
+
+        // initialize with id
+        showMap(this, this.mapId);
+
+        initializeSocket(this, peers, currentPlayers);
+
+
+
 
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
@@ -70,18 +95,9 @@ export class MainScene extends Phaser.Scene {
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
 
-        if (this.room == 'buildship') {
-            this.mapId = 2;
-        } else if (this.room == 'coffeebar') {
-            this.mapId = 4;
-        }
-        else {
-            this.mapId = 3;
-        }
         //localStorage.removeItem('playerInfo');
         //localStorage.clear();
-        this.layer1 = this.add.layer();
-        this.layer2 = this.add.layer();
+
 
         // add main camera zoom
         this.cameras.main.setZoom(2);
@@ -94,8 +110,6 @@ export class MainScene extends Phaser.Scene {
         //var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
         //keyObj.on('down', function (event) { });
 
-        // add UI for each player (microphone, name, etc)
-        this.playerUI = {};
 
         // Create Animations for heroes
         for (let i = 0; i < 33; i++) {
@@ -108,8 +122,6 @@ export class MainScene extends Phaser.Scene {
         // Add Game Ui
         this.scene.run('game-ui');
 
-        // initialize with id
-        showMap(this, this.mapId);
 
         // add joystic if android
         addJoysticIfAndroid(this);

@@ -3,6 +3,7 @@ import { Moralis } from 'moralis';
 import { initializeRooms } from "../initializeRooms";
 import { getUserMoralis } from "./web3-utils";
 import { startMoralis } from "./web3-utils";
+import { startSocket } from "../../../socketController/startSocket";
 
 export function showCurrentLevel(self) {
     // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
@@ -38,14 +39,30 @@ export function showCurrentLevel(self) {
 export function goToPlanet(self) {
     var address = null;
     if (self.user) {
-        address = getUserMoralis(Moralis);
+        address = getUserMoralis(Moralis).get('ethAddress');
         localStorage.setItem('lastVisit', 'true');
     } else {
         localStorage.setItem('lastVisit', 'false');
     }
-    // go to mainscene
-    console.log("HERE");
-    self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room });
+
+    self.label = self.add.text(530, 320, 'LOADING...', { fill: "#ffb900", fontSize: "70px", fontFamily: "PixelFont", align : "left" });
+
+    // initialize socket and with info go to planet
+    const socket = startSocket();
+
+    socket.emit('initializePlayer', address, self.room);
+    socket.on('playerInitialized', (data) => {
+        // find current player 
+        var currentPlayer = null;
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].playerId == socket.id) {
+                currentPlayer = data[i];
+            }
+        }
+        if (!currentPlayer) return;
+
+        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: data, mapId: currentPlayer.mapId });
+    });
 }
 
 export function playerWasAtPlanet(self) {

@@ -26,10 +26,24 @@ module.exports = (io) => {
 
         peers[socket.id] = socket
 
+        socket.on('initializePlayer', (address, room) => {
+            supabase.getPlayerData(address).then(result => {
+                const data = result.data;
+                if (data && !data.length) {
+                    supabase.createPlayer(address).then(result => {
+                        // initialize player with result.data
+                        playerController.addPlayer(io, socket, players, address, room, {}, rooms, true);
+                    })
+                } else {
+                    playerController.addPlayer(io, socket, players, address, room, {}, rooms, true);
+                }
+            })
+        })
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
+            console.log(address);
             playerController.addPlayer(io, socket, players, address, room, playerInfo, rooms);
-            supabase.getPlayerData(players[socket.id].address);
+            supabase.getPlayerData(players[socket.id]);
         });
 
 
@@ -41,6 +55,9 @@ module.exports = (io) => {
                     rooms[players[socket.id].room].splice(i, 1);
                 }
             }
+
+            // updatePlayerInfo in database
+            supabase.updatePlayerInfo(players[socket.id]);
 
             socket.to(players[socket.id].room).emit('disconnected', socket.id);
 
@@ -83,12 +100,17 @@ module.exports = (io) => {
          */
         socket.on('disconnect', async function () {
             // remove from ojbect rooms 
+            if (!players[socket.id]) return;
+
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
                 if (rooms[players[socket.id].room][i] == socket.id) {
                     console.log("removing from room", rooms[players[socket.id].room][i]);
                     rooms[players[socket.id].room].splice(i, 1);
                 }
             }
+
+            // updatePlayerInfo in database
+            supabase.updatePlayerInfo(players[socket.id]);
 
             // emit a message to all players to remove this player
             io.to(players[socket.id].room).emit('disconnected', socket.id);
