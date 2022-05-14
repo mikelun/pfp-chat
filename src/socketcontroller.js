@@ -35,7 +35,7 @@ module.exports = (io) => {
                         playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, result.data);
                     })
                 } else {
-                    data = data[0];
+                    if (data) data = data[0];
                     if (data.planet != planet) data = null;
                     playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
                 }

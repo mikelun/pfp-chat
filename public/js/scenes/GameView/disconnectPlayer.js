@@ -13,18 +13,6 @@ export function disconnectPlayerBadInternet(self) {
 }
 
 export function disconnectPlayer(self) {
-    // IF PLAYER DISCONNECT SAVE PLAYER INFO
-    const playerInfo = {
-        x: self.player.x,
-        y: self.player.y,
-        textureId: self.textureId,
-        address: self.address,
-        room: self.room,
-        mapId: self.mapId,
-        playerName: self.playerName,
-    }
-    localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
-
     if (self.particles) {
         self.particles.destroy();
     }

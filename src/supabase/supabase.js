@@ -30,15 +30,10 @@ module.exports = {
 
         const currentTime = Math.floor(Date.now() / 1000);
         
-        console.log('TRYING TO UPDATE PLAYER INFO', address, " x ", player.x, " y ", player.y, " room ", player.room, " time ", currentTime);
-        
-        const playerData = await this.getPlayerData(address);
-
-        const timeInGame = playerData.data[0].time_in_game ? playerData.data[0].time_in_game : 0;
-
         // room - planet
         const planet = player.room.split('$')[0];
-
+        const timeInGame = player.timeInGame ? player.timeInGame : 0;
+        
         const { data, error } = await supabase
             .from('players')
             .update({

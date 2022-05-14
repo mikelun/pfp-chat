@@ -14,8 +14,6 @@ module.exports = {
             }
         }
 
-        console.log('MAIN PLAYER : ', players[socket.id]);
-
         var sortPlayers = [];
         for (var player in players) {
             if (players[player].room == players[socket.id].room) {
@@ -85,6 +83,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         y = data.y;
         mapId = data.map_id;
         killedMonsters = data.killed_monsters;
+        timeInGame = data.time_in_game;
     }
 
     const currentRoom = room + '$' + mapId;

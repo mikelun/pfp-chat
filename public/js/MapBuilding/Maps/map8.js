@@ -17,6 +17,7 @@ var lights = [];
 var entrances = [];
 var entranceMapId;
 
+var leaderboardGroup;
 
 var effects = [];
 
@@ -46,6 +47,8 @@ function addMap(self) {
     addEntrancesToMap(self);
 
     startMapTransition(self, [lights, entrances, effects]);
+
+    addLeaderboard(self);
 }
 
 // add physics when player added to map
@@ -91,6 +94,11 @@ function addUpdateForMap(self, time, delta) {
             }
         }
     });
+}
+
+function addLeaderboard(self) {
+    //const backgroundLeaderboard = self.add.rectangle(1000, 615, 200, 100, 0x000000);
+    //self.layer1.add(backgroundLeaderboard);
 }
 
 function clearMap(self) {
