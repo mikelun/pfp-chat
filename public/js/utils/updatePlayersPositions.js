@@ -32,5 +32,7 @@ export function updateOtherPlayersPositions(self, delta) {
         playerUI.microphone.y = otherPlayer.y - 40;
         playerUI.headphones.x = otherPlayer.x + 7;
         playerUI.headphones.y = otherPlayer.y - 38;
+        playerUI.weapon.x = otherPlayer.x;
+        playerUI.weapon.y = otherPlayer.y + 8;
     });
 }

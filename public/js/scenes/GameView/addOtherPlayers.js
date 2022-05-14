@@ -36,6 +36,9 @@ export function addOtherPlayers(self, playerInfo) {
     self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.5);
     self.playerUI[playerInfo.playerId].headphones = self.add.image(playerInfo.x + 50, playerInfo.y, "headphones").setScale(0.5);
 
+    // ADD WEAPON FOR PLAYER
+    self.playerUI[playerInfo.playerId].weapon = self.add.image(0, 0, playerInfo.weapon.texture).setOrigin(0, 0.5);
+
     self.otherPlayers.add(otherPlayer);
     self.layer1.add(otherPlayer);
 
@@ -43,4 +46,5 @@ export function addOtherPlayers(self, playerInfo) {
     //showPlayersToTalk()
 
     getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
+
 }

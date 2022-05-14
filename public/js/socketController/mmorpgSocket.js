@@ -39,6 +39,13 @@ export function initializeRPGSocket(newSelf) {
     self.socket.on('weaponShot', (data) => {
         //console.log('maing shot with data', data);
         createBullet(self, data.x, data.y, data.velocityX, data.velocityY, true);
+        const weapon =  self.playerUI[data.playerId].weapon;
+        weapon.rotation = data.angle;
+        if (data.angle < -Math.PI / 2 || data.angle > Math.PI / 2) {
+            weapon.flipY = true;
+        } else {
+            weapon.flipY = false;
+        }
     })
 
 }

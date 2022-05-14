@@ -40,15 +40,11 @@ export function initializeWeapon(self, weapon) {
                 y: bullet.y,
                 velocityX: bullet.body.velocity.x,
                 velocityY: bullet.body.velocity.y,
+                angle: angle,
+                playerId: self.player.id
             });
             self.cameras.main.shake(50, 0.001);
             // after 2 secs, destroy bullet
-            self.time.addEvent({
-                delay: 2000,
-                callback: () => {
-                    bullet.destroy();
-                }
-            });
         }
     });
 }
