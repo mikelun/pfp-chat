@@ -6,8 +6,6 @@ const mapTowers = require("./data/MMORPG/mapTowers");
 const mapsStartPoints = require("./data/mapsStartPoints");
 
 
-const debug = true;
-
 // peers for voice chat
 peers = {};
 
@@ -216,7 +214,7 @@ module.exports = (io) => {
                 result = result.data.sort((a, b) => b.killed_monsters - a.killed_monsters);
                 socket.emit('updateLeaderboard', result);
             })
-        }, 5000)
+        }, 10000)
     });
 
     // main timer
