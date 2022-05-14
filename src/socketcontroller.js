@@ -36,7 +36,7 @@ module.exports = (io) => {
                     })
                 } else {
                     if (data) data = data[0];
-                    if (data.planet != planet) data = null;
+                    if (data && data.planet != planet) data = null;
                     playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
                 }
             })
