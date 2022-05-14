@@ -29,13 +29,22 @@ module.exports = {
         const address = player.address;
 
         const currentTime = Math.floor(Date.now() / 1000);
+        
+        console.log('TRYING TO UPDATE PLAYER INFO', address, " x ", player.x, " y ", player.y, " room ", player.room, " time ", currentTime);
+        
+        const playerData = await this.getPlayerData(address);
 
-        console.log('time in game  ', currentTime - player.enterTime + player.timeInGame);
+        const timeInGame = playerData.data[0].time_in_game ? playerData.data[0].time_in_game : 0;
+
         const { data, error } = await supabase
             .from('players')
             .update({
-                time_in_game: player.timeInGame + (currentTime - player.enterTime),
+                time_in_game: timeInGame + (currentTime - player.enterTime),
+                x: Math.floor(player.x),
+                y: Math.floor(player.y),
+                map_id: player.mapId,
             })
             .eq('id', address)
+        console.log('UPDATED PLAYER INFO', data, " error ", error);
     },
 }

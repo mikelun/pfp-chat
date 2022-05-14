@@ -4,7 +4,7 @@ const nicknames = require("./data/nicknames");
 const guns = require('./data/MMORPG/guns');
 
 module.exports = {
-    addPlayer: function (io, socket, players, address, room, playerInfo, rooms, initializePlayer) {
+    addPlayer: function (io, socket, players, address, room, playerInfo, rooms, initializePlayer, data) {
         // for (test in players) {
         //     if (players[test].address == address) {
         //         socket.emit('playerExists')
@@ -12,7 +12,7 @@ module.exports = {
         //     }
         // }
 
-        players[socket.id] = createPlayerData(socket, address, room, playerInfo);
+        players[socket.id] = createPlayerData(socket, address, room, playerInfo, data);
 
         socket.join(players[socket.id].room);
 
@@ -34,10 +34,10 @@ module.exports = {
         if (initializePlayer) {
             socket.emit('playerInitialized', sortPlayers);
         } else {
-             socket.emit('currentPlayers', sortPlayers);
+            socket.emit('currentPlayers', sortPlayers);
         }
 
-        console.log("ROOM",players[socket.id].room);
+        console.log("ROOM", players[socket.id].room);
 
         // update all other players of the new player
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
@@ -45,15 +45,16 @@ module.exports = {
 }
 
 
-function createPlayerData(socket, address, room, playerInfo) {
+function createPlayerData(socket, address, room, playerInfo, data) {
 
-
+    // if player is guest or first entrance
     var x = mapsStartPoints[maps[room]][0].x;
     var y = mapsStartPoints[maps[room]][0].y;
     var mapId = maps[room];
     var textureId = Math.floor(Math.random() * 33);
     var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
-
+    var enterTime = Math.floor(Date.now() / 1000);
+    var timeInGame = 0;
     if (playerInfo) {
         if (playerInfo.mapId) {
             x = mapsStartPoints[playerInfo.mapId][0].x;
@@ -73,6 +74,13 @@ function createPlayerData(socket, address, room, playerInfo) {
         if (playerInfo.playerName) playerName = playerInfo.playerName;
     }
 
+
+    if (data) {
+        x = data.x;
+        y = data.y;
+        mapId = data.map_id;
+    }
+
     const currentRoom = room + '$' + mapId;
 
     const player = {
@@ -89,8 +97,8 @@ function createPlayerData(socket, address, room, playerInfo) {
         mapId: mapId,
         weapon: guns[0],
         killedMonsters: 0,
-        timeInGame: 0,
-        enterTime:  Math.floor(Date.now() / 1000)
+        timeInGame: timeInGame,
+        enterTime: enterTime
     }
 
     return player;

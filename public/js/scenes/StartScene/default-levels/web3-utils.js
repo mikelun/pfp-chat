@@ -35,8 +35,8 @@ export async function login(self, Moralis) {
 
 // START Moralis
 export function startMoralis(Moralis) {
-    const serverUrl = "https://aehuzyu1u1bu.useMoralis.com:2053/server";
-    const appId = "qjkycuFOWtZY1v6bpU8N2e4oxTqdvxNt6ajnsNIm";
+    const serverUrl = "https://6p6l4bkklzk5.usemoralis.com:2053/server";
+    const appId = "zOUPVnZgAXdqks5vHsMf77KWAhBUwzdFAl4NtKy9";
     Moralis.start({ serverUrl, appId });
 }
 
