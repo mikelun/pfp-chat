@@ -47,6 +47,7 @@ module.exports = {
                 y: Math.floor(player.y),
                 map_id: player.mapId,
                 planet: planet,
+                killed_monsters: player.killedMonsters,
             })
             .eq('id', address)
         console.log('UPDATED PLAYER INFO', data, " error ", error);

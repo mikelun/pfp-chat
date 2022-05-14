@@ -15,7 +15,6 @@ export function connectToOtherMap(self) {
     playerInfo.mapChanged = self.mapId;
     self.mapId = playerInfo.mapId;
     showMap(self, self.mapId);
-    self.socket.emit('removeFromRoom');
-    self.socket.emit('addPlayer', self.address, self.room, playerInfo);
+    self.socket.emit('connectToOtherRoom', self.mapId);
     
 }

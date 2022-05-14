@@ -4,18 +4,7 @@ const nicknames = require("./data/nicknames");
 const guns = require('./data/MMORPG/guns');
 
 module.exports = {
-    addPlayer: function (io, socket, players, address, room, playerInfo, rooms, initializePlayer, data) {
-        // for (test in players) {
-        //     if (players[test].address == address) {
-        //         socket.emit('playerExists')
-        //         return;
-        //     }
-        // }
-
-        players[socket.id] = createPlayerData(socket, address, room, playerInfo, data);
-
-        socket.join(players[socket.id].room);
-
+    connectToRoom: function (socket, players, rooms, initializePlayer, connectingToOtherRoom) {
         // adding to rooms
         if (!rooms[players[socket.id].room]) {
             rooms[players[socket.id].room] = [socket.id];
@@ -24,6 +13,8 @@ module.exports = {
                 rooms[players[socket.id].room].push(socket.id);
             }
         }
+
+        console.log('MAIN PLAYER : ', players[socket.id]);
 
         var sortPlayers = [];
         for (var player in players) {
@@ -37,10 +28,23 @@ module.exports = {
             socket.emit('currentPlayers', sortPlayers);
         }
 
-        console.log("ROOM", players[socket.id].room);
-
         // update all other players of the new player
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
+    },
+    addPlayer: function (io, socket, players, address, room, playerInfo, rooms, initializePlayer, data) {
+        // for (test in players) {
+        //     if (players[test].address == address) {
+        //         socket.emit('playerExists')
+        //         return;
+        //     }
+        // }
+
+        players[socket.id] = createPlayerData(socket, address, room, playerInfo, data);
+
+        socket.join(players[socket.id].room);
+
+
+        this.connectToRoom(socket, players, rooms, initializePlayer, false);
     }
 }
 
@@ -54,7 +58,8 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var textureId = Math.floor(Math.random() * 33);
     var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
     var enterTime = Math.floor(Date.now() / 1000);
-    var timeInGame = 0;
+    var killedMonsters = 0;
+
     if (playerInfo) {
         if (playerInfo.mapId) {
             x = mapsStartPoints[playerInfo.mapId][0].x;
@@ -79,6 +84,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         x = data.x;
         y = data.y;
         mapId = data.map_id;
+        killedMonsters = data.killed_monsters;
     }
 
     const currentRoom = room + '$' + mapId;
@@ -96,9 +102,9 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         room: currentRoom,
         mapId: mapId,
         weapon: guns[0],
-        killedMonsters: 0,
-        timeInGame: timeInGame,
-        enterTime: enterTime
+        killedMonsters: killedMonsters,
+        enterTime: enterTime,
+        planet: room
     }
 
     return player;

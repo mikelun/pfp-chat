@@ -3,6 +3,7 @@ const playerController = require("./playerController");
 const supabase = require('./supabase/supabase.js');
 const monstersInfo = require("./data/MMORPG/monsters");
 const mapTowers = require("./data/MMORPG/mapTowers");
+const mapsStartPoints = require("./data/mapsStartPoints");
 
 // peers for voice chat
 peers = {};
@@ -29,7 +30,6 @@ module.exports = (io) => {
         socket.on('initializePlayer', (address, planet) => {
             supabase.getPlayerData(address).then(result => {
                 var data = result.data;
-                console.log(JSON.stringify(data));
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
                         playerController.addPlayer(io, socket, players, address, planet, {}, rooms, true, result.data);
@@ -50,8 +50,8 @@ module.exports = (io) => {
         });
 
 
-        socket.on('removeFromRoom', () => {
-            // remove from ojbect rooms 
+        socket.on('connectToOtherRoom', (mapId) => {
+            // disconnect from previous room
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
                 if (rooms[players[socket.id].room][i] == socket.id) {
                     console.log("removing from room", rooms[players[socket.id].room][i]);
@@ -65,6 +65,30 @@ module.exports = (io) => {
             socket.to(players[socket.id].room).emit('disconnected', socket.id);
 
             socket.leave(players[socket.id].room);
+
+            // connect to other room
+            const previousMap = players[socket.id].mapId;
+            const room = players[socket.id].planet + '$' + mapId;
+            socket.join(room);
+            players[socket.id].room = room;
+            players[socket.id].mapId = mapId;
+
+            console.log("TRYING TO CONNECT TO MAP " + mapId + " FROM " + previousMap);
+            
+            var x = mapsStartPoints[mapId][0].x;
+            var y = mapsStartPoints[mapId][0].y;
+            
+            if (mapsStartPoints[mapId][previousMap]) {
+                x = mapsStartPoints[mapId][previousMap].x;
+                y = mapsStartPoints[mapId][previousMap].y;
+            }
+
+            players[socket.id].x = x;
+            players[socket.id].y = y;
+            
+            playerController.connectToRoom(socket, players, rooms, false);
+
+            
         })
 
         // when a player moves, update the player data
@@ -171,6 +195,7 @@ module.exports = (io) => {
             monster.hp -= damage;
             if (monster.hp <= 0) {
                 delete monstersList[monsterId];
+                players[socket.id].killedMonsters++;
             }
         });
 

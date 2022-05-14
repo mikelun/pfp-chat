@@ -49,7 +49,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     self.socket.on('currentPlayers', function (players) {
         showCurrentPlayers(players);
     });
-    
+
     self.socket.on('newPlayer', function (playerInfo) {
         addOtherPlayers(self, playerInfo);
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
