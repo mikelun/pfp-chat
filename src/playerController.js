@@ -42,9 +42,7 @@ module.exports = {
 
 
 function createPlayerData(socket, address, room, playerInfo) {
-    if (!address) {
-        address = socket.id;
-    }
+
 
     var x = mapsStartPoints[maps[room]][0].x;
     var y = mapsStartPoints[maps[room]][0].y;

@@ -1,8 +1,9 @@
 const { join, filter, values } = require("./data/nicknames");
 const playerController = require("./playerController");
-
+const supabase = require('./supabase/supabase.js');
 const monstersInfo = require("./data/MMORPG/monsters");
 const mapTowers = require("./data/MMORPG/mapTowers");
+
 // peers for voice chat
 peers = {};
 
@@ -19,7 +20,6 @@ rooms = {};
 monstersList = {};
 
 
-
 module.exports = (io) => {
     io.on('connect', (socket) => {
         // Initiate the connection process as soon as the client connects
@@ -29,6 +29,7 @@ module.exports = (io) => {
         // create new player and add him to players
         socket.on('addPlayer', (address, room, playerInfo) => {
             playerController.addPlayer(io, socket, players, address, room, playerInfo, rooms);
+            supabase.getPlayerData(players[socket.id].address);
         });
 
 
@@ -190,7 +191,6 @@ module.exports = (io) => {
 
     // create monsters
     setInterval(() => {
-        console.log(rooms['coffeebar$8'], rooms['coffeebar$6']);
         if (rooms["coffeebar$8"] && rooms["coffeebar$8"].length) {
             // create monster
             const monsterInfo = monstersInfo[Math.floor(Math.random() * monstersInfo.length)];
