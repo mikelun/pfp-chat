@@ -36,6 +36,9 @@ module.exports = {
 
         const timeInGame = playerData.data[0].time_in_game ? playerData.data[0].time_in_game : 0;
 
+        // room - planet
+        const room = player.room.split('$')[0];
+
         const { data, error } = await supabase
             .from('players')
             .update({
@@ -43,6 +46,7 @@ module.exports = {
                 x: Math.floor(player.x),
                 y: Math.floor(player.y),
                 map_id: player.mapId,
+                room: room,
             })
             .eq('id', address)
         console.log('UPDATED PLAYER INFO', data, " error ", error);

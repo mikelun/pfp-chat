@@ -28,14 +28,17 @@ module.exports = (io) => {
 
         socket.on('initializePlayer', (address, room) => {
             supabase.getPlayerData(address).then(result => {
-                const data = result.data;
+                var data = result.data;
                 console.log(JSON.stringify(data));
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
-                        playerController.addPlayer(io, socket, players, address, room, {}, rooms, true, result.data[0].id);
+                        playerController.addPlayer(io, socket, players, address, room, {}, rooms, true, result.data);
                     })
                 } else {
-                    playerController.addPlayer(io, socket, players, address, room, {}, rooms, true, data[0]);
+                    data = data[0];
+                    if (data.room != room) data = null;
+
+                    playerController.addPlayer(io, socket, players, address, room, {}, rooms, true, data);
                 }
             })
         })
