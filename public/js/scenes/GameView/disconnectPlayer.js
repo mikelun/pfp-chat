@@ -43,7 +43,9 @@ export function disconnectPlayer(self) {
         self.playerUI[otherPlayer.playerId].microphone.destroy();
         self.playerUI[otherPlayer.playerId].background.destroy();
         self.playerUI[otherPlayer.playerId].headphones.destroy();
-        self.playerUI[otherPlayer.playerId].weapon.destroy();
+        if (self.playerUI[otherPlayer.playerId].weapon) {
+            self.playerUI[otherPlayer.playerId].weapon.destroy();
+        }
         otherPlayer.destroy();
     });
     self.talkRectangle.destroy();
