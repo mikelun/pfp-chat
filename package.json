@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@ensdomains/ensjs": "^2.1.0",
+        "@supabase/supabase-js": "^1.35.3",
         "amplitude-js": "^8.18.1",
         "bulma": "^0.9.3",
         "cors": "^2.8.5",
