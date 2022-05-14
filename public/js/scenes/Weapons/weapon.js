@@ -1,4 +1,5 @@
 export var bullets;
+
 export function initializeWeapon(self, weapon) {
     // Initialize weapon
     if (self.weapon) {
@@ -6,9 +7,11 @@ export function initializeWeapon(self, weapon) {
     }
     self.weapon = self.add.image(0, 0, weapon.texture).setAlpha(0);
 
+    if (bullets) return;
     bullets = self.add.group();
     //self.layer1.add(self.weapon);
     // add event on mouse down
+    
     self.input.on('pointerdown', function (pointer) {
         if (self.weapon.alpha !== 1) return; 
         if (!self.player) return;

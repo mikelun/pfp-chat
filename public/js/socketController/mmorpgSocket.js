@@ -1,4 +1,5 @@
 import { addMonster } from "../scenes/GameView/addMonster";
+import { bullets } from "../scenes/Weapons/weapon";
 
 var monstersList = {};
 
@@ -42,8 +43,13 @@ export function hitMonster(monsterId) {
 
 export function removeAllMonsters() {
     Object.keys(monstersList).forEach(monsterId => {
-        monstersList[monsterId].destroyMonster(monstersList[monsterId]);
+        monstersList[monsterId].destroyWithoutAnimation(monstersList[monsterId]);
         delete monstersList[monsterId];
     });
     monstersList = {};
+
+    // remove bullets
+    bullets.getChildren().forEach(bullet => {
+        bullet.setAlpha(0);
+    });
 }

@@ -33,6 +33,7 @@ Phaser.GameObjects.GameObjectFactory.register('monster', function (x, y, texture
 
     createAnimationsForMonster(this.scene, sprite);
     sprite.destroyMonster = destroyMonster;
+    sprite.destroyWithoutAnimation = destroyWithoutAnimation;
     return sprite;
 });
 
@@ -62,9 +63,6 @@ function addUIToMonster(scene, sprite) {
     sprite.hpBar = hpBar;
 }
 
-function updateHpMonster(sprite, hp) {
-    
-}
 
 function destroyMonster(sprite) {
     // remove collider 
@@ -78,4 +76,10 @@ function destroyMonster(sprite) {
         
         sprite.destroy();
     })
+}
+
+function destroyWithoutAnimation(sprite) {
+    sprite.hpBar.destroy();
+    sprite.hpBackground.destroy();
+    sprite.destroy();
 }
