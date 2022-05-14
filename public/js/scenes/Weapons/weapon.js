@@ -1,3 +1,6 @@
+import { weaponShot } from "../../socketController/mmorpgSocket";
+import { createBullet } from "./bullet";
+
 export var bullets;
 
 export function initializeWeapon(self, weapon) {
@@ -30,20 +33,14 @@ export function initializeWeapon(self, weapon) {
 
         // if player touch left mouse
         if (self.input.activePointer.isDown) {
-            const bullet = self.add.sprite(self.weapon.x, self.weapon.y, 'bullet-effect-1');
-            bullets.add(bullet);
-
-            self.anims.create({
-                key: 'bullet',
-                frames: self.anims.generateFrameNumbers('bullet-effect-1', { start: 0 , end: 4 }),
-                frameRate: 10,
-                repeat: -1,
+            const bullet = createBullet(self, self.weapon.x, self.weapon.y, Math.cos(angle) * 500, Math.sin(angle) * 500);
+            
+            weaponShot({
+                x: bullet.x,
+                y: bullet.y,
+                velocityX: bullet.body.velocity.x,
+                velocityY: bullet.body.velocity.y,
             });
-            bullet.play('bullet');
-            // add velocity from player to weapon
-            self.physics.add.existing(bullet);
-            bullet.body.velocity.x = Math.cos(angle) * 500;
-            bullet.body.velocity.y = Math.sin(angle) * 500;
             self.cameras.main.shake(50, 0.001);
             // after 2 secs, destroy bullet
             self.time.addEvent({

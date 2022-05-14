@@ -2,10 +2,10 @@ import Phaser from "phaser";
 const spriteSpeed = 1.5;
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, hp) {
-        super(scene, x, y, texture, hp);
-        this.maxHp = hp;
+    constructor(scene, x, y, texture, frame, hp) {
+        super(scene, x, y, texture, frame, hp);
         this.hp = hp;
+        this.maxHp = hp;
     }
     update(x, y, hp) {
         // make a monster running to player
@@ -20,8 +20,8 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     }
 }
 
-Phaser.GameObjects.GameObjectFactory.register('monster', function (x, y, texture, hp) {
-    var sprite = new Monster(this.scene, x, y, texture, hp).setScale(1);
+Phaser.GameObjects.GameObjectFactory.register('monster', function (x, y, texture, hp, frame) {
+    var sprite = new Monster(this.scene, x, y, texture, frame, hp).setScale(1);
     this.displayList.add(sprite);
     this.updateList.add(sprite);
     this.scene.physics.world.enableBody(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY);

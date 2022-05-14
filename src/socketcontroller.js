@@ -146,7 +146,11 @@ module.exports = (io) => {
             if (monster.hp <= 0) {
                 delete monstersList[monsterId];
             }
-        })
+        });
+
+        socket.on('weaponShot', (data) => {
+            socket.to(players[socket.id].room).emit('weaponShot', data);
+        });
     });
 
     // main timer

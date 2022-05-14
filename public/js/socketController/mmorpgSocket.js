@@ -1,4 +1,5 @@
 import { addMonster } from "../scenes/GameView/addMonster";
+import { createBullet } from "../scenes/Weapons/bullet";
 import { bullets } from "../scenes/Weapons/weapon";
 
 var monstersList = {};
@@ -35,11 +36,21 @@ export function initializeRPGSocket(newSelf) {
         });
     });
 
+    self.socket.on('weaponShot', (data) => {
+        //console.log('maing shot with data', data);
+        createBullet(self, data.x, data.y, data.velocityX, data.velocityY, true);
+    })
+
 }
 
 export function hitMonster(monsterId) {
     self.socket.emit('hitMonster', monsterId);
 }
+
+export function weaponShot(data) {
+    self.socket.emit('weaponShot', data);
+}
+
 
 export function removeAllMonsters() {
     Object.keys(monstersList).forEach(monsterId => {
