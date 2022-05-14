@@ -71,6 +71,8 @@ export class MainScene extends Phaser.Scene {
     }
     create() {
 
+        // Add Game Ui
+        this.scene.run('game-ui');
         
         // first entrance
         this.firstEntrance = true;
@@ -119,8 +121,7 @@ export class MainScene extends Phaser.Scene {
         createAnimationForNFTBackround(this.anims, 1);
 
 
-        // Add Game Ui
-        this.scene.run('game-ui');
+        
 
 
         // add joystic if android

@@ -26,26 +26,26 @@ module.exports = (io) => {
 
         peers[socket.id] = socket
 
-        socket.on('initializePlayer', (address, room) => {
+        socket.on('initializePlayer', (address, planet) => {
             supabase.getPlayerData(address).then(result => {
                 var data = result.data;
                 console.log(JSON.stringify(data));
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
-                        playerController.addPlayer(io, socket, players, address, room, {}, rooms, true, result.data);
+                        playerController.addPlayer(io, socket, players, address, planet, {}, rooms, true, result.data);
                     })
                 } else {
                     data = data[0];
-                    if (data.room != room) data = null;
+                    if (data.planet != planet) data = null;
 
-                    playerController.addPlayer(io, socket, players, address, room, {}, rooms, true, data);
+                    playerController.addPlayer(io, socket, players, address, planet, {}, rooms, true, data);
                 }
             })
         })
         // create new player and add him to players
-        socket.on('addPlayer', (address, room, playerInfo) => {
+        socket.on('addPlayer', (address, planet, playerInfo) => {
             console.log(address);
-            playerController.addPlayer(io, socket, players, address, room, playerInfo, rooms, false, null);
+            playerController.addPlayer(io, socket, players, address, planet, playerInfo, rooms, false, null);
             supabase.getPlayerData(players[socket.id]);
         });
 
