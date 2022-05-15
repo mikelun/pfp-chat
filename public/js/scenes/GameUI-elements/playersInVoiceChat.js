@@ -8,11 +8,11 @@ var sizer;
 export function buildVoiceChatPanel(self) {
 
     self.voiceChatPanel = self.rexUI.add.scrollablePanel({
-        x: -10,
-        y: 420,
-        width: 210,
+        x: -30,
+        y: 405,
+        width: 310,
         height: 250,
-        background: self.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_DARK),
+        background: self.add.image(0, 0, 'inventory-panel'),
         scrollMode: 0,
         panel: {
             child: createGrid(self),
@@ -27,49 +27,20 @@ export function buildVoiceChatPanel(self) {
         },
         header: self.rexUI.add.label({
             height: 30,
-            background: self.rexUI.add.roundRectangle(0, 0, 20, 20, 10, COLOR_LIGHT),
-            text: self.add.text(0, 0, 'VOICE CHAT', {fontSize : '25px', fill: "#ffffff", fontFamily: 'PixelFont'}),
+            text: self.add.text(0, 0, 'VOICE CHAT', {fontSize : '24px', fill: "#ffffff", fontFamily: 'PixelFont'}),
             space:{
-                left: 60,
-                bottom: 3,
+                left: 110,
+                bottom: 20,
+                top: 20
             }
         }),
         space: {
 
             panel: 10,
+            bottom: 20
         }
 
     }).setOrigin(0).layout()
-    //self.rexUI.add.roundRectangle(0, 380, 300, 200, 10, 0x323266).setOrigin(0);
-    return;
-
-    // CLEAR ALL PLAYER LIST
-    self.playerNFTIcons.forEach(nft => {
-        nft.destroy();
-    });
-    self.playerList.clear(true);
-
-    const voiceChatText = self.add.text(1070, 50, 'PLAYERS IN VOICE CHAT', { fontSize: '23px', fill: "#ffffff", fontFamily: 'PixelFont', align: 'center' });
-    self.playerList.add(voiceChatText);
-    // ADD PLAYERS
-    for (let i = 0; i < players.length; i++) {
-        let player = players[i];
-        const playerNameText = player.name;
-        self.playerList.add(self.add.image(1160, 120 + i * 65, "pixel-box").setScale(0.3, 0.3))
-        if (player.nft) {
-            const nft = player.nft;
-            const dom = document.createElement('img');
-            dom.src = nft;
-            dom.style.width = '40px';
-            dom.style.height = '40px';
-            const playerNFT = self.add.dom(1160 - 60, 120 + i * 65, dom);
-            self.playerNFTIcons.push(playerNFT);
-            self.playerList.add(self.add.text(1160 - 38, 120 + i * 65 - 15, playerNameText, { fontSize: '24px', fill: "#fffffff", fontFamily: 'PixelFont' }));
-            //console.log(player.name + " HAS NFT");
-        } else {
-            self.playerList.add(self.add.text(1160 - 70, 120 + i * 65 - 15, playerNameText, { fontSize: '24px', fill: "#fffffff", fontFamily: 'PixelFont' }));
-        }
-    }
 }
 
 var createGrid = function (scene) {
@@ -91,12 +62,11 @@ export function updateVoiceChatPanel(self, players, playerName) {
     // remove all items from sizer
     sizer.removeAll(true);
     // add new items to sizer
-    for (var i = 0; i < players.length; i++) {
+    for (var i = 0; i < 10; i++) {
         sizer.add(scene.rexUI.add.label({
             width: 210, height: 40,
-            background: scene.rexUI.add.roundRectangle(0, 0, 250, 60, 10, COLOR_DARK).setStrokeStyle(2, COLOR_LIGHT),
-            text: scene.add.text(0, 0, players[i].name, {
-                fontSize: '25px',
+            text: scene.add.text(0, 0, true ? "SUKASUKA" : players[0].name, {
+                fontSize: '24px',
                 fontFamily: 'PixelFont',
                 fill: "#ffffff"
 

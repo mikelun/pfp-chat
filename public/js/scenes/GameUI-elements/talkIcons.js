@@ -2,9 +2,9 @@ import { sceneEvents } from "../../Events/EventsCenter";
 var tipText;
 
 export function createTalkIcons(self) {
-    self.rexUI.add.roundRectangle(0, 695, 230, 50, 10, 0x191936);
     
-    tipText = self.add.text(20, 630, '', { fill: "#ffffff", fontSize: "30px", fontFamily: "PixelFont", align: "center" });
+    self.add.image(70, 680, 'long-button').setScale(1.8, 1.6).setAlpha(0.8);
+    tipText = self.add.text(20, 625, '', { fill: "#ffffff", fontSize: "30px", fontFamily: "PixelFont", align: "center" });
 
     addHeadphones(self);
     addMicrophone(self);
@@ -40,8 +40,8 @@ function getTextByTexture(object) {
 }
 
 function addHeadphones(self) {
-    const hooverHeadphones = self.rexUI.add.roundRectangle(85 - 2, 695, 50, 50, 10, 0x666699).setAlpha(0);
-    const headphones = self.add.image(85, 698, 'headphones').setScale(1.5);
+    const hooverHeadphones = self.rexUI.add.roundRectangle(90, 683 - 3, 45, 38, 10, 0x27324f).setAlpha(0);
+    const headphones = self.add.image(90, 683, 'headphones').setScale(1.3);
     headphones.setInteractive().on('pointerdown', () => {
         if (headphones.texture.key == 'headphones') {
             sceneEvents.emit('setDeafen', true);
@@ -63,8 +63,8 @@ function addHeadphones(self) {
 }
 
 function addMicrophone(self) {
-    const hooverMicrophone = self.rexUI.add.roundRectangle(30 - 2, 695, 50, 50, 10, 0x666699).setAlpha(0);
-    const microphone = self.add.image(30, 695, 'microphone1-off').setScale(1.5);
+    const hooverMicrophone = self.rexUI.add.roundRectangle(45, 683 - 3, 45, 38, 10, 0x27324f).setAlpha(0);
+    const microphone = self.add.image(45, 678, 'microphone1-off').setScale(1.2);
     microphone.setInteractive().on('pointerdown', () => {
         sceneEvents.emit('toggleMute');
     });
