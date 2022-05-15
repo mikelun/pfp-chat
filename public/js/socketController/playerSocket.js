@@ -58,6 +58,12 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
 
     self.socket.on('updatePlayers', function(data) {
+        if (self.mapId == 4) {
+            sceneEvents.emit('setVisibleMusicPanel', true);
+        } else {
+            sceneEvents.emit('setVisibleMusicPanel', false);
+        }
+        
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (data[otherPlayer.playerId]) {
                 otherPlayer.newX = data[otherPlayer.playerId].x;

@@ -81,6 +81,7 @@ export function initializeMusicPlayerPanel(self) {
     sceneEvents.on('setVisibleMusicPanel', (visible) => {
         setVisibleMusicPanel(self, visible);
     });
+
 }
 
 function getIconFromSpritesheet(self, x, y, id) {

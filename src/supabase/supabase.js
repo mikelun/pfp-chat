@@ -2,6 +2,8 @@ const createClient = require('@supabase/supabase-js').createClient;
 
 supabase = null;
 
+development = true;
+
 module.exports = {
     initializeSupabase: async function () {
         console.log("INITIALIZING SUPABASE");
@@ -10,22 +12,22 @@ module.exports = {
 
     getPlayerData: async function (address) {
         return await supabase
-            .from('players')
+            .from(development ? 'development_players' : 'players')
             .select('*')
             .eq('id', address)
     },
 
-    createPlayer : async function(address) {
+    createPlayer: async function (address) {
         return await supabase
-            .from('players')
+            .from(development ? 'development_players' : 'players')
             .insert({
                 id: address,
             })
     },
-    
+
     getPlayersKilledMonster: async function () {
         return await supabase
-            .from('players')
+            .from(development ? 'development_players' : 'players')
             .select(`id,
             killed_monsters`)
     },
@@ -37,13 +39,13 @@ module.exports = {
 
         console.log("ADDRESS is ", address);
         const currentTime = Math.floor(Date.now() / 1000);
-        
+
         // room - planet
         const planet = player.room.split('$')[0];
         const timeInGame = player.timeInGame ? player.timeInGame : 0;
-        
+
         const { data, error } = await supabase
-            .from('players')
+            .from(development ? 'development_players' : 'players')
             .update({
                 time_in_game: timeInGame + (currentTime - player.enterTime),
                 x: Math.floor(player.x),

@@ -18,6 +18,7 @@ export class GameUi extends Phaser.Scene {
     }
 
     create() {
+        initializeMusicPlayerPanel(this)
 
         buildVoiceChatPanel(this);
         // tip how to open text chat
@@ -45,7 +46,6 @@ export class GameUi extends Phaser.Scene {
         const width = this.game.config.width;
         const height = this.game.config.height;
 
-        initializeMusicPlayerPanel(this);
 
         // ADD ROOM TEXT
         this.roomText = this.add.text(width / 2 - 50, 40, '', { fontSize: '40px', fill: "#ffffff", fontFamily: 'PixelFont', align: 'center' });
@@ -146,9 +146,10 @@ export class GameUi extends Phaser.Scene {
 
     }
 
-    updateRoomText(room) {
+    updateRoomText(room, mapId) {
         this.roomText.x -= room.length * 4;
         this.roomText.setText(`Room:${room.toUpperCase()}`);
+        
     }
     getNFTPanelStatus() {
         return this.panelNFTs.getChildren()[0].alpha == 0 ? false : true;
