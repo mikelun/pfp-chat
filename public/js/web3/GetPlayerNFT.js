@@ -6,7 +6,10 @@ export async function getPlayerNFT(moralis) {
     const duckAddress = '0xA92e08909a0C3FB1cE52F84bDA8Db98439C857eD'
     const moonbirdGuy = "0x6A53198fb773Aa86447579020e6C2B55B35DC314";
     //const result = await moralis.Web3.getNFTs({ chain: 'eth', address: moonbirdGuy });
-    const {result} = await moralis.Web3API.account.getNFTs();
+    var {result} = await moralis.Web3API.account.getNFTs();
+    // get only supported NFTs
+    result = sortNFTs(result);
+
     var pageResults = [];
     var currentPage;
     sceneEvents.on('getNFTsFromPage', async (page) => {
@@ -75,4 +78,18 @@ function fixImageURL(url) {
     } else {
         return url;
     }
+}
+
+
+// SUPPORTED NFTs 
+const supportedNFTs = [
+    "Moonbirds At Home",
+    "CryptoDuckies"
+]
+
+
+// get only supproted NFTs
+function sortNFTs(result) {
+    const nfts = result.filter(r => supportedNFTs.includes(r.name));
+    return nfts;
 }
