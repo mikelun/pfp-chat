@@ -73,8 +73,23 @@ export class PreloadScene extends Phaser.Scene {
         });
     }
 
+    loadUI() {
+
+        this.load.image('hud', 'assets/game-ui/HUD/hud.png');
+        this.load.image('new-ui-button', 'assets/game-ui/new-ui/button.png');
+        this.load.image('discord-button', 'assets/game-ui/new-ui/discord-button.png');
+        this.load.image('inventory-button', 'assets/game-ui/new-ui/inventory-button.png');
+        this.load.image('friends-button', 'assets/game-ui/new-ui/friends-button.png');
+        this.load.image('shop-button', 'assets/game-ui/new-ui/shop-button.png');
+        this.load.image('inventory-panel', 'assets/game-ui/new-ui/inventory-panel.png');
+        this.load.image('chest-button', 'assets/game-ui/new-ui/chest-button.png');
+        this.load.image('clothes-button', 'assets/game-ui/new-ui/clothes-button.png');
+        this.load.image('close-button', 'assets/game-ui/new-ui/close-button.png');
+    }
+
     preload() {
 
+        this.loadUI();
         this.loadPlanets();
         this.loadMaps();
         this.loadWeapons();

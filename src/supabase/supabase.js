@@ -4,13 +4,17 @@ supabase = null;
 
 development = true;
 
+developingUI = true;
+
 module.exports = {
     initializeSupabase: async function () {
+        if (developingUI) return;
         console.log("INITIALIZING SUPABASE");
         supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
     },
 
     getPlayerData: async function (address) {
+        if (developingUI) return;
         return await supabase
             .from(development ? 'development_players' : 'players')
             .select('*')
@@ -18,6 +22,7 @@ module.exports = {
     },
 
     createPlayer: async function (address) {
+        if (developingUI) return;
         return await supabase
             .from(development ? 'development_players' : 'players')
             .insert({
@@ -26,6 +31,7 @@ module.exports = {
     },
 
     getPlayersKilledMonster: async function () {
+        if (developingUI) return;
         return await supabase
             .from(development ? 'development_players' : 'players')
             .select(`id,
@@ -33,6 +39,7 @@ module.exports = {
     },
 
     updatePlayerInfo: async function (player) {
+        if (developingUI) return;
         if (!player && !player.address) return;
 
         const address = player.address;
