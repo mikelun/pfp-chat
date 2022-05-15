@@ -155,7 +155,7 @@ function createCellsWithNFTs(self) {
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             if (playerNFTs[self.nftPage * 12 + i + j * 4]) {
-                dom = document.createElement('img');
+                const dom = document.createElement('img');
                 dom.src = playerNFTs[self.nftPage * 12 + i + j * 4].image;
                 dom.style.width = '40px';
                 dom.style.height = '40px';
