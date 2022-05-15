@@ -2,9 +2,9 @@ const createClient = require('@supabase/supabase-js').createClient;
 
 supabase = null;
 
-development = true;
+development = false;
 
-developingUI = true;
+developingUI = false;
 
 module.exports = {
     initializeSupabase: async function () {

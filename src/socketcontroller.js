@@ -29,8 +29,8 @@ module.exports = (io) => {
         peers[socket.id] = socket
 
         socket.on('initializePlayer', (address, planet, firstEntrance) => {
-            playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, null);
-            return;
+            // playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, null);
+            // return;
             supabase.getPlayerData(address).then(result => {
                 var data = result.data;
                 if (data && !data.length) {

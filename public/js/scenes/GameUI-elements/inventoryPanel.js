@@ -38,6 +38,7 @@ export function createInventoryPanel(newSelf) {
     makeButtonInteractive(rightButton, 'NEXT', 40, 0, true);
 
     leftButton.on('pointerdown', function () {
+        if (!playerNFTs) return;
         if (self.nftPage > 0) {
             self.nftPage--;
         }
@@ -46,6 +47,7 @@ export function createInventoryPanel(newSelf) {
     });
 
     rightButton.on('pointerdown', function () {
+        if (!playerNFTs) return;
         if (self.nftPage < Math.floor(playerNFTs.length / 12)) {
             self.nftPage++;
         }
@@ -206,7 +208,7 @@ function createCellInfo(self, nft) {
     }).layout().setAlpha(1);
 
     var nameText = nft.name.split('#')[0];
-    if (nameText > 15) {
+    if (nameText.length > 15) {
         nameText = nameText.substring(0, 15) + '...';
     }
     const name = self.add.text(backgroundInfo.x + 110, backgroundInfo.y + 160, nameText, { fontFamily: 'PixelFont', fontSize: '24px', color: '#ffffff' }).setOrigin(0.5, 0.5);
