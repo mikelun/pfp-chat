@@ -85,6 +85,12 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('chest-button', 'assets/game-ui/new-ui/chest-button.png');
         this.load.image('clothes-button', 'assets/game-ui/new-ui/clothes-button.png');
         this.load.image('close-button', 'assets/game-ui/new-ui/close-button.png');
+        this.load.image('cell-panel', 'assets/game-ui/new-ui/cell-panel.png');
+        this.load.image('cell-info', 'assets/game-ui/new-ui/cell-info.png');
+        this.load.image('long-button', 'assets/game-ui/new-ui/long-button.png');
+        this.load.image('long-button-yellow', 'assets/game-ui/new-ui/long-button-yellow.png');
+        this.load.image('button-left', 'assets/game-ui/new-ui/button-left.png');
+        this.load.image('button-right', 'assets/game-ui/new-ui/button-right.png');
     }
 
     preload() {

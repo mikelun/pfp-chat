@@ -17,8 +17,8 @@ export function createButtons(newSelf) {
 }
 
 function createButton1() {
-    self.discordButton = self.add.image(width / 3 + 0 * (width / 8) - 30, height * 0.90, 'friends-button').setScale(2).setAlpha(0.8);
-    makeButtonInteractive(self.discordButton, 'ACCOUNT', 0, 40);
+    self.accountButton = self.add.image(width / 3 + 0 * (width / 8) - 30, height * 0.90, 'friends-button').setScale(2).setAlpha(0.8);
+    makeButtonInteractive(self.accountButton, 'ACCOUNT', 0, 40);
 }
 
 function createButton2() {
@@ -36,19 +36,22 @@ function createButton2() {
         } else {
             self.inventoryPanelGroup.setVisible(false);
             self.inventoryButton.selected = false;
+            self.cellInfoGroup.setVisible(false);
         }
     });
 }
 
 function createButton3() {
-    self.discordButton = self.add.image(width / 3 + 2 * (width / 8) - 30, height * 0.90, 'shop-button').setScale(2).setAlpha(0.8);
-    makeButtonInteractive(self.discordButton,'SHOP', 0, 40);
+    self.shopButton = self.add.image(width / 3 + 2 * (width / 8) - 30, height * 0.90, 'shop-button').setScale(2).setAlpha(0.8);
+    makeButtonInteractive(self.shopButton,'SHOP', 0, 40);
 }
 
 function createButton4() {
     self.discordButton = self.add.image(width / 3 + 3 * (width / 8) - 30, height * 0.90, 'discord-button').setScale(2).setAlpha(0.8);
     makeButtonInteractive(self.discordButton, 'DISCORD', 0, 40);
-
+    self.discordButton.on('pointerdown', () => {
+        window.open('https://discord.gg/aU6QhyK8jZ');
+    });
 }
 
 export function makeButtonInteractive(object, text, offsetX, offsetY, originZero = false) {

@@ -15,7 +15,7 @@ export function addChat(newSelf) {
     addEditText();
 
     sizer = self.rexUI.add.sizer({
-        x: 0, y: 50,
+        x: 0, y: 110,
         orientation: 'y',
         align: 'left',
 

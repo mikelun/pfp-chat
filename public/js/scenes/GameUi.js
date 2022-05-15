@@ -119,17 +119,9 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('newPlayerNFT', this.updateCurrentPlayers, this);
 
-        sceneEvents.on('makeNFTsPanel', this.addInitialNFTPage, this);
-
-        sceneEvents.on('getNFTsFromPageResult', this.addNFTsForPage, this);
-
-        sceneEvents.on('updateRoomText', this.updateRoomText, this);
-
         sceneEvents.on('newMessage', this.addMessageToChat, this)
 
         sceneEvents.on('updateOnlinePlayers', this.updateOnlinePlayers, this);
-        // ADD PANEL FOR NFTS
-        this.makePanelForNFTs();
 
         // ADD TEXT CHAT
         addChat(this);
@@ -154,15 +146,6 @@ export class GameUi extends Phaser.Scene {
 
     }
 
-    updateRoomText(room, mapId) {
-        this.roomText.x -= room.length * 4;
-        this.roomText.setText(`Room:${room.toUpperCase()}`);
-        
-    }
-    getNFTPanelStatus() {
-        return this.panelNFTs.getChildren()[0].alpha == 0 ? false : true;
-    }
-
     handleMicrophoneStatus(status) {
         if (status) {
             this.microphoneIsWorking.alpha = 0;
@@ -179,128 +162,6 @@ export class GameUi extends Phaser.Scene {
         updateVoiceChatPanel(this, players, playerName);
     }
 
-    // MAKE PANEL
-    makePanelForNFTs() {
-        // PAGE FOR YOUR NFTs
-        this.page = 1;
-
-        // ADD PANEL UI
-        this.panelNFTs.add(this.add.image(675, 300, 'background-nfts').setScale(2.5,));
-        this.panelNFTs.add(this.add.text(580, 40, "YOUR NFTs", { fontSize: '35px', fill: '#ffffff', fontFamily: 'PixelFont' }));
-        this.panelNFTs.add(this.loadingText = this.add.text(570, 260, 'LOADING...', { fontSize: '50px', fill: '#ffffff', fontFamily: 'PixelFont' }));
-        this.pageText = this.add.text(635 - (0) * 7, 523, '0/0', { fontSize: '30px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.panelNFTs.add(this.pageText);
-
-        const self = this;
-
-        // PAGINATION
-        this.panelNFTs.add(this.add.image(570, 543, 'arrow').setScale(1.5).setInteractive()
-            .on('pointerdown', () => { 
-                if (!this.pageIsReady) return;
-                if (this.backgroundNFTs) {
-                    this.backgroundNFTs.clear(true);
-                }
-                if (this.page > 1) {
-                    this.page--;
-
-                    // UPDATE PAGE TEXT
-                    this.pageText.setText(this.page + '/' + this.lastPage);
-
-                    // SET LOADING TEXT
-                    self.loadingText.alpha = 1;
-
-                    this.addNFTsForPage(this.page);
-
-                    this.currentNFTs.forEach(nft => {
-                        nft.destroy();
-                    });
-                    this.currentNFTs = [];
-                    this.pageIsReady = false;
-                    sceneEvents.emit('getNFTsFromPage', this.page);
-
-                }
-            }))
-
-        this.panelNFTs.add(this.add.image(725, 543, 'arrow').setScale(1.5).setFlipX(true).setInteractive()
-            .on('pointerdown', () => {
-
-                if (this.backgroundNFTs) {
-                    this.backgroundNFTs.clear(true);
-                }
-                if (this.page < this.lastPage) {
-                    this.page++;
-
-                    // UPDATE PAGE TEXT
-                    let text = this.page + '/' + this.lastPage;
-                    this.pageText.setText(text);
-                    this.pageText.x = 630 - (text.length - 3) * 7;
-
-                    // SET LOADING TEXT
-                    self.loadingText.alpha = 1;
-
-                    this.addNFTsForPage(this.page);
-
-                    this.currentNFTs.forEach(nft => {
-                        nft.destroy();
-                    });
-                    this.currentNFTs = [];
-
-                    this.pageIsReady = false;
-                    sceneEvents.emit('getNFTsFromPage', this.page);
 
 
-                }
-            }))
-
-
-        // HIDE PANEL NFTs
-        this.panelNFTs.getChildren().forEach(child => {
-            child.setAlpha(0)
-        });
-    }
-
-    /**
-     * 
-     * @param {length of nft result} nftsLength 
-     */
-    addInitialNFTPage(nftsLength) {
-        // 12 nfts at page
-        const lastPage = Math.floor(nftsLength / 12) + ((nftsLength % 12) > 0 ? +1 : +0);
-        this.lastPage = lastPage;
-        let text = this.page + '/' + this.lastPage;
-        this.pageText.setText(text);
-        this.pageText.x = 630 - (text.length - 3) * 7;
-
-        // get nfts from page 1
-        sceneEvents.emit('getNFTsFromPage', 1);
-    }
-
-    /**
-     * 
-     * @param {nfts from current page(this.page)} nfts 
-     * @returns 
-     */
-    addNFTsForPage(nfts) {
-        if (!this.getNFTPanelStatus()) return;
-        this.pageIsReady = true;
-        this.loadingText.alpha = 0;
-        for (let i = 0; i < nfts.length; i++) {
-            const dom = document.createElement('img');
-            dom.src = nfts[i].image;
-            dom.style.width = "100px";
-            dom.style.height = "100px";
-            //this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333);
-            let nft = this.add.dom(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, dom).setInteractive()
-            
-            let nftBackground = this.add.rectangle(370 + (i % 4) * 200, 130 + (Math.floor(i / 4)) * 150, 100, 100, 0x333333)
-            .setInteractive().on('pointerdown', () => {
-                if (this.blockNFTs) return;
-                sceneEvents.emit('nftSelected', nfts[i]);
-            });
-            this.currentNFTs.push(nftBackground);
-            let nftName = this.add.text(320 + (i % 4) * 200, 190 + (Math.floor(i / 4)) * 150, nfts[i].name, { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
-            this.currentNFTs.push(nft);
-            this.currentNFTs.push(nftName);
-        }
-    }
 }
