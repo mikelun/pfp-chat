@@ -75,6 +75,7 @@ export function defaultLevel1(self, Moralis) {
 
 // get metamask
 export function defaultLevel1WithGuestEnter(self, Moralis) {
+    self.levelGroup = self.add.group();
     // TEXT
     var text = 'IF YOU WANT TO SHOW OFF YOUR NFT\nOR FIND YOUR NFT COMMUNITY PLANET\nPLEASE CONNECT METAMASK';
     self.label = self.add.text(330, 210, '', { fill: "#ffb900", fontSize: "35px", fontFamily: "PixelFont", align : "left" });

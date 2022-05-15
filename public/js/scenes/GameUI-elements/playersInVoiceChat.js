@@ -62,10 +62,10 @@ export function updateVoiceChatPanel(self, players, playerName) {
     // remove all items from sizer
     sizer.removeAll(true);
     // add new items to sizer
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < players.length; i++) {
         sizer.add(scene.rexUI.add.label({
             width: 210, height: 40,
-            text: scene.add.text(0, 0, true ? "SUKASUKA" : players[0].name, {
+            text: scene.add.text(0, 0, players[i].name, {
                 fontSize: '24px',
                 fontFamily: 'PixelFont',
                 fill: "#ffffff"

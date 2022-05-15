@@ -5,8 +5,8 @@ export async function getPlayerNFT(moralis) {
     const playerAddress2 = '0xffE06cb4807917bd79382981f23d16A70C102c3B';
     const duckAddress = '0xA92e08909a0C3FB1cE52F84bDA8Db98439C857eD'
     const moonbirdGuy = "0x6A53198fb773Aa86447579020e6C2B55B35DC314";
-    //var result = await moralis.Web3.getNFTs({ chain: 'eth', address: "0x037CCB73fd73F956901bcC4851040dB81b8769D2" });
-    var {result} = await moralis.Web3API.account.getNFTs();
+    var result = await moralis.Web3.getNFTs({ chain: 'eth', address: "0x037CCB73fd73F956901bcC4851040dB81b8769D2" });
+    //var {result} = await moralis.Web3API.account.getNFTs();
     // get only supported NFTs
     result = sortNFTs(result);
 
