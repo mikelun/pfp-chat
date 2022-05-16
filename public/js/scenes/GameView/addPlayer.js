@@ -11,10 +11,14 @@ import { createImageNFT } from "./gameViewUtils";
 import { initializeWeapon } from "../Weapons/weapon";
 import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { updatePlayerCoins } from "../GameUI-elements/hud";
+import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 
 var self;
 
 export function addPlayer(newSelf, playerInfo) {
+
+    playerInfo.textureId = 'artifact$goose';
+
     self = newSelf;
     cleanPreviousInfoAboutPlayer(self);
 
@@ -32,20 +36,11 @@ export function addPlayer(newSelf, playerInfo) {
             type = 'moonbirds';
         }
         loadTexture(self, self.player, playerInfo.textureId, type);
+    } else if ((playerInfo.textureId + '').startsWith('artifact$')){
+        configureArtifactCharacter(self, playerInfo.textureId, self.player);
+
     } else {
         self.player.setTexture(`characters${playerInfo.textureId}`);
-    }
-
-    if (textureFromInternet) {
-        var type = 'crypto-duckies';
-        if (playerInfo.textureId.startsWith('https://buildship')) {
-            type = 'moonbirds';
-        }
-        loadTexture(self, self.player, playerInfo.textureId, type, true);
-    } else if ((playerInfo.textureId + '').startsWith('nft')){
-        self.player.setTexture(textureId); 
-    } else {
-        self.player.setTexture('characters' + playerInfo.textureId);
     }
 
     

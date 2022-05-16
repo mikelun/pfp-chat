@@ -160,10 +160,6 @@ export class MainScene extends Phaser.Scene {
 
             updateWeapon(this);
 
-            if (this.monster) {
-                this.monster.update(this.player.x, this.player.y);
-            }
-
         }
 
         // update other players positions with interpolation

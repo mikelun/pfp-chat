@@ -1,4 +1,6 @@
 import Phaser from "phaser";
+import { artifactsCharacters } from "../Artifacts/artifacts";
+import { animateMovement } from "./animateMovement";
 const spriteSpeed = 1.5;
 
 export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
@@ -10,43 +12,25 @@ export class OtherPlayer extends Phaser.Physics.Arcade.Sprite {
         this.walkEffect = 0.025;
     }
     update(x, y) {
-        const textureFromInternet = (this.textureId + "").startsWith('https') ? true : false;
+        // get direction of player
+        var directionX, directionY;
+
         if (y < this.oldY) {
-            if (textureFromInternet) {
-                // DO SOMETHING
-            } else {
-                this.anims.play(`${this.textureId}-up`, true);
-            }
+            directionY = "up";
         } else if (y > this.oldY) {
-            if (textureFromInternet) {
-                // DO SOMETHING
-            } else {
-                this.anims.play(`${this.textureId}-down`, true);
-            }
+            directionY = "down";
         } else if (x < this.oldX) {
-            if (textureFromInternet) {
-                this.flipX = true;
-            } else {
-                this.anims.play(`${this.textureId}-left`, true);
-            }
+            directionX = "left";
         } else if (x > this.oldX) {
-            if (textureFromInternet) { 
-                this.flipX = false;
-            } else {
-                this.anims.play(`${this.textureId}-right`, true);
-            }
+            directionX = "right";
         }
-        if (textureFromInternet) {
-            if (this.oldX !== x || this.oldY !== y) {
-                this.rotation += this.walkEffect;
-                if (Math.abs(this.rotation) > 0.1) {
-                    this.walkEffect *= -1;
-                }
-            }
+        if (directionX || directionY) {
+            animateMovement(this, directionX, directionY, this.nftType);
         }
+        
         if (this.oldX === x && this.oldY === y) {
-            this.anims.stop();
             this.rotation = 0;
+            if (!artifactsCharacters[this.texture.key]) this.anims.stop();
         }
         this.oldX = x;
         this.oldY = y;

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { artifactsCharacters } from "../Artifacts/artifacts";
 import { animateMovement } from "./animateMovement";
 var spriteSpeed = 100;
 
@@ -8,19 +9,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkEffect = 0.05;
     }
 
-    update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, type, shift, playerShadow) {
+    update(keyUp, keyDown, keyLeft, keyRight, jUp, jDown, jLeft, jRight, shift) {
         // if player doesn't moving
         const playerMoved = keyUp.isDown || jUp.isDown || keyDown.isDown || jDown.isDown || keyLeft.isDown || jLeft.isDown || keyRight.isDown || jRight.isDown;
+        const type = this.texture.key;
+
         if (!playerMoved) {
-            if (this.anims) this.anims.stop();
-            this.setVelocity(0, 0)
+            this.setVelocity(0, 0);
             this.rotation = 0;
+            if (this.anims && !artifactsCharacters[type]) this.anims.stop();
             return;
         }
 
         let velY = 0;
 
-        let textureFromInternet = this.textureId ? true : false;
         if (shift.isDown) {
             spriteSpeed = 150;
         } else {
@@ -61,8 +63,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             if (keyRight.isDown || jRight.isDown) {
                 directionX = "right";
             }
-
-            animateMovement(this, directionX, directionY, type, this.nftType);
+            animateMovement(this, directionX, directionY, this.nftType);
         }
     }
 }

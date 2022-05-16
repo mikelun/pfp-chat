@@ -118,7 +118,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
                 self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
                 self.playerUI[playerInfo.playerId].headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
 
-                if (playerInfo.nft) {
+                if (playerInfo.nft && self.player.id == playerInfo.playerId) {
                     updateNFTImage(playerInfo.nft);
                 }
 

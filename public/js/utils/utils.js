@@ -69,9 +69,7 @@ export function updatePlayerPosition(self) {
             self.cursorKeys.down,
             self.cursorKeys.left,
             self.cursorKeys.right,
-            self.textureId,
             self.shift,
-            self.playerShadow
 
         );
     }
@@ -85,9 +83,7 @@ export function updatePlayerPosition(self) {
             false,
             false,
             false,
-            self.textureId,
             self.shift,
-            self.playerShadow
         );
     }
 }

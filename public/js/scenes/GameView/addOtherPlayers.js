@@ -5,6 +5,7 @@ import { getEnsDomain } from "../../web3/GetEnsDomain";
 import { getPlayerNFT } from "../../web3/GetPlayerNFT";
 import { loadTexture } from "./loadTexture";
 import { getInterectionForEns, isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
+import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 
 
 export function addOtherPlayers(self, playerInfo) {
@@ -19,6 +20,9 @@ export function addOtherPlayers(self, playerInfo) {
             type = 'moonbirds';
         }
         loadTexture(self, otherPlayer, playerInfo.textureId, type);
+    } else if ((playerInfo.textureId + '').startsWith('artifact$')){
+        configureArtifactCharacter(self, playerInfo.textureId, otherPlayer, true);
+
     } else {
         otherPlayer.setTexture(`characters${playerInfo.textureId}`);
     }

@@ -104,6 +104,10 @@ export class PreloadScene extends Phaser.Scene {
         });
     }
 
+    loadArtifacts() {
+        this.load.spritesheet('goose', 'assets/artifacts/goose.png', {frameWidth: 1200,frameHeight: 1200,})
+    }
+
     preload() {
 
         this.loadUI();
@@ -112,6 +116,7 @@ export class PreloadScene extends Phaser.Scene {
         this.loadWeapons();
         this.loadMonsters();
         this.loadCoins();
+        this.loadArtifacts();
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
             frameWidth: 50,
