@@ -56,10 +56,12 @@ export class PreloadScene extends Phaser.Scene {
 
 
     loadMonsters() {
-        this.load.spritesheet('monster1', 'assets/monsters/monster1.png', {
-            frameWidth: 81.5, 
-            frameHeight: 69
-        });
+        this.load.spritesheet('monster1', 'assets/monsters/monster1.png', {frameWidth: 81.5, frameHeight: 69});
+
+        this.load.spritesheet('monster2-walk', 'assets/monsters/monster2-walk.png', {frameWidth: 118,frameHeight: 136, });
+        this.load.spritesheet('monster2-die', 'assets/monsters/monster2-die.png', {frameWidth: 118,frameHeight: 136, });
+
+
 
     }
     loadWeapons() {
