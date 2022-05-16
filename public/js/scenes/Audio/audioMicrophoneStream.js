@@ -22,6 +22,7 @@ export function initializeAudioStream(self) {
 }
 
 export function initializeUserOnOtherTab(self) {
+    return;
     if (!self.microphoneEnabled) return;
     document.addEventListener("visibilitychange", (event) => {
         if (document.visibilityState == "visible") {
