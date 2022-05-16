@@ -1,5 +1,6 @@
 import { sceneEvents } from "../../Events/EventsCenter";
-var tipText;
+import { muteMusic, unmuteMusic } from "./musicLogic";
+var tipText, speakerButton;
 
 export function createTalkIcons(self) {
     
@@ -9,6 +10,18 @@ export function createTalkIcons(self) {
     addHeadphones(self);
     addMicrophone(self);
 
+    // add mute music button
+    speakerButton = self.add.image(160, 679, 'music-on').setScale(1.6, 1.6).setAlpha(1);
+
+    speakerButton.setInteractive().on('pointerdown', () => {
+        if (speakerButton.texture.key == 'music-on') {
+            muteMusic();
+            speakerButton.setTexture('music-off');
+        } else {
+            unmuteMusic();
+            speakerButton.setTexture('music-on');
+        }
+    });
     
 }
 

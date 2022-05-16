@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { sceneEvents } from "../../Events/EventsCenter";
-import { nextSong, pauseMusic, previousSong, resumeMusic, startPlayingMusic } from "./musicLogic";
+import { changedMap, nextSong, pauseMusic, previousSong, resumeMusic, startPlayingMusic } from "./musicLogic";
 export function initializeMusicPlayerPanel(self, mapId) {
     self.panelBackground = self.rexUI.add.roundRectangle(0, 0, 300, 200, 8, 0xece6db).setOrigin(0);
     const panelOutline = self.rexUI.add.roundRectangle(-2, -2, 300, 200, 8, 0x000000).setOrigin(0).setScale(1.01);
@@ -78,12 +78,14 @@ export function initializeMusicPlayerPanel(self, mapId) {
 
     startPlayingMusic(self);
 
-    sceneEvents.on('setVisibleMusicPanel', (visible) => {
-        setVisibleMusicPanel(self, visible);
-    });
+    sceneEvents.on('changedMap', (mapId) => {
+        setVisibleMusicPanel(self, mapId == 4 ? true : false);
+        changedMap(self, mapId);
+    })
 
     if (mapId != 4) {
         setVisibleMusicPanel(self, false);
+        changedMap(self, mapId);
     }
 
 }

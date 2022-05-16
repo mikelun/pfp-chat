@@ -1,11 +1,24 @@
 import { sceneEvents } from "../../Events/EventsCenter";
-import { songs } from "./music-data/songs";
+import { songs, fightSongs, mainThemeSongs} from "./music-data/songs";
 
 var currentSong = 0;
 
-export function startPlayingMusic(self) {
+var currenFightSong = 0;
+
+var currentMainThemeSong = 0;
+
+var self; 
+
+export function startPlayingMusic(newSelf) {
+    self = newSelf;
+
     //shuffle songs
-    songs.sort(() => Math.random() - 0.5);
+    songs = songs.sort(() => Math.random() - 0.5);
+    // shuffle fightSongs
+    fightSongs = fightSongs.sort(() => Math.random() - 0.5);
+    // shuffle mainThemeSongs
+    mainThemeSongs = mainThemeSongs.sort(() => Math.random() - 0.5);
+
     // get song
     const song = songs[currentSong];
     
@@ -18,6 +31,18 @@ export function startPlayingMusic(self) {
     updateSongPanel();
 }
 
+export function muteMusic() {
+    if (self.myAudio) {
+        self.myAudio.muted = true;
+        return true;
+    }
+}
+export function unmuteMusic() {
+    if (self.myAudio) {
+        self.myAudio.muted = false;
+        return true;
+    }
+}
 export function pauseMusic(self) {
     if (self.myAudio) {
         self.myAudio.pause();
@@ -41,6 +66,40 @@ export function nextSong(self) {
     self.myAudio.src = song.url;
     self.myAudio.play();
     updateSongPanel();
+}
+
+export function changedMap(self, mapId) {
+    pauseMusic(self);
+    
+    if (mapId == 4) {
+        songs = songs.sort(() => Math.random() - 0.5);
+        const song = songs[currentSong];
+        self.myAudio.src = song.url;
+        self.myAudio.currentTime = 0;
+        self.myAudio.play();
+        updateSongPanel();
+    }
+    if (mapId == 8) {
+        fightSongs = fightSongs.sort(() => Math.random() - 0.5);
+        const song = fightSongs[currenFightSong];
+        self.myAudio.src = song;
+        self.myAudio.currentTime = 0;
+        self.myAudio.play();
+        console.log('playing fight song', fightSongs[currenFightSong]);
+        //ifAudioEndedFight(self);
+    } 
+    if (mapId == 6) {
+        mainThemeSongs = mainThemeSongs.sort(() => Math.random() - 0.5);
+        // play main theme music
+        const song = mainThemeSongs[currentMainThemeSong];
+        self.myAudio.src = song;
+        self.myAudio.currentTime = 0;
+        self.myAudio.play();
+
+        ifAudioEndedMainTheme(self);
+
+    }
+
 }
 
 export function previousSong(self) {
@@ -71,6 +130,36 @@ function ifAudioEnded(self) {
             currentSong = 0;
         }
         const song = songs[currentSong];
+        self.myAudio.src = song.url;
+        self.myAudio.play();
+        updateSongPanel();
+    };
+}
+
+function ifAudioEndedFight(self) {
+    self.myAudio.onended = () => {
+        self.myAudio.pause();
+        self.myAudio.currentTime = 0;
+        currenFightSong++;
+        if (currenFightSong >= fightSongs.length) {
+            currenFightSong = 0;
+        }
+        const song = fightSongs[currenFightSong];
+        self.myAudio.src = song.url;
+        self.myAudio.play();
+        updateSongPanel();
+    };
+}
+
+function ifAudioEndedMainTheme(self) {
+    self.myAudio.onended = () => {
+        self.myAudio.pause();
+        self.myAudio.currentTime = 0;
+        currentMainThemeSong++;
+        if (currentMainThemeSong >= mainThemeSongs.length) {
+            currentMainThemeSong = 0;
+        }
+        const song = mainThemeSongs[currentMainThemeSong];
         self.myAudio.src = song.url;
         self.myAudio.play();
         updateSongPanel();

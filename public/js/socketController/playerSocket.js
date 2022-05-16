@@ -32,10 +32,11 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
         if (self.mapId == 4) {
             createParticles(self);
-            sceneEvents.emit('setVisibleMusicPanel', true);
+            sceneEvents.emit('changedMap', self.mapId);
         } else {
-            sceneEvents.emit('setVisibleMusicPanel', false);
+            sceneEvents.emit('changedMap', self.mapId);
         }
+        
 
         if (self.mapId == 8) {
             addWeapon(self);
