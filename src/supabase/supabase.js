@@ -60,6 +60,7 @@ module.exports = {
                 map_id: player.mapId,
                 planet: planet,
                 killed_monsters: player.killedMonsters,
+                coins: player.coins,
             })
             .eq('id', address)
         console.log('UPDATED PLAYER INFO', data, " error ", error);

@@ -10,6 +10,7 @@ import { resizeObjectForNFT } from "./nftsOffset";
 import { createImageNFT } from "./gameViewUtils";
 import { initializeWeapon } from "../Weapons/weapon";
 import { removeAllMonsters } from "../../socketController/mmorpgSocket";
+import { updatePlayerCoins } from "../GameUI-elements/hud";
 
 var self;
 
@@ -20,6 +21,7 @@ export function addPlayer(newSelf, playerInfo) {
     // initialize weapon for player
     initializeWeapon(self, playerInfo.weapon);
 
+    //updatePlayerCoins(playerInfo.coins);
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
 
     // check if texture from internet

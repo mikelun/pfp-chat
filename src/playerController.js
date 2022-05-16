@@ -57,26 +57,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
     var enterTime = Math.floor(Date.now() / 1000);
     var killedMonsters = 0;
-
-    if (playerInfo) {
-        if (playerInfo.mapId) {
-            x = mapsStartPoints[playerInfo.mapId][0].x;
-            y = mapsStartPoints[playerInfo.mapId][0].y;
-            mapId = playerInfo.mapId;
-        }
-        if (playerInfo.mapChanged) {
-            if (mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged]) {
-                x = mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged].x;
-                y = mapsStartPoints[playerInfo.mapId][playerInfo.mapChanged].y;
-            }
-        } else if (playerInfo.x) {
-            x = playerInfo.x;
-            y = playerInfo.y;
-        }
-        if (playerInfo.textureId) textureId = playerInfo.textureId;
-        if (playerInfo.playerName) playerName = playerInfo.playerName;
-    }
-
+    var coins = 0;
 
     if (data) {
         x = data.x;
@@ -84,6 +65,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         mapId = data.map_id;
         killedMonsters = data.killed_monsters;
         timeInGame = data.time_in_game;
+        coins = data.coins;
     }
 
     const currentRoom = room + '$' + mapId;
@@ -103,7 +85,8 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         weapon: guns[0],
         killedMonsters: killedMonsters,
         enterTime: enterTime,
-        planet: room
+        planet: room,
+        coins: coins
     }
 
     return player;

@@ -1,8 +1,12 @@
+import { updatePlayerCoins } from "../scenes/GameUI-elements/hud";
 import { addMonster } from "../scenes/GameView/addMonster";
+import { createCoin } from "../scenes/GameView/createCoin";
 import { createBullet } from "../scenes/Weapons/bullet";
 import { bullets } from "../scenes/Weapons/weapon";
 
 var monstersList = {};
+
+var coinsList = {};
 
 var self;
 
@@ -46,7 +50,32 @@ export function initializeRPGSocket(newSelf) {
         } else {
             weapon.flipY = false;
         }
-    })
+    });
+
+    self.socket.on('updateRewardCoins', (coins) => {
+        console.log(" GET COINS", coins);
+        Object.keys(coins).forEach(coinId => {
+            const coinData = coins[coinId];
+
+            if (!coinsList[coinId]) {
+                createCoin(self, coinData, coinsList, coinId);
+            } 
+        })
+        
+        Object.keys(coinsList).forEach(coinId => {  
+            console.log('coinId', coinId);    
+            if (!coins[coinId]) {
+                // TRYING TO CLEAR
+                console.log('TRYING TO REMOVE COIN   aksjdjflk j', coinId);
+                coinsList[coinId].clear(true);
+                delete coinsList[coinId];
+            }
+        });
+    });
+
+    self.socket.on('updatePlayerCoins', (coins) => {
+        updatePlayerCoins(coins);
+    });
 
 }
 
@@ -69,5 +98,10 @@ export function removeAllMonsters() {
     // remove bullets
     bullets.getChildren().forEach(bullet => {
         bullet.setAlpha(0);
+    });
+
+    Object.keys(coinsList).forEach(coinId => {
+        coinsList[coinId].clear(true);
+        delete coinsList[coinId];
     });
 }

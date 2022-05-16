@@ -14,17 +14,23 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
+var mapId, playerCoins;
+
 export class GameUi extends Phaser.Scene {
     constructor() {
         super({ key: "game-ui" });
+    }
+    init(data) {
+        mapId = data.mapId;
+        playerCoins = data.playerCoins;
     }
 
     create() {
 
         // initializing player hud
-        initializeHUD(this);
+        initializeHUD(this, playerCoins);
 
-        initializeMusicPlayerPanel(this)
+        initializeMusicPlayerPanel(this, mapId)
 
         buildVoiceChatPanel(this);
 

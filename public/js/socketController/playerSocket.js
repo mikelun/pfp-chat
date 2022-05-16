@@ -41,7 +41,6 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         } else {
             removeWeapon(self);
         }
-
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
     }
 
@@ -58,12 +57,6 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
 
     self.socket.on('updatePlayers', function(data) {
-        if (self.mapId == 4) {
-            sceneEvents.emit('setVisibleMusicPanel', true);
-        } else {
-            sceneEvents.emit('setVisibleMusicPanel', false);
-        }
-        
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (data[otherPlayer.playerId]) {
                 otherPlayer.newX = data[otherPlayer.playerId].x;
@@ -105,6 +98,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         removePeer(playerId);
         sceneEvents.emit('updateOnlinePlayers', playersList.length);
     });
+
 
     self.socket.on('updatePlayerInfo', (playerInfo) => {
         for (let i = 0; i < playersList.length; i++) {

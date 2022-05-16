@@ -15,6 +15,7 @@ import { showPlayersToTalk } from '../socketController/playerSocket';
 import { initializeAmplitude } from '../Analytics/amplitude';
 import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMicrophoneStream';
 import { initializeWeapon, updateWeapon } from './Weapons/weapon';
+import { initialAnimations } from '../utils/initialAnimations';
 /**
  * All peer connections
  */
@@ -29,12 +30,6 @@ export class MainScene extends Phaser.Scene {
     }
 
     init(data) {
-
-        // clear playerInfo from local storage
-        localStorage.removeItem('playerInfo');
-
-
-
         if (data.stream) {
             // local stream of user microphone
             this.localStream = data.stream;
@@ -56,9 +51,15 @@ export class MainScene extends Phaser.Scene {
         this.socket = data.socket;
 
 
-        this.mapId = data.mapId;
 
         currentPlayers = data.currentPlayers;
+
+        currentPlayers.forEach(player => {
+            if (player.playerId == data.socket.id) {
+                this.playerCoins = player.coins;
+                this.mapId = player.mapId;
+            }
+        });
 
     }
 
@@ -72,8 +73,12 @@ export class MainScene extends Phaser.Scene {
     create() {
 
         // Add Game Ui
-        this.scene.run('game-ui');
-        
+        this.scene.run('game-ui', {
+            mapId: this.mapId,
+            playerCoins: this.playerCoins,
+        });
+
+        initialAnimations(this);
         // first entrance
         this.firstEntrance = true;
 
@@ -126,6 +131,7 @@ export class MainScene extends Phaser.Scene {
 
         // add joystic if android
         addJoysticIfAndroid(this);
+
     }
 
     update(time, delta) {

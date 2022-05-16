@@ -55,7 +55,7 @@ export class PreloadScene extends Phaser.Scene {
     }
 
 
-    loadMoonsters() {
+    loadMonsters() {
         this.load.spritesheet('monster1', 'assets/monsters/monster1.png', {
             frameWidth: 81.5, 
             frameHeight: 69
@@ -93,13 +93,21 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('button-right', 'assets/game-ui/new-ui/button-right.png');
     }
 
+    loadCoins() {
+        this.load.spritesheet('coin1', 'assets/coins/coin1.png', {
+            frameWidth: 20,
+            frameHeight: 20,
+        });
+    }
+
     preload() {
 
         this.loadUI();
         this.loadPlanets();
         this.loadMaps();
         this.loadWeapons();
-        this.loadMoonsters();
+        this.loadMonsters();
+        this.loadCoins();
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
             frameWidth: 50,

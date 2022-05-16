@@ -21,6 +21,9 @@ rooms = {};
 // monsters
 monstersList = {};
 
+// coins
+coins = {};
+
 
 module.exports = (io) => {
     io.on('connect', (socket) => {
@@ -36,11 +39,19 @@ module.exports = (io) => {
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
                         playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, result.data);
+                        if (players[socket.id].mapId == 8) {
+                            getLeaderboard(socket);
+                            socket.emit('updateRewardCoins', coins);
+                        }
                     })
                 } else {
                     if (data) data = data[0];
                     if (data && data.planet != planet) data = null;
                     playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
+                    if (players[socket.id].mapId == 8) {
+                        getLeaderboard(socket);
+                        socket.emit('updateRewardCoins', coins);
+                    }
                 }
             })
         })
@@ -49,6 +60,7 @@ module.exports = (io) => {
             console.log(address);
             playerController.addPlayer(io, socket, players, address, planet, playerInfo, rooms, false, null);
             supabase.getPlayerData(players[socket.id]);
+            
         });
 
 
@@ -60,9 +72,6 @@ module.exports = (io) => {
                     rooms[players[socket.id].room].splice(i, 1);
                 }
             }
-
-            // updatePlayerInfo in database
-            supabase.updatePlayerInfo(players[socket.id]);
 
             socket.to(players[socket.id].room).emit('disconnected', socket.id);
 
@@ -89,6 +98,15 @@ module.exports = (io) => {
             players[socket.id].y = y;
             
             playerController.connectToRoom(socket, players, rooms, false);
+
+            // add leaderboard
+            if (players[socket.id].mapId == 8) {
+                getLeaderboard(socket);
+                socket.emit('updateRewardCoins', coins);
+            }
+
+            // updatePlayerInfo in database
+            supabase.updatePlayerInfo(players[socket.id]);
 
             
         })
@@ -196,8 +214,16 @@ module.exports = (io) => {
             if (!monster) return;
             monster.hp -= damage;
             if (monster.hp <= 0) {
+                coins[monster.id] = {
+                    x: monster.x,
+                    y: monster.y,
+                    value: Math.floor(Math.random() * (10 - 1) + 1)
+                };
+
                 delete monstersList[monsterId];
                 players[socket.id].killedMonsters++;
+
+                io.to(players[socket.id].room).emit('updateRewardCoins', coins);
             }
         });
 
@@ -205,22 +231,18 @@ module.exports = (io) => {
             socket.to(players[socket.id].room).emit('weaponShot', data);
         });
 
-        var gettingResult = false
-        setInterval(() => {
-            if (gettingResult) return;
-            gettingResult = true;
-            supabase.getPlayersKilledMonster().then(result => {
-                gettingResult = false;
-                if (!result || !result.data) return
-                // sort result by result.data.killed_monsters in descending order
-                result = result.data.sort((a, b) => b.killed_monsters - a.killed_monsters);
-                socket.emit('updateLeaderboard', result);
-            })
-        }, 10000)
+        socket.on('coinClaimed', (coinId) => {
+            if (!coins[coinId] || !coins[coinId].value) return;
+            players[socket.id].coins += coins[coinId].value;
+            delete coins[coinId];
+            socket.to(players[socket.id].room).emit('updateRewardCoins', coins);
+
+            socket.emit('updatePlayerCoins', players[socket.id].coins);
+        });
+
     });
 
     // main timer
-
     setInterval(() => {
         // get for in object 
         for (var room in rooms) {
@@ -282,3 +304,14 @@ module.exports = (io) => {
     }, 2000)
 
 };
+
+
+// UTIL FUNCTIONS
+function getLeaderboard(socket) {
+    supabase.getPlayersKilledMonster().then(result => {
+        if (!result || !result.data) return
+        // sort result by result.data.killed_monsters in descending order
+        result = result.data.sort((a, b) => b.killed_monsters - a.killed_monsters);
+        socket.emit('updateLeaderboard', result);
+    })
+}
