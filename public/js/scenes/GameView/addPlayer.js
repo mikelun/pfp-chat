@@ -80,7 +80,7 @@ export function addPlayer(newSelf, playerInfo) {
 
     addPhysicsForScene(self, self.mapId);
 
-    var talkSize = 200;
+    var talkSize = 400;
     if (self.room == 'buildship') {
         talkSize = 10000;
     }
