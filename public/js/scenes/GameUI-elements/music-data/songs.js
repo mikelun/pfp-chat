@@ -1,4 +1,4 @@
-export var songs = [
+export const songsData = [
     {
         "author": "David Fesliyan",
         "name": "Chill Gaming",
@@ -81,7 +81,6 @@ export var songs = [
         "name": "Just lofi Relax",
         "url": "https://cdn.pixabay.com/download/audio/2021/11/18/audio_2a1f1015d5.mp3?filename=just-lofi-relax-version-60s-10899.mp3",
     }, 
-    ////////
     {
         "author": "Pixabay",
         "name": "Solo guitar",
@@ -138,19 +137,18 @@ export var songs = [
         "url": "https://cdn.pixabay.com/download/audio/2021/11/20/audio_3f1073a6cd.mp3?filename=walking-with-billie-michael-kobrin-10958.mp3",
     }, 
     
-]
+];
 
-export var mainThemeSongs = [
+export const mainThemeSongsData = [
     "https://cdn.pixabay.com/download/audio/2022/03/07/audio_25f6bca350.mp3?filename=into-the-night-80s-retro-synthwave-22160.mp3",
     "https://cdn.pixabay.com/download/audio/2022/02/16/audio_efc60f6c3f.mp3?filename=emerald-21054.mp3",
     "https://cdn.pixabay.com/download/audio/2022/03/18/audio_a821f84cc1.mp3?filename=mezhdunami-flashes-95436.mp3",
     "https://cdn.pixabay.com/download/audio/2022/05/02/audio_eb4f57e9dc.mp3?filename=80s-synth-wave-110473.mp3",
     "https://cdn.pixabay.com/download/audio/2022/03/27/audio_a266200200.mp3?filename=time-machine-108428.mp3",
     "https://cdn.pixabay.com/download/audio/2022/03/21/audio_52250d2e7d.mp3?filename=horizon-99058.mp3",
+];
 
-]
-
-export var fightSongs = [
+export const fightSongsData = [
     "https://cdn.pixabay.com/download/audio/2022/01/05/audio_d292f665c4.mp3?filename=mc-quattro-beats-beats-ufo-rage-cyberpunk-2022-13551.mp3",
     "https://cdn.pixabay.com/download/audio/2022/01/18/audio_09aa517a2c.mp3?filename=hard-prey-15009.mp3",
     "https://cdn.pixabay.com/download/audio/2022/01/24/audio_1f19536502.mp3?filename=this-world-has-gone-crazy-15500.mp3",
@@ -168,6 +166,5 @@ export var fightSongs = [
     "https://cdn.pixabay.com/download/audio/2022/04/18/audio_d9c2cab4ea.mp3?filename=metalcore-hardrock-rock-metal-music-109660.mp3",
     "https://cdn.pixabay.com/download/audio/2022/02/07/audio_5eb0140f8a.mp3?filename=modern-fashion-promo-rock-18397.mp3",
     "https://cdn.pixabay.com/download/audio/2022/02/16/audio_63e2930a86.mp3?filename=hard-rock-21056.mp3",
-    "https://cdn.pixabay.com/download/audio/2022/04/22/audio_abe13925fc.mp3?filename=rockstar-trailer-109945.mp3",
-    
-]
+    "https://cdn.pixabay.com/download/audio/2022/04/22/audio_abe13925fc.mp3?filename=rockstar-trailer-109945.mp3",  
+];

@@ -1,5 +1,9 @@
 import { sceneEvents } from "../../Events/EventsCenter";
-import { songs, fightSongs, mainThemeSongs} from "./music-data/songs";
+import {songsData, fightSongsData, mainThemeSongsData} from './music-data/songs.js';
+
+var songs = songsData;
+var fightSongs = fightSongsData;
+var mainThemeSongs = mainThemeSongsData;
 
 var currentSong = 0;
 
