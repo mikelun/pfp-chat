@@ -91,6 +91,8 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('long-button-yellow', 'assets/game-ui/new-ui/long-button-yellow.png');
         this.load.image('button-left', 'assets/game-ui/new-ui/button-left.png');
         this.load.image('button-right', 'assets/game-ui/new-ui/button-right.png');
+        this.load.image('health-bar', 'assets/game-ui/new-ui/health-bar.png');
+        this.load.image('experience-bar', 'assets/game-ui/new-ui/experience-bar.png');
     }
 
     loadCoins() {
