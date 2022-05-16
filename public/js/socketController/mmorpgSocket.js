@@ -32,7 +32,7 @@ export function initializeRPGSocket(newSelf) {
         // remove dead monsters
         Object.keys(monstersList).forEach(monsterId => {
             if (!monstersList[monsterId].alive) {
-                self.sound.play('explosion1');
+                self.sound.play('explosion1', { volume: 2 });
                 monstersList[monsterId].destroyMonster(monstersList[monsterId]);
                 delete monstersList[monsterId];
             } else {
@@ -45,6 +45,7 @@ export function initializeRPGSocket(newSelf) {
         //console.log('maing shot with data', data);
         createBullet(self, data.x, data.y, data.velocityX, data.velocityY, true);
         const weapon =  self.playerUI[data.playerId].weapon;
+        self.sound.play('gun2', { volume: 1 });
         weapon.rotation = data.angle;
         if (data.angle < -Math.PI / 2 || data.angle > Math.PI / 2) {
             weapon.flipY = true;
