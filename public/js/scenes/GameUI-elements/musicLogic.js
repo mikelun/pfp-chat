@@ -1,5 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
-import {songsData, fightSongsData, mainThemeSongsData} from './music-data/songs.js';
+import { songsData, fightSongsData, mainThemeSongsData } from './music-data/songs.js';
 
 var songs = songsData;
 var fightSongs = fightSongsData;
@@ -11,7 +11,9 @@ var currenFightSong = 0;
 
 var currentMainThemeSong = 0;
 
-var self; 
+var self;
+
+var currentStyle = 'songs';
 
 export function startPlayingMusic(newSelf) {
     self = newSelf;
@@ -25,13 +27,13 @@ export function startPlayingMusic(newSelf) {
 
     // get song
     const song = songs[currentSong];
-    
+
     self.myAudio = new Audio(song.url);
     self.myAudio.play();
 
-    
+
     ifAudioEnded(self);
-    
+
     updateSongPanel();
 }
 
@@ -74,8 +76,9 @@ export function nextSong(self) {
 
 export function changedMap(self, mapId) {
     pauseMusic(self);
-    
+
     if (mapId == 4) {
+        currentStyle = 'songs';
         songs = songs.sort(() => Math.random() - 0.5);
         const song = songs[currentSong];
         self.myAudio.src = song.url;
@@ -84,24 +87,20 @@ export function changedMap(self, mapId) {
         updateSongPanel();
     }
     if (mapId == 8) {
+        currentStyle = 'fightSongs';
         fightSongs = fightSongs.sort(() => Math.random() - 0.5);
         const song = fightSongs[currenFightSong];
         self.myAudio.src = song;
         self.myAudio.currentTime = 0;
         self.myAudio.play();
-        console.log('playing fight song', fightSongs[currenFightSong]);
-        //ifAudioEndedFight(self);
-    } 
+    }
     if (mapId == 6) {
+        currentStyle = 'mainThemeSongs';
         mainThemeSongs = mainThemeSongs.sort(() => Math.random() - 0.5);
-        // play main theme music
         const song = mainThemeSongs[currentMainThemeSong];
         self.myAudio.src = song;
         self.myAudio.currentTime = 0;
         self.myAudio.play();
-
-        ifAudioEndedMainTheme(self);
-
     }
 
 }
@@ -129,43 +128,31 @@ function ifAudioEnded(self) {
     self.myAudio.onended = () => {
         self.myAudio.pause();
         self.myAudio.currentTime = 0;
-        currentSong++;
-        if (currentSong >= songs.length) {
-            currentSong = 0;
+        if (currentStyle == 'songs') {
+            currentSong++;
+            if (currentSong >= songs.length) {
+                currentSong = 0;
+            }
+            const song = songs[currentSong];
+            self.myAudio.src = song.url;
+            self.myAudio.play();
+            updateSongPanel();
+        } else if (currentStyle == 'fightSongs') {
+            currenFightSong++;
+            if (currenFightSong >= fightSongs.length) {
+                currenFightSong = 0;
+            }
+            const song = fightSongs[currenFightSong];
+            self.myAudio.src = song;
+            self.myAudio.play();
+        } else if (currentStyle == 'mainThemeSongs') {
+            currentMainThemeSong++;
+            if (currentMainThemeSong >= mainThemeSongs.length) {
+                currentMainThemeSong = 0;
+            }
+            const song = mainThemeSongs[currentMainThemeSong];
+            self.myAudio.src = song;
+            self.myAudio.play();
         }
-        const song = songs[currentSong];
-        self.myAudio.src = song.url;
-        self.myAudio.play();
-        updateSongPanel();
-    };
-}
-
-function ifAudioEndedFight(self) {
-    self.myAudio.onended = () => {
-        self.myAudio.pause();
-        self.myAudio.currentTime = 0;
-        currenFightSong++;
-        if (currenFightSong >= fightSongs.length) {
-            currenFightSong = 0;
-        }
-        const song = fightSongs[currenFightSong];
-        self.myAudio.src = song.url;
-        self.myAudio.play();
-        updateSongPanel();
-    };
-}
-
-function ifAudioEndedMainTheme(self) {
-    self.myAudio.onended = () => {
-        self.myAudio.pause();
-        self.myAudio.currentTime = 0;
-        currentMainThemeSong++;
-        if (currentMainThemeSong >= mainThemeSongs.length) {
-            currentMainThemeSong = 0;
-        }
-        const song = mainThemeSongs[currentMainThemeSong];
-        self.myAudio.src = song.url;
-        self.myAudio.play();
-        updateSongPanel();
-    };
+    }
 }
