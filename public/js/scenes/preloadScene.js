@@ -108,6 +108,17 @@ export class PreloadScene extends Phaser.Scene {
         this.load.spritesheet('goose', 'assets/artifacts/goose.png', {frameWidth: 1200,frameHeight: 1200,})
     }
 
+    loadSoundFX() {
+        this.load.audio('coin1', 'assets/sounds/coin1.wav');
+        this.load.audio('gun1', 'assets/sounds/gun1.wav');
+        this.load.audio('gun2', 'assets/sounds/gun2.wav');
+        this.load.audio('gun3', 'assets/sounds/gun3.wav');
+        this.load.audio('gun4', 'assets/sounds/gun4.wav');
+        this.load.audio('gun5', 'assets/sounds/gun5.wav');
+        this.load.audio('gun6', 'assets/sounds/gun6.wav');
+        this.load.audio('gun7', 'assets/sounds/gun7.wav');
+        this.load.audio('explosion1', 'assets/sounds/explosion1.wav');
+    }
     preload() {
 
         this.loadUI();
@@ -117,6 +128,8 @@ export class PreloadScene extends Phaser.Scene {
         this.loadMonsters();
         this.loadCoins();
         this.loadArtifacts();
+        this.loadSoundFX();
+
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
             frameWidth: 50,

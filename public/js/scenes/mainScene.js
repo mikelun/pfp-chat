@@ -72,7 +72,6 @@ export class MainScene extends Phaser.Scene {
         this.load.plugin('rexvirtualjoystickplugin', VirtualJoystickPlugin);
     }
     create() {
-
         // Add Game Ui
         this.scene.run('game-ui', {
             mapId: this.mapId,
@@ -126,10 +125,6 @@ export class MainScene extends Phaser.Scene {
         }
 
         createAnimationForNFTBackround(this.anims, 1);
-
-
-        
-
 
         // add joystic if android
         addJoysticIfAndroid(this);

@@ -32,6 +32,7 @@ export function initializeRPGSocket(newSelf) {
         // remove dead monsters
         Object.keys(monstersList).forEach(monsterId => {
             if (!monstersList[monsterId].alive) {
+                self.sound.play('explosion1');
                 monstersList[monsterId].destroyMonster(monstersList[monsterId]);
                 delete monstersList[monsterId];
             } else {

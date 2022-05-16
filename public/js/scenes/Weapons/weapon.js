@@ -34,7 +34,7 @@ export function initializeWeapon(self, weapon) {
         // if player touch left mouse
         if (self.input.activePointer.isDown) {
             const bullet = createBullet(self, self.weapon.x, self.weapon.y, Math.cos(angle) * 500, Math.sin(angle) * 500);
-            
+            self.sound.play('gun2', { volume: 1 });
             weaponShot({
                 x: bullet.x,
                 y: bullet.y,
