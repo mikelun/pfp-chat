@@ -10,11 +10,11 @@ export function initializeHUD(newSelf, coinsPlayer, nftImage) {
 
     coinsText = self.add.text(50, 76, `${coinsPlayer}`, { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0, 0);
 
-    healthBar = self.add.image(76, 28, 'health-bar').setOrigin(0, 0).setScale(2);
-    healthBar.setScale(2, 2);
+    healthBar = self.add.image(76, 28, 'experience-bar').setOrigin(0, 0).setScale(0.2 * 4, 2);
+    // 10% -> 0.2
 
-    experienceBar = self.add.image(76, 59, 'experience-bar').setOrigin(0, 0).setScale(1.7, 2);
-
+    //experienceBar = self.add.image(76, 59, 'experience-bar').setOrigin(0, 0).setScale(1.7, 2);
+    self.add.text(78, 50, '40/100 xp', { fontSize: '24px', fill: '#CC9900', fontFamily: 'PixelFont' }).setOrigin(0, 0);
     updateNFTImage(self, nftImage);
 }
 
