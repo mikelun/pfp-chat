@@ -61,14 +61,14 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var nft = null;
 
     if (data) {
-        x = data.x;
-        y = data.y;
-        mapId = data.map_id;
-        killedMonsters = data.killed_monsters;
-        timeInGame = data.time_in_game;
-        coins = data.coins;
-        textureId = data.textureId;
-        nft = data.nft;
+        if (data.x) x = data.x;
+        if (data.x) y = data.y;
+        if (data.map_id) mapId = data.map_id;
+        if (data.killed_monsters) killedMonsters = data.killed_monsters;
+        if (data.time_in_game) timeInGame = data.time_in_game;
+        if (data.coins) coins = data.coins;
+        if (data.textureId) textureId = data.textureId;
+        if (data.nft) nft = data.nft;
     }
 
     const currentRoom = room + '$' + mapId;
