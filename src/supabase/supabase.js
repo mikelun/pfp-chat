@@ -61,6 +61,8 @@ module.exports = {
                 planet: planet,
                 killed_monsters: player.killedMonsters,
                 coins: player.coins,
+                textureId: player.textureId,
+                nft: player.nft,
             })
             .eq('id', address)
         console.log('UPDATED PLAYER INFO', data, " error ", error);

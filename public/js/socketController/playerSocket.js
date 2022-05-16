@@ -7,6 +7,7 @@ import { loadTexture } from "../scenes/GameView/loadTexture";
 import { addOtherPlayers } from "../scenes/GameView/addOtherPlayers";
 import { addWeapon, removeWeapon } from "../scenes/Weapons/weapon";
 import { updateLeaderboard } from "../MapBuilding/Maps/map8";
+import { updateNFTImage } from "../scenes/GameUI-elements/hud";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -117,7 +118,9 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
                 self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
                 self.playerUI[playerInfo.playerId].headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
 
-                playersList[i].nft = playerInfo.nft;
+                if (playerInfo.nft) {
+                    updateNFTImage(playerInfo.nft);
+                }
 
 
                 if (playerInfo.textureId && playerInfo.textureId != playersList[i].textureId) {

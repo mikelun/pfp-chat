@@ -58,6 +58,7 @@ export class MainScene extends Phaser.Scene {
             if (player.playerId == data.socket.id) {
                 this.playerCoins = player.coins;
                 this.mapId = player.mapId;
+                this.nftImage = player.nft;
             }
         });
 
@@ -76,6 +77,7 @@ export class MainScene extends Phaser.Scene {
         this.scene.run('game-ui', {
             mapId: this.mapId,
             playerCoins: this.playerCoins,
+            nftImage: this.nftImage,
         });
 
         initialAnimations(this);

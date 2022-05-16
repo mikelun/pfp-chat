@@ -58,6 +58,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var enterTime = Math.floor(Date.now() / 1000);
     var killedMonsters = 0;
     var coins = 0;
+    var nft = null;
 
     if (data) {
         x = data.x;
@@ -66,6 +67,8 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         killedMonsters = data.killed_monsters;
         timeInGame = data.time_in_game;
         coins = data.coins;
+        textureId = data.textureId;
+        nft = data.nft;
     }
 
     const currentRoom = room + '$' + mapId;
@@ -78,7 +81,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         deafen: false,
         playerName: playerName,
         textureId: textureId,
-        nft: null,
+        nft: nft,
         address: address,
         room: currentRoom,
         mapId: mapId,
