@@ -44,10 +44,8 @@ module.exports = {
 
         const address = player.address;
 
-        console.log("ADDRESS is ", address);
         const currentTime = Math.floor(Date.now() / 1000);
 
-        // room - planet
         const planet = player.room.split('$')[0];
         const timeInGame = player.timeInGame ? player.timeInGame : 0;
 
@@ -65,6 +63,16 @@ module.exports = {
                 nft: player.nft,
             })
             .eq('id', address)
-        console.log('UPDATED PLAYER INFO', data, " error ", error);
     },
+
+
+    getPlayerItems: async function (address) {
+        if (developingUI) return;
+        return await supabase
+            .from('items')
+            .select()
+    }
+
+
+
 }

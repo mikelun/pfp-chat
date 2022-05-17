@@ -97,6 +97,9 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('experience-bar', 'assets/game-ui/new-ui/experience-bar.png');
         this.load.image('music-on', 'assets/game-ui/new-ui/music-on.png');
         this.load.image('music-off', 'assets/game-ui/new-ui/music-off.png');
+        this.load.image('buy-button', 'assets/game-ui/new-ui/buy-button.png');
+        this.load.image('shop-panel', 'assets/game-ui/new-ui/shop-panel.png');
+        this.load.image('cell-shop', 'assets/game-ui/new-ui/cell-shop.png');
     }
 
     loadCoins() {
@@ -108,6 +111,7 @@ export class PreloadScene extends Phaser.Scene {
 
     loadArtifacts() {
         this.load.spritesheet('goose', 'assets/artifacts/goose.png', {frameWidth: 1200,frameHeight: 1200,})
+        this.load.spritesheet('chests', 'assets/artifacts/chests.png', {frameWidth: 48,frameHeight: 32,})
     }
 
     loadSoundFX() {
@@ -121,6 +125,10 @@ export class PreloadScene extends Phaser.Scene {
         this.load.audio('gun7', 'assets/sounds/gun7.wav');
         this.load.audio('explosion1', 'assets/sounds/explosion1.wav');
     }
+
+    loadEffects() {
+        this.load.spritesheet('background-lighting', 'assets/effects/background-lighting.png', {frameWidth: 256,frameHeight: 256,})
+    }
     preload() {
 
         this.loadUI();
@@ -131,6 +139,7 @@ export class PreloadScene extends Phaser.Scene {
         this.loadCoins();
         this.loadArtifacts();
         this.loadSoundFX();
+        this.loadEffects();
 
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {

@@ -50,6 +50,10 @@ module.exports = (io) => {
                     playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
                     if (players[socket.id].mapId == 8) {
                         getLeaderboard(socket);
+                        supabase.getPlayerItems(address).then(result => {
+                            console.log(result.data);
+                        });
+                        
                         socket.emit('updateRewardCoins', coins);
                     }
                 }

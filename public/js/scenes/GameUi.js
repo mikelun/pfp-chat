@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
+import { createAnimationsUI } from './GameUI-elements/animationsUI';
 import { initializeHUD } from './GameUI-elements/hud';
 import { createButtons } from './GameUI-elements/lowButttons';
 import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
@@ -28,6 +29,8 @@ export class GameUi extends Phaser.Scene {
 
     create() {
 
+        createAnimationsUI(this);
+        
         // initializing player hud
         initializeHUD(this, playerCoins, nftImage);
 
