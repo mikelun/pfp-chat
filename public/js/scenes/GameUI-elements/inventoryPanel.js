@@ -50,14 +50,17 @@ export function createInventoryPanel(newSelf) {
         if (nftsButton.selected) {
             if (self.nftPage > 0) {
                 self.nftPage--;
+                createCellsWithNFTs(self);
+                updatePageText();
             }
         } else {
             if (self.itemsPage > 0) {
                 self.itemsPage--;
+                createCellsWithItems(self);
+                updatePageText();
             }
         }
-        createCellsWithNFTs(self);
-        updatePageText();
+        
     });
 
     rightButton.on('pointerdown', function () {
@@ -67,15 +70,18 @@ export function createInventoryPanel(newSelf) {
         if (nftsButton.selected) {
             if (self.nftPage < Math.floor(playerNFTs.length / 12)) {
                 self.nftPage++;
+                createCellsWithNFTs(self);
+                updatePageText();
             }
         } else {
             if (self.itemsPage < Math.floor(playerItems.length / 12)) {
                 self.itemsPage++;
+                createCellsWithItems(self);
+                updatePageText();
             }
         }
 
-        createCellsWithNFTs(self);
-        updatePageText();
+        
     });
 
     // page text 
@@ -115,7 +121,7 @@ export function createInventoryPanel(newSelf) {
         self.loader.alpha = 0;
 
         nftsButton.setAlpha(0.8);
-        createCellsWithArtifacts(self);
+        createCellsWithItems(self);
     });
 
     // at first nfts button selected
@@ -126,6 +132,7 @@ export function createInventoryPanel(newSelf) {
         headerInventoryText.text = 'NFTS';
         nftsButton.selected = true;
         chestButton.selected = false;
+        self.cellInfoGroup.setVisible(false);
 
         if (!playerNFTs) {
             self.loader.alpha = 1;
@@ -156,7 +163,7 @@ export function createInventoryPanel(newSelf) {
     sceneEvents.on('getItems', (items) => {
         playerItems = items;
         if (!chestButton.selected) return;
-        createCellsWithArtifacts(self);
+        createCellsWithItems(self);
         updatePageText();
         enablePageController();
     })
@@ -208,13 +215,16 @@ function createCellsWithNFTs(self) {
             }
         }
     }
-    if (!visible) self.sizerCells.setVisible(false);
 
     self.inventoryPanelGroup.add(self.sizerCells);
+
+    if (!visible) {
+        self.inventoryPanelGroup.setVisible(false);
+    }
+
 }
 
-function createCellsWithArtifacts(self) {
-    console.log('creating cells with artifacst');
+function createCellsWithItems(self) {
 
 
     const visible = self.inventoryPanelGroup.getChildren()[0].visible;
@@ -231,6 +241,7 @@ function createCellsWithArtifacts(self) {
         }
     }
 
+    self.inventoryPanelGroup.add(self.sizerCells);
 }
 
 function createCellInfoNFTs(self, nft) {
@@ -252,6 +263,22 @@ function createCellInfoNFTs(self, nft) {
     proceedButton.on('pointerdown', function () {
         sceneEvents.emit('nftSelected', nft);
     });
+}
+
+function createCellInfoItems(self, item) {
+    const count = item.count;
+    const name = item.name;
+    const description = item.description;
+
+    const proceedButton = createCellInfo(self, count, name, description);
+
+    const image = self.add.image(865 + 55, 220 + 55, item.texture);
+    image.setScale(65 / image.height);
+    
+    self.cellInfoGroup.add(image);  
+
+
+
 }
 
 
@@ -304,7 +331,7 @@ function createCells(self, type) {
                 cellNFT.setInteractive().on('pointerdown', function () {
                     if (playerItems[self.itemsPage * 12 + x + y * 4]) {
                         console.log(playerItems[self.itemsPage * 12 + x + y * 4]);
-                        //createCellInfo(self, playerItems[self.itemsPage * 12 + x + y * 4]);
+                        createCellInfoItems(self, playerItems[self.itemsPage * 12 + x + y * 4]);
                     }
                 });
             }

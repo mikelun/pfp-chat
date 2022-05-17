@@ -112,6 +112,9 @@ export class PreloadScene extends Phaser.Scene {
     loadArtifacts() {
         this.load.spritesheet('goose', 'assets/artifacts/goose.png', {frameWidth: 1200,frameHeight: 1200,})
         this.load.spritesheet('chests', 'assets/artifacts/chests.png', {frameWidth: 48,frameHeight: 32,})
+        this.load.image('chest1', 'assets/artifacts/chest1.png');
+        this.load.image('chest2', 'assets/artifacts/chest2.png');
+        this.load.image('chest3', 'assets/artifacts/chest3.png');
     }
 
     loadSoundFX() {

@@ -57,8 +57,7 @@ function createCell(x, y, chestType, price) {
     backgroundEffect.play('background-lighting');
 
 
-    const chest = self.add.sprite(x + 30, y + 40, 'chests').setOrigin(0, 0).setScale(3);
-    chest.play(`chest${chestType}-idle`);
+    const chest = self.add.image(x + 30, y + 50, `chest${chestType}`).setOrigin(0, 0).setScale(3);
 
     self.shopPanelGroup.add(cellBackground);
     self.shopPanelGroup.add(buyButton);

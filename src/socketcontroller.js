@@ -329,7 +329,7 @@ function getItems(socket, address) {
             item = {
                 category: itemData.category,
                 count: itemData.count,
-                ...items[itemData.category][itemData.item_id - 1],
+                ...items[itemData.category][itemData.item_id],
             }
             itemsForClient.push(item);
         });
