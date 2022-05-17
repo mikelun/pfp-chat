@@ -65,7 +65,12 @@ export class PreloadScene extends Phaser.Scene {
 
     }
     loadWeapons() {
-        this.load.image('p90', 'assets/weapons/guns/p90.png');
+        const guns = ['p90', 'mp7', 'boom'];
+        guns.forEach(gun => {
+            this.load.image(gun, `assets/weapons/guns/${gun}.png`);
+        });
+
+
 
         this.load.spritesheet('bullet-effect-1', 'assets/weapons/effects/bullet-effect-1.png', {
             frameWidth: 16,

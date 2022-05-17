@@ -10,7 +10,7 @@ export function createShopPanel(newSelf) {
     const panel = self.add.image(340, 80, 'shop-panel').setOrigin(0, 0).setScale(2.5);
     const headerInventoryText = self.add.text(panel.x + 300, panel.y + 60, 'SHOP', { fontFamily: 'PixelFont', fontSize: '48px', color: '#ffffff' }).setOrigin(0.5, 0.5);
 
-    closeButton = self.add.image(panel.x + 570, panel.y + 0, 'close-button').setOrigin(0, 0).setScale(2).setAlpha(0.8);
+    const closeButton = self.add.image(panel.x + 570, panel.y + 0, 'close-button').setOrigin(0, 0).setScale(2).setAlpha(0.8);
 
     makeButtonInteractive(closeButton, 'CLOSE', 40, 0, true);
 
