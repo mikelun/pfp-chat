@@ -155,6 +155,11 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         if (self.mapId == 8) updateLeaderboard(data);
     });
 
+    self.socket.on('updatePlayerItems', (items) => {
+        sceneEvents.emit('getItems', items);
+    });
+
+
 }
 
 function removePeer(socket_id) {

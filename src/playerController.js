@@ -1,7 +1,7 @@
 const maps = require("./data/maps");
 const mapsStartPoints = require("./data/mapsStartPoints");
 const nicknames = require("./data/nicknames");
-const guns = require('./data/MMORPG/guns');
+const guns = require('./data/MMORPG/weapons.js');
 
 module.exports = {
     connectToRoom: function (socket, players, rooms, initializePlayer, connectingToOtherRoom) {

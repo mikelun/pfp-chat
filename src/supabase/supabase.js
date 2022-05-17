@@ -71,6 +71,7 @@ module.exports = {
         return await supabase
             .from('items')
             .select()
+            .eq('address', address)
     }
 
 
