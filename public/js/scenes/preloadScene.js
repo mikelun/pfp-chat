@@ -65,7 +65,7 @@ export class PreloadScene extends Phaser.Scene {
 
     }
     loadWeapons() {
-        const guns = ['p90', 'mp7', 'boom'];
+        const guns = ['p90', 'mp7', 'boom', 'smg_01', 'smg_02', 'smg_03', 'smg_04', 'smg_05', 'smg_06'];
         guns.forEach(gun => {
             this.load.image(gun, `assets/weapons/guns/${gun}.png`);
         });

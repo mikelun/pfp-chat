@@ -39,6 +39,7 @@ function createCell(x, y, chestType, price) {
     const cellBackground = self.add.image(x, y, 'cell-shop').setOrigin(0, 0).setScale(2.5);
 
     const buyButton = self.add.image(x, y + 220, 'buy-button').setOrigin(0, 0).setScale(2.5).setAlpha(0.8);
+
     makeButtonInteractive(buyButton, 'BUY', 80, 70);
     const coinImage = self.add.image(x + 15, y + 235, 'coin1').setOrigin(0, 0).setScale(1.5);
     const priceText = self.add.text(x + 50, y + 228, `${price}`, { fontFamily: 'PixelFont', fontSize: '34px', color: '#ffffff' }).setOrigin(0, 0);
@@ -51,7 +52,7 @@ function createCell(x, y, chestType, price) {
     } else if (chestType == 2) {
         backgroundEffect.setTint(0x00ffff);
     } else {
-        backgroundEffect.setTint(0xff00ff);
+        backgroundEffect.setTint(0xff77aa);
     }
     backgroundEffect.setAlpha(1);
     backgroundEffect.play('background-lighting');

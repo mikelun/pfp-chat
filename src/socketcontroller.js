@@ -37,7 +37,7 @@ module.exports = (io) => {
             // playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, null);
             // return;
             supabase.getPlayerData(address).then(result => {
-                var data = result.data;
+                var data = result ? result.data : null;
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
                         playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, result.data);
@@ -323,9 +323,9 @@ function getLeaderboard(socket) {
 
 function getItems(socket, address) {
     supabase.getPlayerItems(address).then(result => {
-        if (!result || !result.data) return
+        if (!result || !result.data || !result.data[0]) return
         var itemsForClient = [];
-        result.data.forEach(itemData => {
+        result.data[0].items.forEach(itemData => {
             item = {
                 category: itemData.category,
                 count: itemData.count,

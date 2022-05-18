@@ -1,6 +1,12 @@
 import { makeButtonInteractive } from "./lowButttons";
 
-export function createCellInfo(self, idOrCount, name, description) {
+
+const rarityColors = {
+    "COMMON": "#ffffff",
+    "RARE": "#00ffff",
+    "EPIC": "#ff00ff",
+}
+export function createCellInfo(self, idOrCount, name, description, rarity) {
     self.cellInfoGroup.getChildren().forEach(function (child) {
         child.destroy();
     });
@@ -32,7 +38,7 @@ export function createCellInfo(self, idOrCount, name, description) {
     if (name.length > 15) {
         name = name.substring(0, 15) + '...';
     }
-    const nameText = self.add.text(backgroundInfo.x + 110, backgroundInfo.y + 160, name, { fontFamily: 'PixelFont', fontSize: '24px', color: '#ffffff' }).setOrigin(0.5, 0.5);
+    const nameText = self.add.text(backgroundInfo.x + 105, backgroundInfo.y + 160, name, { fontFamily: 'PixelFont', fontSize: '24px', color: '#ffffff' }).setOrigin(0.5, 0.5);
 
 
     const backgroundDescription = self.rexUI.add.roundRectangle(backgroundInfo.x + 15, backgroundInfo.y + 180, 190, 100, 5, 0x0e1420).setOrigin(0, 0).setAlpha(0.8);
@@ -46,6 +52,8 @@ export function createCellInfo(self, idOrCount, name, description) {
         fontFamily: 'PixelFont',
         maxLines: 5
     }).setOrigin(0, 0);
+
+    const rarityDescription = self.add.text(backgroundInfo.x + 25, backgroundInfo.y + 250, `${rarity}`, { fontFamily: 'PixelFont', fontSize: '21px', color: rarityColors[rarity] }).setOrigin(0, 0);
     // self.add.text(backgroundInfo.x + 25, backgroundInfo.y + 185, description, { fontFamily: 'PixelFont', fontSize: '20px', color: '#ffffff' }).setOrigin(0, 0);
 
     self.cellInfoGroup.add(backgroundInfo);
@@ -55,6 +63,7 @@ export function createCellInfo(self, idOrCount, name, description) {
     self.cellInfoGroup.add(nameText);
     self.cellInfoGroup.add(backgroundDescription);
     self.cellInfoGroup.add(descriptionText);
+    self.cellInfoGroup.add(rarityDescription);
 
     return proceedButton;
 }

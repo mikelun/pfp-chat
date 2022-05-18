@@ -233,9 +233,9 @@ function createCellsWithItems(self) {
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             if (playerItems[self.itemsPage * 12 + i + j * 4]) {
-                const image = self.add.image(self.sizerCells.x + i * 75 - 115, self.sizerCells.y + j * 75 - 115, playerItems[self.itemsPage * 12 + i + j * 4].texture);
+                const image = self.add.image(self.sizerCells.x + i * 75.5 - 115, self.sizerCells.y + j * 75 - 115, playerItems[self.itemsPage * 12 + i + j * 4].texture).setOrigin(0.5, 0.5);
                 // make size 40:40 px
-                image.setScale(35 / image.height);
+                image.setScale(40 / Math.max(image.height, image.width));
                 self.sizerCells.add(image);
             }
         }
@@ -269,11 +269,12 @@ function createCellInfoItems(self, item) {
     const count = item.count;
     const name = item.name;
     const description = item.description;
+    const rarity = item.rarity;
 
-    const proceedButton = createCellInfo(self, count, name, description);
+    const proceedButton = createCellInfo(self, count, name, description, rarity);
 
-    const image = self.add.image(865 + 55, 220 + 55, item.texture);
-    image.setScale(65 / image.height);
+    const image = self.add.image(865 + 55, 220 + 55, item.texture).setOrigin(0.5, 0.5);
+    image.setScale(50 / Math.max(image.height, image.width));
     
     self.cellInfoGroup.add(image);  
 
