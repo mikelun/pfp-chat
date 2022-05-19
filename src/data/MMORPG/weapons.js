@@ -4,7 +4,8 @@ module.exports =  [
         damage: 10,
         name: 'P90',
         description: 'THE FIRST WEAPON IN PFPCHAT',
-        rarity: 'COMMON'
+        rarity: 'COMMON',
+        id: 0,
     },
     {
         texture: 'smg_04',
@@ -12,6 +13,7 @@ module.exports =  [
         name: 'SMG-12',
         description: 'SMG-12',
         rarity: 'COMMON',
+        id: 1,
     },
     {
         texture: 'smg_01',
@@ -19,6 +21,7 @@ module.exports =  [
         name: 'SMG-2000',
         description: 'SMG-2000',
         rarity: 'COMMON',
+        id: 2,
     },
     {
         texture: 'smg_02',
@@ -26,6 +29,7 @@ module.exports =  [
         name: 'SMG-L4',
         description: 'SMG-L4',
         rarity: 'RARE',
+        id: 3,
     },
     {
         texture: 'smg_03',
@@ -33,6 +37,7 @@ module.exports =  [
         name: 'SMG-F17',
         description: 'SMG-F17',
         rarity: 'RARE',
+        id: 4,
     },
     {
         texture: 'smg_05',
@@ -40,6 +45,7 @@ module.exports =  [
         name: 'SMG-3000',
         description: 'SMG-3000',
         rarity: 'EPIC',
+        id: 5,
     },
     {
         texture: 'smg_06',
@@ -47,6 +53,7 @@ module.exports =  [
         name: 'SMG-Q1',
         description: 'SMG-Q1',
         rarity: 'RARE',
+        id: 6,
     },
 
 ]

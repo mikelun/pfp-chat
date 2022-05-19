@@ -1,6 +1,7 @@
 import { bullets } from "./weapon";
 
-export function createBullet(self, x, y, velocityX, velocityY, fromOtherPlayer = false) {
+export function createBullet(self, weaponId, x, y, velocityX, velocityY, fromOtherPlayer = false) {
+    console.log("CREATING BULLET FROM WEAPON ID: ", weaponId);
     const bullet = self.add.sprite(x, y, 'bullet-effect-1');
     if (!fromOtherPlayer) bullets.add(bullet);
 

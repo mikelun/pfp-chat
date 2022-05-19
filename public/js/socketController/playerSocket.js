@@ -5,7 +5,7 @@ import { createParticles } from "../utils/particles";
 import { addPlayer } from "../scenes/GameView/addPlayer";
 import { loadTexture } from "../scenes/GameView/loadTexture";
 import { addOtherPlayers } from "../scenes/GameView/addOtherPlayers";
-import { addWeapon, removeWeapon } from "../scenes/Weapons/weapon";
+import { addWeapon, changeWeapon, removeWeapon } from "../scenes/Weapons/weapon";
 import { updateLeaderboard } from "../MapBuilding/Maps/map8";
 import { updateNFTImage } from "../scenes/GameUI-elements/hud";
 // import { sendFile } from "express/lib/response";
@@ -32,11 +32,9 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
         if (self.mapId == 4) {
             createParticles(self);
-            sceneEvents.emit('changedMap', self.mapId);
-        } else {
-            sceneEvents.emit('changedMap', self.mapId);
         }
         
+        sceneEvents.emit('changedMap', self.mapId);
 
         if (self.mapId == 8) {
             addWeapon(self);
@@ -119,16 +117,20 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
                 self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
                 self.playerUI[playerInfo.playerId].headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
 
-                if (playerInfo.nft && self.player.id == playerInfo.playerId) {
-                    updateNFTImage(playerInfo.nft);
+                if (self.player.id == playerInfo.playerId) {
+                    changeWeapon(playerInfo.weapon);
+                    if (playerInfo.nft) updateNFTImage(playerInfo.nft);
                 }
 
 
-                if (playerInfo.textureId && playerInfo.textureId != playersList[i].textureId) {
+                if (playerInfo.textureId) {
                     // TODO: ADD FUNCTION FOR LOADING TEXTURE
                     // get otherPlayer with id
                     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
                         if (playerInfo.playerId === otherPlayer.playerId) {
+                            const otherPlayerWeapon = self.playerUI[playerInfo.playerId].weapon;
+                            if (otherPlayerWeapon) otherPlayerWeapon.setTexture(playerInfo.weapon.texture);
+                            
                             var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
                             if (textureFromInternet) {
                                 var type = 'crypto-duckies';
@@ -140,6 +142,8 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
                         }
                     });
                 }
+
+
                 showPlayersToTalk()
                 break;
             }
@@ -159,7 +163,12 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         sceneEvents.emit('getItems', items);
     });
 
+}
 
+
+// IF PLAYER SELECTED ITEM FROM INVENTORY
+export function itemSelected(category, itemId) {
+    self.socket.emit('itemSelected',  category, itemId);
 }
 
 function removePeer(socket_id) {

@@ -7,6 +7,7 @@ const mapsStartPoints = require("./data/mapsStartPoints");
 
 // MAIN ITEMS
 const items = require('./data/MMORPG/items');
+const weapons = require("./data/MMORPG/weapons");
 
 // peers for voice chat
 peers = {};
@@ -33,42 +34,31 @@ module.exports = (io) => {
 
         peers[socket.id] = socket
 
+        function addPlayer(address, planet, firstEntrance, data) {
+            console.log('ADDING NEW PLAYER WITH SOCKET ID: ', socket.id);
+            playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
+            getLeaderboard(socket);
+            getItems(socket, address)
+
+            if (players[socket.id].mapId == 8) {
+                socket.emit('updateRewardCoins', coins);
+            }
+        }
+
         socket.on('initializePlayer', (address, planet, firstEntrance) => {
-            // playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, null);
-            // return;
             supabase.getPlayerData(address).then(result => {
                 var data = result ? result.data : null;
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
-                        playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, result.data);
-                        getLeaderboard(socket);
-                        getItems(socket, address)
-
-                        if (players[socket.id].mapId == 8) {
-                            socket.emit('updateRewardCoins', coins);
-                        }
+                        addPlayer(address, planet, firstEntrance, data);
                     })
                 } else {
                     if (data) data = data[0];
                     if (data && data.planet != planet) data = null;
-                    playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
-                    getLeaderboard(socket);
-                    getItems(socket, address)
-                    if (players[socket.id].mapId == 8) {
-                        socket.emit('updateRewardCoins', coins);
-                    }
+                    addPlayer(address, planet, firstEntrance, data);
                 }
             })
         })
-        // create new player and add him to players
-        socket.on('addPlayer', (address, planet, playerInfo) => {
-            playerController.addPlayer(io, socket, players, address, planet, playerInfo, rooms, false, null);
-            supabase.getPlayerData(players[socket.id]);
-            getLeaderboard(socket);
-            getItems(socket, address)
-
-        });
-
 
         socket.on('connectToOtherRoom', (mapId) => {
             // disconnect from previous room
@@ -245,6 +235,17 @@ module.exports = (io) => {
             socket.emit('updatePlayerCoins', players[socket.id].coins);
         });
 
+        socket.on('itemSelected', (category, itemId) => {
+            if (category == 'weapons') {
+                supabase.checkItem(players[socket.id].address, category, itemId).then(res => {
+                    if (res && res.count) {
+                        players[socket.id].weapon = weapons[itemId];
+                        io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket.id]);
+                    }
+                })
+            }
+        })
+
     });
 
     // main timer
@@ -329,6 +330,7 @@ function getItems(socket, address) {
             item = {
                 category: itemData.category,
                 count: itemData.count,
+                itemId: itemData.item_id,
                 ...items[itemData.category][itemData.item_id],
             }
             itemsForClient.push(item);

@@ -2,7 +2,7 @@ import { updatePlayerCoins } from "../scenes/GameUI-elements/hud";
 import { addMonster } from "../scenes/GameView/addMonster";
 import { createCoin } from "../scenes/GameView/createCoin";
 import { createBullet } from "../scenes/Weapons/bullet";
-import { bullets } from "../scenes/Weapons/weapon";
+import { bullets, changeWeapon } from "../scenes/Weapons/weapon";
 
 var monstersList = {};
 
@@ -43,7 +43,7 @@ export function initializeRPGSocket(newSelf) {
 
     self.socket.on('weaponShot', (data) => {
         //console.log('maing shot with data', data);
-        createBullet(self, data.x, data.y, data.velocityX, data.velocityY, true);
+        createBullet(self, data.weaponId, data.x, data.y, data.velocityX, data.velocityY, true);
         const weapon =  self.playerUI[data.playerId].weapon;
         self.sound.play('gun2', { volume: 1 });
         weapon.rotation = data.angle;
@@ -77,6 +77,10 @@ export function initializeRPGSocket(newSelf) {
 
     self.socket.on('updatePlayerCoins', (coins) => {
         updatePlayerCoins(coins);
+    });
+
+    self.socket.on('changeWeapon', (weapon) => {
+        changeWeapon(weapon);
     });
 
 }

@@ -1,4 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
+import { itemSelected } from "../../socketController/playerSocket";
 import { createCellInfo } from "./inventoryUtils";
 import { closeAllPanels, makeButtonInteractive } from "./lowButttons";
 
@@ -278,6 +279,9 @@ function createCellInfoItems(self, item) {
     
     self.cellInfoGroup.add(image);  
 
+    proceedButton.on('pointerdown', function () {
+        itemSelected(item.category, item.itemId);
+    });
 
 
 }

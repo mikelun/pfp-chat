@@ -3,12 +3,16 @@ import { createBullet } from "./bullet";
 
 export var bullets;
 
-export function initializeWeapon(self, weapon) {
+var self;
+export function initializeWeapon(newSelf, weapon) {
+    self = newSelf;
+
     // Initialize weapon
     if (self.weapon) {
         self.weapon.destroy();
     }
     self.weapon = self.add.image(0, 0, weapon.texture).setAlpha(0);
+    self.weapon.id = weapon.id;
 
     if (bullets) return;
     bullets = self.add.group();
@@ -33,7 +37,7 @@ export function initializeWeapon(self, weapon) {
 
         // if player touch left mouse
         if (self.input.activePointer.isDown) {
-            const bullet = createBullet(self, self.weapon.x, self.weapon.y, Math.cos(angle) * 500, Math.sin(angle) * 500);
+            const bullet = createBullet(self, self.weapon.id, self.weapon.x, self.weapon.y, Math.cos(angle) * 500, Math.sin(angle) * 500);
             self.sound.play('gun2', { volume: 1 });
             weaponShot({
                 x: bullet.x,
@@ -41,7 +45,8 @@ export function initializeWeapon(self, weapon) {
                 velocityX: bullet.body.velocity.x,
                 velocityY: bullet.body.velocity.y,
                 angle: angle,
-                playerId: self.player.id
+                playerId: self.player.id,
+                weaponId: self.weapon.id
             });
             self.cameras.main.shake(50, 0.001);
             // after 2 secs, destroy bullet
@@ -81,4 +86,9 @@ export function addWeapon(self) {
     if (self.weapon.alpha === 0) {
         self.weapon.alpha = 1;
     }
+}
+
+export function changeWeapon(weapon) {  
+    self.weapon.id = weapon.id;
+    self.weapon.setTexture(weapon.texture);
 }

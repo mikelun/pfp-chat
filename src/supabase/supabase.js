@@ -72,7 +72,21 @@ module.exports = {
             .from('items')
             .select()
             .eq('address', address)
-    }
+    },
+
+    checkItem: async function (address, category, itemId) {
+        return (async () => {
+            console.log("HERE1")
+            if (developingUI) return;
+            const result = await supabase
+            .from('items')
+            .select()
+            .eq('address', address);
+            
+            return result.data[0].items.find(item => item.category === category && item.item_id == itemId);
+
+        })()
+    },
 
 
 
