@@ -85,7 +85,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         address: address,
         room: currentRoom,
         mapId: mapId,
-        weapon: weapons[0],
+        weapon: weapons[1],
         killedMonsters: killedMonsters,
         enterTime: enterTime,
         planet: room,

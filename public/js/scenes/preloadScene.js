@@ -72,12 +72,9 @@ export class PreloadScene extends Phaser.Scene {
 
 
 
-        this.load.spritesheet('bullet-effect-1', 'assets/weapons/effects/bullet-effect-1.png', {
-            frameWidth: 16,
-            frameHeight: 16,
-            spacing: 0,
-            margin: 0
-        });
+        this.load.spritesheet('bullet-effect-1', 'assets/weapons/effects/bullet-effect-1.png', {frameWidth: 16,frameHeight: 16,});
+        this.load.spritesheet('bullet-effect-2', 'assets/weapons/effects/bullet-effect-2.png', {frameWidth: 32,frameHeight: 32})
+        this.load.spritesheet('bullet-spritesheet-1', 'assets/weapons/effects/bullet-spritesheet-1.png', {frameWidth: 32,frameHeight: 32,});
     }
 
     loadUI() {

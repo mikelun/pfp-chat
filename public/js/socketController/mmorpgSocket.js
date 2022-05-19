@@ -43,7 +43,7 @@ export function initializeRPGSocket(newSelf) {
 
     self.socket.on('weaponShot', (data) => {
         //console.log('maing shot with data', data);
-        createBullet(self, data.weaponId, data.x, data.y, data.velocityX, data.velocityY, true);
+        createBullet(self, data.weaponId, data.x, data.y, true, data.angle);
         const weapon =  self.playerUI[data.playerId].weapon;
         self.sound.play('gun2', { volume: 1 });
         weapon.rotation = data.angle;
@@ -55,7 +55,6 @@ export function initializeRPGSocket(newSelf) {
     });
 
     self.socket.on('updateRewardCoins', (coins) => {
-        console.log(" GET COINS", coins);
         Object.keys(coins).forEach(coinId => {
             const coinData = coins[coinId];
 

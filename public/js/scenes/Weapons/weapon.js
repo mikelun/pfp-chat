@@ -30,14 +30,15 @@ export function initializeWeapon(newSelf, weapon) {
 
         // get angle between ox and x, y
         const angle = Phaser.Math.Angle.Between(self.player.x, self.player.y, x, y);
-        // add weapon with distance 100
+
         self.weapon.x = self.player.x + Math.cos(angle) * 10;
         self.weapon.y = self.player.y + 5 + Math.sin(angle) * 10;
         self.weapon.rotation = angle;
 
         // if player touch left mouse
         if (self.input.activePointer.isDown) {
-            const bullet = createBullet(self, self.weapon.id, self.weapon.x, self.weapon.y, Math.cos(angle) * 500, Math.sin(angle) * 500);
+            const bullet = createBullet(self, self.weapon.id, self.player.x, self.player.y, false, angle);
+            
             self.sound.play('gun2', { volume: 1 });
             weaponShot({
                 x: bullet.x,
