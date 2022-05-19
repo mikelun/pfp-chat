@@ -1,18 +1,10 @@
 import { bullets } from "./weapon";
 
+
+const bulletEffects = [bullet0];
 export function createBullet(self, weaponId, x, y, velocityX, velocityY, fromOtherPlayer = false) {
-    console.log("CREATING BULLET FROM WEAPON ID: ", weaponId);
-    const bullet = self.add.sprite(x, y, 'bullet-effect-1');
-    if (!fromOtherPlayer) bullets.add(bullet);
+    const bullet = bulletEffects[weaponId](x, y);
 
-    self.anims.create({
-        key: 'bullet',
-        frames: self.anims.generateFrameNumbers('bullet-effect-1', { start: 0, end: 4 }),
-        frameRate: 10,
-        repeat: -1,
-    });
-
-    bullet.play('bullet');
     // add velocity from player to weapon
     self.physics.add.existing(bullet);
     
@@ -26,5 +18,21 @@ export function createBullet(self, weaponId, x, y, velocityX, velocityY, fromOth
         }
     });
     
+    return bullet;
+}
+
+
+function bullet0(x, y) {
+    const bullet = self.add.sprite(x, y, 'bullet-effect-1');
+    if (!fromOtherPlayer) bullets.add(bullet);
+
+    self.anims.create({
+        key: 'bullet',
+        frames: self.anims.generateFrameNumbers('bullet-effect-1', { start: 0, end: 4 }),
+        frameRate: 10,
+        repeat: -1,
+    });
+
+    bullet.play('bullet');
     return bullet;
 }

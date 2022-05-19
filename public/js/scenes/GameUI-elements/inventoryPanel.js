@@ -243,6 +243,10 @@ function createCellsWithItems(self) {
     }
 
     self.inventoryPanelGroup.add(self.sizerCells);
+    
+    if (!visible) {
+        self.inventoryPanelGroup.setVisible(false);
+    }
 }
 
 function createCellInfoNFTs(self, nft) {

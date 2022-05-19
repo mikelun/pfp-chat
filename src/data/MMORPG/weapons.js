@@ -41,7 +41,7 @@ module.exports =  [
     },
     {
         texture: 'smg_05',
-        damage: 5,
+        damage: 40,
         name: 'SMG-3000',
         description: 'SMG-3000',
         rarity: 'EPIC',
@@ -49,7 +49,7 @@ module.exports =  [
     },
     {
         texture: 'smg_06',
-        damage: 5,
+        damage: 25,
         name: 'SMG-Q1',
         description: 'SMG-Q1',
         rarity: 'RARE',
