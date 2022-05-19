@@ -9,7 +9,7 @@ module.exports =  [
     },
     {
         texture: 'smg_04',
-        damage: 5,
+        damage: 14,
         name: 'SMG-12',
         description: 'SMG-12',
         rarity: 'COMMON',
@@ -17,7 +17,7 @@ module.exports =  [
     },
     {
         texture: 'smg_01',
-        damage: 5,
+        damage: 12,
         name: 'SMG-2000',
         description: 'SMG-2000',
         rarity: 'COMMON',
@@ -25,7 +25,7 @@ module.exports =  [
     },
     {
         texture: 'smg_02',
-        damage: 5,
+        damage: 25,
         name: 'SMG-L4',
         description: 'SMG-L4',
         rarity: 'RARE',
@@ -33,7 +33,7 @@ module.exports =  [
     },
     {
         texture: 'smg_03',
-        damage: 5,
+        damage: 23,
         name: 'SMG-F17',
         description: 'SMG-F17',
         rarity: 'RARE',
@@ -41,7 +41,7 @@ module.exports =  [
     },
     {
         texture: 'smg_05',
-        damage: 40,
+        damage: 45,
         name: 'SMG-3000',
         description: 'SMG-3000',
         rarity: 'EPIC',

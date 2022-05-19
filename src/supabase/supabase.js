@@ -61,6 +61,7 @@ module.exports = {
                 coins: player.coins,
                 textureId: player.textureId,
                 nft: player.nft,
+                weapon_id: player.weapon.id,
             })
             .eq('id', address)
     },

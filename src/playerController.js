@@ -59,6 +59,8 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var killedMonsters = 0;
     var coins = 0;
     var nft = null;
+    var weapon = weapons[0];
+    var weaponId = 0;
 
     if (data) {
         if (data.x) x = data.x;
@@ -69,6 +71,10 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         if (data.coins) coins = data.coins;
         if (data.textureId) textureId = data.textureId;
         if (data.nft) nft = data.nft;
+        if (data.weapon_id) {
+            weaponId = data.weapon_id;
+            weapon = weapons[weaponId];
+        }
     }
 
     const currentRoom = room + '$' + mapId;
@@ -85,11 +91,12 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         address: address,
         room: currentRoom,
         mapId: mapId,
-        weapon: weapons[1],
+        weapon: weapon,
         killedMonsters: killedMonsters,
         enterTime: enterTime,
         planet: room,
-        coins: coins
+        coins: coins,
+        weaponId: weaponId
     }
 
     return player;
