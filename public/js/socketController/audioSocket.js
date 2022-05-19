@@ -71,13 +71,16 @@ function addPeer(socket_id, am_initiator, self) {
     })
 
     peers[socket_id].on('stream', stream => {
-        console.log('Was here');
+
         let newVid = document.createElement('video')
         newVid.srcObject = stream
         newVid.id = socket_id
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
+
+        // hide video
+        newVid.style.display = "none"
         // append newVid to body
         document.body.appendChild(newVid)
     });
