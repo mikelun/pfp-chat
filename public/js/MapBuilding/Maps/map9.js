@@ -20,24 +20,24 @@ var entranceMapId;
 
 var effects = [];
 
-export const addMapID= addMap;
-export const addPhysicsForMapID = addPhysicsForMap;
-export const addUpdateForMapID = addUpdateForMap;
+export const addMap9= addMap;
+export const addPhysicsForMap9 = addPhysicsForMap;
+export const addUpdateForMap9 = addUpdateForMap;
 
 
 function addMap(self) {
-    map = self.make.tilemap({ key: 'ID' });
+    map = self.make.tilemap({ key: '9' });
     
-    const tileset1 = map.addTilesetImage('Mid-TownA5', 'Mid-TownA5');
-    const tileset2 = map.addTilesetImage('Mid-TownC', 'Mid-TownC');
+    const tileset1 = map.addTilesetImage('TilemapDay', 'tiles'); 
+
+    const tileset2 = map.addTilesetImage('Interior', 'Interior');
 
     // Create layers and collides for physics
-    self.layer1.add(map.createStaticLayer('floor', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('objects', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('objects-1', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('objects-2', [tileset1, tileset2]));
+    self.layer1.add(map.createStaticLayer('1', [tileset1, tileset2]));
+    self.layer1.add(map.createStaticLayer('2', [tileset1, tileset2]));
+    self.layer1.add(map.createStaticLayer('3', [tileset1, tileset2]));
 
-    self.invisibleWalls = map.createLayer('invisibleWalls', tileset1).setCollisionByProperty({ collides: true });;
+    self.invisibleWalls = map.createLayer('invisibleWalls', tileset2).setCollisionByProperty({ collides: true });;
     self.invisibleWalls.setVisible(false);
 
 
@@ -47,6 +47,46 @@ function addMap(self) {
     addEntrancesToMap(self);
 
     startMapTransition(self, [lights, entrances, effects]);
+
+    var previousTileIndex;
+    var previousTile;
+    var redRectangle;
+
+    self.input.on('pointermove', function (pointer) {
+        let pointerPosition = self.input.activePointer.positionToCamera(self.cameras.main);
+        let tilePosition = map.worldToTileXY(pointerPosition.x, pointerPosition.y);
+        
+        let tile = map.getTileAt(tilePosition.x, tilePosition.y, true, '3');
+
+        if (redRectangle) redRectangle.destroy();
+        if (tile.index == -1) {
+            redRectangle = self.add.rectangle(tile.pixelX, tile.pixelY, tile.width, tile.height, 0xFF0000).setAlpha(0.1).setOrigin(0, 0);
+        if (previousTile && (previousTile.x !=  tilePosition.x || previousTile.y !=  tilePosition.y)) {
+            previousTile.index = previousTileIndex;
+            previousTile.alpha = 1;
+            if (redRectangle) redRectangle.destroy();
+
+            previousTileIndex = tile.index;
+            previousTile = tile;
+        }
+       
+        if (!previousTile) {
+            previousTileIndex = tile.index;
+            previousTile = tile;
+        }
+
+        tile.index = 2050;
+
+        // set alpha for this tile
+        tile.alpha = 0.5;
+    }
+    });
+    
+    self.input.on('pointerdown', function (pointer) {
+        previousTile.index = 2050;
+        previousTile.alpha = 1;
+        previousTile = null;
+    });
 }
 
 // add physics when player added to map

@@ -2,7 +2,7 @@
 module.exports =  {
     "buildship": 2,
     "crypto-duckies": 3,
-    "coffeebar": 4
+    "coffeebar": 9
 }
 
 // MAP1 - 200,800 
