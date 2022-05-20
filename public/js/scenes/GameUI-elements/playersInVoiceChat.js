@@ -40,7 +40,7 @@ export function buildVoiceChatPanel(self) {
             bottom: 20
         }
 
-    }).setOrigin(0).layout()
+    }).setOrigin(0).layout().setVisible(false);
 }
 
 var createGrid = function (scene) {

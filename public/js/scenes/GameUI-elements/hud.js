@@ -33,5 +33,4 @@ export function updateNFTImage(nftImage) {
         dom.style.height = '52px';
         self.add.dom(45, 48, dom);
     }
-
 }

@@ -18,6 +18,7 @@ export function createButtons(newSelf) {
     createButton2();
     createButton3();
     createButton4();
+    createHomeButton();
 
 }
 
@@ -81,6 +82,11 @@ function createButton4() {
     });
 }
 
+function createHomeButton() {
+    self.homeButton =  self.add.image(width - 85, height - 85, 'home-button').setScale(4).setAlpha(0.8);
+    makeButtonInteractive(self.homeButton, 'HOME', 0, 70);
+}
+
 export function closeAllPanels() {
     self.inventoryPanelGroup.setVisible(false);
     self.cellInfoGroup.setVisible(false);
@@ -96,6 +102,7 @@ export function closeAllPanels() {
     self.discordButton.setAlpha(0.8);
 
 }
+
 
 export function makeButtonInteractive(object, text, offsetX, offsetY, originZero = false) {
     const hooverText = self.add.text(object.x + offsetX, object.y + offsetY, text, { fontFamily: 'PixelFont', fontSize: '24px', color: '#ffffff' }).setOrigin(0.5).setAlpha(0);

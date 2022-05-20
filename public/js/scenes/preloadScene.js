@@ -102,6 +102,7 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('buy-button', 'assets/game-ui/new-ui/buy-button.png');
         this.load.image('shop-panel', 'assets/game-ui/new-ui/shop-panel.png');
         this.load.image('cell-shop', 'assets/game-ui/new-ui/cell-shop.png');
+        this.load.image('home-button', 'assets/game-ui/new-ui/home-button.png');
     }
 
     loadCoins() {
