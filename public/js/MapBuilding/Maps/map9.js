@@ -20,6 +20,9 @@ var entranceMapId;
 
 var effects = [];
 
+var spaceKey;
+
+var wallsCollider;
 export const addMap9= addMap;
 export const addPhysicsForMap9 = addPhysicsForMap;
 export const addUpdateForMap9 = addUpdateForMap;
@@ -29,7 +32,7 @@ export const clearMap9 = clearMap;
 
 function addMap(self) {
     spaceKey = false;
-    
+
     map = self.make.tilemap({ key: '9' });
     
     const tileset1 = map.addTilesetImage('TilemapDay', 'tiles'); 
@@ -101,7 +104,7 @@ function addMap(self) {
 
 // add physics when player added to map
 function addPhysicsForMap(self) {
-    self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
+    wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
 }
 
 function addLightsToMap(self) {
@@ -131,6 +134,8 @@ function addUpdateForMap(self, time, delta) {
 }
 
 function clearMap(self) {
+    wallsCollider.destroy();
+    
     map.destroy();
     
     lights.forEach(light => {

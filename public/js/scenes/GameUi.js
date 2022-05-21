@@ -3,6 +3,7 @@ import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 import { createAnimationsUI } from './GameUI-elements/animationsUI';
+import { editHome } from './GameUI-elements/editHome';
 import { createErrorPanel } from './GameUI-elements/errorPanel';
 import { initializeHUD } from './GameUI-elements/hud';
 import { createButtons } from './GameUI-elements/lowButttons';
@@ -88,6 +89,8 @@ export class GameUi extends Phaser.Scene {
 
         // create microphone and headphones
         createTalkIcons(this);
+
+        //editHome(this);
 
     }
 

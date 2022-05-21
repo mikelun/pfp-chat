@@ -1,4 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
+import { editHome } from "./editHome";
 import { createInventoryPanel } from "./inventoryPanel";
 import { createShopPanel } from "./shopPanel";
 
@@ -142,6 +143,10 @@ function createEditHomeButton() {
     self.editHomeButton.on('pointerout', () => {
         hideHomeButtons();
     });
+
+    self.editHomeButton.on('pointerdown', () => {
+        editHome(self); 
+    });
 }
 
 function createPlanetsButton() {
@@ -201,7 +206,7 @@ export function makeButtonInteractive(object, text, offsetX, offsetY, originZero
 
 function hideHomeButtons() {
     setTimeout(() => {
-        if (self.goHomeButton.alpha == 0.8 && self.editHomeButton.alpha == 0.8 && self.homeButton.alpha == 0.8 && self.planetsButton.alpha == 0.8) {
+        if (self.goHomeButton.alpha != 1 && self.editHomeButton.alpha != 1 && self.homeButton.alpha != 1 && self.planetsButton.alpha != 1) {
             self.goHomeButton.setVisible(false);
             self.editHomeButton.setVisible(false);
             self.planetsButton.setVisible(false);
@@ -230,4 +235,24 @@ function slideHomeButtons() {
         ease: 'Power1',
         delay: 100,
     });
+}
+
+
+export function hideAllButtons() {
+    self.accountButton.setVisible(false);
+    self.shopButton.setVisible(false);
+    self.discordButton.setVisible(false);
+    self.inventoryButton.setVisible(false);
+    self.homeButton.setVisible(false);
+    hideHomeButtons();
+
+}
+
+export function showAllButtons() {
+    self.accountButton.setVisible(true);
+    self.shopButton.setVisible(true);
+    self.discordButton.setVisible(true);
+    self.inventoryButton.setVisible(true);
+    self.homeButton.setVisible(true);
+    hideHomeButtons();
 }
