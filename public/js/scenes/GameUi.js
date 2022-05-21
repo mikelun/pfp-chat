@@ -3,6 +3,7 @@ import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 import { createAnimationsUI } from './GameUI-elements/animationsUI';
+import { createErrorPanel } from './GameUI-elements/errorPanel';
 import { initializeHUD } from './GameUI-elements/hud';
 import { createButtons } from './GameUI-elements/lowButttons';
 import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
@@ -80,6 +81,8 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('updateOnlinePlayers', this.updateOnlinePlayers, this);
 
+        sceneEvents.on('createErrorMessage', this.createErrorMessage, this);
+
         // ADD TEXT CHAT
         addChat(this);
 
@@ -118,6 +121,11 @@ export class GameUi extends Phaser.Scene {
     updateCurrentPlayers(players, playerName) {
         updateVoiceChatPanel(this, players, playerName);
     }
+
+    createErrorMessage(message) {
+        createErrorPanel(this, message);
+    }
+
 
 
 

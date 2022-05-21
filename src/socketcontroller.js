@@ -60,11 +60,11 @@ module.exports = (io) => {
             })
         })
 
-        socket.on('connectToOtherRoom', (mapId, roomId = null) => {
-            connectToOtherRoom(mapId, roomId);
+        socket.on('connectToOtherRoom', (mapId) => {
+            connectToOtherRoom(mapId);
         })
         
-        function connectToOtherRoom(mapId, roomId) {
+        function connectToOtherRoom(mapId) {
             // disconnect from previous room
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
                 if (rooms[players[socket.id].room][i] == socket.id) {
@@ -80,7 +80,11 @@ module.exports = (io) => {
             // connect to other room
             const previousMap = players[socket.id].mapId;
             var room = players[socket.id].planet + '$' + mapId;
-            if (roomId) room = roomId;
+            if (players[socket.id].isHome) {
+                room = players[socket.id].planet + '$' + players[socket.id].address;
+            }
+
+            console.log("connecting to room", room);
 
             socket.join(room);
             players[socket.id].room = room;
@@ -260,13 +264,14 @@ module.exports = (io) => {
         socket.on('connectToRoom', (data) => {
             if (data.isMyRoom) {
                 if (players[socket.id].address) {
+                    players[socket.id].isHome = true;
                     socket.emit('connectToRoom', {mapId: 9, error: false});
     
                 } else {
                     socket.emit('connectToRoom', {error: true, message: 'You should connect metamask to get your room'});
                 }
             } else {
-                console.log('PLANET NAME: ', data.planetname);
+                players[socket.id].isHome = false;
                 players[socket.id].planet = data.planetName;
                 socket.emit('connectToRoom', {mapId: 4});
             }

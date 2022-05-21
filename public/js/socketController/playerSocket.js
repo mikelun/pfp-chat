@@ -169,7 +169,10 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     });
 
     self.socket.on('connectToRoom', (data) => {
-        if (data.error) return;
+        if (data.error) {
+            sceneEvents.emit('createErrorMessage', 'TO USE THIS FUNCTION YOU SHOULD CONNECT METAMASK');
+            return;
+        }
         changeMap(self, data.mapId);
     });
 
@@ -178,7 +181,6 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     });
 
     sceneEvents.on('connectToPlanet', (planetName) => {
-        console.log("HERE");
         self.socket.emit('connectToRoom', {planetName: planetName, isMyRoom: false});
     });
 

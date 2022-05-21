@@ -61,6 +61,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var nft = null;
     var weapon = weapons[0];
     var weaponId = 0;
+    var isHome = false;
 
     if (data) {
         if (data.x) x = data.x;
@@ -75,10 +76,19 @@ function createPlayerData(socket, address, room, playerInfo, data) {
             weaponId = data.weapon_id;
             weapon = weapons[weaponId];
         }
+        if (data.is_home) {
+            isHome = data.is_home;
+        }
     }
 
-    const currentRoom = room + '$' + mapId;
+    var currentRoom = room + '$' + mapId;
 
+    if (isHome) {
+        currentRoom = room + '$' + address;
+    }
+
+    console.log('connecting to room: ' + currentRoom);
+    
     const player = {
         x: x,
         y: y,
@@ -96,7 +106,8 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         enterTime: enterTime,
         planet: room,
         coins: coins,
-        weaponId: weaponId
+        weaponId: weaponId,
+        isHome: isHome
     }
 
     return player;
