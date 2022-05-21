@@ -360,7 +360,7 @@ function getLeaderboard(socket) {
 
 function getItems(socket, address) {
     supabase.getPlayerItems(address).then(result => {
-        if (!result || !result.data || !result.data[0]) return
+        if (!result || !result.data || !result.data[0] || !result.data[0].items) return
         var itemsForClient = [];
         result.data[0].items.forEach(itemData => {
             item = {

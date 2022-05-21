@@ -1,8 +1,10 @@
+import { sceneEvents } from "../../Events/EventsCenter";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
 import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
 import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
+import { buildTile, editTile, stopBuilding } from "../editTiles";
 import { showMap } from "../showMap";
 import { clearMapWithTransition, startMapTransition } from "./maps-utils";
 
@@ -55,51 +57,15 @@ function addMap(self) {
 
     startMapTransition(self, [lights, entrances, effects]);
 
-    var previousTileIndex;
-    var previousTile;
-    var redRectangle;
-
-    self.input.on('pointermove', function (pointer) {
-        return;
-
-        let pointerPosition = self.input.activePointer.positionToCamera(self.cameras.main);
-
-        let tilePosition = map.worldToTileXY(pointerPosition.x, pointerPosition.y);
-
-        let floorTile = map.getTileAt(tilePosition.x, tilePosition.y, true, '1');
-        if (!floorTile || floorTile.index == -1) return;
-
-        let tile = map.getTileAt(tilePosition.x, tilePosition.y, true, '3');
-        if (tile.index != -1) return;
-
-        if (previousTile && (previousTile.x !=  tilePosition.x || previousTile.y !=  tilePosition.y)) {
-            previousTile.index = previousTileIndex;
-            previousTile.alpha = 1;
-            if (redRectangle) redRectangle.destroy();
-            console.log('previousTile.index', previousTile.index);
-
-            previousTileIndex = tile.index;
-            previousTile = tile;
-        }
-       
-        if (!previousTile) {
-            previousTileIndex = tile.index;
-            previousTile = tile;
-        }
-
-        tile.index = 2050;
-
-        // set alpha for this tile
-        tile.alpha = 0.5;
+    sceneEvents.on('start-build', (index) => {
+        editTile(self, map, {building: true, index: index});
     });
-    
-    self.input.on('pointerdown', function (pointer) {
-        return;
-        if (!previousTile) return;
-        previousTile.index = 2050;
-        previousTile.alpha = 1;
-        previousTile = null;
-    });
+
+    sceneEvents.on('start-remove', () => {
+        editTile(self, map, {building: false});
+    })
+    sceneEvents.on('stop-building', stopBuilding);
+
 }
 
 // add physics when player added to map
@@ -135,7 +101,7 @@ function addUpdateForMap(self, time, delta) {
 
 function clearMap(self) {
     wallsCollider.destroy();
-    
+
     map.destroy();
     
     lights.forEach(light => {

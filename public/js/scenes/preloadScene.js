@@ -106,8 +106,13 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('shop-panel', 'assets/game-ui/new-ui/shop-panel.png');
         this.load.image('cell-shop', 'assets/game-ui/new-ui/cell-shop.png');
         this.load.image('home-button', 'assets/game-ui/new-ui/home-button.png');
+        this.load.image('build-button', 'assets/game-ui/new-ui/build-button.png');
+        this.load.image('remove-button', 'assets/game-ui/new-ui/remove-button.png');
     }
 
+    loadTilesForEditHome() {
+        this.load.spritesheet('spritesheet-TilemapDay', 'assets/tiles/TilemapDay.png', {frameWidth: 32,frameHeight: 32,});
+    }
     loadCoins() {
         this.load.spritesheet('coin1', 'assets/coins/coin1.png', {
             frameWidth: 20,
@@ -149,6 +154,7 @@ export class PreloadScene extends Phaser.Scene {
         this.loadArtifacts();
         this.loadSoundFX();
         this.loadEffects();
+        this.loadTilesForEditHome();
 
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
