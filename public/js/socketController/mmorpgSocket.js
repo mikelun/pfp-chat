@@ -94,6 +94,7 @@ export function weaponShot(data) {
 
 
 export function removeAllMonsters() {
+    console.log('removing all monsters');
     Object.keys(monstersList).forEach(monsterId => {
         monstersList[monsterId].destroyWithoutAnimation(monstersList[monsterId]);
         delete monstersList[monsterId];
@@ -101,7 +102,7 @@ export function removeAllMonsters() {
     monstersList = {};
 
     // remove bullets
-    bullets.getChildren().forEach(bullet => {
+    if (bullets) bullets.getChildren().forEach(bullet => {
         bullet.setAlpha(0);
     });
 

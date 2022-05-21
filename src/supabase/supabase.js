@@ -4,7 +4,7 @@ supabase = null;
 
 development = false;
 
-developingUI = true;
+developingUI = false;
 
 module.exports = {
     initializeSupabase: async function () {

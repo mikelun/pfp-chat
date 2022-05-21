@@ -80,6 +80,7 @@ export class MainScene extends Phaser.Scene {
         });
 
         initialAnimations(this);
+
         // first entrance
         this.firstEntrance = true;
 
@@ -94,18 +95,11 @@ export class MainScene extends Phaser.Scene {
 
         initializeSocket(this, peers, currentPlayers);
 
-
-
-
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
 
         // INITIAlIZE AMPLITUDE (Util for analytics)
         initializeAmplitude();
-
-        //localStorage.removeItem('playerInfo');
-        //localStorage.clear();
-
 
         // add main camera zoom
         this.cameras.main.setZoom(2);
@@ -113,11 +107,7 @@ export class MainScene extends Phaser.Scene {
         initializeAudioStream(this);
 
         // add keyboard events
-        keyboardEvents(this);
-        // fix problem with touching space
-        //var keyObj = this.input.keyboard.addKey('SPACE');  // Get key object
-        //keyObj.on('down', function (event) { });
-
+        keyboardEvents(this);;
 
         // Create Animations for heroes
         for (let i = 0; i < 33; i++) {
@@ -172,6 +162,8 @@ export class MainScene extends Phaser.Scene {
  * @param {this.player} player 
  */
 function emitPlayerPosition(self) {
+    if (!self.player) return;
+
     var player = self.player;
     var socket = self.socket;
     // emit player movement
@@ -190,6 +182,8 @@ function emitPlayerPosition(self) {
 }
 
 function sendPlayerPosition(self, time) {
+    if (!self.player) return;
+    
     let currentTime = Math.floor(time / 25);
     if (currentTime != self.lastTime) {
         emitPlayerPosition(self);
@@ -199,6 +193,8 @@ function sendPlayerPosition(self, time) {
 
 
 function updatePeopleForTalk(self) {
+    if (!self.player) return;
+    
     // if player turn off headphones(deafen mode)
     if (self.deafen) return;
 
@@ -239,6 +235,8 @@ export function removeAllPeopleFromTalk(self) {
 }
 
 function updateLocalStorage(self, time) {
+    if (!self.player) return;
+    
     let currentTime = Math.floor(time / 1000);
     if (currentTime != self.lastTimeLocalStorage) {
         const playerInfo = {

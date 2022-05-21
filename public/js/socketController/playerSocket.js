@@ -8,6 +8,10 @@ import { addOtherPlayers } from "../scenes/GameView/addOtherPlayers";
 import { addWeapon, changeWeapon, removeWeapon } from "../scenes/Weapons/weapon";
 import { updateLeaderboard } from "../MapBuilding/Maps/map8";
 import { updateNFTImage } from "../scenes/GameUI-elements/hud";
+import { changeMap } from "../scenes/GameView/changeMap";
+import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
+import { clearMap } from "../MapBuilding/showMap";
+import { removeAllMonsters } from "./mmorpgSocket";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -20,7 +24,8 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     self.otherPlayers = self.physics.add.group();
 
     function showCurrentPlayers(players) {
-
+        removeAllMonsters();
+        
         Object.keys(players).forEach(function (id) {
             if (players[id].playerId === self.socket.id) {
                 addPlayer(self, players[id]);
@@ -162,6 +167,23 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     self.socket.on('updatePlayerItems', (items) => {
         sceneEvents.emit('getItems', items);
     });
+
+    self.socket.on('connectToRoom', (data) => {
+        if (data.error) return;
+        changeMap(self, data.mapId);
+    });
+
+    sceneEvents.on('connectToMyRoom', () => {
+        self.socket.emit('connectToRoom', {isMyRoom: true});
+    });
+
+    sceneEvents.on('connectToPlanet', (planetName) => {
+        console.log("HERE");
+        clearMap(self);
+        //self.socket.emit('connectToRoom', {planetName: planetName, isMyRoom: false});
+    });
+
+
 
 }
 

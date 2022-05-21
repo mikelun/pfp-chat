@@ -56,6 +56,9 @@ export function initializeWeapon(newSelf, weapon) {
 }
 
 export function updateWeapon(self) {
+
+    if (!self.player) return;
+    
     if (self.weapon && self.weapon.alpha === 1) {
         // log mouse point position
         const x = self.input.activePointer.x + self.cameras.main.scrollX;

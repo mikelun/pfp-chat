@@ -60,7 +60,11 @@ module.exports = (io) => {
             })
         })
 
-        socket.on('connectToOtherRoom', (mapId) => {
+        socket.on('connectToOtherRoom', (mapId, roomId = null) => {
+            connectToOtherRoom(mapId, roomId);
+        })
+        
+        function connectToOtherRoom(mapId, roomId) {
             // disconnect from previous room
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
                 if (rooms[players[socket.id].room][i] == socket.id) {
@@ -75,7 +79,9 @@ module.exports = (io) => {
 
             // connect to other room
             const previousMap = players[socket.id].mapId;
-            const room = players[socket.id].planet + '$' + mapId;
+            var room = players[socket.id].planet + '$' + mapId;
+            if (roomId) room = roomId;
+
             socket.join(room);
             players[socket.id].room = room;
             players[socket.id].mapId = mapId;
@@ -102,9 +108,7 @@ module.exports = (io) => {
 
             // updatePlayerInfo in database
             supabase.updatePlayerInfo(players[socket.id]);
-
-
-        })
+        }
 
         // when a player moves, update the player data
         socket.on('playerMovement', function (movementData) {
@@ -123,7 +127,8 @@ module.exports = (io) => {
             if (data.textureId) players[socket_id].textureId = data.textureId;
             if (data.deafen != null) players[socket_id].deafen = data.deafen;
             io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
-        })
+        });
+
 
 
         /**
@@ -202,7 +207,10 @@ module.exports = (io) => {
         });
 
 
-        // MMORPG 
+
+        /**
+         * SOCKET FOR MMORPG
+         */
         socket.on('hitMonster', (monsterId) => {
             const damage = players[socket.id].weapon.damage;
             const monster = monstersList[monsterId];
@@ -230,8 +238,9 @@ module.exports = (io) => {
             if (!coins[coinId] || !coins[coinId].value) return;
             players[socket.id].coins += coins[coinId].value;
             delete coins[coinId];
-            socket.to(players[socket.id].room).emit('updateRewardCoins', coins);
 
+            socket.to(players[socket.id].room).emit('updateRewardCoins', coins);
+            
             socket.emit('updatePlayerCoins', players[socket.id].coins);
         });
 
@@ -244,11 +253,31 @@ module.exports = (io) => {
                     }
                 })
             }
-        })
+        });
+
+
+
+        socket.on('connectToRoom', (data) => {
+            if (data.isMyRoom) {
+                if (players[socket.id].address) {
+                    socket.emit('connectToRoom', {mapId: 9, error: false});
+    
+                } else {
+                    socket.emit('connectToRoom', {error: true, message: 'You should connect metamask to get your room'});
+                }
+            } else {
+                console.log('PLANET NAME: ', data.planetname);
+                players[socket.id].planet = data.planetName;
+                socket.emit('connectToRoom', {mapId: 4});
+            }
+        });
 
     });
 
-    // main timer
+    /**
+     * MAIN INTERVAL
+     * UPDATE PLAYERS AND MONSTERS (FOR MMORPG)
+     */
     setInterval(() => {
         // get for in object 
         for (var room in rooms) {
@@ -282,7 +311,9 @@ module.exports = (io) => {
 
     }, 30);
 
-    // create monsters
+    /**
+     * CREATING MONSTERS
+     */
     setInterval(() => {
         if (rooms["coffeebar$8"] && rooms["coffeebar$8"].length) {
             // create monster

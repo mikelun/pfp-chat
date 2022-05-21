@@ -1,120 +1,178 @@
+import { object } from "sharp/lib/is";
+import { changeMap } from "../../scenes/GameView/changeMap";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
+import { disconnectPlayer } from "../../scenes/GameView/disconnectPlayer";
 import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
 import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
 import { showMap } from "../showMap";
+import { createLight } from "./map4";
 import { clearMapWithTransition, startMapTransition } from "./maps-utils";
 
+// lights for map
+var redLights = [];
+var blueLights = [];
+var warmLights = [];
 
-// main map
-var map;
-
-// all lights on map
-var lights = [];
-
-// entrances
+// var entrances
 var entrances = [];
 var entranceMapId;
 
+var coffeebar;
 
-var effects = [];
+var spaceKey;
 
-export const addMapID= addMap;
-export const addPhysicsForMapID = addPhysicsForMap;
-export const addUpdateForMapID = addUpdateForMap;
+var wallsCollider;
 
+// Add map with id 
+export function addMap6(self) {
+    coffeebar = self.make.tilemap({ key: 'coffeebar-map' });
 
-function addMap(self) {
-    map = self.make.tilemap({ key: 'ID' });
-    
-    const tileset1 = map.addTilesetImage('Mid-TownA5', 'Mid-TownA5');
-    const tileset2 = map.addTilesetImage('Mid-TownC', 'Mid-TownC');
+    const tileset1 = coffeebar.addTilesetImage('Low-TownA5', 'Low-TownA5');
+    const tileset2 = coffeebar.addTilesetImage('Low-TownB', 'Low-TownB');
+    const tileset3 = coffeebar.addTilesetImage('Low-TownC', 'Low-TownC');
+    const tileset4 = coffeebar.addTilesetImage('Low-TownD', 'Low-TownD');
+    const tileset5 = coffeebar.addTilesetImage('Mid-TownA5', 'Mid-TownA5');
+    const tileset6 = coffeebar.addTilesetImage('Mid-TownD', 'Mid-TownD');
 
-    // Create layers and collides for physics
-    self.layer1.add(map.createStaticLayer('floor', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('objects', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('objects-1', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('objects-2', [tileset1, tileset2]));
-
-    self.invisibleWalls = map.createLayer('invisibleWalls', tileset1).setCollisionByProperty({ collides: true });;
+    // Create layers
+    self.layer1.add(coffeebar.createStaticLayer('floor', [tileset1, tileset2, tileset3, tileset4, tileset5, tileset6]));
+    self.layer1.add(coffeebar.createStaticLayer('objects-1', [tileset1, tileset2, tileset3, tileset4, tileset5, tileset6]));
+    self.layer1.add(coffeebar.createStaticLayer('objects-2', [tileset1, tileset2, tileset3, tileset4, tileset5, tileset6]));
+    self.layer2.add(coffeebar.createStaticLayer('back-1', [tileset1, tileset2, tileset3, tileset4, tileset5, tileset6]));
+    self.invisibleWalls = self.layer1.add(coffeebar.createStaticLayer('invisibleWalls', [tileset2])).setCollisionByProperty({ collides: true });;
     self.invisibleWalls.setVisible(false);
 
-
+    self.cameras.main.setBounds(0, 0, coffeebar.widthInPixels, coffeebar.heightInPixels);
 
     addLightsToMap(self);
- 
-    addEntrancesToMap(self);
 
-    startMapTransition(self, [lights, entrances, effects]);
+    addEntrances(self);
+
+    startMapTransition(self, [redLights, blueLights, warmLights, entrances]);
 }
 
 // add physics when player added to map
-function addPhysicsForMap(self) {
-    self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls, () => {
-        if (!self.spaceKey) {
-            self.spaceKey = true;
-            // only follow this way I can remove wallsCollider (BUG WITH PHASER)    
-            self.input.keyboard.on('keydown-SPACE', function (event) {
-                if (entranceMapId) {
-                    self.newMap = entranceMapId;
-                    self.input.keyboard.off('keydown-SPACE');
-                    
-                    self.wallsCollider.destroy();
-                    
-                    clearMapWithTransition(self, clearMap);
-                }
-            });
+export function addPhysicsForMap6(self) {
+    wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
 
-        }
+
+}
+
+export function addUpdateForMap6(self) {
+    redLights.forEach(light => {
+        light.alpha = (Math.sin(self.time.now / 500) * 0.5 + 0.3);
     });
-}
 
-function addLightsToMap(self) {
-
-}
-
-function addEntrancesToMap(self) {
-    entrances.push({ entrance: self.add.rectangle(1403, 69, 60, 40, 0x00cccc), mapId: 6 });
-    self.layer1.add(entrances[0].entrance);
-}
-
-function addUpdateForMap(self, time, delta) {
-
-    // animate entrances
     entrances.forEach(object => {
-        object.entrance.alpha = (Math.sin(self.time.now / 500) * 0.4);
+        object.entrance.alpha = (Math.sin(self.time.now / 500) * 0.3);
         if (self.player) {
             if (checkOverlap(self.player, object.entrance)) {
                 entranceMapId = object.mapId;
+                spaceKey = false;
             } else if (entranceMapId === object.mapId) {
                 entranceMapId = null;
             }
         }
     });
+
+    // player touch space key 
+    if (self.input.keyboard.addKey('SPACE').isDown) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    }
+
 }
 
-function clearMap(self) {
-    map.destroy();
+
+
+function addLightsToMap(self) {
+
+    const redLightColor = { r: 255, g: 0, b: 0 };
+    const redLightItensity = 0.1;
+    const redLightRadius = 100;
+    redLights.push(createLight(self, 677, 853, redLightColor, redLightItensity, redLightRadius));
+
+    redLights.push(createLight(self, 1081, 880, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1383, 880, redLightColor, redLightItensity, redLightRadius));
+
+    redLights.push(createLight(self, 1113, 1260, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1350, 1260, redLightColor, redLightItensity, redLightRadius));
+
+    redLights.push(createLight(self, 218, 850, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 678, 1253, redLightColor, redLightItensity, redLightRadius));
+
+    redLights.push(createLight(self, 565, 430, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 565, 340, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 405, 430 - 32, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 405, 340 - 32, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 256, 430 - 32 * 2, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 256, 340 - 32 * 2, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 78, 430 - 32 * 3, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 78, 340 - 32 * 3, redLightColor, redLightItensity, redLightRadius));
+
+    redLights.push(createLight(self, 1030, 430, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1030, 340, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1183, 430 - 32, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1183, 340 - 32, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1352, 430 - 32 * 2, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1352, 340 - 32 * 2, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1510, 430 - 32 * 3, redLightColor, redLightItensity, redLightRadius));
+    redLights.push(createLight(self, 1510, 340 - 32 * 3, redLightColor, redLightItensity, redLightRadius));
+
+
+    const blueLightColor = { r: 0, g: 0, b: 230 };
+    blueLights.push(createLight(self, 720, 350, blueLightColor, 0.2, 200));
+    blueLights.push(createLight(self, 881, 350, blueLightColor, 0.2, 200));
+    blueLights.push(createLight(self, 591, 900, blueLightColor, 0.15, 200));
+
+    const warmLightColor = { r: 255, g: 160, b: 0 };
+    warmLights.push(createLight(self, 961, 802, warmLightColor, 0.1, 150));
+
     
-    lights.forEach(light => {
+}
+
+function addEntrances(self) {
+    entrances.push({ entrance: createBackgroundEntrance(self, 800, 480, 190, 60), mapId: 4 });
+    entrances.push({ entrance: createBackgroundEntrance(self, 1200, 930, 40, 60), mapId: 7 });
+    entrances.push({ entrance: createBackgroundEntrance(self, 145, 910, 60, 80), mapId: 8 });
+    entrances.forEach(entrance => {
+        self.layer1.add(entrance.entrance);
+    });
+}
+
+function createBackgroundEntrance(self, x, y, width, height) {
+    const entranceColor = 0x00cccc;
+    const entrance = self.add.rectangle(x, y, width, height, entranceColor).setAlpha(0.5);
+    //self.layer1.add(entrance);
+    return entrance;
+}
+
+
+export function clearMap6(self) {
+
+    //wallsCollider.destroy();
+
+    coffeebar.destroy();
+
+    redLights.forEach(light => {
         light.destroy();
     });
-    
+    blueLights.forEach(light => {
+        light.destroy();
+    });
+    warmLights.forEach(light => {
+        light.destroy();
+    });
     entrances.forEach(entrance => {
         entrance.entrance.destroy();
-    }); 
-
-    blackoutRectangle.destroy();
-    
-    self.caffeinumText.destroy();
-
-    lights = [];
+    });
     entrances = [];
+    redLights = [];
+    blueLights = [];
+    warmLights = [];
     self.spaceKey = false;
-    effects = [];
-
-
-    // start new map
-    connectToOtherMap(self);
 }

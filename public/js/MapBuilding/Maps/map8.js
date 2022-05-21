@@ -1,3 +1,4 @@
+import { changeMap } from "../../scenes/GameView/changeMap";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
 import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
@@ -25,12 +26,18 @@ var self;
 
 var sizer;
 
+var wallsCollider;
+var spaceKey;
+
 export const addMap8 = addMap;
 export const addPhysicsForMap8 = addPhysicsForMap;
 export const addUpdateForMap8 = addUpdateForMap;
+export const clearMap8 = clearMap;
 
 
 function addMap(self) {
+    spaceKey = false;
+    
     map = self.make.tilemap({ key: '8' });
 
     const tileset1 = map.addTilesetImage('Low-TownA5', 'Low-TownA5');
@@ -57,23 +64,7 @@ function addMap(self) {
 
 // add physics when player added to map
 function addPhysicsForMap(self) {
-    self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls, () => {
-        if (!self.spaceKey) {
-            self.spaceKey = true;
-            // only follow this way I can remove wallsCollider (BUG WITH PHASER)    
-            self.input.keyboard.on('keydown-SPACE', function (event) {
-                if (entranceMapId) {
-                    self.newMap = entranceMapId;
-                    self.input.keyboard.off('keydown-SPACE');
-
-                    self.wallsCollider.destroy();
-
-                    clearMapWithTransition(self, clearMap);
-                }
-            });
-
-        }
-    });
+    wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
 }
 
 function addLightsToMap(self) {
@@ -95,9 +86,18 @@ function addUpdateForMap(self, time, delta) {
                 entranceMapId = object.mapId;
             } else if (entranceMapId === object.mapId) {
                 entranceMapId = null;
+                spaceKey = false;
             }
         }
     });
+
+     // player touch space key
+     if (self.input.keyboard.addKey('SPACE').isDown) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    }
 }
 
 function addLeaderboard(newSelf) {
@@ -153,6 +153,7 @@ export function updateLeaderboard(data) {
 }
 
 function clearMap(self) {
+    wallsCollider.destroy();
     map.destroy();
 
     sizer.destroy();
@@ -170,8 +171,4 @@ function clearMap(self) {
     entrances = [];
     self.spaceKey = false;
     effects = [];
-
-
-    // start new map
-    connectToOtherMap(self);
 }

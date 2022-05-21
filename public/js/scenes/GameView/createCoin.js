@@ -53,6 +53,7 @@ export function createCoin(self, coinData, coinsList, coinId) {
             });
         });
         self.sound.play('coin1');
+        
         self.socket.emit('coinClaimed', coinId);
 
 

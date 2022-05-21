@@ -10,7 +10,7 @@ export function loadTexture(self, object, textureLink, type, isMainPlayer = fals
         object.setTexture(textureLink);
         return;
     }
-
+    
     self.load.image(textureLink, textureLink)
     self.load.on('filecomplete', function (key, file) {
         if (key == textureLink) {

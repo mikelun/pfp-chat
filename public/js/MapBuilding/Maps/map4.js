@@ -1,3 +1,4 @@
+import { changeMap } from "../../scenes/GameView/changeMap";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
 import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
@@ -21,7 +22,13 @@ var blackoutRectangle;
 
 var effects = [];
 
+var spaceKey;
+
+var wallsCollider;
+
 export function addMap4(self) {
+    spaceKey = false;
+    
     cafe = self.make.tilemap({ key: 'cafe' });
     const tilemapDayTileset = cafe.addTilesetImage('TilemapDay', 'tiles');
     const bakeryTileset = cafe.addTilesetImage('Bakery', 'Bakery');
@@ -66,23 +73,7 @@ export function addMap4(self) {
 
 // add physics when player added to map
 export function addPhysicsForMap4(self) {
-    self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls, () => {
-        if (!self.spaceKey) {
-            self.spaceKey = true;
-            // only follow this way I can remove wallsCollider (BUG WITH PHASER)    
-            self.input.keyboard.on('keydown-SPACE', function (event) {
-                if (entranceMapId) {
-                    self.newMap = entranceMapId;
-                    self.input.keyboard.off('keydown-SPACE');
-                    
-                    self.wallsCollider.destroy();
-                    
-                    clearMapWithTransition(self, clearMap4);
-                }
-            });
-
-        }
-    });
+    wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
 }
 
 function addEffect(self, x, y, name) {
@@ -173,10 +164,19 @@ export function addUpdateForMap4(self, time, delta) {
             if (checkOverlap(self.player, object.entrance)) {
                 entranceMapId = object.mapId;
             } else if (entranceMapId === object.mapId) {
-                entranceMapId = null;
+                spaceKey = false;
             }
         }
     });
+
+    // player touch space key 
+    if (self.input.keyboard.addKey('SPACE').isDown) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    }
+
     // // animate blue light
     if (self.blueLight && self.purpleLight && self.computerLight1 && self.computerLight2) {
         self.blueLight.x = 802 - Math.cos(time / 1000) * 100;
@@ -192,9 +192,10 @@ export function addUpdateForMap4(self, time, delta) {
     }
 }
 
-function clearMap4(self) {
+export function clearMap4(self) {
+    wallsCollider.destroy();
     cafe.destroy();
-    
+
     lights.forEach(light => {
         light.destroy();
     });
@@ -218,5 +219,5 @@ function clearMap4(self) {
 
 
     // start new map
-    connectToOtherMap(self);
+    //connectToOtherMap(self);
 }

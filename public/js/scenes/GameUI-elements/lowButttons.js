@@ -1,3 +1,4 @@
+import { sceneEvents } from "../../Events/EventsCenter";
 import { createInventoryPanel } from "./inventoryPanel";
 import { createShopPanel } from "./shopPanel";
 
@@ -18,7 +19,13 @@ export function createButtons(newSelf) {
     createButton2();
     createButton3();
     createButton4();
+
+    createGoHomeButton();
+    createEditHomeButton();
+    createPlanetsButton();
+   
     createHomeButton();
+
 
 }
 
@@ -85,8 +92,79 @@ function createButton4() {
 function createHomeButton() {
     self.homeButton =  self.add.image(width - 85, height - 85, 'home-button').setScale(4).setAlpha(0.8);
     makeButtonInteractive(self.homeButton, 'HOME', 0, 70);
+
+    // if on hoover
+    self.homeButton.on('pointerover', () => {
+        slideHomeButtons();
+    });
+
+    // if not on hoover
+    self.homeButton.on('pointerout', () => {
+        hideHomeButtons();
+    });
+
+    hideHomeButtons();
+
+
 }
 
+function createGoHomeButton() {
+    self.goHomeButton = self.rexUI.add.label({
+        x: width - 200,
+        y: height - 120,
+        background: self.add.image(0, 0, 'long-button'),
+        text: self.add.text(0, 0, 'HOME', {fontSize: '24px',fontFamily: 'PixelFont',color: '#ffffff'}),
+        space: {left: 42,right: 42,top: 5,bottom: 10}
+    }).setAlpha(0.8).layout();
+    makeButtonInteractive(self.goHomeButton, '', 0, 0);
+
+    self.goHomeButton.on('pointerout', () => {
+        hideHomeButtons();
+    });
+
+    self.goHomeButton.on('pointerdown', () => {
+        sceneEvents.emit('connectToMyRoom');
+    });
+
+}
+
+function createEditHomeButton() {
+    self.editHomeButton = self.rexUI.add.label({
+        x: width - 200,
+        y: height - 80,
+        background: self.add.image(0, 0, 'long-button'),
+        text: self.add.text(0, 0, 'EDIT HOME', {fontSize: '24px',fontFamily: 'PixelFont',color: '#ffffff'}),
+        space: {left: 20,right: 20,top: 5,bottom: 10}
+    }).setAlpha(0.8).layout();
+
+    makeButtonInteractive(self.editHomeButton, '', 0, 0);
+
+    self.editHomeButton.on('pointerout', () => {
+        hideHomeButtons();
+    });
+}
+
+function createPlanetsButton() {
+    self.planetsButton = self.rexUI.add.label({
+        x: width - 200,
+        y: height - 40,
+        background: self.add.image(0, 0, 'long-button'),
+        text: self.add.text(0, 0, 'PLANETS', {fontSize: '24px',fontFamily: 'PixelFont',color: '#ffffff'}),
+        space: {left: 27.5,right: 27.5,top: 5,bottom: 10}
+    }).setAlpha(0.8).layout();
+
+    makeButtonInteractive(self.planetsButton, '', 0, 0);
+
+    self.planetsButton.on('pointerout', () => {
+        hideHomeButtons();
+    });
+
+    self.planetsButton.on('pointerdown', () => {
+        sceneEvents.emit('connectToPlanet', 'coffeebar');
+    });
+    
+
+}
 export function closeAllPanels() {
     self.inventoryPanelGroup.setVisible(false);
     self.cellInfoGroup.setVisible(false);
@@ -118,5 +196,38 @@ export function makeButtonInteractive(object, text, offsetX, offsetY, originZero
         hooverText.setAlpha(0);
         if (object.selected) return;
         object.setAlpha(0.8);
+    });
+}
+
+function hideHomeButtons() {
+    setTimeout(() => {
+        if (self.goHomeButton.alpha == 0.8 && self.editHomeButton.alpha == 0.8 && self.homeButton.alpha == 0.8 && self.planetsButton.alpha == 0.8) {
+            self.goHomeButton.setVisible(false);
+            self.editHomeButton.setVisible(false);
+            self.planetsButton.setVisible(false);
+        } 
+    }, 30);
+}
+
+function slideHomeButtons() {
+
+    if (self.goHomeButton.visible == true) return;
+
+    const finalX = 1080;
+
+    self.goHomeButton.x = finalX + 100;
+    self.editHomeButton.x = finalX + 100;
+    self.planetsButton.x = finalX + 100;
+    
+    self.goHomeButton.setVisible(true);
+    self.editHomeButton.setVisible(true);
+    self.planetsButton.setVisible(true);
+
+    self.tweens.add({
+        targets: [self.goHomeButton, self.editHomeButton, self.planetsButton],
+        x:  finalX,
+        duration: 500,
+        ease: 'Power1',
+        delay: 100,
     });
 }

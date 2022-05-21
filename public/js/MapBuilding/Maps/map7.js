@@ -1,3 +1,4 @@
+import { changeMap } from "../../scenes/GameView/changeMap";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
 import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
@@ -20,7 +21,18 @@ var entranceMapId;
 
 var effects = [];
 
-export function addMap7(self) {
+var wallsCollider;
+var spaceKey;
+
+export const addMap7 = addMap;
+export const addUpdateForMap7 = addUpdateForMap;
+export const addPhysicsForMap7 = addPhysicsForMap;
+export const clearMap7 = clearMap;
+
+
+function addMap(self) {
+    spaceKey = false;
+    
     map = self.make.tilemap({ key: '7' });
     
     const tileset1 = map.addTilesetImage('Mid-TownA5', 'Mid-TownA5');
@@ -46,24 +58,8 @@ export function addMap7(self) {
 }
 
 // add physics when player added to map
-export function addPhysicsForMap7(self) {
-    self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls, () => {
-        if (!self.spaceKey) {
-            self.spaceKey = true;
-            // only follow this way I can remove wallsCollider (BUG WITH PHASER)    
-            self.input.keyboard.on('keydown-SPACE', function (event) {
-                if (entranceMapId) {
-                    self.newMap = entranceMapId;
-                    self.input.keyboard.off('keydown-SPACE');
-                    
-                    self.wallsCollider.destroy();
-                    
-                    clearMapWithTransition(self, clearMap);
-                }
-            });
-
-        }
-    });
+function addPhysicsForMap(self) {
+    wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
 }
 
 function addLightsToMap(self) {
@@ -75,7 +71,7 @@ function addEntrancesToMap(self) {
     self.layer1.add(entrances[0].entrance);
 }
 
-export function addUpdateForMap7(self, time, delta) {
+function addUpdateForMap(self, time, delta) {
 
     // animate entrances
     entrances.forEach(object => {
@@ -85,12 +81,24 @@ export function addUpdateForMap7(self, time, delta) {
                 entranceMapId = object.mapId;
             } else if (entranceMapId === object.mapId) {
                 entranceMapId = null;
+                spaceKey = false;
             }
         }
     });
+
+    console.log(entranceMapId);
+    // player touch space key 
+    if (self.input.keyboard.addKey('SPACE').isDown) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    }
 }
 
 function clearMap(self) {
+
+    wallsCollider.destroy();
     map.destroy();
     
     lights.forEach(light => {
@@ -107,7 +115,4 @@ function clearMap(self) {
     self.spaceKey = false;
     effects = [];
 
-
-    // start new map
-    connectToOtherMap(self);
 }

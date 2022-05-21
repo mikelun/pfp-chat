@@ -1,4 +1,5 @@
 import { object } from "sharp/lib/is";
+import { changeMap } from "../../scenes/GameView/changeMap";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
 import { disconnectPlayer } from "../../scenes/GameView/disconnectPlayer";
 import { addAudioTimer } from "../../utils/addAudioTimer";
@@ -20,8 +21,14 @@ var entranceMapId;
 
 var coffeebar;
 
+var spaceKey;
+
+var wallsCollider;
+
 // Add map with id 
 export function addMap6(self) {
+    spaceKey = false;
+    
     coffeebar = self.make.tilemap({ key: 'coffeebar-map' });
 
     const tileset1 = coffeebar.addTilesetImage('Low-TownA5', 'Low-TownA5');
@@ -50,21 +57,7 @@ export function addMap6(self) {
 
 // add physics when player added to map
 export function addPhysicsForMap6(self) {
-    self.wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls, () => {
-        if (!self.spaceKey) {
-            self.spaceKey = true;
-            // only follow this way I can remove wallsCollider (BUG WITH PHASER)    
-            self.input.keyboard.on('keydown-SPACE', function (event) {
-                if (entranceMapId) {
-                    self.newMap = entranceMapId;
-                    self.input.keyboard.off('keydown-SPACE');
-                    self.wallsCollider.destroy();
-                    clearMapWithTransition(self, clearMap6);
-                }
-            });
-
-        }
-    });
+    wallsCollider = self.physics.add.collider(self.player, self.invisibleWalls);
 
 
 }
@@ -79,13 +72,20 @@ export function addUpdateForMap6(self) {
         if (self.player) {
             if (checkOverlap(self.player, object.entrance)) {
                 entranceMapId = object.mapId;
+                spaceKey = false;
             } else if (entranceMapId === object.mapId) {
                 entranceMapId = null;
             }
         }
     });
 
-    // if player overlaps entrance
+    // player touch space key 
+    if (self.input.keyboard.addKey('SPACE').isDown) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    }
 
 }
 
@@ -134,15 +134,6 @@ function addLightsToMap(self) {
     const warmLightColor = { r: 255, g: 160, b: 0 };
     warmLights.push(createLight(self, 961, 802, warmLightColor, 0.1, 150));
 
-    // redLights.forEach(light => {
-    //     self.layer1.add(light);
-    // });
-    // blueLights.forEach(light => {
-    //     self.layer1.add(light);
-    // });
-    // warmLights.forEach(light => {
-    //     self.layer1.add(light);
-    // });
     
 }
 
@@ -164,7 +155,11 @@ function createBackgroundEntrance(self, x, y, width, height) {
 
 
 export function clearMap6(self) {
+
+    //wallsCollider.destroy();
+
     coffeebar.destroy();
+
     redLights.forEach(light => {
         light.destroy();
     });
@@ -182,8 +177,4 @@ export function clearMap6(self) {
     blueLights = [];
     warmLights = [];
     self.spaceKey = false;
-
-    // start new map
-    connectToOtherMap(self);
-
 }

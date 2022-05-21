@@ -13,6 +13,8 @@ export function disconnectPlayerBadInternet(self) {
 }
 
 export function disconnectPlayer(self) {
+    if (!self.player) return;
+    
     if (self.particles) {
         self.particles.destroy();
     }

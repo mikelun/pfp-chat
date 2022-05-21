@@ -7,7 +7,7 @@ import { addAnimationForMap } from "../AnimatedTile";
 // Add map with id 1
 export function addMap1(self) {
     const dungeon = self.make.tilemap({ key: 'dungeon' });
-    const tileset = dungeon.addTilesetImage('TilemapDay', 'tiles');
+    const tileset = dungeon.addTilesetImage('TilemapDay', 'tiles'); 
 
     // Create layers and collides for physics
     self.layer1.add(dungeon.createStaticLayer('floor', tileset));

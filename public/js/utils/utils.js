@@ -59,6 +59,7 @@ export function unblockMovement() {
 }
 
 export function updatePlayerPosition(self) {
+    if (!self.player) return;
     if (self.cursorKeys) {
         self.player.update(
             false,
