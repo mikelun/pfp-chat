@@ -179,8 +179,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
     sceneEvents.on('connectToPlanet', (planetName) => {
         console.log("HERE");
-        clearMap(self);
-        //self.socket.emit('connectToRoom', {planetName: planetName, isMyRoom: false});
+        self.socket.emit('connectToRoom', {planetName: planetName, isMyRoom: false});
     });
 
 
