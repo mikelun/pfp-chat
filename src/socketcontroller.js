@@ -63,7 +63,7 @@ module.exports = (io) => {
         socket.on('connectToOtherRoom', (mapId) => {
             connectToOtherRoom(mapId);
         })
-        
+
         function connectToOtherRoom(mapId) {
             // disconnect from previous room
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
@@ -244,7 +244,7 @@ module.exports = (io) => {
             delete coins[coinId];
 
             socket.to(players[socket.id].room).emit('updateRewardCoins', coins);
-            
+
             socket.emit('updatePlayerCoins', players[socket.id].coins);
         });
 
@@ -265,16 +265,23 @@ module.exports = (io) => {
             if (data.isMyRoom) {
                 if (players[socket.id].address) {
                     players[socket.id].isHome = true;
-                    socket.emit('connectToRoom', {mapId: 9, error: false});
-    
+                    socket.emit('connectToRoom', { mapId: 9, error: false });
+
                 } else {
-                    socket.emit('connectToRoom', {error: true, message: 'You should connect metamask to get your room'});
+                    socket.emit('connectToRoom', { error: true, message: 'You should connect metamask to get your room' });
                 }
             } else {
                 players[socket.id].isHome = false;
                 players[socket.id].planet = data.planetName;
-                socket.emit('connectToRoom', {mapId: 4});
+                socket.emit('connectToRoom', { mapId: 4 });
             }
+        });
+
+        socket.on('updateTiles', (data) => {
+            (async () => {
+                var result = await supabase.updateRoom(players[socket.id].room, data)
+                console.log(result);
+            })();
         });
 
     });

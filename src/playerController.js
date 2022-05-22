@@ -2,9 +2,10 @@ const maps = require("./data/maps");
 const mapsStartPoints = require("./data/mapsStartPoints");
 const nicknames = require("./data/nicknames");
 const weapons = require('./data/MMORPG/weapons.js');
+const supabase = require("./supabase/supabase");
 
 module.exports = {
-    connectToRoom: function (socket, players, rooms, initializePlayer, connectingToOtherRoom) {
+    connectToRoom: async function (socket, players, rooms, initializePlayer, connectingToOtherRoom) {
         // adding to rooms
         if (!rooms[players[socket.id].room]) {
             rooms[players[socket.id].room] = [socket.id];
@@ -14,16 +15,17 @@ module.exports = {
             }
         }
 
-        var sortPlayers = [];
-        for (var player in players) {
-            if (players[player].room == players[socket.id].room) {
-                sortPlayers.push(players[player]);
-            }
-        }
+        var sortPlayers = sortPlayersBySocketId(players, socket.id);
+
         if (initializePlayer) {
-            socket.emit('playerInitialized', sortPlayers);
+            connectToHome(players, socket.id).then(data => {
+                socket.emit('playerInitialized', sortPlayers, data ? data.changed_tiles: null);
+            }) 
+            
         } else {
-            socket.emit('currentPlayers', sortPlayers);
+            connectToHome(players, socket.id).then(data => {
+                socket.emit('currentPlayers', sortPlayers, data ? data.changed_tiles: null); 
+            }) 
         }
 
         // update all other players of the new player
@@ -43,7 +45,7 @@ module.exports = {
 
 
         this.connectToRoom(socket, players, rooms, initializePlayer, false);
-    }
+    },
 }
 
 
@@ -88,7 +90,7 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     }
 
     console.log('connecting to room: ' + currentRoom);
-    
+
     const player = {
         x: x,
         y: y,
@@ -112,4 +114,33 @@ function createPlayerData(socket, address, room, playerInfo, data) {
 
     return player;
 
+}
+
+function sortPlayersBySocketId(players, socketId) {
+    sortPlayers = [];
+    for (var player in players) {
+        if (players[player].room == players[socketId].room) {
+            sortPlayers.push(players[player]);
+        }
+    }
+    return sortPlayers;
+}
+
+function connectToHome(players, socketId) {
+    return (async () => {
+        if (players[socketId].isHome) {
+            var result = await supabase.getRoom(players[socketId].room);
+            var data = result ? result.data : null;
+            if (data && !data.length) {
+                result = await supabase.createRoom(players[socketId].room, players[socketId].address);
+                data = result ? result.data : null;
+                if (data) data = data[0];
+                return data;
+
+            } else {
+                if (data) data = data[0];
+                return data;
+            }
+        }
+    })()
 }

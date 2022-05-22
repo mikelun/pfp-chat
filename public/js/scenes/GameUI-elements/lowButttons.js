@@ -130,7 +130,6 @@ function createGoHomeButton() {
 }
 
 function createEditHomeButton() {
-
     self.editHomeButton = self.rexUI.add.label({
         x: width - 200,
         y: height - 80,
@@ -146,8 +145,9 @@ function createEditHomeButton() {
     });
 
     self.editHomeButton.on('pointerdown', () => {
-        return;
-        editHome(self); 
+        if (self.isHome) {
+            editHome(self); 
+        }
     });
 }
 

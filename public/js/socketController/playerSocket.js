@@ -23,7 +23,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     peers = _peers;
     self.otherPlayers = self.physics.add.group();
 
-    function showCurrentPlayers(players) {
+    function showCurrentPlayers(players, data) {
         removeAllMonsters();
         
         Object.keys(players).forEach(function (id) {
@@ -51,8 +51,8 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
     showCurrentPlayers(currentPlayers);
 
-    self.socket.on('currentPlayers', function (players) {
-        showCurrentPlayers(players);
+    self.socket.on('currentPlayers', function (players, data) {
+        showCurrentPlayers(players, data);
     });
 
     self.socket.on('newPlayer', function (playerInfo) {
@@ -184,6 +184,9 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         self.socket.emit('connectToRoom', {planetName: planetName, isMyRoom: false});
     });
 
+    sceneEvents.on('updateTiles', (data) => {
+        self.socket.emit('updateTiles', data);
+    })
 
 
 }

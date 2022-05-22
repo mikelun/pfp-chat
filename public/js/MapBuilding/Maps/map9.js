@@ -4,7 +4,7 @@ import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
 import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
-import { buildTile, editTile, stopBuilding } from "../editTiles";
+import { buildTile, editTile, saveAllProgress, stopBuilding, updateTilesFromData } from "../editTiles";
 import { showMap } from "../showMap";
 import { clearMapWithTransition, startMapTransition } from "./maps-utils";
 
@@ -73,7 +73,13 @@ function addMap(self) {
     sceneEvents.on('start-remove', () => {
         editTile(self, map, {building: false});
     })
-    sceneEvents.on('stop-building', stopBuilding);
+    sceneEvents.on('stop-building', () => {
+        saveAllProgress(self);
+    });
+
+    if (self.changedTiles) {
+        updateTilesFromData(self, map, self.changedTiles);
+    }
 
 }
 
@@ -127,5 +133,4 @@ function clearMap(self) {
     entrances = [];
     self.spaceKey = false;
     effects = [];
-
 }

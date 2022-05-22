@@ -16,6 +16,9 @@ import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 var self;
 
 export function addPlayer(newSelf, playerInfo) {
+    
+    sceneEvents.emit('updateIsHome', playerInfo.isHome);
+    
     self = newSelf;
     cleanPreviousInfoAboutPlayer(self);
 

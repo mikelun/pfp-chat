@@ -85,9 +85,35 @@ module.exports = {
             .select()
             .eq('address', address);
             
+            if (!result || !result.data[0] || !result.data[0].items) return false;
             return result.data[0].items.find(item => item.category === category && item.item_id == itemId);
 
         })()
+    },
+    getRoom: async function (room) {
+        if (developingUI) return;
+        return await supabase
+            .from('rooms')
+            .select()
+            .eq('id', room)
+    },
+    createRoom: async function (room, address) {
+        if (developingUI) return;
+        return await supabase
+            .from('rooms')
+            .insert({
+                id: room,
+                owner: address
+            })
+    },
+    updateRoom: async function (room, changedTiles) {
+        if (developingUI) return;
+        return await supabase
+            .from('rooms')
+            .update({
+                changed_tiles: changedTiles,
+            })
+            .eq('id', room)
     },
 
 

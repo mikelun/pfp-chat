@@ -62,6 +62,10 @@ export class MainScene extends Phaser.Scene {
             }
         });
 
+        this.isHome = data.isHome;
+
+        this.changedTiles = data.changedTiles;
+
     }
 
     preload() {
@@ -77,6 +81,7 @@ export class MainScene extends Phaser.Scene {
             mapId: this.mapId,
             playerCoins: this.playerCoins,
             nftImage: this.nftImage,
+            isHome: this.isHome,
         });
 
         initialAnimations(this);

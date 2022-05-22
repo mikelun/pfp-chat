@@ -27,6 +27,7 @@ export class GameUi extends Phaser.Scene {
         mapId = data.mapId;
         playerCoins = data.playerCoins;
         nftImage = data.nftImage;
+        this.isHome = data.isHome;
     }
 
     create() {
@@ -84,6 +85,8 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('createErrorMessage', this.createErrorMessage, this);
 
+        sceneEvents.on('updateIsHome', this.updateIsHome, this);
+
         // ADD TEXT CHAT
         addChat(this);
 
@@ -104,6 +107,10 @@ export class GameUi extends Phaser.Scene {
                 this.timeMusic.setText(timeText);
             }
         }
+    }
+
+    updateIsHome(isHome) {
+        this.isHome = isHome;
     }
     addMessageToChat(message, playerName) {
 

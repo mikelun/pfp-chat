@@ -51,17 +51,17 @@ export function goToPlanet(self) {
     const socket = startSocket();
 
     socket.emit('initializePlayer', address, self.room, true);
-    socket.on('playerInitialized', (data) => {
+    socket.on('playerInitialized', (players, data) => {
         // find current player 
         var currentPlayer = null;
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].playerId == socket.id) {
-                currentPlayer = data[i];
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].playerId == socket.id) {
+                currentPlayer = players[i];
             }
         }
         if (!currentPlayer) return;
 
-        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: data, mapId: currentPlayer.mapId });
+        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: players, mapId: currentPlayer.mapId, changedTiles: data, isHome: currentPlayer.isHome });
     });
 }
 

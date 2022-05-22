@@ -1,3 +1,4 @@
+import { sceneEvents } from "../Events/EventsCenter";
 
 var tileHasBuilt = false;
 
@@ -11,9 +12,11 @@ var redRectangle;
 var map;
 
 var changedTiles = [];
+
 export function editTile(self, newMap, data) {
     building = data.building;
     map = newMap;
+
     stopBuilding();
 
     stop = false;
@@ -48,7 +51,16 @@ export function editTile(self, newMap, data) {
     });
 }
 
-function buildModePointerMove(self, map) {
+
+export function updateTilesFromData(self, map, data) {
+    changedTiles = data;
+    changedTiles.forEach(tile => {
+        const tileToUpdate = map.getTileAt(tile.x, tile.y, true, '3');
+        tileToUpdate.index = tile.index;
+    });
+}
+
+function buildModePointerMove(self) {
     let tile = getTile(self, map);
 
     if (!tile) return;
@@ -70,14 +82,14 @@ function buildModePointerDown() {
     changedTiles.push({
         x: previousTile.x,
         y: previousTile.y,
-        index: previousTileIndex
+        index: index
     });
     previousTile.index = index;
     previousTile.alpha = 1;
     previousTile = null;
 }
 
-function removeModePointerMove(self, map) {
+function removeModePointerMove(self) {
     const tilePosition = getTilePosition(self, map);
 
     var tileExist;
@@ -117,14 +129,14 @@ function removeModePointerDown() {
 
 }
 
-function getTilePosition(self, map) {
+function getTilePosition(self) {
     let pointerPosition = self.input.activePointer.positionToCamera(self.cameras.main);
     let tilePosition = map.worldToTileXY(pointerPosition.x, pointerPosition.y);
     return tilePosition;
 }
-function getTile(self, map) {
+function getTile(self) {
 
-    const tilePosition = getTilePosition(self, map);
+    const tilePosition = getTilePosition(self);
 
     let floorTile = map.getTileAt(tilePosition.x, tilePosition.y, true, '1');
     if (!floorTile || floorTile.index == -1) return;
@@ -145,10 +157,28 @@ function ifPlayerMovePointer(tile) {
 }
 
 export function stopBuilding() {
+
     if (previousTile) {
         previousTile.index = previousTileIndex;
         previousTile.alpha = 1;
-        stop = true;
         previousTile = null;
     }
+    if (changedTiles.length) {
+        self.changedTiles = changedTiles;
+        sceneEvents.emit('updateTiles', changedTiles);
+    }
+    stop = true;
+}
+
+export function saveAllProgress(self) {
+    self.changedTiles = changedTiles;
+    sceneEvents.emit('updateTiles', changedTiles);
+
+    if (previousTile) {
+        previousTile.index = previousTileIndex;
+        previousTile.alpha = 1;
+        previousTile = null;
+    }
+
+    stop = true;
 }

@@ -32,6 +32,7 @@ export function editHome(newSelf) {
         closeButton.destroy();
         editHomeGroup.clear(true);
         objectsPanel.destroy();
+        sceneEvents.emit('stop-building');
     });
 
     buildButton = self.add.image(width / 2 - 50, height * 0.90, 'build-button').setScale(2).setAlpha(0.8);
@@ -97,7 +98,7 @@ function createObjectsPanel() {
         objectsPanel.setVisible(false);
         sceneEvents.emit('start-build', index);
     });
-    
+
     objectsPanel.setVisible(false);
 
 }
