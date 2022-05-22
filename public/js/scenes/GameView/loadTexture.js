@@ -4,9 +4,9 @@ export function loadTexture(self, object, textureLink, type, isMainPlayer = fals
     object.textureId = textureLink;
     object.nftType = type;
 
-    resizeObjectForNFT(object, type, isMainPlayer);
     
     if (self.textures.exists(textureLink)) {
+        resizeObjectForNFT(object, type, isMainPlayer);
         object.setTexture(textureLink);
         return;
     }
@@ -14,6 +14,7 @@ export function loadTexture(self, object, textureLink, type, isMainPlayer = fals
     self.load.image(textureLink, textureLink)
     self.load.on('filecomplete', function (key, file) {
         if (key == textureLink) {
+            resizeObjectForNFT(object, type, isMainPlayer);
             object.setTexture(textureLink);
         }
     });

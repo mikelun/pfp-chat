@@ -1,6 +1,29 @@
 export class PreloadScene extends Phaser.Scene {
     constructor() {
-        super({ key: 'PreloadScene' })
+        super({
+            key: 'PreloadScene',
+            active: true,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    debug: false
+                }
+            },
+            // pack: {
+            //     files: [
+            //         {
+            //             type: 'spritesheet',
+            //             key: 'nyancat',
+            //             url: 'assets/memes/nyancat-198x500.png',
+            //             frameConfig: {
+            //                 frameWidth: 500,
+            //                 frameHeight: 198,
+            //             },
+
+            //         }
+            //     ]
+            // }
+        });
     }
 
     // LOAD YOUR PLANET SPRITE
@@ -22,7 +45,7 @@ export class PreloadScene extends Phaser.Scene {
             frameWidth: 50,
             frameHeight: 50,
         });
-        
+
         // crypto-duckies-planet
         this.load.spritesheet('moonbirds-planet', 'assets/projects/moonbirds/moonbirds-planet.png', {
             frameWidth: 50,
@@ -59,10 +82,10 @@ export class PreloadScene extends Phaser.Scene {
 
 
     loadMonsters() {
-        this.load.spritesheet('monster1', 'assets/monsters/monster1.png', {frameWidth: 81.5, frameHeight: 69});
+        this.load.spritesheet('monster1', 'assets/monsters/monster1.png', { frameWidth: 81.5, frameHeight: 69 });
 
-        this.load.spritesheet('monster2-walk', 'assets/monsters/monster2-walk.png', {frameWidth: 118,frameHeight: 136, });
-        this.load.spritesheet('monster2-die', 'assets/monsters/monster2-die.png', {frameWidth: 118,frameHeight: 136, });
+        this.load.spritesheet('monster2-walk', 'assets/monsters/monster2-walk.png', { frameWidth: 118, frameHeight: 136, });
+        this.load.spritesheet('monster2-die', 'assets/monsters/monster2-die.png', { frameWidth: 118, frameHeight: 136, });
 
 
 
@@ -75,9 +98,9 @@ export class PreloadScene extends Phaser.Scene {
 
 
 
-        this.load.spritesheet('bullet-effect-1', 'assets/weapons/effects/bullet-effect-1.png', {frameWidth: 16,frameHeight: 16,});
-        this.load.spritesheet('bullet-effect-2', 'assets/weapons/effects/bullet-effect-2.png', {frameWidth: 32,frameHeight: 32})
-        this.load.spritesheet('bullet-spritesheet-1', 'assets/weapons/effects/bullet-spritesheet-1.png', {frameWidth: 32,frameHeight: 32,});
+        this.load.spritesheet('bullet-effect-1', 'assets/weapons/effects/bullet-effect-1.png', { frameWidth: 16, frameHeight: 16, });
+        this.load.spritesheet('bullet-effect-2', 'assets/weapons/effects/bullet-effect-2.png', { frameWidth: 32, frameHeight: 32 })
+        this.load.spritesheet('bullet-spritesheet-1', 'assets/weapons/effects/bullet-spritesheet-1.png', { frameWidth: 32, frameHeight: 32, });
     }
 
     loadUI() {
@@ -111,7 +134,7 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     loadTilesForEditHome() {
-        this.load.spritesheet('spritesheet-TilemapDay', 'assets/tiles/TilemapDay.png', {frameWidth: 32,frameHeight: 32,});
+        this.load.spritesheet('spritesheet-TilemapDay', 'assets/tiles/TilemapDay.png', { frameWidth: 32, frameHeight: 32, });
     }
     loadCoins() {
         this.load.spritesheet('coin1', 'assets/coins/coin1.png', {
@@ -121,8 +144,8 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     loadArtifacts() {
-        this.load.spritesheet('goose', 'assets/artifacts/goose.png', {frameWidth: 1200,frameHeight: 1200,})
-        this.load.spritesheet('chests', 'assets/artifacts/chests.png', {frameWidth: 48,frameHeight: 32,})
+        this.load.spritesheet('goose', 'assets/artifacts/goose.png', { frameWidth: 1200, frameHeight: 1200, })
+        this.load.spritesheet('chests', 'assets/artifacts/chests.png', { frameWidth: 48, frameHeight: 32, })
         this.load.image('chest1', 'assets/artifacts/chest1.png');
         this.load.image('chest2', 'assets/artifacts/chest2.png');
         this.load.image('chest3', 'assets/artifacts/chest3.png');
@@ -141,7 +164,7 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     loadEffects() {
-        this.load.spritesheet('background-lighting', 'assets/effects/background-lighting.png', {frameWidth: 256,frameHeight: 256,})
+        this.load.spritesheet('background-lighting', 'assets/effects/background-lighting.png', { frameWidth: 256, frameHeight: 256, })
     }
     preload() {
 
@@ -159,12 +182,12 @@ export class PreloadScene extends Phaser.Scene {
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {
             frameWidth: 50,
-            frameHeight: 50, 
+            frameHeight: 50,
             margin: 0,
             spacing: 0
         });
 
-        
+
 
         // LOADING ANIMALS
         const animalsFolders = ['cat1', 'dog2'];
@@ -216,7 +239,8 @@ export class PreloadScene extends Phaser.Scene {
         // LOAD PROGRESS BAR
         this.load.spritesheet('loading', 'assets/game-ui/loading.png', {
             frameWidth: 512,
-            frameHeight: 512});
+            frameHeight: 512
+        });
 
         // LOADING MAIN DAY MAP
         this.load.image('tiles', 'assets/tiles/TilemapDay.png');
@@ -228,7 +252,7 @@ export class PreloadScene extends Phaser.Scene {
 
         // LOAD SURF VIBE MAP
         //this.load.image('3_frame_animated_shoreline_and_cliffs', 'assets/tiles/surf-tiles/3_frame_animated_shoreline_and_cliffs.png');
-        
+
         this.load.image('Animated_Doors', 'assets/tiles/surf-tiles/Animated_Doors_Extruded.png');
         this.load.image('Animated_Netting', 'assets/tiles/surf-tiles/Animated_Netting_Extruded.png');
         this.load.image('Animated_Pier', 'assets/tiles/surf-tiles/Animated_Pier_Extruded.png');
@@ -264,9 +288,9 @@ export class PreloadScene extends Phaser.Scene {
 
         // THIS LOAD BUILDSHIP
         this.load.image('buildship', 'assets/projects/buildship/buildship.png');
-        
 
-        
+
+
 
         // LOAD TWITTER
         this.load.image('twitter', 'assets/game-ui/twitter.png');
@@ -284,7 +308,7 @@ export class PreloadScene extends Phaser.Scene {
         // LOAD SNOW PARTICLE
         this.load.image('snow-particle', 'assets/snow.png');
         // !!! LOAD EFFECTS
-        this.load.spritesheet('fire-effect', 'assets/effects/fire-effect.png', {frameWidth: 100, frameHeight: 100});
+        this.load.spritesheet('fire-effect', 'assets/effects/fire-effect.png', { frameWidth: 100, frameHeight: 100 });
 
 
         // LOAD ICONS
@@ -295,9 +319,8 @@ export class PreloadScene extends Phaser.Scene {
             spacing: 8
         });
 
-
-        var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
+        var progressBar = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
         progressBox.fillRect(250, 280, 740, 30);
 
@@ -306,10 +329,10 @@ export class PreloadScene extends Phaser.Scene {
         var loadingText = this.make.text({
             x: width / 2,
             y: height / 2,
-            text: 'Loading...',
+            text: 'LOADING...',
             style: {
-                font: '20px monospace',
-                fill: '#ffffff'
+                font: '35px PixelFont',
+                fill: '#9933CC'
             }
         });
         loadingText.setOrigin(0.5, 0.5);
@@ -319,8 +342,8 @@ export class PreloadScene extends Phaser.Scene {
             y: height / 2 + 40,
             text: '0%',
             style: {
-                font: '18px monospace',
-                fill: '#ffffff'
+                font: '24px PixelFont',
+                fill: '#9933CC'
             }
         });
         percentText.setOrigin(0.5, 0.5);
@@ -330,7 +353,7 @@ export class PreloadScene extends Phaser.Scene {
             y: height / 2 + 100,
             text: '',
             style: {
-                font: '18px monospace',
+                font: '24px PixelFont',
                 fill: '#ffffff'
             }
         });
@@ -339,7 +362,7 @@ export class PreloadScene extends Phaser.Scene {
         this.load.on('progress', function (value) {
             percentText.setText(parseInt(value * 100) + '%');
             progressBar.clear();
-            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillStyle(0x9933CC, 1);
             progressBar.fillRect(250, 280, 740 * value, 30);
         });
 
