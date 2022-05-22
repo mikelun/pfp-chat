@@ -55,6 +55,14 @@ function addMap(self) {
     addEntrancesToMap(self);
 
     startMapTransition(self, [lights, entrances, effects]);
+    
+    // if space touched
+    self.input.keyboard.on('keydown-SPACE', function (event) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    });
 }
 
 // add physics when player added to map
@@ -85,15 +93,6 @@ function addUpdateForMap(self, time, delta) {
             }
         }
     });
-
-    console.log(entranceMapId);
-    // player touch space key 
-    if (self.input.keyboard.addKey('SPACE').isDown) {
-        if (entranceMapId && !spaceKey) {
-            spaceKey = true;
-            changeMap(self, entranceMapId);
-        }
-    }
 }
 
 function clearMap(self) {

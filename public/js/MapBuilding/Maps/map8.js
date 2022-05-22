@@ -60,6 +60,14 @@ function addMap(self) {
     startMapTransition(self, [lights, entrances, effects]);
 
     addLeaderboard(self);
+
+    // if space touched
+    self.input.keyboard.on('keydown-SPACE', function (event) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    });
 }
 
 // add physics when player added to map
@@ -90,14 +98,6 @@ function addUpdateForMap(self, time, delta) {
             }
         }
     });
-
-     // player touch space key
-     if (self.input.keyboard.addKey('SPACE').isDown) {
-        if (entranceMapId && !spaceKey) {
-            spaceKey = true;
-            changeMap(self, entranceMapId);
-        }
-    }
 }
 
 function addLeaderboard(newSelf) {

@@ -1,0 +1,52 @@
+[
+    {
+      "category": "weapons",
+      "item_id": 0,
+      "count": 1
+    },
+    {
+      "category": "chests",
+      "item_id": 0,
+      "count": 10
+    },
+    {
+      "category": "chests",
+      "item_id": 1,
+      "count": 10
+    },
+    {
+      "category": "chests",
+      "item_id": 2,
+      "count": 10
+    },
+    {
+      "category": "weapons",
+      "item_id": 1,
+      "count": 1
+    },
+    {
+      "category": "weapons",
+      "item_id": 2,
+      "count": 2
+    },
+    {
+      "category": "weapons",
+      "item_id": 3,
+      "count": 3
+    },
+    {
+      "category": "weapons",
+      "item_id": 4,
+      "count": 3
+    },
+    {
+      "category": "weapons",
+      "item_id": 5,
+      "count": 3
+    },
+    {
+      "category": "weapons",
+      "item_id": 6,
+      "count": 3
+    }
+]

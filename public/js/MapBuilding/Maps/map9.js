@@ -57,6 +57,15 @@ function addMap(self) {
 
     startMapTransition(self, [lights, entrances, effects]);
 
+    // if space touched
+    self.input.keyboard.on('keydown-SPACE', function (event) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    });
+
+
     sceneEvents.on('start-build', (index) => {
         editTile(self, map, {building: true, index: index});
     });

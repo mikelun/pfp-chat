@@ -69,6 +69,14 @@ export function addMap4(self) {
     self.layer1.add(entrances[0].entrance);
 
     startMapTransition(self, [lights, entrances, effects]);
+
+    // if space touched
+    self.input.keyboard.on('keydown-SPACE', function (event) {
+        if (entranceMapId && !spaceKey) {
+            spaceKey = true;
+            changeMap(self, entranceMapId);
+        }
+    });
 }
 
 // add physics when player added to map
@@ -164,18 +172,11 @@ export function addUpdateForMap4(self, time, delta) {
             if (checkOverlap(self.player, object.entrance)) {
                 entranceMapId = object.mapId;
             } else if (entranceMapId === object.mapId) {
+                entranceMapId = null;
                 spaceKey = false;
             }
         }
     });
-
-    // player touch space key 
-    if (self.input.keyboard.addKey('SPACE').isDown) {
-        if (entranceMapId && !spaceKey) {
-            spaceKey = true;
-            changeMap(self, entranceMapId);
-        }
-    }
 
     // // animate blue light
     if (self.blueLight && self.purpleLight && self.computerLight1 && self.computerLight2) {
