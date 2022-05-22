@@ -78,7 +78,6 @@ function buildModePointerMove(self) {
 
 function buildModePointerDown() {
     if (!previousTile) return;
-    stop = true;
     changedTiles.push({
         x: previousTile.x,
         y: previousTile.y,
