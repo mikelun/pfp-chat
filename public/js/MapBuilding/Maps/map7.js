@@ -97,8 +97,8 @@ function addUpdateForMap(self, time, delta) {
 
 function clearMap(self) {
 
-    wallsCollider.destroy();
-    map.destroy();
+    if (wallsCollider) wallsCollider.destroy();
+    if (map) map.destroy();
     
     lights.forEach(light => {
         light.destroy();

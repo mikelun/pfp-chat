@@ -17,7 +17,7 @@ export async function login(self, Moralis) {
         })
             .then(function (user) {
                 localStorage.setItem('Moralis', 'true');
-                self.step = 2;
+                self.step++;
                 self.user = user;
                 showCurrentLevel(self);
             })
@@ -28,7 +28,7 @@ export async function login(self, Moralis) {
     } else {
         self.user = user;
         localStorage.setItem('Moralis', 'true');
-        self.step = 2;
+        self.step++;
         showCurrentLevel(self);
     }
 }

@@ -156,9 +156,8 @@ function createBackgroundEntrance(self, x, y, width, height) {
 
 export function clearMap6(self) {
 
-    //wallsCollider.destroy();
-
-    coffeebar.destroy();
+    if (wallsCollider) wallsCollider.destroy();
+    if (coffeebar) coffeebar.destroy();
 
     redLights.forEach(light => {
         light.destroy();

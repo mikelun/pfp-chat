@@ -194,8 +194,8 @@ export function addUpdateForMap4(self, time, delta) {
 }
 
 export function clearMap4(self) {
-    wallsCollider.destroy();
-    cafe.destroy();
+    if (wallsCollider) wallsCollider.destroy();
+    if (cafe) cafe.destroy();
 
     lights.forEach(light => {
         light.destroy();

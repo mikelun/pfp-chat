@@ -81,6 +81,11 @@ function addMap(self) {
         updateTilesFromData(self, map, self.changedTiles);
     }
 
+    sceneEvents.on('update-tiles-from-data', (changedTiles) => {
+        self.changedTiles = changedTiles;
+        updateTilesFromData(self, map, changedTiles);
+    })
+
 }
 
 // add physics when player added to map
@@ -115,9 +120,9 @@ function addUpdateForMap(self, time, delta) {
 }
 
 function clearMap(self) {
-    wallsCollider.destroy();
+    if (wallsCollider) wallsCollider.destroy();
 
-    map.destroy();
+    if (map) map.destroy();
     
     lights.forEach(light => {
         light.destroy();

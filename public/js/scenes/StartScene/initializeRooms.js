@@ -1,7 +1,7 @@
 import { buildship } from "./projects/buildship/buildship";
 import { coffeebar } from "./projects/coffeebar/coffeebar";
 import { cryptoDuckies } from "./projects/crypto-duckies/cryptoDuckies";
-import { defaultLevel0, defaultLevel1, defaultLevel1WithGuestEnter } from "./default-levels/defaultLevels";
+import { connectGoogleLevel, defaultLevel0, defaultLevel1, defaultLevel1WithGuestEnter } from "./default-levels/defaultLevels";
 import { moonbirds } from "./projects/moonbirds/moonbirds";
 
 const rooms = {

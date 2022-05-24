@@ -53,6 +53,9 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
     self.socket.on('currentPlayers', function (players, data) {
         showCurrentPlayers(players, data);
+        if (data) {
+            sceneEvents.emit('update-tiles-from-data', data);
+        }
     });
 
     self.socket.on('newPlayer', function (playerInfo) {

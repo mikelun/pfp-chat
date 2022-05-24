@@ -1,3 +1,5 @@
+import { playMoneySound } from "../Audio/soundFXMachine";
+
 export function createCoin(self, coinData, coinsList, coinId) {
     console.log(coinsList);
 
@@ -52,7 +54,8 @@ export function createCoin(self, coinData, coinsList, coinId) {
                 }
             });
         });
-        self.sound.play('coin1');
+        
+        playMoneySound(self, coinData);
         
         self.socket.emit('coinClaimed', coinId);
 

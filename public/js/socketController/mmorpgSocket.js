@@ -1,3 +1,4 @@
+import { playExplosionSound, playShotSound } from "../scenes/Audio/soundFXMachine";
 import { updatePlayerCoins } from "../scenes/GameUI-elements/hud";
 import { addMonster } from "../scenes/GameView/addMonster";
 import { createCoin } from "../scenes/GameView/createCoin";
@@ -32,7 +33,7 @@ export function initializeRPGSocket(newSelf) {
         // remove dead monsters
         Object.keys(monstersList).forEach(monsterId => {
             if (!monstersList[monsterId].alive) {
-                self.sound.play('explosion1', { volume: 2 });
+                playExplosionSound(self, monstersList[monsterId].texture.key);
                 monstersList[monsterId].destroyMonster(monstersList[monsterId]);
                 delete monstersList[monsterId];
             } else {
@@ -45,7 +46,7 @@ export function initializeRPGSocket(newSelf) {
         //console.log('maing shot with data', data);
         createBullet(self, data.weaponId, data.x, data.y, true, data.angle);
         const weapon =  self.playerUI[data.playerId].weapon;
-        self.sound.play('gun2', { volume: 1 });
+        playShotSound(self, weapon.texture.key);
         weapon.rotation = data.angle;
         if (data.angle < -Math.PI / 2 || data.angle > Math.PI / 2) {
             weapon.flipY = true;

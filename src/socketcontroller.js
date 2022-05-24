@@ -262,9 +262,11 @@ module.exports = (io) => {
 
 
         socket.on('connectToRoom', (data) => {
+            console.log("CONNECTING TO ROOM WITH DATA IS MY ROOM: ", data);
             if (data.isMyRoom) {
                 if (players[socket.id].address) {
                     players[socket.id].isHome = true;
+                    console.log(players[socket.id]);
                     socket.emit('connectToRoom', { mapId: 9, error: false });
 
                 } else {

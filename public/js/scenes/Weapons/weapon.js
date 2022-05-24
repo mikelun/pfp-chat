@@ -1,4 +1,5 @@
 import { weaponShot } from "../../socketController/mmorpgSocket";
+import { playShotSound } from "../Audio/soundFXMachine";
 import { createBullet } from "./bullet";
 
 export var bullets;
@@ -39,7 +40,7 @@ export function initializeWeapon(newSelf, weapon) {
         if (self.input.activePointer.isDown) {
             const bullet = createBullet(self, self.weapon.id, self.player.x, self.player.y, false, angle);
             
-            self.sound.play('gun2', { volume: 1 });
+            playShotSound(self, self.weapon.texture.key);
             weaponShot({
                 x: bullet.x,
                 y: bullet.y,

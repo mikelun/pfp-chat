@@ -85,7 +85,7 @@ module.exports = {
             .select()
             .eq('address', address);
             
-            if (!result || !result.data[0] || !result.data[0].items) return false;
+            if (!result || !result.data || !result.data[0] || !result.data[0].items) return false;
             return result.data[0].items.find(item => item.category === category && item.item_id == itemId);
 
         })()

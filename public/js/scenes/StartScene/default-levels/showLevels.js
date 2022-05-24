@@ -4,6 +4,7 @@ import { initializeRooms } from "../initializeRooms";
 import { getUserMoralis } from "./web3-utils";
 import { startMoralis } from "./web3-utils";
 import { startSocket } from "../../../socketController/startSocket";
+import { getSupabaseUser } from "../../../supabase/supabase";
 
 export function showCurrentLevel(self) {
     // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)
@@ -18,6 +19,9 @@ export function showCurrentLevel(self) {
     }
     if (self.otherRooms) {
         self.otherRooms.destroy();
+    }
+    if (self.button1Background) {
+        self.button1Background.destroy();
     }
 
     // if (self.step == -1) {
@@ -66,6 +70,9 @@ export function goToPlanet(self) {
 }
 
 export function playerWasAtPlanet(self) {
+    var userSupabase = getSupabaseUser();
+    if (!userSupabase) return;
+
     try {
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
             self.stream = stream;
@@ -73,10 +80,8 @@ export function playerWasAtPlanet(self) {
             startMoralis(Moralis);
             self.user = getUserMoralis(Moralis);
 
-            if (self.user && self.room != 'guest') {
+            if (self.user) {
                 self.step = 2;
-            } else {
-                self.step = 1;
             }
         });
     } catch (e) {
@@ -106,5 +111,4 @@ export function typeTextWithDelay(self, text) {
 function showButtons(self) {
     if (self.button1) self.button1.setAlpha(0.6);
     if (self.button2) self.button2.setAlpha(0.6);
-
 }

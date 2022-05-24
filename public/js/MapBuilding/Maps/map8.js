@@ -153,8 +153,8 @@ export function updateLeaderboard(data) {
 }
 
 function clearMap(self) {
-    wallsCollider.destroy();
-    map.destroy();
+    if (wallsCollider) wallsCollider.destroy();
+    if (map) map.destroy();
 
     sizer.destroy();
 

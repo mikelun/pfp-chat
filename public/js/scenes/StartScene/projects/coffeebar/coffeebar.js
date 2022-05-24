@@ -19,8 +19,8 @@ export function coffeebar(self, Moralis) {
 
     self.button1 = createButton(self, 480, 450, "START FLIGHT", { left: 20, right: 20, top: 40, bottom: 55 });
     self.button1.setInteractive().on('pointerdown', () => {
-        if (self.step != 2) return;
-        self.step = 3;
+        //if (self.step != 2) return;
+        self.step++;
         showCurrentLevel(self);
     });
 }

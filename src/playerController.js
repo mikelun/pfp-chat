@@ -24,6 +24,7 @@ module.exports = {
             
         } else {
             connectToHome(players, socket.id).then(data => {
+                console.log("HERE", data ? data.changed_tiles: null);
                 socket.emit('currentPlayers', sortPlayers, data ? data.changed_tiles: null); 
             }) 
         }
@@ -130,6 +131,7 @@ function connectToHome(players, socketId) {
     return (async () => {
         if (players[socketId].isHome) {
             var result = await supabase.getRoom(players[socketId].room);
+
             var data = result ? result.data : null;
             if (data && !data.length) {
                 result = await supabase.createRoom(players[socketId].room, players[socketId].address);

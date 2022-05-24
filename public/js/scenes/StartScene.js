@@ -1,10 +1,12 @@
 import Phaser from 'phaser'
+import { initializeSupabase } from '../supabase/supabase';
 import { goToPlanet, lastVisitSetup, microphoneWasInitialized, playerWasAtPlanet, showCurrentLevel } from './StartScene/default-levels/showLevels';
 import { initializeRooms } from './StartScene/initializeRooms';
 
 var bg1, bg2;
 var tilePosition = 0;
 var gameWidth, gameHeight;
+  
 export class StartScene extends Phaser.Scene {
     constructor() {
         super({ key: "start" });
@@ -13,6 +15,8 @@ export class StartScene extends Phaser.Scene {
     create() {
         // initialize room
         initializeRooms(this);
+
+        initializeSupabase();
 
         // step = 0
         this.step = 0;
@@ -53,8 +57,7 @@ export class StartScene extends Phaser.Scene {
 
         // add key events
         this.addKeyEvents();
-
-
+    
     }
 
     update() {
@@ -157,4 +160,5 @@ export class StartScene extends Phaser.Scene {
     addLevelsPanel() {
         this.levelsPanel = this.add.image(1620, 600, 'instructions').setScale(5);
     }
+
 }
