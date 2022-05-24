@@ -9,11 +9,11 @@ developingUI = false;
 module.exports = {
     initializeSupabase: async function () {
         if (developingUI) return;
-        console.log("INITIALIZING SUPABASE");
         supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
     },
 
     getPlayerData: async function (address) {
+        if (!address) return;
         if (developingUI) return;
         return await supabase
             .from(development ? 'development_players' : 'players')
@@ -22,6 +22,7 @@ module.exports = {
     },
 
     createPlayer: async function (address) {
+        if (!address) return;
         if (developingUI) return;
         return await supabase
             .from(development ? 'development_players' : 'players')
@@ -69,6 +70,7 @@ module.exports = {
 
 
     getPlayerItems: async function (address) {
+        if (!address) return;
         if (developingUI) return;
         return await supabase
             .from('items')
@@ -77,6 +79,7 @@ module.exports = {
     },
 
     checkItem: async function (address, category, itemId) {
+        if (!address) return;
         return (async () => {
             console.log("HERE1")
             if (developingUI) return;
@@ -98,6 +101,7 @@ module.exports = {
             .eq('id', room)
     },
     createRoom: async function (room, address) {
+        if (!address) return;
         if (developingUI) return;
         return await supabase
             .from('rooms')

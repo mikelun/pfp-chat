@@ -1,6 +1,6 @@
 export function resizeObjectForNFT(object, type, isMainPlayer) {
     if (type == 'moonbirds') {
-        object.yAdd = -100;
+        object.yAdd = -110;
         object.setScale(0.2);
         object.setOrigin(0.5, 0.5);
         if (isMainPlayer) {

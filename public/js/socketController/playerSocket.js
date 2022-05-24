@@ -114,7 +114,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
                 // change player text
                 if (self.playerUI[playerInfo.playerId].playerText.text != playerInfo.playerName) {
                     self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
-                    self.playerUI[playerInfo.playerId].background.width = playerInfo.playerName.length * 6;
+                    self.playerUI[playerInfo.playerId].background.width = playerInfo.playerName.length * 5;
                     getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
                 }
                 playersList[i].name = playerInfo.playerName;

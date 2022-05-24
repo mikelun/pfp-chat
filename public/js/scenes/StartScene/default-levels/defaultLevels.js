@@ -10,7 +10,7 @@ export function defaultLevel0(self, Moralis) {
     self.levelGroup = self.add.group();
 
     // TEXT
-    var text = 'HELLO FROM PFPCHAT! HERE YOU CAN CHAT&TALK WITH\nPEOPLE, LISTEN TO PODCASTS AND CHILL WITH\nYOUR FRIENDS.\nIf you want to talk using voice chat\nwe need your microphone access\n';
+    var text = 'HELLO FROM PFPCHAT! HERE YOU CAN CHAT&TALK\nWITH PEOPLE, LISTEN TO PODCASTS AND CHILL\nWITH YOUR FRIENDS.\nIf you want to talk using voice chat\nwe need your microphone access\n';
     text = text.toUpperCase();
     //var newText = 'Hello from Open Metaverse!\nAre you ready to see the most cozy place with\nBEAUTIFUL music?\nIf you want to talk with people on planets\nwe need your microphone access\n';
     //newText = newText.toUpperCase();

@@ -20,18 +20,16 @@ export function updateOtherPlayersPositions(self, delta) {
         const playerUI = self.playerUI[otherPlayer.playerId];
 
         const playerText = playerUI.playerText;
-        if (playerText) {
-            const textSize = playerText.text.length;
-            playerText.x = otherPlayer.x - textSize * 2.8;
-            playerText.y = otherPlayer.y - 35;
-        }
+        
+        playerText.x = otherPlayer.x;
+        playerText.y = otherPlayer.y - 22;
 
-        playerUI.background.x = otherPlayer.x;
-        playerUI.background.y = otherPlayer.y - 25;
-        playerUI.microphone.x = otherPlayer.x - 8;
-        playerUI.microphone.y = otherPlayer.y - 40;
-        playerUI.headphones.x = otherPlayer.x + 7;
-        playerUI.headphones.y = otherPlayer.y - 38;
+        playerUI.background.x = otherPlayer.x - 0.25;
+        playerUI.background.y = otherPlayer.y - 20;
+        playerUI.microphone.x = otherPlayer.x - 4;
+        playerUI.microphone.y = otherPlayer.y - 20 - 10;
+        playerUI.headphones.x = otherPlayer.x + 4;
+        playerUI.headphones.y = otherPlayer.y - 19 - 10;
         if (playerUI.weapon) {
             playerUI.weapon.x = otherPlayer.x;
             playerUI.weapon.y = otherPlayer.y + 8;

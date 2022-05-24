@@ -123,6 +123,27 @@ export class MainScene extends Phaser.Scene {
         // add joystic if android
         addJoysticIfAndroid(this);
 
+        // set timeout clear UI - FIXING BUG WITH NOT DELETING UI
+        setInterval(() => {
+            for (let playerId in this.playerUI) {
+                var fl = false;
+                if (this.otherPlayers) {
+                    this.otherPlayers.getChildren().forEach(child => {
+                        if (child.playerId == playerId) {
+                            fl = true;
+                            return;
+                        }
+                    });
+                }
+                if (this.player && playerId == this.player.id) fl = true;
+                if (!fl) {
+                    this.playerUI[playerId].background.destroy();
+                    this.playerUI[playerId].playerText.destroy();
+                    this.playerUI[playerId].microphone.destroy();
+                    this.playerUI[playerId].headphones.destroy();
+                }
+            }
+        }, 5000);
     }
 
     update(time, delta) {
@@ -183,7 +204,7 @@ function emitPlayerPosition(self) {
 
 function sendPlayerPosition(self, time) {
     if (!self.player) return;
-    
+
     let currentTime = Math.floor(time / 25);
     if (currentTime != self.lastTime) {
         emitPlayerPosition(self);
@@ -194,7 +215,7 @@ function sendPlayerPosition(self, time) {
 
 function updatePeopleForTalk(self) {
     if (!self.player) return;
-    
+
     // if player turn off headphones(deafen mode)
     if (self.deafen) return;
 
