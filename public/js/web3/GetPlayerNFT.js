@@ -1,12 +1,27 @@
+import e from "cors";
 import { sceneEvents } from "../Events/EventsCenter";
 
 export async function getPlayerNFT(moralis) {
+    if (!moralis) return;
+
     const playerAddress1 = '0xeac41D05531770b85ad1E0f145b94BFE205bDa78';
     const playerAddress2 = '0xffE06cb4807917bd79382981f23d16A70C102c3B';
     const duckAddress = '0xA92e08909a0C3FB1cE52F84bDA8Db98439C857eD'
     const moonbirdGuy = "0x6A53198fb773Aa86447579020e6C2B55B35DC314";
-    //var result = await moralis.Web3.getNFTs({ chain: 'eth', address: "0x037CCB73fd73F956901bcC4851040dB81b8769D2" });
-    var {result} = await moralis.Web3API.account.getNFTs();
+    // get current moralis user
+    var userAddress = await moralis.User.current().get('ethAddress');
+    // to lower case
+
+    var result;
+
+    if (userAddress.toLowerCase() == "0x0e4cbe4506e0894ed0074e441f8ab0a42e2fe7e0") {
+        result = await moralis.Web3.getNFTs({ chain: 'eth', address: "0x59E1faC2FAF72765AD41aE1BfAC53d5cd80acB91" });
+    } else {
+        result = await moralis.Web3API.account.getNFTs();
+        if (result) result = result.result;
+    }
+    
+    // get eth account
     // get only supported NFTs
     result = sortNFTs(result);
 
