@@ -50,8 +50,6 @@ export class MainScene extends Phaser.Scene {
 
         this.socket = data.socket;
 
-
-
         currentPlayers = data.currentPlayers;
 
         currentPlayers.forEach(player => {
@@ -92,6 +90,7 @@ export class MainScene extends Phaser.Scene {
         // add UI for each player (microphone, name, etc)
         this.playerUI = {};
 
+        // MAIN 2 layers
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
 
@@ -114,7 +113,7 @@ export class MainScene extends Phaser.Scene {
         // add keyboard events
         keyboardEvents(this);;
 
-        // Create Animations for heroes
+        // Create Animations for guest characters
         for (let i = 0; i < 33; i++) {
             createAnimationForPlayer(this.anims, i);
         }
@@ -140,14 +139,10 @@ export class MainScene extends Phaser.Scene {
             // send player position to server after 25 ms
             sendPlayerPosition(this, time);
 
+            // update players in player talk rectangle
             updatePeopleForTalk(this);
 
-            // update local storage every 1 sec
-            updateLocalStorage(this, time);
-
-            // if player on scene
-            updatePlayerScenePositon(this);
-
+            // if weapon -> update weapon
             updateWeapon(this);
 
         }
@@ -237,25 +232,6 @@ export function removeAllPeopleFromTalk(self) {
     });
     self.connected = [];
     showPlayersToTalk();
-}
-
-function updateLocalStorage(self, time) {
-    if (!self.player) return;
-    
-    let currentTime = Math.floor(time / 1000);
-    if (currentTime != self.lastTimeLocalStorage) {
-        const playerInfo = {
-            x: self.player.x,
-            y: self.player.y,
-            textureId: self.textureId,
-            nft: self.nft,
-            room: self.room,
-            playerName: self.playerName,
-        };
-        localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
-        console.log(playerInfo.x, playerInfo.y);
-    }
-    self.lastTimeLocalStorage = currentTime;
 }
 
 function updatePlayerScenePositon(self) {

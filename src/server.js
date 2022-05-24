@@ -10,7 +10,7 @@ require('./routes.js')(app);
 
 const session = require('express-session');
 
-
+const {parser} = require('socket.io-msgpack-parser');
 
 // CONFIGURATION ===============================================================
 
@@ -18,8 +18,12 @@ var port = process.env.PORT || 3000; // set our port
 
 ////////////////////////////////////////////////////////////////////////////////
 
+
+// get SECRET_SECCION from .env 
+const SECRET_SESSION = process.env.SECRET_SESSION;
+
 const sessionMiddleware = session({
-    secret: "changeit",
+    secret: SECRET_SESSION,
     resave: false,
     saveUninitialized: true
 });
@@ -31,6 +35,7 @@ app.use(sessionMiddleware);
 const server = require('http').Server(app);
 
 const io = require('socket.io')(server, {
+    wsEngine: require("eiows").Server,
     allowRequest: (req, callback) => {
         // with HTTP long-polling, we have access to the HTTP response here, but this is not
         // the case with WebSocket, so we provide a dummy response object

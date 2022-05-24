@@ -23,7 +23,7 @@ export function addChat(newSelf) {
 }
 
 export function addMessage(message, sendToServer) {
-    if (sizer.children.length > 7) {
+    if (sizer.children.length > 12) {
         // destroy the first one
         sizer.children[0].destroy();
     }

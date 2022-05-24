@@ -38,8 +38,8 @@ module.exports = (io) => {
 
     io.on('connect', (socket) => {
 
-        console.log('--------------SESSION-------------\n', socket.request.sessionStore.sessions,'\n--------------------------------------');
-        console.log('-----------YOUR SESSION ID--------\n', socket.request.sessionID,'\n--------------------------------------');
+        //console.log('--------------SESSION-------------\n', socket.request.sessionStore.sessions,'\n--------------------------------------');
+        //console.log('-----------YOUR SESSION ID--------\n', socket.request.sessionID,'\n--------------------------------------');
         // Initiate the connection process as soon as the client connects
 
         peers[socket.id] = socket
@@ -82,11 +82,11 @@ module.exports = (io) => {
                 }
             }
 
+            // emit to players in room that current player disconnected and leave the room
             socket.to(players[socket.id].room).emit('disconnected', socket.id);
-
             socket.leave(players[socket.id].room);
 
-            // connect to other room
+            // connect to other room + kukarek if isHome
             const previousMap = players[socket.id].mapId;
             var room = players[socket.id].planet + '$' + mapId;
             if (players[socket.id].isHome) {
@@ -94,15 +94,16 @@ module.exports = (io) => {
             }
 
             console.log("connecting to room", room);
-
             socket.join(room);
             players[socket.id].room = room;
             players[socket.id].mapId = mapId;
 
 
+            // coordinates of spawn point
             var x = mapsStartPoints[mapId][0].x;
             var y = mapsStartPoints[mapId][0].y;
 
+            // if map has different entrances (for example different homes) -> player will back to the same position
             if (mapsStartPoints[mapId][previousMap]) {
                 x = mapsStartPoints[mapId][previousMap].x;
                 y = mapsStartPoints[mapId][previousMap].y;
@@ -110,10 +111,9 @@ module.exports = (io) => {
 
             players[socket.id].x = x;
             players[socket.id].y = y;
-
             playerController.connectToRoom(socket, players, rooms, false);
 
-            // add leaderboard
+            // if map width id 8 -> fight room
             if (players[socket.id].mapId == 8) {
                 getLeaderboard(socket);
                 socket.emit('updateRewardCoins', coins);
@@ -129,7 +129,7 @@ module.exports = (io) => {
             players[socket.id].y = movementData.y;
             players[socket.id].rotation = movementData.rotation;
             // emit a message to all players about the player that moved
-            socket.to(players[socket.id].room).emit('playerMoved', players[socket.id]);
+            //socket.to(players[socket.id].room).emit('playerMoved', players[socket.id]);
         });
 
 
@@ -332,7 +332,7 @@ module.exports = (io) => {
         });
         io.to('coffeebar$8').emit('updateMonsters', monstersList);
 
-    }, 30);
+    }, 50);
 
     /**
      * CREATING MONSTERS

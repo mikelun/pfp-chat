@@ -22,6 +22,7 @@
         "bulma": "^0.9.3",
         "cors": "^2.8.5",
         "dotenv": "^16.0.1",
+        "eiows": "^4.0.1",
         "express": "^4.17.3",
         "express-session": "^1.17.3",
         "fs": "^0.0.1-security",
@@ -37,6 +38,7 @@
         "simple-peer": "^9.11.1",
         "socket.io": "^4.4.1",
         "socket.io-client": "^4.4.1",
+        "socket.io-msgpack-parser": "^3.0.1",
         "web3": "^1.7.1",
         "webrtc-swarm": "^2.9.0"
     },
@@ -44,5 +46,9 @@
         "staticPath": [
             "public"
         ]
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.6",
+        "utf-8-validate": "^5.0.9"
     }
 }

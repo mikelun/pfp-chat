@@ -32,14 +32,6 @@ module.exports = {
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
     },
     addPlayer: function (io, socket, players, peers, address, room, playerInfo, rooms, initializePlayer, data) {
-        // for (test in players) {
-        //     if (players[test].address == address) {
-        //         socket.emit('playerExists')
-        //         return;
-        //     }
-        // }
-        // if player with this session already exists
-
         // disconnect player with this session
         for (var player in players) {
             if (players[player].session == socket.request.sessionID) {
@@ -48,8 +40,6 @@ module.exports = {
                 }
             }
         }
-
-        console.log(players);
 
         players[socket.id] = createPlayerData(socket, address, room, playerInfo, data);
 
