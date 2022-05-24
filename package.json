@@ -1,5 +1,5 @@
 {
-    "name": "open-metaverse",
+    "name": "pfpchat",
     "version": "0.1.0",
     "description": "",
     "source": "public/index.html",
@@ -9,7 +9,7 @@
         "build": "parcel build && cp -r public/assets/ dist/assets",
         "production": "parcel build && cp -r public/assets/ dist/assets"
     },
-    "author": "",
+    "author": "mikelun",
     "license": "MIT",
     "devDependencies": {
         "budo": "^11.2.0",
@@ -23,6 +23,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.0.1",
         "express": "^4.17.3",
+        "express-session": "^1.17.3",
         "fs": "^0.0.1-security",
         "https": "^1.0.0",
         "moralis": "^1.5.8",

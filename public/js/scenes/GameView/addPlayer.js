@@ -16,7 +16,7 @@ import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 var self;
 
 export function addPlayer(newSelf, playerInfo) {
-    
+
     sceneEvents.emit('updateIsHome', playerInfo.isHome);
     
     self = newSelf;
@@ -35,7 +35,7 @@ export function addPlayer(newSelf, playerInfo) {
         if (playerInfo.textureId.startsWith('https://buildship')) {
             type = 'moonbirds';
         }
-        loadTexture(self, self.player, playerInfo.textureId, type);
+        loadTexture(self, self.player, playerInfo.textureId, type, true);
     } else if ((playerInfo.textureId + '').startsWith('artifact$')){
         configureArtifactCharacter(self, playerInfo.textureId, self.player);
 

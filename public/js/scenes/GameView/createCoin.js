@@ -49,7 +49,9 @@ export function createCoin(self, coinData, coinsList, coinId) {
                 repeat: 0,
                 onComplete: () => {
                     if (coinsList[coinId]) {
-                        coinsList[coinId].clear(true);
+                        coinsList[coinId].getChildren().forEach(coin => {
+                            coin.destroy();
+                        })
                     }
                 }
             });

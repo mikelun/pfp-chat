@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const fetch = require('node-fetch');
 const url = require('url');
+const session = require('express-session');
 
 const fetchCrossorigin = async (req, res) => {
     try {
@@ -29,9 +30,13 @@ const fetchCrossorigin = async (req, res) => {
 
 
 module.exports = (app) => {
-    // use it before all route definitions
-    app.use(express.static(path.join(__dirname, '..', 'dist')))
-    app.use(express.static(path.join(__dirname, '..', 'node_modules')))
+    app.set('trust proxy', 1) // trust first proxy
+    app.use(session({
+        secret: 'ssshhhhh',
+        resave: false,
+        saveUninitialized: true
+    }));
+
 
     app.get('/metadata', fetchCrossorigin)
 
@@ -39,8 +44,15 @@ module.exports = (app) => {
         res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'))
     });
 
-    // get parametres after / 
+    // // get parametres after / 
+    app.use(express.static(path.join(__dirname, '..', 'dist')))
+
     app.get('/:room', (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'))
     })
+
+    // use it before all route definitions
+    //app.set('trust proxy', 1) // trust first proxy
+
+
 }
