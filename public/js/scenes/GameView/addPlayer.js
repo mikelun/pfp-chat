@@ -108,7 +108,7 @@ function cleanPreviousInfoAboutPlayer(self) {
 function addUIForPlayer(self, playerInfo) {
     self.playerUI[self.socket.id] = {};
     const textColor = "#ffff00";
-    self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(0 - 0.25, 0 - 5, playerInfo.playerName.length * 5, 9, 5, 0x000000).setAlpha(0.5);
+    self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(0 - 0.25, 0 - 5, playerInfo.playerName.length * 5 + 5, 8, 6, 0x000000).setAlpha(0.5);
     self.playerUI[self.socket.id].playerText = self.add.text(0, -7, playerInfo.playerName, { fontSize: '125px', fontFamily: 'PixelFont', fill: textColor, align: 'center' }).setScale(0.1).setOrigin(0.5  );
     self.playerUI[self.socket.id].microphone = self.add.image(-4, -15, "microphone1-off").setScale(0.25);
     self.playerUI[self.socket.id].headphones = self.add.image(4, -14, "headphones").setScale(0.25);
