@@ -4,7 +4,7 @@ export function playShotSound(self, type) {
 
 
 export function playExplosionSound(self, type) {
-    self.sound.play('explosion1', { volume: 2 });
+    self.sound.play('explosion1', { volume: 1 });
 }
 
 export function playMoneySound(self, type) {

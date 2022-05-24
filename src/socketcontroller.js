@@ -29,14 +29,23 @@ coins = {};
 
 
 module.exports = (io) => {
+    io.engine.on("initial_headers", (headers, req) => {
+        if (req.cookieHolder) {
+            headers["set-cookie"] = req.cookieHolder;
+            delete req.cookieHolder;
+        }
+    });
+
     io.on('connect', (socket) => {
+
+        console.log('--------------SESSION-------------\n', socket.request.sessionStore.sessions,'\n--------------------------------------');
+        console.log('-----------YOUR SESSION ID--------\n', socket.request.sessionID,'\n--------------------------------------');
         // Initiate the connection process as soon as the client connects
 
         peers[socket.id] = socket
 
         function addPlayer(address, planet, firstEntrance, data) {
-            console.log('ADDING NEW PLAYER WITH SOCKET ID: ', socket.id);
-            playerController.addPlayer(io, socket, players, address, planet, {}, rooms, firstEntrance, data);
+            playerController.addPlayer(io, socket, players, peers, address, planet, {}, rooms, firstEntrance, data);
             getLeaderboard(socket);
             getItems(socket, address)
 

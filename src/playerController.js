@@ -24,7 +24,6 @@ module.exports = {
             
         } else {
             connectToHome(players, socket.id).then(data => {
-                console.log("HERE", data ? data.changed_tiles: null);
                 socket.emit('currentPlayers', sortPlayers, data ? data.changed_tiles: null); 
             }) 
         }
@@ -32,13 +31,25 @@ module.exports = {
         // update all other players of the new player
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
     },
-    addPlayer: function (io, socket, players, address, room, playerInfo, rooms, initializePlayer, data) {
+    addPlayer: function (io, socket, players, peers, address, room, playerInfo, rooms, initializePlayer, data) {
         // for (test in players) {
         //     if (players[test].address == address) {
         //         socket.emit('playerExists')
         //         return;
         //     }
         // }
+        // if player with this session already exists
+
+        // disconnect player with this session
+        for (var player in players) {
+            if (players[player].session == socket.request.sessionID) {
+                if (peers[player]) {
+                    peers[player].disconnect();
+                }
+            }
+        }
+
+        console.log(players);
 
         players[socket.id] = createPlayerData(socket, address, room, playerInfo, data);
 
@@ -110,7 +121,8 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         planet: room,
         coins: coins,
         weaponId: weaponId,
-        isHome: isHome
+        isHome: isHome,
+        session: socket.request.sessionID
     }
 
     return player;

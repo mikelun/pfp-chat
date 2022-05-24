@@ -2,7 +2,6 @@ const path = require('path');
 const express = require('express');
 const fetch = require('node-fetch');
 const url = require('url');
-const session = require('express-session');
 
 const fetchCrossorigin = async (req, res) => {
     try {
@@ -30,13 +29,6 @@ const fetchCrossorigin = async (req, res) => {
 
 
 module.exports = (app) => {
-    app.set('trust proxy', 1) // trust first proxy
-    app.use(session({
-        secret: 'ssshhhhh',
-        resave: false,
-        saveUninitialized: true
-    }));
-
 
     app.get('/metadata', fetchCrossorigin)
 
