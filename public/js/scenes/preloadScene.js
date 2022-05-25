@@ -173,6 +173,16 @@ export class PreloadScene extends Phaser.Scene {
 
     loadEffects() {
         this.load.spritesheet('background-lighting', 'assets/effects/background-lighting.png', { frameWidth: 256, frameHeight: 256, })
+        this.load.spritesheet('green-light', 'assets/effects/green-light.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect1', 'assets/effects/effect1.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect2', 'assets/effects/effect2.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect3', 'assets/effects/effect3.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect4', 'assets/effects/effect4.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect5', 'assets/effects/effect5.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect6', 'assets/effects/effect6.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect7', 'assets/effects/effect7.png', { frameWidth: 192, frameHeight: 192, })
+        this.load.spritesheet('effect8', 'assets/effects/effect8.png', { frameWidth: 192, frameHeight: 192, })
+
     }
     preload() {
 

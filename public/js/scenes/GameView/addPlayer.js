@@ -12,16 +12,26 @@ import { initializeWeapon } from "../Weapons/weapon";
 import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { updatePlayerCoins } from "../GameUI-elements/hud";
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
+import { addEffect } from "./addEffectToPlayer";
 
 var self;
-
+var effect1, effect2;
 export function addPlayer(newSelf, playerInfo) {
+    self = newSelf;
+    if (effect1) effect1.destroy();
+    effect1 = addEffect(self, playerInfo.x, playerInfo.y, 'host');
+    effect1.setAlpha(1).setScale(0.2);
+
+    if (effect2) effect2.destroy();
+    effect2 = addEffect(self, playerInfo.x, playerInfo.y, 'talking');
+    effect2.setAlpha(1).setScale(0.2);
+
+    self.layer1.add(effect1);
 
     sceneEvents.emit('updatePlayerName', playerInfo.playerName);
 
     sceneEvents.emit('updateIsHome', playerInfo.isHome);
     
-    self = newSelf;
     cleanPreviousInfoAboutPlayer(self);
 
     // initialize weapon for player
@@ -90,7 +100,7 @@ export function addPlayer(newSelf, playerInfo) {
     
 }
 
-function cleanPreviousInfoAboutPlayer(self) {
+function cleanPreviousInfoAboutPlayer(self) {    
     if (!self.addedRoomText) {
         sceneEvents.emit('updateRoomText', self.room);
         self.addedRoomText = true;
@@ -112,16 +122,20 @@ function addUIForPlayer(self, playerInfo) {
     self.playerUI[self.socket.id] = {};
     const textColor = "#ffff00";
     self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(0 - 0.25, 0 - 5, playerInfo.playerName.length * 5 + 5, 8, 6, 0x000000).setAlpha(0.5);
-    self.playerUI[self.socket.id].playerText = self.add.text(0, -7, playerInfo.playerName, { fontSize: '125px', fontFamily: 'PixelFont', fill: textColor, align: 'center' }).setScale(0.1).setOrigin(0.5  );
+    self.playerUI[self.socket.id].playerText = self.add.text(0, -7, playerInfo.playerName, { fontSize: '125px', fontFamily: 'PixelFont', fill: textColor, align: 'center'}).setScale(0.1).setOrigin(0.5  );
     self.playerUI[self.socket.id].microphone = self.add.image(-4, -15, "microphone1-off").setScale(0.25);
     self.playerUI[self.socket.id].headphones = self.add.image(4, -14, "headphones").setScale(0.25);
     var container = self.add.container(0, 0, [self.playerUI[self.socket.id].background, self.playerUI[self.socket.id].playerText, self.playerUI[self.socket.id].microphone, self.playerUI[self.socket.id].headphones]);
+
+    // log depth of player
     
     // container.setPosition(self.player.x, self.player.y);
     // add UI following
     self.events.on("postupdate", function () {
         if (self.player) { 
             Phaser.Display.Align.To.TopCenter(container, self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
+            Phaser.Display.Align.To.TopCenter(effect1, self.player, 1, (self.player.yAdd ? self.player.yAdd - 121: -121));
+            Phaser.Display.Align.To.TopCenter(effect2, self.player, 1, (self.player.yAdd ? self.player.yAdd - 120: -120));
             if (self.playerUI[self.socket.id].nftImage) {
                 Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id].nftImage, self.player, (self.player.xAddNFT ? self.player.xAddNFT  : 0), (self.player.yAddNFT ? self.player.yAddNFT : 0));
             }
