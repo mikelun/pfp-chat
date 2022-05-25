@@ -9,6 +9,7 @@ import { initializeHUD } from './GameUI-elements/hud';
 import { createButtons } from './GameUI-elements/lowButttons';
 import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
 import { buildVoiceChatPanel, playersInVoiceChat, updateVoiceChatPanel } from './GameUI-elements/playersInVoiceChat';
+import { initialiezeSpacePanel } from './GameUI-elements/spacePanel';
 import { createTalkIcons } from './GameUI-elements/talkIcons';
 import { addTextBox } from './GameUI-elements/textBox';
 import { addChat } from './GameUI-elements/textChat';
@@ -38,6 +39,7 @@ export class GameUi extends Phaser.Scene {
         // initialize popup errors
         initializeErrors(this);
 
+
         // initializing player hud
         initializeHUD(this, playerCoins, nftImage);
 
@@ -46,6 +48,9 @@ export class GameUi extends Phaser.Scene {
         buildVoiceChatPanel(this);
 
         createButtons(this);
+
+        initialiezeSpacePanel(this);
+        
         // tip how to open text chat
         this.tipOpenChat = this.add.text(18, 620, 'Press enter to open chat', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(0.8);
 

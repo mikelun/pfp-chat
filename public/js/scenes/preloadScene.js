@@ -132,6 +132,7 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('build-button', 'assets/game-ui/new-ui/build-button.png');
         this.load.image('remove-button', 'assets/game-ui/new-ui/remove-button.png');
         this.load.image('google-button', 'assets/game-ui/new-ui/google-button.png');
+        this.load.image('add-icon', 'assets/game-ui/new-ui/add-icon.png');
 
     }
 
