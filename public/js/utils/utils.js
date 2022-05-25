@@ -50,11 +50,9 @@ export function initKeysForController(newSelf) {
 }
 
 export function blockMovement() {
-    console.log("TRYING TO BLOCK MOVEMENT");
     self.blockedMovement = true;
 }
 export function unblockMovement() {
-    console.log("TRYING TO UNBLOCK MOVEMENT");
     self.blockedMovement = false;
 }
 

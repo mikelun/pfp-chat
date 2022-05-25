@@ -9,12 +9,12 @@ export var addTextBox = function (scene, message) {
         text: scene.rexUI.add.BBCodeText(0, 0, message, {
             wrap: {
                 mode: 'word',
-                width:  600,
+                width:  400,
             },
             fontSize: '25px',
             fill: "#ffffff",
             fontFamily: 'PixelFont',
-            maxLines: 5
+            maxLines: 2
         }),
 
         space: {

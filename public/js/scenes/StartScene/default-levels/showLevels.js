@@ -70,8 +70,8 @@ export function goToPlanet(self) {
 }
 
 export function playerWasAtPlanet(self) {
-    var userSupabase = getSupabaseUser();
-    if (!userSupabase) return;
+    //var userSupabase = getSupabaseUser();
+    //if (!userSupabase) return;
 
     try {
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {

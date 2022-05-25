@@ -23,9 +23,12 @@ export function addChat(newSelf) {
 }
 
 export function addMessage(message, sendToServer) {
-    if (sizer.children.length > 12) {
+
+    console.log(sizer.height);
+    while (sizer.height > 450) {
         // destroy the first one
         sizer.children[0].destroy();
+        sizer.layout();
     }
     const child = addTextBox(self, message);
     sizer.add(child, 0, 'left').layout();
