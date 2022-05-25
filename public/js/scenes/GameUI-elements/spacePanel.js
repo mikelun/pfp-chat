@@ -18,6 +18,9 @@ export function initialiezeSpacePanel(newSelf) {
     selectMapGroup = self.add.group();
 
     createSpacePanel();
+
+    spacePanelGroup.setVisible(false);
+    selectMapGroup.setVisible(false);
 }
 
 function createSpacePanel() {
@@ -25,10 +28,10 @@ function createSpacePanel() {
     var delta = 10;
 
     var closeButton = self.add.image(panel.x + 275, 90, 'close-button').setScale(2).setAlpha(0.8);
-    makeButtonInteractive(closeButton, 'CLOSE', 25, -15, true);
+    makeButtonInteractive(closeButton, '', 25, -15, true);
     closeButton.on('pointerdown', function () {
-        clearGroup(spacePanelGroup);
-        clearGroup(selectMapGroup);
+        spacePanelGroup.setVisible(false);
+        selectMapGroup.setVisible(false);
     });
 
     var heading = self.add.text(panel.x - 5, panel.y - 180, 'CREATE YOUR SPACE', { fontFamily: 'PixelFont', fontSize: '45px', color: '#ffffff' }).setOrigin(0.5);
@@ -64,6 +67,10 @@ function createSpacePanel() {
     spacePanelGroup.add(closeButton);
 }
 
+export function setVisibleSpacePanel() {
+    spacePanelGroup.setVisible(true);
+}
+
 function mapSelected(texture, name) {
     addIcon.destroy();
     if (mapImage) mapImage.destroy();
@@ -76,6 +83,8 @@ function mapSelected(texture, name) {
     mapName.setText("MAP: " + name);
     mapImage.setScale(120 / mapImage.width, 90 / mapImage.height);
     self.add.existing(mapImage);
+
+    spacePanelGroup.add(mapImage);
 }
 
 function clearGroup(group) {
@@ -103,9 +112,9 @@ function createEditText() {
         fixedHeight: 50,
         valign: 'center',
         fontFamily: 'PixelFont',
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setAlpha(0.6)
 
-    editTextBackground.setInteractive().setAlpha(0.6)
+    editTextBackground.setInteractive()
     .on('pointerdown', function () {
 
         var config = {
@@ -177,7 +186,7 @@ function createSelectMap() {
     // }).layout().setOrigin(0, 0);
 
 
-    addRoomImage(1130, 200 + 0 * 220, 'room1', 'SIMPLE ROOM');
+    addRoomImage(1130, 200 + 0 * 220, 'room1', 'HOTEL ROOM');
     addRoomImage(1130, 200 + 1 * 220, 'room2', 'ISLAND');
 
     selectMapGroup.add(panel);

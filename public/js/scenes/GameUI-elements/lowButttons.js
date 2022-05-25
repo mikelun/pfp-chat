@@ -1,4 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
+import { createAccountPanel, getAccountVisible } from "./accountPanel";
 import { editHome } from "./editHome";
 import { createInventoryPanel } from "./inventoryPanel";
 import { createShopPanel } from "./shopPanel";
@@ -14,6 +15,7 @@ export function createButtons(newSelf) {
     
     createInventoryPanel(self);
     createShopPanel(self);
+    createAccountPanel(self);
 
 
     createButton1();
@@ -33,6 +35,19 @@ export function createButtons(newSelf) {
 function createButton1() {
     self.accountButton = self.add.image(width / 3 + 0 * (width / 8) - 30, height * 0.90, 'friends-button').setScale(2).setAlpha(0.8);
     makeButtonInteractive(self.accountButton, 'ACCOUNT', 0, 40);
+
+    self.accountButton.on('pointerdown', () => {
+        const visible = self.accountGroup.getChildren()[0].visible;
+        if (!visible) {
+            closeAllPanels();
+            self.accountGroup.setVisible(true);
+            self.accountButton.selected = true;
+            self.accountButton.setAlpha(1);
+        } else {
+            self.accountGroup.setVisible(false);
+            self.accountButton.selected = false;
+        }
+    });
 }
 
 function createButton2() {
@@ -185,6 +200,8 @@ export function closeAllPanels() {
     self.accountButton.setAlpha(0.8);
     self.shopButton.setAlpha(0.8);
     self.discordButton.setAlpha(0.8);
+
+    self.accountGroup.setVisible(false);
 
 }
 
