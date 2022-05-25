@@ -71,6 +71,7 @@ export function addPlayer(newSelf, playerInfo) {
 
     getEnsDomain(self.moralis).then(domain => {
         updateEnsInPlayerList(domain);
+        sceneEvents.emit('updatePlayerName', domain);
     });
 
     showPlayersToTalk();

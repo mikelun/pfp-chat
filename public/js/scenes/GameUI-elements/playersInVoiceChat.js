@@ -56,8 +56,7 @@ var createGrid = function (scene) {
     return sizer;
 }
 
-export function updateVoiceChatPanel(self, players, playerName) {
-    self.playerName = playerName;
+export function updateVoiceChatPanel(self, players) {
     const scene = self;
     // remove all items from sizer
     sizer.removeAll(true);
