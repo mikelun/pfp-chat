@@ -4,9 +4,12 @@ import { sceneEvents } from "../../Events/EventsCenter";
 import { blockMovement, unblockMovement } from "../../utils/utils";
 import { makeButtonInteractive } from "./lowButttons";
 
+import CircleMaskImage from 'phaser3-rex-plugins/plugins/circlemaskimage.js';
+
+
 var self;
 
-var spacePanelGroup;
+var spacePanelGroup, selectMapGroup;
 export function initialiezeSpacePanel(newSelf) {
     self = newSelf;
 
@@ -38,6 +41,9 @@ function createSpacePanel() {
     const startNowButton = createStartNowButton(panel.x + 150, panel.y + 160 + delta);
 
     makeButtonInteractive(startNowButton, '', 10, 10);
+
+
+    createSelectMap();
 }
 
 
@@ -92,4 +98,17 @@ function createStartNowButton(x, y) {
     }).layout().setAlpha(0.8);
 
     return startNowButton;
+}
+
+function createSelectMap() {
+    selectMapGroup = self.add.group();
+
+    var panel = self.add.image(1320, 360, 'cell-info').setScale(5, 4.8);
+
+    var header = self.add.text(1130, 50, 'SELECT MAP', { fontFamily: 'PixelFont', fontSize: '45px', color: '#ffffff' }).setOrigin(0.5);
+    
+    var image = new CircleMaskImage(self, 500, 500, 'room1', {
+        radius: 20
+    });
+
 }

@@ -136,6 +136,10 @@ export class PreloadScene extends Phaser.Scene {
 
     }
 
+
+    loadRoomImages() {
+        this.load.image('room1', 'assets/room-images/room1.png');
+    }
     loadTilesForEditHome() {
         this.load.spritesheet('spritesheet-TilemapDay', 'assets/tiles/TilemapDay.png', { frameWidth: 32, frameHeight: 32, });
     }
