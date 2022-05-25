@@ -139,6 +139,7 @@ export class PreloadScene extends Phaser.Scene {
 
     loadRoomImages() {
         this.load.image('room1', 'assets/room-images/room1.png');
+        this.load.image('room2', 'assets/room-images/room2.png');
     }
     loadTilesForEditHome() {
         this.load.spritesheet('spritesheet-TilemapDay', 'assets/tiles/TilemapDay.png', { frameWidth: 32, frameHeight: 32, });
@@ -185,6 +186,7 @@ export class PreloadScene extends Phaser.Scene {
         this.loadSoundFX();
         this.loadEffects();
         this.loadTilesForEditHome();
+        this.loadRoomImages();
 
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {

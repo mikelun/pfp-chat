@@ -6,6 +6,7 @@ import { makeButtonInteractive } from "./lowButttons";
 
 import CircleMaskImage from 'phaser3-rex-plugins/plugins/circlemaskimage.js';
 
+var backgroundSelectMap, addIcon, mapName, mapImage;
 
 var self;
 
@@ -14,6 +15,7 @@ export function initialiezeSpacePanel(newSelf) {
     self = newSelf;
 
     spacePanelGroup = self.add.group();
+    selectMapGroup = self.add.group();
 
     createSpacePanel();
 }
@@ -23,35 +25,77 @@ function createSpacePanel() {
     var delta = 10;
 
     var closeButton = self.add.image(panel.x + 275, 90, 'close-button').setScale(2).setAlpha(0.8);
-    makeButtonInteractive(closeButton,'CLOSE', 25, -15, true);
+    makeButtonInteractive(closeButton, 'CLOSE', 25, -15, true);
+    closeButton.on('pointerdown', function () {
+        clearGroup(spacePanelGroup);
+        clearGroup(selectMapGroup);
+    });
 
     var heading = self.add.text(panel.x - 5, panel.y - 180, 'CREATE YOUR SPACE', { fontFamily: 'PixelFont', fontSize: '45px', color: '#ffffff' }).setOrigin(0.5);
-    
+
     var text1 = self.add.text(panel.x - 275, panel.y - 100 + delta, 'NAME YOUR SPACE', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }).setOrigin(0);
 
-    var text2 = self.add.text(panel.x - 275, panel.y + 10 + delta, 'SELECT MAP', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }).setOrigin(0);
+    mapName = self.add.text(panel.x - 275, panel.y + 10 + delta, 'SELECT MAP', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }).setOrigin(0);
 
     var editSpaceNameText = createEditText();
 
-    var backgroundSelectMap = self.rexUI.add.roundRectangle(420, panel.y + 110 + delta, 100, 100, 10, 0x121A2B).setAlpha(0.8);
-    var addIcon = self.add.image(backgroundSelectMap.x, backgroundSelectMap.y, 'add-icon').setScale(0.8).setTint(0x888888);
+    backgroundSelectMap = self.rexUI.add.roundRectangle(430, 430, 120, 90, 10, 0x121A2B).setAlpha(0.8);
+    addIcon = self.add.image(backgroundSelectMap.x, backgroundSelectMap.y, 'add-icon').setScale(0.8).setTint(0x888888);
 
     makeButtonInteractive(backgroundSelectMap, '', 0, 0);
+    backgroundSelectMap.on('pointerdown', () => {
+        createSelectMap();
+    });
 
     const startNowButton = createStartNowButton(panel.x + 150, panel.y + 160 + delta);
 
     makeButtonInteractive(startNowButton, '', 10, 10);
 
+    //createSelectMap();
 
-    createSelectMap();
+    spacePanelGroup.add(panel);
+    spacePanelGroup.add(heading);
+    spacePanelGroup.add(text1);
+    spacePanelGroup.add(mapName);
+    spacePanelGroup.add(editSpaceNameText);
+    spacePanelGroup.add(backgroundSelectMap);
+    spacePanelGroup.add(addIcon);
+    spacePanelGroup.add(startNowButton);
+    spacePanelGroup.add(closeButton);
 }
 
+function mapSelected(texture, name) {
+    addIcon.destroy();
+    if (mapImage) mapImage.destroy();
+
+    mapImage = new CircleMaskImage(self, 430, 430, texture, {
+        maskType: 'roundRectangle',
+        radius: 50,
+    });
+    // set size 120x90
+    mapName.setText("MAP: " + name);
+    mapImage.setScale(120 / mapImage.width, 90 / mapImage.height);
+    self.add.existing(mapImage);
+}
+
+function clearGroup(group) {
+    group.getChildren().forEach(function (child) {
+        child.setVisible(false);
+    });
+    group.getChildren().forEach(function (child) {
+        child.destroy();
+    });
+    group.getChildren().forEach(function (child) {
+        if (child.clear) child.clear(true);
+    });
+    group.clear(true);
+}
 
 
 function createEditText() {
     var defaultText = 'WHAT DO YOU WANT TO TALK ABOUT?';
     var editTextBackground = self.rexUI.add.roundRectangle(630, 290 + 10, 520, 50, 10, 0x121A2B);
-    
+
     var editNameText = self.rexUI.add.BBCodeText(editTextBackground.x, editTextBackground.y - 3, defaultText, {
         color: '#FFFFFF',
         fontSize: '35px',
@@ -59,29 +103,36 @@ function createEditText() {
         fixedHeight: 50,
         valign: 'center',
         fontFamily: 'PixelFont',
-    }).setOrigin(0.5).setInteractive().setAlpha(0.6)
-        .on('pointerdown', function () {
+    }).setOrigin(0.5);
 
-            var config = {
-                selectAll: true,
-                onOpen: function (edit) {
-                    editNameText.setAlpha(1);
-                    blockMovement();
-                    //self.tipsText.alpha = 0;
-                },
-                onTextChanged: function (editNameText, text) {
-                    editNameText.text = text;
-                },
-                onClose: function (editNameText) {
-                    unblockMovement();
-                },
-                // enterClose: false
-            }
-            var editor = new TextEdit(editNameText);
-            editor.open(config);
-        });
+    editTextBackground.setInteractive().setAlpha(0.6)
+    .on('pointerdown', function () {
+
+        var config = {
+            selectAll: true,
+            onOpen: function (edit) {
+                editNameText.setAlpha(1);
+                blockMovement();
+                //self.tipsText.alpha = 0;
+            },
+            onTextChanged: function (editNameText, text) {
+                editNameText.text = text;
+            },
+            onClose: function (editNameText) {
+                unblockMovement();
+            },
+            // enterClose: false
+        }
+        var editor = new TextEdit(editNameText);
+        editor.open(config);
+    });
+
+    spacePanelGroup.add(editTextBackground);
+    spacePanelGroup.add(editNameText);
 
     return editNameText;
+
+
 }
 
 function createStartNowButton(x, y) {
@@ -97,18 +148,79 @@ function createStartNowButton(x, y) {
         }
     }).layout().setAlpha(0.8);
 
+    spacePanelGroup.add(startNowButton);
+
     return startNowButton;
 }
 
 function createSelectMap() {
-    selectMapGroup = self.add.group();
+    selectMapGroup.clear(true);
 
     var panel = self.add.image(1320, 360, 'cell-info').setScale(5, 4.8);
 
     var header = self.add.text(1130, 50, 'SELECT MAP', { fontFamily: 'PixelFont', fontSize: '45px', color: '#ffffff' }).setOrigin(0.5);
-    
-    var image = new CircleMaskImage(self, 500, 500, 'room1', {
-        radius: 20
+
+    // // add scroll panel
+    // var scroll = self.rexUI.add.scrollablePanel({
+    //     x: 1180,
+    //     y: 300,
+    //     width: 310,
+    //     height: 500,
+    //     scrollMode: 0,
+    //     mouseWheelScroller: {
+    //         focus: false,
+    //         speed: 0.1
+    //     },
+    //     panel: {
+    //         child: createGrid(),
+    //     }
+    // }).layout().setOrigin(0, 0);
+
+
+    addRoomImage(1130, 200 + 0 * 220, 'room1', 'SIMPLE ROOM');
+    addRoomImage(1130, 200 + 1 * 220, 'room2', 'ISLAND');
+
+    selectMapGroup.add(panel);
+    selectMapGroup.add(header);
+
+    // for (let i = 0; i < 3; i++) {
+    //     sizer.add(self.add.text(1130, 200 + i * 220 + 100, 'HELLO', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }));
+    // }
+
+
+    //var room1 =  self.add.image(300, 300, 'room1').setScale(0.5);
+}
+
+function createGrid() {
+    sizer = self.rexUI.add.sizer({
+        x: 0, y: 0,
+        orientation: 'y',
+        align: 'left',
+        space: {
+            item: 20,
+        }
     });
+    return sizer;
+}
+
+function addRoomImage(x, y, texture, name) {
+    var image = new CircleMaskImage(self, x, y, texture, {
+        maskType: 'roundRectangle',
+        radius: 50,
+    });
+    self.add.existing(image);
+    image.setScale(0.25).setAlpha(0.8);
+    makeButtonInteractive(image, '', 0, 0);
+
+    var text = self.add.text(image.x, image.y + 100, name, { fontFamily: 'PixelFont', fontSize: '25px', color: '#ffffff' }).setOrigin(0.5);
+
+    selectMapGroup.add(image);
+    selectMapGroup.add(text);
+
+    image.on('pointerdown', () => {
+        mapSelected(texture, name);
+        selectMapGroup.clear(true);
+    });
+
 
 }
