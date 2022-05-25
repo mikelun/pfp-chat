@@ -65,7 +65,7 @@ export function goToPlanet(self) {
         }
         if (!currentPlayer) return;
 
-        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: players, mapId: currentPlayer.mapId, changedTiles: data, isHome: currentPlayer.isHome });
+        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: players, changedTiles: data, player:currentPlayer});
     });
 }
 

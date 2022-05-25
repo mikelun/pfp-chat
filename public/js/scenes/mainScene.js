@@ -52,17 +52,14 @@ export class MainScene extends Phaser.Scene {
 
         currentPlayers = data.currentPlayers;
 
-        currentPlayers.forEach(player => {
-            if (player.playerId == data.socket.id) {
-                this.playerCoins = player.coins;
-                this.mapId = player.mapId;
-                this.nftImage = player.nft;
-            }
-        });
+        this.playerCoins = data.player.coins;
+        this.mapId = data.player.mapId;
+        this.nftImage = data.player.nft;
 
-        this.isHome = data.isHome;
+        this.isHome = data.player.isHome;
 
         this.changedTiles = data.changedTiles;
+        this.playerName = data.player.playerName;
 
     }
 
@@ -80,6 +77,7 @@ export class MainScene extends Phaser.Scene {
             playerCoins: this.playerCoins,
             nftImage: this.nftImage,
             isHome: this.isHome,
+            playerName: this.playerName
         });
 
         initialAnimations(this);

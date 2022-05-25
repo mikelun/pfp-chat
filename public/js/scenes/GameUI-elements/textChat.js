@@ -23,8 +23,6 @@ export function addChat(newSelf) {
 }
 
 export function addMessage(message, sendToServer) {
-
-    console.log(sizer.height);
     while (sizer.height > 450) {
         // destroy the first one
         sizer.children[0].destroy();

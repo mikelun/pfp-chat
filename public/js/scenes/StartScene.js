@@ -52,6 +52,7 @@ export class StartScene extends Phaser.Scene {
         if (localStorage.getItem('microphone') == 'true' && localStorage.getItem('lastVisit') == 'true') {
             playerWasAtPlanet(this);
         }
+        
         // add enter text
         this.addEnterText();
 

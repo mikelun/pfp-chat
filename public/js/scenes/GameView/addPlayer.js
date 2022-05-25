@@ -17,6 +17,8 @@ var self;
 
 export function addPlayer(newSelf, playerInfo) {
 
+    sceneEvents.emit('updatePlayerName', playerInfo.playerName);
+
     sceneEvents.emit('updateIsHome', playerInfo.isHome);
     
     self = newSelf;

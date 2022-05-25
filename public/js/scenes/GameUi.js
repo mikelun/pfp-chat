@@ -28,6 +28,7 @@ export class GameUi extends Phaser.Scene {
         playerCoins = data.playerCoins;
         nftImage = data.nftImage;
         this.isHome = data.isHome;
+        this.playerName = data.playerName;
     }
 
     create() {
@@ -87,13 +88,17 @@ export class GameUi extends Phaser.Scene {
 
         sceneEvents.on('updateIsHome', this.updateIsHome, this);
 
+        sceneEvents.on('updatePlayerName', (name) => {
+            this.playerName = name;
+        });
+
         // ADD TEXT CHAT
         addChat(this);
 
         // create microphone and headphones
         createTalkIcons(this);
 
-        //editHome(this);
+
 
     }
 
@@ -128,8 +133,8 @@ export class GameUi extends Phaser.Scene {
         this.onlinePlayers.setText(`Online: ${onlinePlayers}`);
     }
 
-    updateCurrentPlayers(players, playerName) {
-        updateVoiceChatPanel(this, players, playerName);
+    updateCurrentPlayers(players) {
+        updateVoiceChatPanel(this, players);
     }
 
     createErrorMessage(message) {
