@@ -5,7 +5,7 @@ const weapons = require('./data/MMORPG/weapons.js');
 const supabase = require("./supabase/supabase");
 
 module.exports = {
-    connectToRoom: async function (socket, players, rooms, initializePlayer, connectingToOtherRoom) {
+    connectToRoom: async function (socket, players, rooms, initializePlayer) {
         // adding to rooms
         if (!rooms[players[socket.id].room]) {
             rooms[players[socket.id].room] = [socket.id];
@@ -82,6 +82,14 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         }
         if (data.is_home) {
             isHome = data.is_home;
+        }
+    } else {
+        if (playerInfo) {
+            x = playerInfo.x;
+            y = playerInfo.y;
+            textureId = playerInfo.textureId;
+            playerName = playerInfo.playerName;
+            mapId = playerInfo.mapId;
         }
     }
 

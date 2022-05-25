@@ -7,6 +7,9 @@ import { disconnectPlayerBadInternet } from '../scenes/GameView/disconnectPlayer
 import { initializeRPGSocket } from './mmorpgSocket';
 import { sceneEvents } from '../Events/EventsCenter';
 
+
+var playerInfo;
+
 /**
  * Initialize socket and connect to server by socket.io
  */
@@ -25,7 +28,7 @@ export function initializeSocket(self, peers, currentPlayers) {
 
     self.socket.on('connect', () => {
         sceneEvents.emit('removeErrorDisconnectMessage');
-        self.socket.emit('initializePlayer', self.address, self.room, false);
+        self.socket.emit('initializePlayer', self.address, self.room, false, playerInfo);
     })
 
     self.socket.on('playerExists', () => {
@@ -36,6 +39,15 @@ export function initializeSocket(self, peers, currentPlayers) {
 
     // IF PLAYER DISCONNECTED
     self.socket.on('disconnect', () => {
+        // if guest save to localstorage
+        playerInfo = {
+            playerName : self.playerName, 
+            mapId : self.mapId,
+            x : self.player.x,
+            y : self.player.y,
+            textureId : self.player.textureId,
+        };
+
         disconnectPlayerBadInternet(self);
     })
 

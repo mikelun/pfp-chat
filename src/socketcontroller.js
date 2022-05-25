@@ -37,15 +37,10 @@ module.exports = (io) => {
     });
 
     io.on('connect', (socket) => {
-
-        //console.log('--------------SESSION-------------\n', socket.request.sessionStore.sessions,'\n--------------------------------------');
-        //console.log('-----------YOUR SESSION ID--------\n', socket.request.sessionID,'\n--------------------------------------');
-        // Initiate the connection process as soon as the client connects
-
         peers[socket.id] = socket
 
-        function addPlayer(address, planet, firstEntrance, data) {
-            playerController.addPlayer(io, socket, players, peers, address, planet, {}, rooms, firstEntrance, data);
+        function addPlayer(address, planet, firstEntrance, data, playerInfo) {
+            playerController.addPlayer(io, socket, players, peers, address, planet, playerInfo, rooms, firstEntrance, data);
             getLeaderboard(socket);
             getItems(socket, address)
 
@@ -54,17 +49,17 @@ module.exports = (io) => {
             }
         }
 
-        socket.on('initializePlayer', (address, planet, firstEntrance) => {
+        socket.on('initializePlayer', (address, planet, firstEntrance, playerInfo) => {
             supabase.getPlayerData(address).then(result => {
                 var data = result ? result.data : null;
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
-                        addPlayer(address, planet, firstEntrance, data);
+                        addPlayer(address, planet, firstEntrance, data, playerInfo);
                     })
                 } else {
                     if (data) data = data[0];
                     if (data && data.planet != planet) data = null;
-                    addPlayer(address, planet, firstEntrance, data);
+                    addPlayer(address, planet, firstEntrance, data, playerInfo);
                 }
             })
         })
