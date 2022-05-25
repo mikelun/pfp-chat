@@ -5,6 +5,7 @@ import { currentPlayerDisconnected } from '../socketController/playerSocket';
 import { initializeChatSocket } from './textChatSocket';
 import { disconnectPlayerBadInternet } from '../scenes/GameView/disconnectPlayer';
 import { initializeRPGSocket } from './mmorpgSocket';
+import { sceneEvents } from '../Events/EventsCenter';
 
 /**
  * Initialize socket and connect to server by socket.io
@@ -23,6 +24,7 @@ export function initializeSocket(self, peers, currentPlayers) {
     initializeChatSocket(self);
 
     self.socket.on('connect', () => {
+        sceneEvents.emit('removeErrorDisconnectMessage');
         self.socket.emit('initializePlayer', self.address, self.room, false);
     })
 

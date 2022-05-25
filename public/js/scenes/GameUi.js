@@ -4,7 +4,7 @@ import { sendEventToAmplitude } from '../Analytics/amplitude';
 import { sceneEvents } from '../Events/EventsCenter';
 import { createAnimationsUI } from './GameUI-elements/animationsUI';
 import { editHome } from './GameUI-elements/editHome';
-import { createErrorPanel } from './GameUI-elements/errorPanel';
+import { initializeErrors } from './GameUI-elements/errorPanel';
 import { initializeHUD } from './GameUI-elements/hud';
 import { createButtons } from './GameUI-elements/lowButttons';
 import { initializeMusicPlayerPanel } from './GameUI-elements/musicPanel';
@@ -34,7 +34,10 @@ export class GameUi extends Phaser.Scene {
     create() {
 
         createAnimationsUI(this);
-        
+
+        // initialize popup errors
+        initializeErrors(this);
+
         // initializing player hud
         initializeHUD(this, playerCoins, nftImage);
 
@@ -83,8 +86,6 @@ export class GameUi extends Phaser.Scene {
         sceneEvents.on('newMessage', this.addMessageToChat, this)
 
         sceneEvents.on('updateOnlinePlayers', this.updateOnlinePlayers, this);
-
-        sceneEvents.on('createErrorMessage', this.createErrorMessage, this);
 
         sceneEvents.on('updateIsHome', this.updateIsHome, this);
 
@@ -136,12 +137,4 @@ export class GameUi extends Phaser.Scene {
     updateCurrentPlayers(players) {
         updateVoiceChatPanel(this, players);
     }
-
-    createErrorMessage(message) {
-        createErrorPanel(this, message);
-    }
-
-
-
-
 }

@@ -1,6 +1,8 @@
+import { sceneEvents } from "../../Events/EventsCenter";
 import { currentPlayerDisconnected, destroyPlayer } from "../../socketController/playerSocket";
 
 export function disconnectPlayerBadInternet(self) {
+    sceneEvents.emit('createErrorDisconnectMessage');
     // disconnect player
     disconnectPlayer(self);
 }
