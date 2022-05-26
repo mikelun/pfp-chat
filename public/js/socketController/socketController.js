@@ -27,7 +27,6 @@ export function initializeSocket(self, peers, currentPlayers) {
     initializeChatSocket(self);
 
     self.socket.on('connect', () => {
-        sceneEvents.emit('removeErrorDisconnectMessage');
         self.socket.emit('initializePlayer', self.address, self.room, false, playerInfo);
     })
 

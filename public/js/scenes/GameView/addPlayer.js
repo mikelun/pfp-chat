@@ -18,20 +18,8 @@ import { createPlayerUI } from "./playerUI";
 var self;
 var effect1, effect2;
 export function addPlayer(newSelf, playerInfo) {
+    sceneEvents.emit('removeErrorDisconnectMessage');
     self = newSelf;
-
-
-    // if (effect1) effect1.destroy();
-    // effect1 = addEffect(self, playerInfo.x, playerInfo.y, 'host');
-    // effect1.setAlpha(1).setScale(0.2);
-
-    // if (effect2) effect2.destroy();
-    // effect2 = addEffect(self, playerInfo.x, playerInfo.y, 'talking');
-    // effect2.setAlpha(1).setScale(0.2);
-
-    self.talkingEffect = createTalkingEffect(self, playerInfo.x, playerInfo.y);
-
-    // self.layer1.add(effect1);
 
     sceneEvents.emit('updatePlayerName', playerInfo.playerName);
 
@@ -70,7 +58,7 @@ export function addPlayer(newSelf, playerInfo) {
 
 
     // add player to layer1
-    self.layer1.add(self.player);
+    self.player.setDepth(25);
 
     // START FOLLOWING
     self.cameras.main.startFollow(self.player);
@@ -125,25 +113,11 @@ function cleanPreviousInfoAboutPlayer(self) {
 
 function addUIForPlayer(self, playerInfo) {
     self.playerUI[self.socket.id] = createPlayerUI(self, playerInfo);
-    // log depth of player
-    
-    // container.setPosition(self.player.x, self.player.y);
-    // add UI following
+
     self.events.on("postupdate", function () {
-        if (self.player) { 
-            Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id], self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
-            // Phaser.Display.Align.To.TopCenter(effect1, self.player, 1, (self.player.yAdd ? self.player.yAdd - 121: -121));
-            // Phaser.Display.Align.To.TopCenter(effect2, self.player, 1, (self.player.yAdd ? self.player.yAdd - 120: -120));
-            // if (self.playerUI[self.socket.id].nftImage) {
-            //     Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id].nftImage, self.player, (self.player.xAddNFT ? self.player.xAddNFT  : 0), (self.player.yAddNFT ? self.player.yAddNFT : 0));
-            // }
-
-            if (self.talkingEffect) {
-                Phaser.Display.Align.To.TopCenter(self.talkingEffect, self.player, 0, (self.player.yAdd ? self.player.yAdd - 121: -121));
-            }
-
+        if (self.player && self.playerUI[self.socket.id]) { 
+            Phaser.Display.Align.To.TopCenter(self.playerUI[self.player.id], self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
         }
-    
     });
     
     pushToPlayerList(playerInfo);

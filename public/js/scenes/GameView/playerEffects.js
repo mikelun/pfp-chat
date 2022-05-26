@@ -1,7 +1,7 @@
 import { sceneEvents } from "../../Events/EventsCenter";
-import { updateTalkingEffect } from "../../socketController/playerSocket";
 import { getCurrentVolume } from "../Audio/audioMicrophoneStream";
 import { addEffect } from "./addEffectToPlayer";
+import { updateTalkingEffect } from "./playerUI";
 
 var self;
 export function initializePlayerEffects(newSelf) {
@@ -12,20 +12,18 @@ export function initializePlayerEffects(newSelf) {
         playerIsTalking(volume);
     }, 1000);
 }
+
+
 function playerIsTalking(volume) {
     if (!self.player) return;
 
-    const isTalking = volume > 1;
+    const isTalking = volume > 5;
 
     // show or hide effect
-    if (self.talkingEffect) self.talkingEffect.setAlpha(isTalking ? 1 : 0);
+    updateTalkingEffect(self, isTalking, self.player.id);
 
     // send info to server
     sendInfoToPlayers(self, isTalking);
-}
-
-export function destroyEffects(self) {
-    if (self.talkingEffect) self.talkingEffect.destroy();
 }
 
 function sendInfoToPlayers(self, isTalking) {

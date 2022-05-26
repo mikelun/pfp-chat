@@ -62,6 +62,10 @@ export function addMap4(self) {
     effects.push(addEffect(self, 800, 1115, 'fire-effect'));
     effects.push(addEffect(self, 925, 1115, 'fire-effect'));
 
+    effects.forEach(effect => {
+        effect.setDepth(50);
+    })
+
     self.caffeinumText = self.add.text(320, 1443, 'caffeinum.', { fontSize: '26px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(1);
     self.layer1.add(self.caffeinumText);
 

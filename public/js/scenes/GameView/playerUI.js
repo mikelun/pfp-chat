@@ -1,4 +1,5 @@
 import { randColor } from "../../socketController/playerSocket";
+import { createTalkingEffect } from "./addEffectToPlayer";
 
 export function createPlayerUI(self, playerInfo) {
     const textColor = randColor();
@@ -10,8 +11,10 @@ export function createPlayerUI(self, playerInfo) {
     const playerText = self.add.text(0, -7, playerInfo.playerName, { fontSize: '125px', fontFamily: 'PixelFont', fill: textColor, align: 'center' }).setScale(0.1).setOrigin(0.5);
     const microphone = self.add.image(-4, -15, microphoneTexture).setScale(0.25);
     const headphones = self.add.image(4, -14, headphonesTexture).setScale(0.25);
-    const container = self.add.container(0, 0, [background, playerText, microphone, headphones]);
-    
+    const talkingEffect = createTalkingEffect(self, 0, 20);
+    const container = self.add.container(0, 0, [background, playerText, microphone, headphones, talkingEffect]);
+
+    container.setDepth(26);
     return container;
 }
 
@@ -21,7 +24,8 @@ export function createPlayerUI(self, playerInfo) {
  * 1 - playerText
  * 2 - microphone
  * 3 - headphones
- * 4 - weapon
+ * 4 - talkingEffect
+ * 5 - weapon
  */
 export function updatePlayerUI(self, playerInfo) {
     const container = self.playerUI[playerInfo.playerId];
@@ -38,7 +42,7 @@ export function updatePlayerUI(self, playerInfo) {
         const headphones = container.getAt(3);
         microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
         headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
-        const weapon = container.getAt(4);
+        const weapon = container.getAt(5);
         if (weapon) {
             weapon.setTexture(playerInfo.weapon.texture);
         }
@@ -47,7 +51,14 @@ export function updatePlayerUI(self, playerInfo) {
 
 
 export function getWeaponFromUI(playerUI) {
-    const weapon = playerUI.getAt(4);
+    const weapon = playerUI.getAt(5);
     
     return weapon;
+}
+
+export function updateTalkingEffect(self, isTalking, playerId) {
+    if (!self.playerUI[playerId]) return;
+
+    const talkingEffect = self.playerUI[playerId].getAt(4);
+    talkingEffect.setAlpha(isTalking ? 1 : 0);
 }

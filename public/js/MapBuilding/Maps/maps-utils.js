@@ -2,6 +2,7 @@ import { clearMap } from "../showMap";
 
 export function clearMapWithTransition(self) {
     self.slowTransition = self.add.rectangle(0, 0, 10000, 10000, 0x000000).setAlpha(0);
+    self.slowTransition.setDepth(101);
     // add timer while slow Transition alpha < 1
     const timer = self.time.addEvent({
         delay: 10,
@@ -27,6 +28,7 @@ export function startMapTransition(self, arrayLights) {
         });
     });
     const slowTransition = self.add.rectangle(0, 0, 10000, 10000, 0x000000).setAlpha(1);
+    slowTransition.setDepth(101);
     // add timer while slow Transition alpha < 1
     const time1 = self.time.addEvent({
         delay: 100,

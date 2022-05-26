@@ -14,6 +14,7 @@ export function initializeWeapon(newSelf, weapon) {
     }
     self.weapon = self.add.image(0, 0, weapon.texture).setAlpha(0);
     self.weapon.id = weapon.id;
+    self.weapon.setDepth(27);
 
     if (bullets) return;
     bullets = self.add.group();

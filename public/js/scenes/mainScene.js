@@ -85,6 +85,7 @@ export class MainScene extends Phaser.Scene {
         // MAIN 2 layers
         this.layer1 = this.add.layer();
         this.layer2 = this.add.layer();
+        this.layer2.setDepth(100);
 
         // initialize with id
         showMap(this, this.mapId);

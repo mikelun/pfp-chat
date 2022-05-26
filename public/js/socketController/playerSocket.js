@@ -12,7 +12,7 @@ import { changeMap } from "../scenes/GameView/changeMap";
 import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
-import { updatePlayerUI } from "../scenes/GameView/playerUI";
+import { updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
 import { clearPlayerUI } from "../scenes/GameView/addPlayersUtils";
 // import { sendFile } from "express/lib/response";
 
@@ -170,6 +170,12 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         changeMap(self, data.mapId);
     });
 
+    self.socket.on('updateTalkingEffect', (data) => {
+        if (self.playerUI[data.playerId]) {
+            updateTalkingEffect(self, data.isTalking, data.playerId);
+        }
+    });
+
     sceneEvents.on('connectToMyRoom', () => {
         self.socket.emit('connectToRoom', {isMyRoom: true});
     });
@@ -270,10 +276,10 @@ export function updateEnsInPlayerList(domain) {
             if (domain) { 
                 player.name = domain;
                 self.playerName = domain;
-                self.player.setInteractive().on('pointerdown', () => {
-                    // open link twitter
-                    window.open(`https://context.app/${domain}`);
-                })
+                // self.player.setInteractive().on('pointerdown', () => {
+                //     // open link twitter
+                //     window.open(`https://context.app/${domain}`);
+                // })
             }
             self.socket.emit("updatePlayerInfo", { playerName: domain }, self.socket.id);
             showPlayersToTalk();

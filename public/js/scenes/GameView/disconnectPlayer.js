@@ -1,7 +1,6 @@
 import { sceneEvents } from "../../Events/EventsCenter";
-import { currentPlayerDisconnected, destroyPlayer } from "../../socketController/playerSocket";
+import { currentPlayerDisconnected, destroyPlayer} from "../../socketController/playerSocket";
 import { clearPlayerUI } from "./addPlayersUtils";
-import { destroyEffects } from "./playerEffects";
 
 export function disconnectPlayerBadInternet(self) {
     sceneEvents.emit('createErrorDisconnectMessage');
@@ -10,10 +9,6 @@ export function disconnectPlayerBadInternet(self) {
 }
 
 export function disconnectPlayer(self) {
-
-
-    // hide player effects
-    destroyEffects(self);
 
     if (!self.player) return;
 
@@ -25,9 +20,9 @@ export function disconnectPlayer(self) {
     currentPlayerDisconnected(self.player.id);
     clearPlayerUI(playerUI);
 
-    // destroy main player
+    // destroy main player  
     destroyPlayer();
-
+    
     self.otherPlayers.getChildren().forEach(otherPlayer => {
         clearPlayerUI(self.playerUI[otherPlayer.playerId]);
         otherPlayer.destroy();
