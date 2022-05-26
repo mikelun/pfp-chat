@@ -66,6 +66,10 @@ function createSpacePanel() {
             name: editSpaceNameText.text,
             mapId: selectedMapId
         });
+
+        sceneEvents.emit('createLoader', 'Creating your space...');
+
+        spacePanelGroup.setVisible(false);
     });
 
     //createSelectMap();

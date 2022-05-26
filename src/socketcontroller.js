@@ -311,7 +311,7 @@ module.exports = (io) => {
             // generate ranom string
             const spaceId = Math.random().toString(36).substring(3, 9) + Math.random().toString(36).substring(2, 4);
             if (!players[socket.id].address) {
-                self.socket.emit('createSpace', {error: true});
+                socket.emit('createSpace', {error: true});
             } else {
                 spaces[spaceId] = {
                     id: spaceId,
@@ -322,7 +322,7 @@ module.exports = (io) => {
                     createdTime: Math.floor(Date.now() / 1000),
                     room: 'space$' + spaceId,
                 }
-                self.socket.emit('createSpace', {error: false, space: spaces[spaceId]});
+                socket.emit('createSpace', {error: false, space: spaces[spaceId]});
             }
         })
 
@@ -342,9 +342,9 @@ module.exports = (io) => {
          */
         socket.on('getSpaceData', (spaceId) => {
             if (spaces[spaceId]) {
-                self.socket.emit('getSpaceData', spaces[spaceId]);
+                socket.emit('getSpaceData', spaces[spaceId]);
             } else {
-                self.socket.emit('getSpaceData', {error: true});
+                socket.emit('getSpaceData', {error: true});
             }
         })
 
