@@ -6,6 +6,7 @@ import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
 import { buildTile, editTile, saveAllProgress, stopBuilding, updateTilesFromData } from "../editTiles";
 import { showMap } from "../showMap";
+import { createLight } from "./map4";
 import { clearMapWithTransition, startMapTransition } from "./maps-utils";
 
 
@@ -25,28 +26,29 @@ var effects = [];
 var spaceKey;
 
 var wallsCollider;
-export const addMap9= addMap;
-export const addPhysicsForMap9 = addPhysicsForMap;
-export const addUpdateForMap9 = addUpdateForMap;
-export const clearMap9 = clearMap;
+
+export const addMap10 = addMap;
+export const addPhysicsForMap10 = addPhysicsForMap;
+export const addUpdateForMap10 = addUpdateForMap;
+export const clearMap10 = clearMap;
 
 
 
 function addMap(self) {
     spaceKey = false;
 
-    map = self.make.tilemap({ key: '9' });
+    map = self.make.tilemap({ key: '10' });
     
     const tileset1 = map.addTilesetImage('TilemapDay', 'tiles'); 
 
-    const tileset2 = map.addTilesetImage('Interior', 'Interior');
 
     // Create layers and collides for physics
-    self.layer1.add(map.createStaticLayer('1', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('2', [tileset1, tileset2]));
-    self.layer1.add(map.createStaticLayer('3', [tileset1, tileset2]));
+    self.layer1.add(map.createStaticLayer('1', tileset1));
+    self.layer1.add(map.createStaticLayer('2', tileset1));
+    self.layer1.add(map.createStaticLayer('3', tileset1));
+    self.layer1.add(map.createStaticLayer('4', tileset1));
 
-    self.invisibleWalls = map.createLayer('invisibleWalls', tileset2).setCollisionByProperty({ collides: true });;
+    self.invisibleWalls = map.createLayer('invisibleWalls', tileset1).setCollisionByProperty({ collides: true });;
     self.invisibleWalls.setVisible(false);
 
 
@@ -64,29 +66,6 @@ function addMap(self) {
             changeMap(self, {mapId: entranceMapId});
         }
     });
-
-
-    sceneEvents.on('start-build', (index) => {
-        editTile(self, map, {building: true, index: index});
-    });
-
-    sceneEvents.on('start-remove', () => {
-        editTile(self, map, {building: false});
-    })
-    sceneEvents.on('stop-building', () => {
-        saveAllProgress(self);
-    });
-
-    if (self.changedTiles && self.isHome) {
-        updateTilesFromData(self, map, self.changedTiles);
-    }
-
-    sceneEvents.on('update-tiles-from-data', (changedTiles) => {
-        if (!self.isHome) return;
-        self.changedTiles = changedTiles;
-        updateTilesFromData(self, map, changedTiles);
-    })
-
 }
 
 // add physics when player added to map
@@ -95,7 +74,18 @@ function addPhysicsForMap(self) {
 }
 
 function addLightsToMap(self) {
-
+    const warmLight = { r: 255, g: 160, b: 0 };
+    const warmItensity = 0.02;
+    const warmLightRadius = 300;
+    lights.push(createLight(self, 65, 281, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 148, 217, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 248, 153, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 333, 153, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 396, 153, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 466, 153, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 543, 153, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 657, 217, warmLight, warmItensity, warmLightRadius));
+    lights.push(createLight(self, 640, 281, warmLight, warmItensity, warmLightRadius));
 }
 
 function addEntrancesToMap(self) {
@@ -116,8 +106,6 @@ function addUpdateForMap(self, time, delta) {
             }
         }
     });
-
-    // if
 }
 
 function clearMap(self) {

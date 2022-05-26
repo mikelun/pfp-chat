@@ -16,13 +16,14 @@ import { addEffect, createTalkingEffect } from "./addEffectToPlayer";
 import { createPlayerUI } from "./playerUI";
 
 var self;
-var effect1, effect2;
+
 export function addPlayer(newSelf, playerInfo) {
     sceneEvents.emit('removeErrorDisconnectMessage');
     self = newSelf;
 
     sceneEvents.emit('updatePlayerName', playerInfo.playerName);
 
+    self.isHome = playerInfo.isHome;
     sceneEvents.emit('updateIsHome', playerInfo.isHome);
     
     cleanPreviousInfoAboutPlayer(self);

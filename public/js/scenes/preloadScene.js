@@ -64,6 +64,8 @@ export class PreloadScene extends Phaser.Scene {
 
         this.load.tilemapTiledJSON('9', 'assets/tiles/default-room.json');
 
+        this.load.tilemapTiledJSON('10', 'assets/tiles/10.json');
+
     }
 
 

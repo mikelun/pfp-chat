@@ -145,6 +145,7 @@ export class MainScene extends Phaser.Scene {
         if (this.animatedTiles) this.animatedTiles.forEach(tile => tile.update(delta));
 
         if (this.player) {
+            console.log(this.player.x, this.player.y);
             // update function for map
             addUpdateForMap(this, this.mapId, time, delta);
 

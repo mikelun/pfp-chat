@@ -13,6 +13,7 @@ import { addMap6, addPhysicsForMap6, addUpdateForMap6, clearMap6} from "./Maps/m
 import { addMap7, addPhysicsForMap7, addUpdateForMap7, clearMap7 } from "./Maps/map7";
 import { addMap8, addPhysicsForMap8, addUpdateForMap8, clearMap8 } from "./Maps/map8";
 import { addMap9, addPhysicsForMap9, addUpdateForMap9, clearMap9 } from "./Maps/map9";
+import { addMap10, addPhysicsForMap10, addUpdateForMap10, clearMap10 } from "./Maps/map10";
 // show map with id
 const mapsFunctions = {
     1: [addMap1, addPhysicsForMap1, addUpdateForMap1],
@@ -24,6 +25,7 @@ const mapsFunctions = {
     7: [addMap7, addPhysicsForMap7, addUpdateForMap7, clearMap7],
     8: [addMap8, addPhysicsForMap8, addUpdateForMap8, clearMap8],
     9: [addMap9, addPhysicsForMap9, addUpdateForMap9, clearMap9],
+    10: [addMap10, addPhysicsForMap10, addUpdateForMap10, clearMap10]
 }
 export function showMap(self, id) {
     mapsFunctions[id][0](self);

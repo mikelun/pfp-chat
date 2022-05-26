@@ -70,6 +70,7 @@ function createSpacePanel() {
         sceneEvents.emit('createLoader', 'Creating your space...');
 
         spacePanelGroup.setVisible(false);
+        editSpaceNameText.setText('');
     });
 
     //createSelectMap();
@@ -205,7 +206,7 @@ function createSelectMap() {
     // }).layout().setOrigin(0, 0);
 
 
-    addRoomImage(1130, 200 + 0 * 220, {texture: 'room1', name: 'HOTEL ROOM', mapId: 9});
+    addRoomImage(1130, 200 + 0 * 220, {texture: 'room1', name: 'CONFERENCE ROOM', mapId: 10});
     addRoomImage(1130, 200 + 1 * 220, {texture: 'room2', name: 'ISLAND', mapId: 3});
 
     selectMapGroup.add(panel);
