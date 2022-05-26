@@ -190,8 +190,10 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     sceneEvents.on('updateTiles', (data) => {
         self.socket.emit('updateTiles', data);
     })
+}
 
-
+export function updateTalkingEffect(isTalking) {
+    self.socket.emit('updatePlayerEffect', {isTalking: isTalking});
 }
 
 

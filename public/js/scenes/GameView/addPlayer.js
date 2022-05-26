@@ -12,12 +12,14 @@ import { initializeWeapon } from "../Weapons/weapon";
 import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { updatePlayerCoins } from "../GameUI-elements/hud";
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
-import { addEffect } from "./addEffectToPlayer";
+import { addEffect, createTalkingEffect } from "./addEffectToPlayer";
 
 var self;
 var effect1, effect2;
 export function addPlayer(newSelf, playerInfo) {
     self = newSelf;
+
+
     // if (effect1) effect1.destroy();
     // effect1 = addEffect(self, playerInfo.x, playerInfo.y, 'host');
     // effect1.setAlpha(1).setScale(0.2);
@@ -25,6 +27,8 @@ export function addPlayer(newSelf, playerInfo) {
     // if (effect2) effect2.destroy();
     // effect2 = addEffect(self, playerInfo.x, playerInfo.y, 'talking');
     // effect2.setAlpha(1).setScale(0.2);
+
+    createTalkingEffect(self, playerInfo.x, playerInfo.y);
 
     // self.layer1.add(effect1);
 
@@ -139,6 +143,11 @@ function addUIForPlayer(self, playerInfo) {
             if (self.playerUI[self.socket.id].nftImage) {
                 Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id].nftImage, self.player, (self.player.xAddNFT ? self.player.xAddNFT  : 0), (self.player.yAddNFT ? self.player.yAddNFT : 0));
             }
+
+            if (self.talkingEffect) {
+                Phaser.Display.Align.To.TopCenter(self.talkingEffect, self.player, 0, (self.player.yAdd ? self.player.yAdd - 121: -121));
+            }
+
         }
     
     });

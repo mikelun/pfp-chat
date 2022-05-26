@@ -1,5 +1,6 @@
 import { sceneEvents } from "../../Events/EventsCenter";
 import { currentPlayerDisconnected, destroyPlayer } from "../../socketController/playerSocket";
+import { destroyEffects } from "./playerEffects";
 
 export function disconnectPlayerBadInternet(self) {
     sceneEvents.emit('createErrorDisconnectMessage');
@@ -8,8 +9,13 @@ export function disconnectPlayerBadInternet(self) {
 }
 
 export function disconnectPlayer(self) {
+
+
+    // hide player effects
+    destroyEffects(self);
+
     if (!self.player) return;
-    
+
     if (self.particles) {
         self.particles.destroy();
     }

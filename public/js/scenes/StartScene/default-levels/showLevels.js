@@ -76,7 +76,10 @@ export function playerWasAtPlanet(self) {
     try {
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
             self.stream = stream;
-
+            stream.getTracks().forEach(track => {
+                track.stop();
+            });
+            
             startMoralis(Moralis);
             self.user = getUserMoralis(Moralis);
 

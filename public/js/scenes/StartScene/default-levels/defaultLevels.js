@@ -33,7 +33,9 @@ export function defaultLevel0(self, Moralis) {
             navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
                 self.stream = stream;
                 localStorage.setItem('microphone', 'true');
-
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
                 self.step++;
                 showCurrentLevel(self);
             });

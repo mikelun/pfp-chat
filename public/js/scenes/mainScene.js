@@ -16,6 +16,7 @@ import { initializeAmplitude } from '../Analytics/amplitude';
 import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMicrophoneStream';
 import { initializeWeapon, updateWeapon } from './Weapons/weapon';
 import { initialAnimations } from '../utils/initialAnimations';
+import { initializePlayerEffects } from './GameView/playerEffects';
 /**
  * All peer connections
  */
@@ -95,8 +96,12 @@ export class MainScene extends Phaser.Scene {
         // initialize with id
         showMap(this, this.mapId);
 
+        // initializing server
         initializeSocket(this, peers, currentPlayers);
 
+        // initialize effects : talking effect, host effect etc
+        initializePlayerEffects(this);
+        
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
 

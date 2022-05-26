@@ -1,6 +1,7 @@
 import { sceneEvents } from "../../Events/EventsCenter";
 import { removeAllPeopleFromTalk } from "../mainScene";
 
+
 export function initializeAudioStream(self) {
 
     // TODO: restart all peer connections
@@ -78,8 +79,45 @@ function setDeafen(self) {
 function setUndeafen(self) {
     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
         self.localStream = stream;
+
+        getAudioVolume(self.localStream);
+
+
         toggleMute(self);
         self.deafen = false;
         self.socket.emit("updatePlayerInfo", { deafen: false, microphoneStatus: false }, self.socket.id);
     });
+}
+
+
+var average = 0;
+function getAudioVolume(stream) {
+    var audioContext = new AudioContext();
+    var analyser = audioContext.createAnalyser();
+    var microphone = audioContext.createMediaStreamSource(stream);
+    var javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+    analyser.smoothingTimeConstant = 0.8;
+    analyser.fftSize = 1024;
+    microphone.connect(analyser);
+    analyser.connect(javascriptNode);
+
+    javascriptNode.connect(audioContext.destination);
+    
+    javascriptNode.onaudioprocess = function () {
+        var array = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(array);
+        var values = 0;
+
+
+        var length = array.length;
+        for (var i = 0; i < length; i++) {
+            values += (array[i]);
+        }
+
+        average = Math.round(values / length);
+    }
+}
+
+export function getCurrentVolume() {
+    return average;
 }
