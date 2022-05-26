@@ -290,6 +290,10 @@ module.exports = (io) => {
             })();
         });
 
+        socket.on('updateTalkingEffect', (data) => {
+            console.log(data);
+        })
+
     });
 
     /**

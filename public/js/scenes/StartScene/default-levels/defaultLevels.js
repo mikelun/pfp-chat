@@ -51,7 +51,7 @@ export function defaultLevel0(self, Moralis) {
         //if (self.step != 1) return;
         self.step++;
         self.stream = null;
-        self.microphoneEnabled = true;
+        self.microphoneEnabled = false;
         showCurrentLevel(self);
     });
 }

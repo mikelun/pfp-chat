@@ -189,12 +189,13 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
     sceneEvents.on('updateTiles', (data) => {
         self.socket.emit('updateTiles', data);
-    })
+    });
+
+    sceneEvents.on('updateTalkingEffect', (data) => {
+        self.socket.emit('updateTalkingEffect', data);
+    });
 }
 
-export function updateTalkingEffect(isTalking) {
-    self.socket.emit('updatePlayerEffect', {isTalking: isTalking});
-}
 
 
 // IF PLAYER SELECTED ITEM FROM INVENTORY
@@ -253,7 +254,7 @@ export function currentPlayerDisconnected(playerId) {
 export function showPlayersToTalk() {
     // sort players by self.connected and playersList
     let sortedPlayersList = [];
-    console.log('CONNECTED PLAYERS' + self.connected);
+
     playersList.forEach(player => {
         if (self.connected) {
             self.connected.forEach(otherPlayer => {
