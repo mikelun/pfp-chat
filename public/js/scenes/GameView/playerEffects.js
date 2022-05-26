@@ -4,6 +4,9 @@ import { addEffect } from "./addEffectToPlayer";
 import { updateTalkingEffect } from "./playerUI";
 
 var self;
+
+var lastIsTalking = false;
+
 export function initializePlayerEffects(newSelf) {
     self = newSelf;
 
@@ -19,9 +22,14 @@ function playerIsTalking(volume) {
 
     const isTalking = volume > 5;
 
+    if (isTalking == lastIsTalking) return;
+
+    lastIsTalking = isTalking;
+    
     // show or hide effect
     updateTalkingEffect(self, isTalking, self.player.id);
 
+    console.log("SENDING DATA TO SERVER");
     // send info to server
     sendInfoToPlayers(self, isTalking);
 }
