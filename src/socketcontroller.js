@@ -54,27 +54,32 @@ module.exports = (io) => {
         }
 
         socket.on('initializePlayer', (address, planet, firstEntrance, playerInfo) => {
-            supabase.getPlayerData(address).then(result => {
+            (async () => {
+                const result = await supabase.getPlayerData(address);
                 var data = result ? result.data : null;
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
-                        console.log("CHREATING HERE1");
                         addPlayer(address, planet, firstEntrance, data, playerInfo);
                     })
                 } else {
                     if (data) data = data[0];
                     if (data && data.planet != planet) data = null;
-                    console.log("CREATING HERE2");
                     addPlayer(address, planet, firstEntrance, data, playerInfo);
                 }
-            })
+            })()
         })
 
-        socket.on('connectToOtherRoom', (mapId) => {
-            connectToOtherRoom(mapId);
+        socket.on('connectToOtherRoom', (data) => {
+            connectToOtherRoom(data);
         })
 
-        function connectToOtherRoom(mapId, spaceRoom = null) {
+        function connectToOtherRoom(data) {
+
+            console.log('CONNECTING TO ROOM WITH DATA:', data,);
+            players[socket.id].isHome = data.isHome ? data.isHome : false;
+
+            var mapId = data.mapId;
+
             // disconnect from previous room
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
                 if (rooms[players[socket.id].room][i] == socket.id) {
@@ -95,8 +100,8 @@ module.exports = (io) => {
             }
 
             // IF IT SPACE
-            if(spaceRoom) {
-                room = spaceRoom;
+            if (data.spaceRoom) {
+                room = data.spaceRoom;
             }
 
             socket.join(room);
@@ -276,12 +281,9 @@ module.exports = (io) => {
 
 
         socket.on('connectToRoom', (data) => {
-            console.log("CONNECTING TO ROOM WITH DATA IS MY ROOM: ", data);
             if (data.isMyRoom) {
                 if (players[socket.id].address) {
-                    players[socket.id].isHome = true;
-                    console.log(players[socket.id]);
-                    socket.emit('connectToRoom', { mapId: 9, error: false });
+                    socket.emit('connectToRoom', { mapId: 9, error: false, isHome: true});
 
                 } else {
                     socket.emit('connectToRoom', { error: true, message: 'You should connect metamask to get your room' });
@@ -296,12 +298,11 @@ module.exports = (io) => {
         socket.on('updateTiles', (data) => {
             (async () => {
                 var result = await supabase.updateRoom(players[socket.id].room, data)
-                console.log(result);
             })();
         });
 
         socket.on('updateTalkingEffect', (data) => {
-            socket.to(players[socket.id].room).emit('updateTalkingEffect', {isTalking: data.isTalking, playerId: socket.id});
+            socket.to(players[socket.id].room).emit('updateTalkingEffect', { isTalking: data.isTalking, playerId: socket.id });
         });
 
         /**
@@ -311,7 +312,7 @@ module.exports = (io) => {
             // generate ranom string
             const spaceId = Math.random().toString(36).substring(3, 9) + Math.random().toString(36).substring(2, 4);
             if (!players[socket.id].address) {
-                socket.emit('createSpace', {error: true});
+                socket.emit('createSpace', { error: true });
             } else {
                 spaces[spaceId] = {
                     id: spaceId,
@@ -322,7 +323,7 @@ module.exports = (io) => {
                     createdTime: Math.floor(Date.now() / 1000),
                     room: 'space$' + spaceId,
                 }
-                socket.emit('createSpace', {error: false, space: spaces[spaceId]});
+                socket.emit('createSpace', { error: false, space: spaces[spaceId] });
             }
         })
 
@@ -331,9 +332,9 @@ module.exports = (io) => {
          */
         socket.on('connectToSpace', (spaceId) => {
             if (!spaces[spaceId]) {
-                socket.emit('connectToSpace', {error: true, message: 'Space not found'});
+                socket.emit('connectToSpace', { error: true, message: 'Space not found' });
             } else {
-                connectToOtherRoom(spaces[spaceId].host, spaces[spaceId].room);
+                connectToOtherRoom({ mapId: spaces[spaceId].mapId });
             }
         });
 
@@ -344,7 +345,7 @@ module.exports = (io) => {
             if (spaces[spaceId]) {
                 socket.emit('getSpaceData', spaces[spaceId]);
             } else {
-                socket.emit('getSpaceData', {error: true});
+                socket.emit('getSpaceData', { error: true });
             }
         })
 

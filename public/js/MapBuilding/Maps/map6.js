@@ -58,7 +58,7 @@ export function addMap6(self) {
     self.input.keyboard.on('keydown-SPACE', function (event) {
         if (entranceMapId && !spaceKey) {
             spaceKey = true;
-            changeMap(self, entranceMapId);
+            changeMap(self, {mapId: entranceMapId});
         }
     });
 }

@@ -26,7 +26,9 @@ var spaceKey;
 
 var wallsCollider;
 
+
 export function addMap4(self) {
+    mapCleared = false;
     spaceKey = false;
     
     cafe = self.make.tilemap({ key: 'cafe' });
@@ -75,11 +77,13 @@ export function addMap4(self) {
     startMapTransition(self, [lights, entrances, effects]);
 
     // if space touched
-    self.input.keyboard.on('keydown-SPACE', function (event) {
+    var spaceDown = self.input.keyboard.on('keydown-SPACE', function (event) {
+        if (mapCleared) return;
         if (entranceMapId && !spaceKey) {
             spaceKey = true;
-            changeMap(self, entranceMapId);
+            changeMap(self, {mapId: entranceMapId});
         }
+
     });
 }
 
@@ -198,6 +202,8 @@ export function addUpdateForMap4(self, time, delta) {
 }
 
 export function clearMap4(self) {
+    mapCleared = true;
+
     if (wallsCollider) wallsCollider.destroy();
     if (cafe) cafe.destroy();
 
@@ -222,7 +228,9 @@ export function clearMap4(self) {
     self.spaceKey = false;
     effects = [];
 
+    self.input.keyboard.removeKey('SPACE');
 
+    // remove space event
     // start new map
     //connectToOtherMap(self);
 }

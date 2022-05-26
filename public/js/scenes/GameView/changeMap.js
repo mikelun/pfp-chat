@@ -5,14 +5,14 @@ import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { connectToOtherMap } from "./connectToMap";
 import { disconnectPlayer } from "./disconnectPlayer";
 
-export function changeMap(self, mapId) {
+export function changeMap(self, data) {
     clearMapWithTransition(self);
     disconnectPlayer(self);
 
     setTimeout(() => {
-        self.mapId = mapId;
-        showMap(self, mapId);
-        self.socket.emit('connectToOtherRoom', self.mapId);
+        self.mapId = data.mapId;
+        showMap(self, data.mapId);
+        self.socket.emit('connectToOtherRoom', data);
     }, 700)
     
 }

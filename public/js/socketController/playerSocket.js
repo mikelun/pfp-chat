@@ -167,13 +167,30 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
             sceneEvents.emit('createErrorMessage', 'TO USE THIS FUNCTION YOU SHOULD CONNECT METAMASK');
             return;
         }
-        changeMap(self, data.mapId);
+        changeMap(self, {mapId: data.mapId, isHome: data.isHome});
     });
 
+    /**
+     * EFFECT IF PLAYER TALKING
+     */
     self.socket.on('updateTalkingEffect', (data) => {
         if (self.playerUI[data.playerId]) {
             updateTalkingEffect(self, data.isTalking, data.playerId);
         }
+    });
+
+    /**
+     * IF PLAYER CREATED SPACE CONNECT TO IT
+     */ 
+    self.socket.on('createSpace', (data) => {
+        sceneEvents.emit('removeLoader');
+        if (data.error) {
+            sceneEvents.emit('createErrorMessage', 'ERROR WITH CREATING SPACE');
+            return;
+        }
+        
+        changeMap(self, {mapId: data.space.mapId, spaceRoom: data.space.room});
+
     });
 
     sceneEvents.on('connectToMyRoom', () => {
