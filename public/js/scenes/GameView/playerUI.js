@@ -28,8 +28,12 @@ export function updatePlayerUI(self, playerInfo) {
     console.log('Updated playerInfo');
 
     if (container) {
+        const background = container.getAt(0);
         const playerText = container.getAt(1);
         playerText.setText(playerInfo.playerName);
+
+        background.width = playerInfo.playerName.length * 5 + 5;
+
         const microphone = container.getAt(2);
         const headphones = container.getAt(3);
         microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
