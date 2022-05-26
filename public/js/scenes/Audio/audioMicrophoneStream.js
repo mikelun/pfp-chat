@@ -56,7 +56,7 @@ function toggleMute(self) {
 
         localStreamEnabled = !localStreamEnabled;
 
-        self.playerUI[self.socket.id].microphone.setTexture(localStreamEnabled ? 'microphone' : 'microphoneMuted');
+        //self.playerUI[self.socket.id].microphone.setTexture(localStreamEnabled ? 'microphone' : 'microphoneMuted');
 
         self.socket.emit("updatePlayerInfo", { microphoneStatus: localStreamEnabled }, self.socket.id);
 

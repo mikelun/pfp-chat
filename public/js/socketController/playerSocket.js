@@ -12,6 +12,8 @@ import { changeMap } from "../scenes/GameView/changeMap";
 import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
+import { updatePlayerUI } from "../scenes/GameView/playerUI";
+import { clearPlayerUI } from "../scenes/GameView/addPlayersUtils";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -79,13 +81,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (playerId === otherPlayer.playerId) {
-                self.playerUI[otherPlayer.playerId].playerText.destroy();
-                self.playerUI[otherPlayer.playerId].microphone.destroy();
-                self.playerUI[otherPlayer.playerId].background.destroy();
-                self.playerUI[otherPlayer.playerId].headphones.destroy();
-                if (self.playerUI[otherPlayer.playerId].weapon) {
-                    self.playerUI[otherPlayer.playerId].weapon.destroy();
-                }
+                clearPlayerUI(self.playerUI[playerId]);
                 otherPlayer.destroy();
             }
         });
@@ -112,18 +108,13 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         for (let i = 0; i < playersList.length; i++) {
             if (playersList[i].id == playerInfo.playerId) {
                 // change player text
-                if (self.playerUI[playerInfo.playerId].playerText.text != playerInfo.playerName) {
-                    self.playerUI[playerInfo.playerId].playerText.setText(playerInfo.playerName);
-                    self.playerUI[playerInfo.playerId].background.width = playerInfo.playerName.length * 5;
-                    getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
-                }
+                updatePlayerUI(self, playerInfo);
+
                 playersList[i].name = playerInfo.playerName;
 
                 // change mircrophone status
                 playersList[i].microphoneStatus = playerInfo.microphoneStatus;
 
-                self.playerUI[playerInfo.playerId].microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
-                self.playerUI[playerInfo.playerId].headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
 
                 if (self.player.id == playerInfo.playerId) {
                     changeWeapon(playerInfo.weapon);
@@ -136,8 +127,8 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
                     // get otherPlayer with id
                     self.otherPlayers.getChildren().forEach(function (otherPlayer) {
                         if (playerInfo.playerId === otherPlayer.playerId) {
-                            const otherPlayerWeapon = self.playerUI[playerInfo.playerId].weapon;
-                            if (otherPlayerWeapon) otherPlayerWeapon.setTexture(playerInfo.weapon.texture);
+                            //const otherPlayerWeapon = self.playerUI[playerInfo.playerId].weapon;
+                            //if (otherPlayerWeapon) otherPlayerWeapon.setTexture(playerInfo.weapon.texture);
                             
                             var textureFromInternet = isTextureFromInternet(playerInfo.textureId);
                             if (textureFromInternet) {
@@ -225,12 +216,6 @@ function removePeer(socket_id) {
 
 // DESTROYING MAIN PLAYER
 export function destroyPlayer() {
-    const playerUI = self.playerUI[self.player.id];
-    playerUI.playerText.destroy();
-    playerUI.microphone.destroy();
-    if (self.playerShadwow) {
-        self.playerShadow.destroy();
-    }
     self.player.destroy();
     self.player = null;
 }

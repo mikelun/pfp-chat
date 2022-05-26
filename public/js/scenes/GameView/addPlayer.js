@@ -13,6 +13,7 @@ import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { updatePlayerCoins } from "../GameUI-elements/hud";
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 import { addEffect, createTalkingEffect } from "./addEffectToPlayer";
+import { createPlayerUI } from "./playerUI";
 
 var self;
 var effect1, effect2;
@@ -28,7 +29,7 @@ export function addPlayer(newSelf, playerInfo) {
     // effect2 = addEffect(self, playerInfo.x, playerInfo.y, 'talking');
     // effect2.setAlpha(1).setScale(0.2);
 
-    createTalkingEffect(self, playerInfo.x, playerInfo.y);
+    self.talkingEffect = createTalkingEffect(self, playerInfo.x, playerInfo.y);
 
     // self.layer1.add(effect1);
 
@@ -123,26 +124,19 @@ function cleanPreviousInfoAboutPlayer(self) {
 }
 
 function addUIForPlayer(self, playerInfo) {
-    self.playerUI[self.socket.id] = {};
-    const textColor = "#ffff00";
-    self.playerUI[self.socket.id].background = self.rexUI.add.roundRectangle(0 - 0.25, 0 - 5, playerInfo.playerName.length * 5 + 5, 8, 6, 0x000000).setAlpha(0.5);
-    self.playerUI[self.socket.id].playerText = self.add.text(0, -7, playerInfo.playerName, { fontSize: '125px', fontFamily: 'PixelFont', fill: textColor, align: 'center'}).setScale(0.1).setOrigin(0.5  );
-    self.playerUI[self.socket.id].microphone = self.add.image(-4, -15, "microphone1-off").setScale(0.25);
-    self.playerUI[self.socket.id].headphones = self.add.image(4, -14, "headphones").setScale(0.25);
-    var container = self.add.container(0, 0, [self.playerUI[self.socket.id].background, self.playerUI[self.socket.id].playerText, self.playerUI[self.socket.id].microphone, self.playerUI[self.socket.id].headphones]);
-
+    self.playerUI[self.socket.id] = createPlayerUI(self, playerInfo);
     // log depth of player
     
     // container.setPosition(self.player.x, self.player.y);
     // add UI following
     self.events.on("postupdate", function () {
         if (self.player) { 
-            Phaser.Display.Align.To.TopCenter(container, self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
+            Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id], self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
             // Phaser.Display.Align.To.TopCenter(effect1, self.player, 1, (self.player.yAdd ? self.player.yAdd - 121: -121));
             // Phaser.Display.Align.To.TopCenter(effect2, self.player, 1, (self.player.yAdd ? self.player.yAdd - 120: -120));
-            if (self.playerUI[self.socket.id].nftImage) {
-                Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id].nftImage, self.player, (self.player.xAddNFT ? self.player.xAddNFT  : 0), (self.player.yAddNFT ? self.player.yAddNFT : 0));
-            }
+            // if (self.playerUI[self.socket.id].nftImage) {
+            //     Phaser.Display.Align.To.TopCenter(self.playerUI[self.socket.id].nftImage, self.player, (self.player.xAddNFT ? self.player.xAddNFT  : 0), (self.player.yAddNFT ? self.player.yAddNFT : 0));
+            // }
 
             if (self.talkingEffect) {
                 Phaser.Display.Align.To.TopCenter(self.talkingEffect, self.player, 0, (self.player.yAdd ? self.player.yAdd - 121: -121));

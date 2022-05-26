@@ -18,8 +18,9 @@ export function createTalkingEffect(self, x, y) {
     var key = 'effect1';
     if (self.talkingEffect) self.talkingEffect.destroy();
 
-    self.talkingEffect = addEffect(self, x, y, 'talking');
-    self.talkingEffect.setAlpha(0).setScale(0.2);
+    const effect = addEffect(self, x, y, 'talking');
+    effect.setAlpha(1).setScale(0.2);
+    return effect;
 }
 
 function createAnim(self, key) {

@@ -291,7 +291,11 @@ module.exports = (io) => {
         });
 
         socket.on('updateTalkingEffect', (data) => {
-            console.log(data);
+            if (data.toAllPlayers) {
+                socket.to(players[socket.id].room).emit('updateTalkingEffect', {isTalking: data.isTalking, playerId: socket.id});
+            } else {
+                // TODO: SEND IF PLAYER IN SMALL GROUP
+            }
         })
 
     });

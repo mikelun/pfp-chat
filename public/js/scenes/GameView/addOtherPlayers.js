@@ -6,6 +6,8 @@ import { getPlayerNFT } from "../../web3/GetPlayerNFT";
 import { loadTexture } from "./loadTexture";
 import { getInterectionForEns, isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
+import { createTalkingEffect } from "./addEffectToPlayer";
+import { createPlayerUI } from "./playerUI";
 
 
 export function addOtherPlayers(self, playerInfo) {
@@ -30,15 +32,8 @@ export function addOtherPlayers(self, playerInfo) {
     //const otherPlayerName = self.add.text(playerInfo.x, playerInfo.y, playerInfo.account, { fontSize: '20px', color: '#ffffff' });
     otherPlayer.playerId = playerInfo.playerId;
     otherPlayer.name = playerInfo.playerName;
-    const textColor = randColor();
-    let microphoneTexture = playerInfo.microphoneStatus ? "microphone1" : "microphone1-off";
-    let headphonesTexture = playerInfo.deafen ? "headphones-off" : "headphones";
-    self.playerUI[playerInfo.playerId] = {};
 
-    self.playerUI[playerInfo.playerId].background = self.rexUI.add.roundRectangle(playerInfo.x, playerInfo.y - 20, playerInfo.playerName.length * 5 + 5, 8, 6, 0x000000).setAlpha(0.5);
-    self.playerUI[playerInfo.playerId].playerText = self.add.text(playerInfo.x, playerInfo.y, playerInfo.playerName, { fontSize: '125px', fontFamily: 'PixelFont', fill: textColor, align: 'center' }).setScale(0.1).setOrigin(0.5  );
-    self.playerUI[playerInfo.playerId].microphone = self.add.image(playerInfo.x + 20, playerInfo.y, microphoneTexture).setScale(0.25);
-    self.playerUI[playerInfo.playerId].headphones = self.add.image(playerInfo.x + 50, playerInfo.y, "headphones").setScale(0.25);
+    self.playerUI[playerInfo.playerId] = createPlayerUI(self, playerInfo);
 
     // ADD WEAPON FOR PLAYER
     if (self.mapId == 8) self.playerUI[playerInfo.playerId].weapon = self.add.image(0, 0, playerInfo.weapon.texture).setOrigin(0, 0.5);
@@ -50,5 +45,4 @@ export function addOtherPlayers(self, playerInfo) {
     //showPlayersToTalk()
 
     getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
-
 }

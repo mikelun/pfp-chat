@@ -33,7 +33,7 @@ function sendInfoToPlayers(self, isTalking) {
 
     var data;
 
-    if (self.connected.length > 20) {
+    if (true || self.connected.length > 20) {
         // to all players
         data = {
             toAllPlayer: true,

@@ -17,6 +17,7 @@ import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMi
 import { initializeWeapon, updateWeapon } from './Weapons/weapon';
 import { initialAnimations } from '../utils/initialAnimations';
 import { initializePlayerEffects } from './GameView/playerEffects';
+import { clearPlayerUI } from './GameView/addPlayersUtils';
 /**
  * All peer connections
  */
@@ -34,7 +35,7 @@ export class MainScene extends Phaser.Scene {
         this.microphoneEnabled = data.microphoneEnabled;
 
         this.room = data.room;
-        
+
         // ADD MORALIS FOR BLOCKCHAIN
         this.moralis = data.moralis;
 
@@ -132,10 +133,7 @@ export class MainScene extends Phaser.Scene {
                 }
                 if (this.player && playerId == this.player.id) fl = true;
                 if (!fl) {
-                    this.playerUI[playerId].background.destroy();
-                    this.playerUI[playerId].playerText.destroy();
-                    this.playerUI[playerId].microphone.destroy();
-                    this.playerUI[playerId].headphones.destroy();
+                    clearPlayerUI(this.playerUI[playerId]);
                 }
             }
         }, 5000);
