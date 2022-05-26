@@ -36,7 +36,7 @@ export function addOtherPlayers(self, playerInfo) {
     self.playerUI[playerInfo.playerId] = createPlayerUI(self, playerInfo);
 
     // ADD WEAPON FOR PLAYER
-    if (self.mapId == 8) self.playerUI[playerInfo.playerId].add(self.add.image(0, 0, playerInfo.weapon.texture).setOrigin(0, 0.5));
+    if (self.mapId == 8) self.playerUI[playerInfo.playerId].add(self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5));
 
     self.otherPlayers.add(otherPlayer);
     self.layer1.add(otherPlayer);
