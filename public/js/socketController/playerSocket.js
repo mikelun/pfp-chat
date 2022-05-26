@@ -191,6 +191,11 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     sceneEvents.on('updateTalkingEffect', (data) => {
         self.socket.emit('updateTalkingEffect', data);
     });
+
+    sceneEvents.on('createSpace', (data) => {
+        console.log('CREATE SPACE', data);
+        self.socket.emit('createSpace', data);
+    })
 }
 
 

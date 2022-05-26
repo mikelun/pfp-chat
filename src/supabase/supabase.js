@@ -63,7 +63,7 @@ module.exports = {
                 textureId: player.textureId,
                 nft: player.nft,
                 weapon_id: player.weapon.id,
-                is_home: player.isHome ? player.isHome: false,
+                is_home: player.isHome ? player.isHome : false,
             })
             .eq('id', address)
     },
@@ -84,10 +84,10 @@ module.exports = {
             console.log("HERE1")
             if (developingUI) return;
             const result = await supabase
-            .from('items')
-            .select()
-            .eq('address', address);
-            
+                .from('items')
+                .select()
+                .eq('address', address);
+
             if (!result || !result.data || !result.data[0] || !result.data[0].items) return false;
             return result.data[0].items.find(item => item.category === category && item.item_id == itemId);
 
@@ -119,6 +119,26 @@ module.exports = {
             })
             .eq('id', room)
     },
+    createSpace: async function (data) {
+        if (developingUI) return;
+        return await supabase
+            .from('spaces')
+            .insert({
+                space_id: data.spaceId,
+                map_id: data.mapId,
+                host: data.host,
+                name: data.name,
+            });
+    },
+    connectToSpace: async function (spaceId) {
+        if (developingUI) return;
+        return await supabase
+            .from('spaces')
+            .update({
+                connected: true,
+            })
+            .eq('space_id', spaceId)
+    }
 
 
 

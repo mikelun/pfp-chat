@@ -27,6 +27,8 @@ monstersList = {};
 // coins
 coins = {};
 
+spaces = {};
+
 
 module.exports = (io) => {
     io.engine.on("initial_headers", (headers, req) => {
@@ -47,6 +49,8 @@ module.exports = (io) => {
             if (players[socket.id].mapId == 8) {
                 socket.emit('updateRewardCoins', coins);
             }
+
+            console.log('ALL PLAYERS: ', players);
         }
 
         socket.on('initializePlayer', (address, planet, firstEntrance, playerInfo) => {
@@ -54,11 +58,13 @@ module.exports = (io) => {
                 var data = result ? result.data : null;
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
+                        console.log("CHREATING HERE1");
                         addPlayer(address, planet, firstEntrance, data, playerInfo);
                     })
                 } else {
                     if (data) data = data[0];
                     if (data && data.planet != planet) data = null;
+                    console.log("CREATING HERE2");
                     addPlayer(address, planet, firstEntrance, data, playerInfo);
                 }
             })
@@ -68,7 +74,7 @@ module.exports = (io) => {
             connectToOtherRoom(mapId);
         })
 
-        function connectToOtherRoom(mapId) {
+        function connectToOtherRoom(mapId, spaceRoom = null) {
             // disconnect from previous room
             for (let i = 0; i < rooms[players[socket.id].room].length; i++) {
                 if (rooms[players[socket.id].room][i] == socket.id) {
@@ -88,7 +94,11 @@ module.exports = (io) => {
                 room = players[socket.id].planet + '$' + players[socket.id].address;
             }
 
-            console.log("connecting to room", room);
+            // IF IT SPACE
+            if(spaceRoom) {
+                room = spaceRoom;
+            }
+
             socket.join(room);
             players[socket.id].room = room;
             players[socket.id].mapId = mapId;
@@ -293,6 +303,50 @@ module.exports = (io) => {
         socket.on('updateTalkingEffect', (data) => {
             socket.to(players[socket.id].room).emit('updateTalkingEffect', {isTalking: data.isTalking, playerId: socket.id});
         });
+
+        /**
+         * CREATING SPACE
+         */
+        socket.on('createSpace', (data) => {
+            // generate ranom string
+            const spaceId = Math.random().toString(36).substring(3, 9) + Math.random().toString(36).substring(2, 4);
+            if (!players[socket.id].address) {
+                self.socket.emit('createSpace', {error: true});
+            } else {
+                spaces[spaceId] = {
+                    id: spaceId,
+                    host: players[socket.id].address,
+                    mapId: data.mapId,
+                    name: data.name,
+                    coHost: [],
+                    createdTime: Math.floor(Date.now() / 1000),
+                    room: 'space$' + spaceId,
+                }
+                self.socket.emit('createSpace', {error: false, space: spaces[spaceId]});
+            }
+        })
+
+        /**
+         * CONNECTING TO SPACE
+         */
+        socket.on('connectToSpace', (spaceId) => {
+            if (!spaces[spaceId]) {
+                socket.emit('connectToSpace', {error: true, message: 'Space not found'});
+            } else {
+                connectToOtherRoom(spaces[spaceId].host, spaces[spaceId].room);
+            }
+        });
+
+        /**
+         * GET SPACE DATA
+         */
+        socket.on('getSpaceData', (spaceId) => {
+            if (spaces[spaceId]) {
+                self.socket.emit('getSpaceData', spaces[spaceId]);
+            } else {
+                self.socket.emit('getSpaceData', {error: true});
+            }
+        })
 
     });
 

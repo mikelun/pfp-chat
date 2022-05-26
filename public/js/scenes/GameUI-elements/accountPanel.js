@@ -8,8 +8,6 @@ export function createAccountPanel(newSelf) {
 
     self.accountGroup = self.add.group();
 
-    return;
-
     const panel = self.add.image(390, 80, 'inventory-panel').setOrigin(0, 0).setScale(2.5);
     const header = self.add.text(panel.x + 250, panel.y + 60, 'ACCOUNT', { fontFamily: 'PixelFont', fontSize: '48px', color: '#ffffff' }).setOrigin(0.5, 0.5);
 
@@ -24,13 +22,24 @@ export function createAccountPanel(newSelf) {
 
     const createSpace = self.rexUI.add.label({
         x: panel.x + 250,
-        y: panel.y + 300,
+        y: panel.y + 190,
         background: self.add.image(0, 0, 'long-button'),
         text: self.add.text(0, 0, 'CREATE SPACE', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }),
-        space: { left: 20, right: 20, top: 20, bottom: 25 }
+        space: { left: 20, right: 20, top: 10, bottom: 15 }
     }).setAlpha(0.8).layout();
 
     makeButtonInteractive(createSpace, '', 0, 0);
+
+
+    const joinSpace = self.rexUI.add.label({
+        x: panel.x + 250,
+        y: panel.y + 265,
+        background: self.add.image(0, 0, 'long-button'),
+        text: self.add.text(0, 0, 'LIVE SPACES', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }),
+        space: { left: 25, right: 25, top: 10, bottom: 15 }
+    }).setAlpha(0.8).layout();
+
+    makeButtonInteractive(joinSpace, '', 0, 0);
 
     createSpace.on('pointerdown', () => {
         self.accountGroup.setVisible(false);
@@ -42,5 +51,5 @@ export function createAccountPanel(newSelf) {
     self.accountGroup.add(closeButton);
     self.accountGroup.add(header);
     self.accountGroup.add(createSpace);
-
+    self.accountGroup.add(joinSpace);
 }

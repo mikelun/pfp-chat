@@ -29,7 +29,6 @@ function playerIsTalking(volume) {
     // show or hide effect
     updateTalkingEffect(self, isTalking, self.player.id);
 
-    console.log("SENDING DATA TO SERVER");
     // send info to server
     sendInfoToPlayers(self, isTalking);
 }

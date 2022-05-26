@@ -54,12 +54,10 @@ function createErrorPanel(message) {
     errorPanelGroup.add(button);
 
     button.on('pointerdown', function () {
-        errorPanelGroup.getChildren().forEach(child => {
-            if (child.clear) child.clear(true);
-            child.destroy();
-        });
+        button.setVisible(false);
+        errorPanelGroup.setVisible(false);
+        button.clear(true);
         errorPanelGroup.clear(true);
-        button.destroy();
     });
 }
 

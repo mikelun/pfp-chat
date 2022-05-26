@@ -10,6 +10,10 @@ var backgroundSelectMap, addIcon, mapName, mapImage;
 
 var self;
 
+var selectedMapId;
+
+var defaultText = 'WHAT DO YOU WANT TO TALK ABOUT?';
+
 var spacePanelGroup, selectMapGroup;
 export function initialiezeSpacePanel(newSelf) {
     self = newSelf;
@@ -51,12 +55,23 @@ function createSpacePanel() {
     });
 
     const startNowButton = createStartNowButton(panel.x + 150, panel.y + 160 + delta);
-
     makeButtonInteractive(startNowButton, '', 10, 10);
+    startNowButton.on('pointerdown', () => {
+        if (!selectedMapId || !editSpaceNameText.text || editSpaceNameText.text === defaultText) {
+            sceneEvents.emit('createErrorMessage', 'Please fill all fields');
+            return;
+        }
+
+        sceneEvents.emit('createSpace', {
+            name: editSpaceNameText.text,
+            mapId: selectedMapId
+        });
+    });
 
     //createSelectMap();
 
     spacePanelGroup.add(panel);
+    spacePanelGroup.add(closeButton);
     spacePanelGroup.add(heading);
     spacePanelGroup.add(text1);
     spacePanelGroup.add(mapName);
@@ -64,27 +79,28 @@ function createSpacePanel() {
     spacePanelGroup.add(backgroundSelectMap);
     spacePanelGroup.add(addIcon);
     spacePanelGroup.add(startNowButton);
-    spacePanelGroup.add(closeButton);
 }
 
 export function setVisibleSpacePanel() {
     spacePanelGroup.setVisible(true);
 }
 
-function mapSelected(texture, name) {
+function mapSelected(data) {
     addIcon.destroy();
     if (mapImage) mapImage.destroy();
 
-    mapImage = new CircleMaskImage(self, 430, 430, texture, {
+    mapImage = new CircleMaskImage(self, 430, 430, data.texture, {
         maskType: 'roundRectangle',
         radius: 50,
     });
     // set size 120x90
-    mapName.setText("MAP: " + name);
+    mapName.setText("MAP: " + data.name);
     mapImage.setScale(120 / mapImage.width, 90 / mapImage.height);
     self.add.existing(mapImage);
 
     spacePanelGroup.add(mapImage);
+
+    selectedMapId = data.mapId;
 }
 
 function clearGroup(group) {
@@ -102,7 +118,6 @@ function clearGroup(group) {
 
 
 function createEditText() {
-    var defaultText = 'WHAT DO YOU WANT TO TALK ABOUT?';
     var editTextBackground = self.rexUI.add.roundRectangle(630, 290 + 10, 520, 50, 10, 0x121A2B);
 
     var editNameText = self.rexUI.add.BBCodeText(editTextBackground.x, editTextBackground.y - 3, defaultText, {
@@ -186,8 +201,8 @@ function createSelectMap() {
     // }).layout().setOrigin(0, 0);
 
 
-    addRoomImage(1130, 200 + 0 * 220, 'room1', 'HOTEL ROOM');
-    addRoomImage(1130, 200 + 1 * 220, 'room2', 'ISLAND');
+    addRoomImage(1130, 200 + 0 * 220, {texture: 'room1', name: 'HOTEL ROOM', mapId: 9});
+    addRoomImage(1130, 200 + 1 * 220, {texture: 'room2', name: 'ISLAND', mapId: 3});
 
     selectMapGroup.add(panel);
     selectMapGroup.add(header);
@@ -212,8 +227,8 @@ function createGrid() {
     return sizer;
 }
 
-function addRoomImage(x, y, texture, name) {
-    var image = new CircleMaskImage(self, x, y, texture, {
+function addRoomImage(x, y, data) {
+    var image = new CircleMaskImage(self, x, y, data.texture, {
         maskType: 'roundRectangle',
         radius: 50,
     });
@@ -221,13 +236,13 @@ function addRoomImage(x, y, texture, name) {
     image.setScale(0.25).setAlpha(0.8);
     makeButtonInteractive(image, '', 0, 0);
 
-    var text = self.add.text(image.x, image.y + 100, name, { fontFamily: 'PixelFont', fontSize: '25px', color: '#ffffff' }).setOrigin(0.5);
+    var text = self.add.text(image.x, image.y + 100, data.name, { fontFamily: 'PixelFont', fontSize: '25px', color: '#ffffff' }).setOrigin(0.5);
 
     selectMapGroup.add(image);
     selectMapGroup.add(text);
 
     image.on('pointerdown', () => {
-        mapSelected(texture, name);
+        mapSelected(data);
         selectMapGroup.clear(true);
     });
 
