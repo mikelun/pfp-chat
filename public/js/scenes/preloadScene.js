@@ -9,20 +9,6 @@ export class PreloadScene extends Phaser.Scene {
                     debug: false
                 }
             },
-            // pack: {
-            //     files: [
-            //         {
-            //             type: 'spritesheet',
-            //             key: 'nyancat',
-            //             url: 'assets/memes/nyancat-198x500.png',
-            //             frameConfig: {
-            //                 frameWidth: 500,
-            //                 frameHeight: 198,
-            //             },
-
-            //         }
-            //     ]
-            // }
         });
     }
 
