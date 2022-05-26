@@ -2,6 +2,7 @@ import { playExplosionSound, playShotSound } from "../scenes/Audio/soundFXMachin
 import { updatePlayerCoins } from "../scenes/GameUI-elements/hud";
 import { addMonster } from "../scenes/GameView/addMonster";
 import { createCoin } from "../scenes/GameView/createCoin";
+import { getWeaponFromUI } from "../scenes/GameView/playerUI";
 import { createBullet } from "../scenes/Weapons/bullet";
 import { bullets, changeWeapon } from "../scenes/Weapons/weapon";
 
@@ -45,7 +46,8 @@ export function initializeRPGSocket(newSelf) {
     self.socket.on('weaponShot', (data) => {
         //console.log('maing shot with data', data);
         createBullet(self, data.weaponId, data.x, data.y, true, data.angle);
-        const weapon =  self.playerUI[data.playerId].weapon;
+        const weapon =  getWeaponFromUI(self.playerUI[data.playerId]);
+        
         playShotSound(self, weapon.texture.key);
         weapon.rotation = data.angle;
         if (data.angle < -Math.PI / 2 || data.angle > Math.PI / 2) {

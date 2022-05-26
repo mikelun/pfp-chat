@@ -21,6 +21,7 @@ export function createPlayerUI(self, playerInfo) {
  * 1 - playerText
  * 2 - microphone
  * 3 - headphones
+ * 4 - weapon
  */
 export function updatePlayerUI(self, playerInfo) {
     const container = self.playerUI[playerInfo.playerId];
@@ -33,5 +34,16 @@ export function updatePlayerUI(self, playerInfo) {
         const headphones = container.getAt(3);
         microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
         headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
+        const weapon = container.getAt(4);
+        if (weapon) {
+            weapon.setTexture(playerInfo.weapon.texture);
+        }
     }
+}
+
+
+export function getWeaponFromUI(playerUI) {
+    const weapon = playerUI.getAt(4);
+    
+    return weapon;
 }

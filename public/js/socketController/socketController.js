@@ -40,13 +40,15 @@ export function initializeSocket(self, peers, currentPlayers) {
     // IF PLAYER DISCONNECTED
     self.socket.on('disconnect', () => {
         // if guest save to localstorage
-        playerInfo = {
-            playerName : self.playerName, 
-            mapId : self.mapId,
-            x : self.player.x,
-            y : self.player.y,
-            textureId : self.player.textureId,
-        };
+        if (self.player) {
+            playerInfo = {
+                playerName: self.playerName,
+                mapId: self.mapId,
+                x: self.player.x,
+                y: self.player.y,
+                textureId: self.player.textureId,
+            };
+        }
 
         disconnectPlayerBadInternet(self);
     })
