@@ -31,18 +31,10 @@ export class MainScene extends Phaser.Scene {
     }
 
     init(data) {
-        if (data.stream) {
-            // local stream of user microphone
-            this.localStream = data.stream;
-
-            this.microphoneEnabled = true;
-            // DISABLE MICROPHONE AT FIRST
-            for (let index in this.localStream.getAudioTracks()) {
-                this.localStream.getAudioTracks()[index].enabled = false;
-            }
-        }
+        this.microphoneEnabled = data.microphoneEnabled;
 
         this.room = data.room;
+        
         // ADD MORALIS FOR BLOCKCHAIN
         this.moralis = data.moralis;
 

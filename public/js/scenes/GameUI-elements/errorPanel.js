@@ -27,7 +27,7 @@ function createErrorPanel(message) {
 
     var panel = self.add.image(640, 320, 'cell-info').setScale(3, 1.5);
 
-    const text = self.rexUI.add.BBCodeText(panel.x - 180, panel.y - 90, message, {
+    const text = self.rexUI.add.BBCodeText(panel.x - 190, panel.y - 90, message, {
         wrap: {
             mode: 'word',
             width:  400,

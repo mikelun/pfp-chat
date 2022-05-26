@@ -20,6 +20,8 @@ export function initializeAudioStream(self) {
             toggleMute(self);
         };
     });
+
+    setUndeafen(self);
 }
 
 export function initializeUserOnOtherTab(self) {
@@ -66,6 +68,10 @@ function toggleMute(self) {
 function setDeafen(self) {
     self.deafen = true;
     let localStream = self.localStream;
+
+    if (!localStream) {
+        sceneEvents.emit('createErrorMessage', 'YOU HAVEN\'T MICROPHONE ACCESS, PLEASE RESTART PAGE');
+    }
     // destroy stream
     localStream.getTracks().forEach(track => {
         track.stop();
@@ -77,6 +83,8 @@ function setDeafen(self) {
 }
 
 function setUndeafen(self) {
+    if (!self.microphoneEnabled) sceneEvents.emit('createErrorMessage', 'YOU HAVEN\'T MICROPHONE ACCESS, PLEASE RESTART PAGE');
+
     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
         self.localStream = stream;
 

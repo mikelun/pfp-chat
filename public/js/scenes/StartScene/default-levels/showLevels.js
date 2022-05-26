@@ -65,7 +65,7 @@ export function goToPlanet(self) {
         }
         if (!currentPlayer) return;
 
-        self.scene.start('MainScene', { stream: self.stream, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: players, changedTiles: data, player:currentPlayer});
+        self.scene.start('MainScene', { microphoneEnabled: self.microphoneEnabled, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: players, changedTiles: data, player:currentPlayer});
     });
 }
 
@@ -79,7 +79,9 @@ export function playerWasAtPlanet(self) {
             stream.getTracks().forEach(track => {
                 track.stop();
             });
-            
+
+            self.microphoneEnabled = true;
+
             startMoralis(Moralis);
             self.user = getUserMoralis(Moralis);
 
