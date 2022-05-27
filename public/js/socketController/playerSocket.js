@@ -14,6 +14,7 @@ import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
 import { updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
 import { clearPlayerUI } from "../scenes/GameView/addPlayersUtils";
+import { createMapsSpecialElements } from "../scenes/GameView/mapsSpecialElements";
 // import { sendFile } from "express/lib/response";
 
 var peers;
@@ -31,24 +32,11 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         Object.keys(players).forEach(function (id) {
             if (players[id].playerId === self.socket.id) {
                 addPlayer(self, players[id]);
+                createMapsSpecialElements(self, players[id]);
             } else {
                 addOtherPlayers(self, players[id]);
             }
         });
-        // create snow effect 
-
-        if (self.mapId == 4) {
-            createParticles(self);
-        }
-        
-        sceneEvents.emit('changedMap', self.mapId);
-
-        if (self.mapId == 8) {
-            addWeapon(self);
-        } else {
-            removeWeapon(self);
-        }
-        sceneEvents.emit('updateOnlinePlayers', playersList.length);
     }
 
     showCurrentPlayers(currentPlayers);
