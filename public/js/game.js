@@ -7,9 +7,6 @@ const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
 const config = {
-  // loader: {
-  //   baseURL: './',
-  // },
   parent: "gameDiv",
   dom: { createContainer: true },
   type: Phaser.AUTO,

@@ -75,8 +75,8 @@ function addPhysicsForMap(self) {
 
 function addLightsToMap(self) {
     const warmLight = { r: 255, g: 160, b: 0 };
-    const warmItensity = 0.02;
-    const warmLightRadius = 300;
+    const warmItensity = 0.03;
+    const warmLightRadius = 150;
     lights.push(createLight(self, 65, 281, warmLight, warmItensity, warmLightRadius));
     lights.push(createLight(self, 148, 217, warmLight, warmItensity, warmLightRadius));
     lights.push(createLight(self, 248, 153, warmLight, warmItensity, warmLightRadius));
