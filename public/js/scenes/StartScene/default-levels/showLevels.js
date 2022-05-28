@@ -65,6 +65,7 @@ export function goToPlanet(self) {
         }
         if (!currentPlayer) return;
 
+        console.log("MICROPHONE ENABLED: ", self.microphoneEnabled);
         self.scene.start('MainScene', { microphoneEnabled: self.microphoneEnabled, moralis: Moralis, address: address, planet: self.planetName, socket: socket, currentPlayers: players, changedTiles: data, player:currentPlayer});
     });
 }

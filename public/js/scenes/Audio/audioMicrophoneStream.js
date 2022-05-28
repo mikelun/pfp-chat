@@ -16,6 +16,11 @@ export function initializeAudioStream(self) {
     });
     // if user touch microphone on Game UI scene -> toggle microphone stream
     sceneEvents.on('toggleMute', () => {
+        if (!self.microphoneEnabled) {
+            sceneEvents.emit('createErrorMessage', 'YOU HAVEN\'T MICROPHONE ACCESS, PLEASE RESTART PAGE');
+            return;
+        }
+        
         if (self.localStream) {
             toggleMute(self);
         };
@@ -83,7 +88,10 @@ function setDeafen(self) {
 }
 
 function setUndeafen(self) {
-    if (!self.microphoneEnabled) sceneEvents.emit('createErrorMessage', 'YOU HAVEN\'T MICROPHONE ACCESS, PLEASE RESTART PAGE');
+    if (!self.microphoneEnabled) {
+        sceneEvents.emit('createErrorMessage', 'YOU HAVEN\'T MICROPHONE ACCESS, PLEASE RESTART PAGE');
+        return;
+    }
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
         self.localStream = stream;
