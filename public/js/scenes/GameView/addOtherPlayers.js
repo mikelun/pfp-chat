@@ -16,6 +16,8 @@ export function addOtherPlayers(self, playerInfo) {
     // define other player with 0 character
     const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self)
 
+    otherPlayer.setDepth(25);
+
     const textureFromInternet = isTextureFromInternet(playerInfo.textureId);
     if (textureFromInternet) {
         var type = 'crypto-duckies';
@@ -40,7 +42,6 @@ export function addOtherPlayers(self, playerInfo) {
     if (self.mapId == 8) self.playerUI.second[playerInfo.playerId].add(self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5));
 
     self.otherPlayers.add(otherPlayer);
-    self.layer1.add(otherPlayer);
 
     pushToPlayerList(playerInfo);
     //showPlayersToTalk()
