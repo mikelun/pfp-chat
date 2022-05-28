@@ -7,9 +7,10 @@ import { createHostEffect, createTalkingEffect } from "./addEffectToPlayer";
  */
 export function createPlayerUILevelDown(self, playerInfo) {
     //hostEffect.alpha = 0.3;
-    const hostEffect = createHostEffect(self, playerInfo.x, playerInfo.y);
+    const hostEffect = createHostEffect(self, 1, 23);
     const containerLevelDown = self.add.container(0, 0, [hostEffect]);
-    return containerLevelDown;
+    containerLevelDown.setDepth(24);
+    self.playerUI.first[playerInfo.playerId] = containerLevelDown;
 }
 
 export function createPlayerUI(self, playerInfo) {
@@ -70,7 +71,7 @@ export function getWeaponFromUI(playerUI) {
 export function updateTalkingEffect(self, isTalking, playerId) {
     if (!self.playerUI.second[playerId]) return;
 
-    const talkingEffect = self.playerUI[playerId].getAt(4);
+    const talkingEffect = self.playerUI.second[playerId].getAt(4);
     talkingEffect.setAlpha(isTalking ? 1 : 0);
 }
 

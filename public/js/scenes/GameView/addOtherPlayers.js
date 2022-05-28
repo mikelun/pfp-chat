@@ -7,11 +7,12 @@ import { loadTexture } from "./loadTexture";
 import { getInterectionForEns, isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 import { createTalkingEffect } from "./addEffectToPlayer";
-import { createPlayerUI } from "./playerUI";
+import { createPlayerUI, createPlayerUILevelDown } from "./playerUI";
 
 
 export function addOtherPlayers(self, playerInfo) {
 
+    createPlayerUILevelDown(self, playerInfo);
     // define other player with 0 character
     const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self)
 
@@ -33,10 +34,10 @@ export function addOtherPlayers(self, playerInfo) {
     otherPlayer.playerId = playerInfo.playerId;
     otherPlayer.name = playerInfo.playerName;
 
-    self.playerUI[playerInfo.playerId] = createPlayerUI(self, playerInfo);
+    createPlayerUI(self, playerInfo);
 
     // ADD WEAPON FOR PLAYER
-    if (self.mapId == 8) self.playerUI[playerInfo.playerId].add(self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5));
+    if (self.mapId == 8) self.playerUI.second[playerInfo.playerId].add(self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5));
 
     self.otherPlayers.add(otherPlayer);
     self.layer1.add(otherPlayer);

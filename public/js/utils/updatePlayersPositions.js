@@ -17,7 +17,9 @@ export function updateOtherPlayersPositions(self, delta) {
             otherPlayer.update(otherPlayer.x, otherPlayer.y);
         }
 
-        self.playerUI[otherPlayer.playerId].x = otherPlayer.x;
-        self.playerUI[otherPlayer.playerId].y = otherPlayer.y - 17;
+        self.playerUI.first[otherPlayer.playerId].x = otherPlayer.x;
+        self.playerUI.first[otherPlayer.playerId].y = otherPlayer.y - 17;
+        self.playerUI.second[otherPlayer.playerId].x = otherPlayer.x;
+        self.playerUI.second[otherPlayer.playerId].y = otherPlayer.y - 17;
     });
 }

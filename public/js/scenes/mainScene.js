@@ -8,7 +8,6 @@ import { addJoysticIfAndroid } from '../utils/pluginJoystic';
 import { addIframeGameAndMusicMachine } from '../utils/addIframeGameAndMusicMachine';
 import { addPlayerOverlap, checkOverlap } from '../utils/playerOverlap';
 import { updateOtherPlayersPositions } from '../utils/updatePlayersPositions';
-import { addFollowingUI } from '../utils/addFollowingUi';
 import { addAudioTimer } from '../utils/addAudioTimer';
 import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 import { showPlayersToTalk } from '../socketController/playerSocket';
