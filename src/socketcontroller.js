@@ -111,6 +111,7 @@ module.exports = (io) => {
             }
 
             // IF IT SPACE
+            players[socket.id].isHost = false;
             if (data.space) {
                 room = data.space.room;
                 players[socket.id].spaceId = data.space.id;

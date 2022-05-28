@@ -90,7 +90,7 @@ export function addPlayer(newSelf, playerInfo) {
     addPhysicsForScene(self, self.mapId);
 
     var talkSize = 400;
-    if (self.room == 'buildship') {
+    if (playerInfo.isHost) {
         talkSize = 10000;
     }
     self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, talkSize, talkSize, 0x000000).setAlpha(0);
