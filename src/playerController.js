@@ -124,6 +124,8 @@ function createPlayerData(data) {
         x = mapsStartPoints[mapId][0].x;
         y = mapsStartPoints[mapId][0].y;
         currentRoom = spaces[spaceId].room;
+    } else {
+        spaceId = null;
     }
 
 

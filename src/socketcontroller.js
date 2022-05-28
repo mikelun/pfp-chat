@@ -63,7 +63,6 @@ module.exports = (io) => {
             if (players[socket.id].mapId == 8) {
                 socket.emit('updateRewardCoins', coins);
             }
-            console.log('PLAYERS: ', players);
 
         }
 
