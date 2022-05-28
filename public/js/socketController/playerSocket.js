@@ -179,10 +179,6 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         
         changeMap(self, {mapId: data.space.mapId, space: data.space});
 
-        // change site href
-        if (window.history.replaceState) {
-            window.history.replaceState({}, '', `/${data.space.id}`);
-        }
 
 
     });

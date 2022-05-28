@@ -14,12 +14,20 @@ export function changeMap(self, data) {
         self.mapId = data.mapId;
         showMap(self, data.mapId);
         self.socket.emit('connectToOtherRoom', data);
-        
+
         if (data.space) {
             sceneEvents.emit('createCopyLinkButton', data.space.id);
+            // change site href
+            if (window.history.replaceState) {
+                window.history.replaceState({}, '', `/${data.space.id}`);
+            }
         } else {
             sceneEvents.emit('destroyCopyLinkButton');
+            // change site href
+            if (window.history.replaceState) {
+                window.history.replaceState({}, '', `/`);
+            }
         }
     }, 700)
-    
+
 }
