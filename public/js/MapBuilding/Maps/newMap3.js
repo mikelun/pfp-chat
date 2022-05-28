@@ -27,34 +27,52 @@ var spaceKey;
 
 var wallsCollider;
 
-export const addMap10 = addMap;
-export const addPhysicsForMap10 = addPhysicsForMap;
-export const addUpdateForMap10 = addUpdateForMap;
-export const clearMap10 = clearMap;
+export const addMap3 = addMap;
+export const addPhysicsForMap3 = addPhysicsForMap;
+export const addUpdateForMap3 = addUpdateForMap;
+export const clearMap3 = clearMap;
 
 
 
 function addMap(self) {
     spaceKey = false;
 
-    map = self.make.tilemap({ key: '10' });
-    
-    const tileset1 = map.addTilesetImage('TilemapDay', 'tiles'); 
+    map = self.make.tilemap({ key: 'surf-vibe' });
+    // add tileset image
+    const cliffsTileset = map.addTilesetImage('Animated_Cliffs', 'Animated_Cliffs', 48, 48, 1, 2);
+    const deepwaterTileset = map.addTilesetImage('Animated_Deepwater', 'Animated_Deepwater', 48, 48, 1, 2);
+    const shoreTileset = map.addTilesetImage('Animated_Shore', 'Animated_Shore', 48, 48, 1, 2);
+    const mainTileset = map.addTilesetImage('MainTileMap', 'MainTileMap', 48, 48, 1, 2);
+    const boatsTileset = map.addTilesetImage('Animated_Boats', 'Animated_Boats', 48, 48, 1, 2);
+    const pierTileset = map.addTilesetImage('Animated_Pier', 'Animated_Pier', 48, 48, 1, 2);
+    const nettingTileset = map.addTilesetImage('Animated_Netting', 'Animated_Netting', 48, 48, 1, 2);
 
+    self.shoreLayer = map.createLayer('Shore', [mainTileset, deepwaterTileset, shoreTileset]).setCollisionByProperty({ collides: true });;
+    self.layer1.add(self.shoreLayer);
+    self.layer1.add(map.createLayer('objects', [mainTileset, cliffsTileset, nettingTileset, pierTileset]));
+    self.layer1.add(map.createLayer('objects-1', [mainTileset, pierTileset]));
+    self.layer1.add(map.createLayer('objects-2', [boatsTileset, mainTileset, pierTileset]));
+    self.layer1.add(map.createLayer('objects-3', [boatsTileset, mainTileset]));
+    self.layer2.add(map.createLayer('walls', mainTileset));
+    self.layer2.add(map.createLayer('invisible1', mainTileset));
+    self.layer2.add(map.createLayer('invisible2', mainTileset));
 
-    // Create layers and collides for physics
-    self.layer1.add(map.createStaticLayer('1', tileset1));
-    self.layer1.add(map.createStaticLayer('2', tileset1));
-    self.layer1.add(map.createStaticLayer('3', tileset1));
-    self.layer1.add(map.createStaticLayer('4', tileset1));
-
-    self.invisibleWalls = map.createLayer('invisibleWalls', tileset1).setCollisionByProperty({ collides: true });;
+    self.invisibleWalls = map.createLayer('invisibleWalls', [mainTileset]).setCollisionByProperty({ collides: true });;
     self.invisibleWalls.setVisible(false);
+
+    addAnimationForMap(self, map, deepwaterTileset);
+    addAnimationForMap(self, map, shoreTileset);
+    addAnimationForMap(self, map, cliffsTileset);
+    addAnimationForMap(self, map, boatsTileset);
+    addAnimationForMap(self, map, nettingTileset);
+    addAnimationForMap(self, map, pierTileset);
+
+    self.cameras.main.setBounds(0, 0, map.widthInPixels - 600, map.heightInPixels);
 
 
 
     addLightsToMap(self);
- 
+
     addEntrancesToMap(self);
 
     startMapTransition(self, [lights, entrances, effects]);
@@ -63,7 +81,7 @@ function addMap(self) {
     self.input.keyboard.on('keydown-SPACE', function (event) {
         if (entranceMapId && !spaceKey) {
             spaceKey = true;
-            changeMap(self, {mapId: entranceMapId});
+            changeMap(self, { mapId: entranceMapId });
         }
     });
 }
@@ -104,16 +122,16 @@ function clearMap(self) {
     if (wallsCollider) wallsCollider.destroy();
 
     if (map) map.destroy();
-    
+
     lights.forEach(light => {
         light.destroy();
     });
-    
+
     entrances.forEach(entrance => {
         entrance.entrance.destroy();
-    }); 
+    });
 
-    
+
 
     lights = [];
     entrances = [];

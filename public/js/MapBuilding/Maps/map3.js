@@ -62,8 +62,8 @@ export function addMap3(self) {
 function addObjectsToMap(self) {
     
     // ADDING SCENE RECTANGLE
-    console.log('added rectangle');
-    self.scene = self.add.rectangle(850, 2050, 200, 200, 0x000000).setOrigin(0, 0).setAlpha(0);
+   // console.log('added rectangle');
+    //self.scene = self.add.rectangle (850, 2050, 200, 200, 0x000000).setOrigin(0, 0).setAlpha(0);
 
 }
 
