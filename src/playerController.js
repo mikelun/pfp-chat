@@ -32,7 +32,7 @@ module.exports = {
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
     },
     addPlayer: function (bigData) {
-        const {io, socket, players, peers, address, planet, playerInfo, rooms, firstEntrance, data, spaceId, spaces} = bigData;
+        const { io, socket, players, peers, address, planet, playerInfo, rooms, firstEntrance, data, spaceId, spaces } = bigData;
 
         // disconnect player with this session
         for (var player in players) {
@@ -62,8 +62,8 @@ module.exports = {
 }
 
 
-function createPlayerData(data) {
-    var {socket, address, planet, playerInfo, data, spaceId, spaces} = data;
+function createPlayerData(bigData) {
+    var { socket, address, planet, playerInfo, data, spaceId, spaces } = bigData;
 
     // if player is guest or first entrance
     var x = mapsStartPoints[maps[planet]][0].x;
@@ -79,14 +79,11 @@ function createPlayerData(data) {
     var weapon = weapons[0];
     var weaponId = 0;
     var isHome = false;
-    var space = null;
 
     if (data) {
-        if (!data.space) {
-            if (data.x) x = data.x;
-            if (data.x) y = data.y;
-            if (data.map_id) mapId = data.map_id;
-        }
+        if (data.x) x = data.x;
+        if (data.x) y = data.y;
+        if (data.map_id) mapId = data.map_id;
         if (data.killed_monsters) killedMonsters = data.killed_monsters;
         if (data.time_in_game) timeInGame = data.time_in_game;
         if (data.coins) coins = data.coins;
@@ -98,10 +95,6 @@ function createPlayerData(data) {
         }
         if (data.is_home) {
             isHome = data.is_home;
-        }
-
-        if (data.space) {
-            //space = data.space;
         }
     } else {
         if (playerInfo) {
@@ -120,7 +113,7 @@ function createPlayerData(data) {
     }
 
     if (spaces[spaceId]) {
-        mapId = spaces[spaceId].mapId; 
+        mapId = spaces[spaceId].mapId;
         x = mapsStartPoints[mapId][0].x;
         y = mapsStartPoints[mapId][0].y;
         currentRoom = spaces[spaceId].room;
@@ -153,7 +146,6 @@ function createPlayerData(data) {
         weaponId: weaponId,
         isHome: isHome,
         session: socket.request.sessionID,
-        space: space,
         spaceId: spaceId,
     }
 

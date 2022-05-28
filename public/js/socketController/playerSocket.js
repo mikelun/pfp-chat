@@ -177,9 +177,10 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
             return;
         }
         
-        changeMap(self, {mapId: data.space.mapId, spaceRoom: data.space.room});
+        changeMap(self, {mapId: data.space.mapId, space: data.space});
 
     });
+
 
     sceneEvents.on('connectToMyRoom', () => {
         self.socket.emit('connectToRoom', {isMyRoom: true});

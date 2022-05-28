@@ -87,7 +87,6 @@ module.exports = (io) => {
 
         function connectToOtherRoom(data) {
 
-            console.log('CONNECTING TO ROOM WITH DATA:', data,);
             players[socket.id].isHome = data.isHome ? data.isHome : false;
 
             var mapId = data.mapId;
@@ -112,9 +111,9 @@ module.exports = (io) => {
             }
 
             // IF IT SPACE
-            if (data.spaceRoom) {
-                room = data.spaceRoom;
-                players[socket.id].space = data.spaceRoom;
+            if (data.space) {
+                room = data.space.room;
+                players[socket.id].spaceId = data.space.id;
             }
 
             socket.join(room);
@@ -336,7 +335,7 @@ module.exports = (io) => {
                     createdTime: Math.floor(Date.now() / 1000),
                     room: 'space$' + spaceId,
                 }
-                socket.emit('createSpace', { error: false, space: spaces[spaceId] });
+                socket.emit('createSpace', { error: false, space: spaces[spaceId]});
             }
         })
 
@@ -347,7 +346,7 @@ module.exports = (io) => {
             if (!spaces[spaceId]) {
                 socket.emit('connectToSpace', { error: true, message: 'Space not found' });
             } else {
-                connectToOtherRoom({ mapId: spaces[spaceId].mapId });
+                //connectToOtherRoom({ mapId: spaces[spaceId].mapId });
             }
         });
 

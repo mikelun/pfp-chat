@@ -14,9 +14,9 @@ export function changeMap(self, data) {
         self.mapId = data.mapId;
         showMap(self, data.mapId);
         self.socket.emit('connectToOtherRoom', data);
-        console.log(data.spaceRoom);
-        if (data.spaceRoom) {
-            sceneEvents.emit('createCopyLinkButton', data.spaceRoom);
+        
+        if (data.space) {
+            sceneEvents.emit('createCopyLinkButton', data.space.id);
         } else {
             sceneEvents.emit('destroyCopyLinkButton');
         }
