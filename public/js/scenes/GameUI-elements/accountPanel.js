@@ -31,25 +31,27 @@ export function createAccountPanel(newSelf) {
     makeButtonInteractive(createSpace, '', 0, 0);
 
 
-    const joinSpace = self.rexUI.add.label({
-        x: panel.x + 250,
-        y: panel.y + 265,
-        background: self.add.image(0, 0, 'long-button'),
-        text: self.add.text(0, 0, 'LIVE SPACES', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }),
-        space: { left: 25, right: 25, top: 10, bottom: 15 }
-    }).setAlpha(0.8).layout();
+    // const joinSpace = self.rexUI.add.label({
+    //     x: panel.x + 250,
+    //     y: panel.y + 265,
+    //     background: self.add.image(0, 0, 'long-button'),
+    //     text: self.add.text(0, 0, 'LIVE SPACES', { fontFamily: 'PixelFont', fontSize: '35px', color: '#ffffff' }),
+    //     space: { left: 25, right: 25, top: 10, bottom: 15 }
+    // }).setAlpha(0.8).layout();
 
-    makeButtonInteractive(joinSpace, '', 0, 0);
+    // makeButtonInteractive(joinSpace, '', 0, 0);
 
     createSpace.on('pointerdown', () => {
         self.accountGroup.setVisible(false);
         self.accountButton.selected = false;
         setVisibleSpacePanel();
-    })
+    });
 
     self.accountGroup.add(panel);
     self.accountGroup.add(closeButton);
     self.accountGroup.add(header);
     self.accountGroup.add(createSpace);
-    self.accountGroup.add(joinSpace);
+    //self.accountGroup.add(joinSpace);
+    
+    self.accountGroup.setVisible(false);
 }
