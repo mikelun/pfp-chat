@@ -17,7 +17,7 @@ import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMi
 import { initializeWeapon, updateWeapon } from './Weapons/weapon';
 import { initialAnimations } from '../utils/initialAnimations';
 import { initializePlayerEffects } from './GameView/playerEffects';
-import { clearPlayerUI } from './GameView/addPlayersUtils';
+import { clearPlayerUI } from './GameView/playerUI';
 /**
  * All peer connections
  */
@@ -83,8 +83,11 @@ export class MainScene extends Phaser.Scene {
         // first entrance
         this.firstEntrance = true;
 
-        // add UI for each player (microphone, name, etc)
-        this.playerUI = {};
+        // add UI for each player (microphone, name, etc) with 2 layers (bec host effect should be on background)
+        this.playerUI = {
+            first: {},
+            second: {},
+        };
 
         // MAIN 2 layers
         this.layer1 = this.add.layer();
@@ -138,7 +141,7 @@ export class MainScene extends Phaser.Scene {
                 }
                 if (this.player && playerId == this.player.id) fl = true;
                 if (!fl) {
-                    clearPlayerUI(this.playerUI[playerId]);
+                    clearPlayerUI(this, playerId);
                 }
             }
         }, 5000);

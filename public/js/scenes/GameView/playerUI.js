@@ -1,9 +1,20 @@
 import { randColor } from "../../socketController/playerSocket";
-import { createTalkingEffect } from "./addEffectToPlayer";
+import { createHostEffect, createTalkingEffect } from "./addEffectToPlayer";
+
+
+/**
+ * ONE LEVEL DOWN FOR PLAYER (EFFECTS WILL BE ON BACK OF PLAYER)
+ */
+export function createPlayerUILevelDown(self, playerInfo) {
+    //hostEffect.alpha = 0.3;
+    const hostEffect = createHostEffect(self, playerInfo.x, playerInfo.y);
+    const containerLevelDown = self.add.container(0, 0, [hostEffect]);
+    return containerLevelDown;
+}
 
 export function createPlayerUI(self, playerInfo) {
     const textColor = randColor();
-    
+
     let microphoneTexture = playerInfo.microphoneStatus ? "microphone1" : "microphone1-off";
     let headphonesTexture = playerInfo.deafen ? "headphones-off" : "headphones";
 
@@ -15,7 +26,8 @@ export function createPlayerUI(self, playerInfo) {
     const container = self.add.container(0, 0, [background, playerText, microphone, headphones, talkingEffect]);
 
     container.setDepth(26);
-    return container;
+    
+    self.playerUI.second[playerInfo.playerId] = container;
 }
 
 /**
@@ -28,8 +40,7 @@ export function createPlayerUI(self, playerInfo) {
  * 5 - weapon
  */
 export function updatePlayerUI(self, playerInfo) {
-    const container = self.playerUI[playerInfo.playerId];
-    console.log('Updated playerInfo');
+    const container = self.playerUI.second[playerInfo.playerId];
 
     if (container) {
         const background = container.getAt(0);
@@ -52,13 +63,24 @@ export function updatePlayerUI(self, playerInfo) {
 
 export function getWeaponFromUI(playerUI) {
     const weapon = playerUI.getAt(5);
-    
+
     return weapon;
 }
 
 export function updateTalkingEffect(self, isTalking, playerId) {
-    if (!self.playerUI[playerId]) return;
+    if (!self.playerUI.second[playerId]) return;
 
     const talkingEffect = self.playerUI[playerId].getAt(4);
     talkingEffect.setAlpha(isTalking ? 1 : 0);
+}
+
+export function clearPlayerUI(self, playerId) {
+    if (self.playerUI.second[playerId]) {
+        self.playerUI.second[playerId].destroy();
+        delete self.playerUI.second[playerId];
+    }
+    if (self.playerUI.first[playerId]) {
+        self.playerUI.first[playerId].destroy();
+        delete self.playerUI.first[playerId];
+    }
 }

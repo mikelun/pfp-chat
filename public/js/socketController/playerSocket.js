@@ -13,7 +13,6 @@ import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
 import { updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
-import { clearPlayerUI } from "../scenes/GameView/addPlayersUtils";
 import { createMapsSpecialElements } from "../scenes/GameView/mapsSpecialElements";
 // import { sendFile } from "express/lib/response";
 

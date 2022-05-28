@@ -13,7 +13,7 @@ import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { updatePlayerCoins } from "../GameUI-elements/hud";
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 import { addEffect, createTalkingEffect } from "./addEffectToPlayer";
-import { createPlayerUI } from "./playerUI";
+import { createPlayerUI, createPlayerUILevelDown } from "./playerUI";
 
 var self;
 
@@ -30,6 +30,8 @@ export function addPlayer(newSelf, playerInfo) {
 
     // initialize weapon for player
     initializeWeapon(self, playerInfo.weapon);
+
+    createPlayerUILevelDown(self, playerInfo);
 
     //updatePlayerCoins(playerInfo.coins);
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
@@ -65,8 +67,13 @@ export function addPlayer(newSelf, playerInfo) {
     self.cameras.main.startFollow(self.player);
 
     // ADD PLAYER UI
-    addUIForPlayer(self, playerInfo);
+    createPlayerUI(self, playerInfo);
 
+    // NOW UI IS FOLLOWING
+    addUIFollowToPlayer(self);
+
+    // push player to playerList
+    pushToPlayerList(playerInfo);
 
     if (self.firstEntrance) {
         getPlayerNFT(self.moralis);
@@ -112,16 +119,17 @@ function cleanPreviousInfoAboutPlayer(self) {
     }
 }
 
-function addUIForPlayer(self, playerInfo) {
-    self.playerUI[self.socket.id] = createPlayerUI(self, playerInfo);
-
+function addUIFollowToPlayer(self) {
     self.events.on("postupdate", function () {
-        if (self.player && self.playerUI[self.socket.id]) { 
-            Phaser.Display.Align.To.TopCenter(self.playerUI[self.player.id], self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
+        if (!self.player) return;
+        // THE FIRST CONTAINER
+        if (self.playerUI.second[self.socket.id]) { 
+            Phaser.Display.Align.To.TopCenter(self.playerUI.second[self.socket.id], self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
+        }
+        if (self.playerUI.first[self.socket.id]) { 
+            Phaser.Display.Align.To.TopCenter(self.playerUI.first[self.socket.id], self.player, 0, (self.player.yAdd ? self.player.yAdd : 0));
         }
     });
-    
-    pushToPlayerList(playerInfo);
 }
 
 function nftSelected(nft) {

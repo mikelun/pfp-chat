@@ -1,13 +1,4 @@
-export function addEffect(self, x, y, type) {
-    var key;
-
-    if (type == 'host') {
-        key = 'effect7';
-    }
-    if (type == 'talking') {
-        key = 'effect1';
-    }
-
+export function addEffect(self, x, y, key) {
     const effect = self.add.sprite(x, y, key);
     createAnim(self, key);
     effect.play(key);
@@ -16,8 +7,15 @@ export function addEffect(self, x, y, type) {
 
 export function createTalkingEffect(self, x, y) {
     var key = 'effect1';
-    const effect = addEffect(self, x, y, 'talking');
+    const effect = addEffect(self, x, y, key);
     effect.setAlpha(0).setScale(0.2);
+    return effect;
+}
+
+export function createHostEffect(self, x, y) {
+    var key = 'effect7';
+    const effect = addEffect(self, x, y, key);
+    effect.setAlpha(1).setScale(0.2);
     return effect;
 }
 

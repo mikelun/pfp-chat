@@ -1,6 +1,6 @@
 import { sceneEvents } from "../../Events/EventsCenter";
 import { currentPlayerDisconnected, destroyPlayer} from "../../socketController/playerSocket";
-import { clearPlayerUI } from "./addPlayersUtils";
+import { clearPlayerUI } from "./playerUI";
 
 export function disconnectPlayerBadInternet(self) {
     sceneEvents.emit('createErrorDisconnectMessage');
@@ -16,15 +16,15 @@ export function disconnectPlayer(self) {
         self.particles.destroy();
     }
 
-    const playerUI = self.playerUI[self.player.id];
+    clearPlayerUI(self, self.player.id);
+
     currentPlayerDisconnected(self.player.id);
-    clearPlayerUI(playerUI);
 
     // destroy main player  
     destroyPlayer();
-    
+
     self.otherPlayers.getChildren().forEach(otherPlayer => {
-        clearPlayerUI(self.playerUI[otherPlayer.playerId]);
+        clearPlayerUI(self, otherPlayer.playerId);
         otherPlayer.destroy();
     });
     self.talkRectangle.destroy();
