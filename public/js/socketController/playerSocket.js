@@ -12,7 +12,7 @@ import { changeMap } from "../scenes/GameView/changeMap";
 import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
-import { updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
+import { clearPlayerUI, updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
 import { createMapsSpecialElements } from "../scenes/GameView/mapsSpecialElements";
 // import { sendFile } from "express/lib/response";
 
@@ -68,7 +68,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (playerId === otherPlayer.playerId) {
-                clearPlayerUI(self.playerUI[playerId]);
+                clearPlayerUI(self, otherPlayer.playerId);
                 otherPlayer.destroy();
             }
         });

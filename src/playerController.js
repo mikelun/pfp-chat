@@ -79,6 +79,7 @@ function createPlayerData(bigData) {
     var weapon = weapons[0];
     var weaponId = 0;
     var isHome = false;
+    var isHost = false;
 
     if (data) {
         if (data.x) x = data.x;
@@ -117,6 +118,9 @@ function createPlayerData(bigData) {
         x = mapsStartPoints[mapId][0].x;
         y = mapsStartPoints[mapId][0].y;
         currentRoom = spaces[spaceId].room;
+        if (address && address == spaces[spaceId].host) {
+            isHost = true;
+        }
     } else {
         spaceId = null;
     }
@@ -147,6 +151,7 @@ function createPlayerData(bigData) {
         isHome: isHome,
         session: socket.request.sessionID,
         spaceId: spaceId,
+        isHost: isHost,
     }
 
     return player;

@@ -114,6 +114,9 @@ module.exports = (io) => {
             if (data.space) {
                 room = data.space.room;
                 players[socket.id].spaceId = data.space.id;
+                if (players[socket.id].address = data.space.host) {
+                    players[socket.id].isHost = true;
+                }
             }
 
             socket.join(room);

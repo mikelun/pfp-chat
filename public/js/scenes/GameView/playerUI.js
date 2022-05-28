@@ -8,6 +8,7 @@ import { createHostEffect, createTalkingEffect } from "./addEffectToPlayer";
 export function createPlayerUILevelDown(self, playerInfo) {
     //hostEffect.alpha = 0.3;
     const hostEffect = createHostEffect(self, 1, 23);
+    if (playerInfo.isHost) hostEffect.setAlpha(1);
     const containerLevelDown = self.add.container(0, 0, [hostEffect]);
     containerLevelDown.setDepth(24);
     self.playerUI.first[playerInfo.playerId] = containerLevelDown;

@@ -15,7 +15,7 @@ export function createTalkingEffect(self, x, y) {
 export function createHostEffect(self, x, y) {
     var key = 'effect7';
     const effect = addEffect(self, x, y, key);
-    effect.setAlpha(1).setScale(0.2);
+    effect.setAlpha(0).setScale(0.2);
     return effect;
 }
 
