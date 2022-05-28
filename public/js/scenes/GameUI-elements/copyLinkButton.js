@@ -6,23 +6,29 @@ var copyLinkButtonGroup;
 
 var addFriendsButton;
 
-export function initalizeCopyLinkButton(newSelf) {
+export function initalizeCopyLinkButton(newSelf, data) {
     self = newSelf;
 
     copyLinkButtonGroup = self.add.group(); 
 
-    sceneEvents.on('createCopyLinkButton', (link) => {
+    sceneEvents.on('createCopyLinkButton', (spaceRoom) => {
         destroyCopyLinkButton();
-        createCopyLinkButton(link);
+        createCopyLinkButton(spaceRoom);
     });
 
     sceneEvents.on('destroyCopyLinkButton', () => {
         destroyCopyLinkButton();
     });
 
+    if (data.spaceId) {
+        createCopyLinkButton(data.spaceId);
+    }
+
+
 }
 
-function createCopyLinkButton(link) {
+function createCopyLinkButton(spaceRoom) {
+    const link = 'localhost:3000/' + spaceRoom.replace('space$', '');
 
     addFriendsButton = self.add.image(10, 125, 'copy-link-button').setOrigin(0, 0).setScale(2).setAlpha(0.8).setVisible(false);
     makeButtonInteractive(addFriendsButton, '', 0, 0);

@@ -1,4 +1,5 @@
 import { connect } from "socket.io-client";
+import { sceneEvents } from "../../Events/EventsCenter";
 import { clearMapWithTransition } from "../../MapBuilding/Maps/maps-utils";
 import { clearMap, showMap } from "../../MapBuilding/showMap";
 import { removeAllMonsters } from "../../socketController/mmorpgSocket";
@@ -13,6 +14,12 @@ export function changeMap(self, data) {
         self.mapId = data.mapId;
         showMap(self, data.mapId);
         self.socket.emit('connectToOtherRoom', data);
+        console.log(data.spaceRoom);
+        if (data.spaceRoom) {
+            sceneEvents.emit('createCopyLinkButton', data.spaceRoom);
+        } else {
+            sceneEvents.emit('destroyCopyLinkButton');
+        }
     }, 700)
     
 }

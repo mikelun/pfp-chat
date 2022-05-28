@@ -11,15 +11,8 @@ const rooms = {
     "moonbirds": moonbirds,
 };
 export function initializeRooms(self) {
-    var room = window.location.href.split('/');
-    self.room = room[room.length - 1];
+    self.id = window.location.href.split('/')[window.location.href.split('/').length - 1];
 
-    // check if room in rooms
-    if (rooms[self.room]) {
-        self.levels = [defaultLevel0, defaultLevel1, rooms[self.room]];
-    } else {
-        self.room = "coffeebar";
-        self.levels = [defaultLevel0, defaultLevel1WithGuestEnter, coffeebar];
-    }
-
+    self.planetName = "coffeebar";
+    self.levels = [defaultLevel0, defaultLevel1WithGuestEnter, coffeebar];
 }

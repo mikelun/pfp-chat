@@ -20,7 +20,7 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
-var mapId, playerCoins, nftImage;
+var mapId, playerCoins, nftImage, spaceId;
 
 export class GameUi extends Phaser.Scene {
     constructor() {
@@ -32,6 +32,7 @@ export class GameUi extends Phaser.Scene {
         nftImage = data.nftImage;
         this.isHome = data.isHome;
         this.playerName = data.playerName;
+        spaceId = data.spaceId;
     }
 
     create() {
@@ -55,7 +56,7 @@ export class GameUi extends Phaser.Scene {
 
         initialiezeSpacePanel(this);
 
-        initalizeCopyLinkButton(this);
+        initalizeCopyLinkButton(this, {spaceId: spaceId});
 
 
         // tip how to open text chat

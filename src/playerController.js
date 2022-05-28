@@ -19,19 +19,21 @@ module.exports = {
 
         if (initializePlayer) {
             connectToHome(players, socket.id).then(data => {
-                socket.emit('playerInitialized', sortPlayers, data ? data.changed_tiles: null);
-            }) 
-            
+                socket.emit('playerInitialized', sortPlayers, data ? data.changed_tiles : null);
+            })
+
         } else {
             connectToHome(players, socket.id).then(data => {
-                socket.emit('currentPlayers', sortPlayers, data ? data.changed_tiles: null); 
-            }) 
+                socket.emit('currentPlayers', sortPlayers, data ? data.changed_tiles : null);
+            })
         }
 
         // update all other players of the new player
         socket.to(players[socket.id].room).emit('newPlayer', players[socket.id]);
     },
-    addPlayer: function (io, socket, players, peers, address, room, playerInfo, rooms, initializePlayer, data) {
+    addPlayer: function (bigData) {
+        const {io, socket, players, peers, address, planet, playerInfo, rooms, firstEntrance, data, spaceId, spaces} = bigData;
+
         // disconnect player with this session
         for (var player in players) {
             if (players[player].session == socket.request.sessionID) {
@@ -41,22 +43,33 @@ module.exports = {
             }
         }
 
-        players[socket.id] = createPlayerData(socket, address, room, playerInfo, data);
+        players[socket.id] = createPlayerData({
+            socket: socket,
+            address: address,
+            planet: planet,
+            playerInfo: playerInfo,
+            data: data,
+            spaceId: spaceId,
+            spaces: spaces,
+        });
+
 
         socket.join(players[socket.id].room);
 
 
-        this.connectToRoom(socket, players, rooms, initializePlayer, false);
+        this.connectToRoom(socket, players, rooms, firstEntrance, false);
     },
 }
 
 
-function createPlayerData(socket, address, room, playerInfo, data) {
+function createPlayerData(data) {
+    var {socket, address, planet, playerInfo, data, spaceId, spaces} = data;
 
     // if player is guest or first entrance
-    var x = mapsStartPoints[maps[room]][0].x;
-    var y = mapsStartPoints[maps[room]][0].y;
-    var mapId = maps[room];
+    var x = mapsStartPoints[maps[planet]][0].x;
+    var y = mapsStartPoints[maps[planet]][0].y;
+    var mapId = maps[planet];
+
     var textureId = Math.floor(Math.random() * 33);
     var playerName = nicknames[Math.floor(Math.random() * nicknames.length)];
     var enterTime = Math.floor(Date.now() / 1000);
@@ -66,11 +79,14 @@ function createPlayerData(socket, address, room, playerInfo, data) {
     var weapon = weapons[0];
     var weaponId = 0;
     var isHome = false;
+    var space = null;
 
     if (data) {
-        if (data.x) x = data.x;
-        if (data.x) y = data.y;
-        if (data.map_id) mapId = data.map_id;
+        if (!data.space) {
+            if (data.x) x = data.x;
+            if (data.x) y = data.y;
+            if (data.map_id) mapId = data.map_id;
+        }
         if (data.killed_monsters) killedMonsters = data.killed_monsters;
         if (data.time_in_game) timeInGame = data.time_in_game;
         if (data.coins) coins = data.coins;
@@ -83,6 +99,10 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         if (data.is_home) {
             isHome = data.is_home;
         }
+
+        if (data.space) {
+            //space = data.space;
+        }
     } else {
         if (playerInfo) {
             x = playerInfo.x;
@@ -93,11 +113,21 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         }
     }
 
-    var currentRoom = room + '$' + mapId;
+    var currentRoom = planet + '$' + mapId;
 
     if (isHome) {
-        currentRoom = room + '$' + address;
+        currentRoom = planet + '$' + address;
     }
+
+    if (spaces[spaceId]) {
+        mapId = spaces[spaceId].mapId; 
+        x = mapsStartPoints[mapId][0].x;
+        y = mapsStartPoints[mapId][0].y;
+        currentRoom = spaces[spaceId].room;
+    }
+
+
+
 
     console.log('connecting to room: ' + currentRoom);
 
@@ -116,11 +146,13 @@ function createPlayerData(socket, address, room, playerInfo, data) {
         weapon: weapon,
         killedMonsters: killedMonsters,
         enterTime: enterTime,
-        planet: room,
+        planet: planet,
         coins: coins,
         weaponId: weaponId,
         isHome: isHome,
-        session: socket.request.sessionID
+        session: socket.request.sessionID,
+        space: space,
+        spaceId: spaceId,
     }
 
     return player;

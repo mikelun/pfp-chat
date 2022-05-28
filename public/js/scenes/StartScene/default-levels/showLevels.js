@@ -54,7 +54,7 @@ export function goToPlanet(self) {
     // initialize socket and with info go to planet
     const socket = startSocket();
 
-    socket.emit('initializePlayer', address, self.room, true);
+    socket.emit('initializePlayer', {address: address, planet: self.planetName, firstEntrance: true, spaceId: self.id});
     socket.on('playerInitialized', (players, data) => {
         // find current player 
         var currentPlayer = null;
@@ -65,7 +65,7 @@ export function goToPlanet(self) {
         }
         if (!currentPlayer) return;
 
-        self.scene.start('MainScene', { microphoneEnabled: self.microphoneEnabled, moralis: Moralis, address: address, room: self.room, socket: socket, currentPlayers: players, changedTiles: data, player:currentPlayer});
+        self.scene.start('MainScene', { microphoneEnabled: self.microphoneEnabled, moralis: Moralis, address: address, planet: self.planetName, socket: socket, currentPlayers: players, changedTiles: data, player:currentPlayer});
     });
 }
 

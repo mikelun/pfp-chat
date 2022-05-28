@@ -64,6 +64,7 @@ module.exports = {
                 nft: player.nft,
                 weapon_id: player.weapon.id,
                 is_home: player.isHome ? player.isHome : false,
+                space: player.space,
             })
             .eq('id', address)
     },

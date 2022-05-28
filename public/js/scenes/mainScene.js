@@ -34,7 +34,9 @@ export class MainScene extends Phaser.Scene {
     init(data) {
         this.microphoneEnabled = data.microphoneEnabled;
 
-        this.room = data.room;
+        this.planet = data.planet;
+
+        console.log('PLANET: ', data.planet);
 
         // ADD MORALIS FOR BLOCKCHAIN
         this.moralis = data.moralis;
@@ -54,6 +56,7 @@ export class MainScene extends Phaser.Scene {
 
         this.changedTiles = data.changedTiles;
         this.playerName = data.player.playerName;
+        this.spaceId = data.player.spaceId;
 
     }
 
@@ -71,7 +74,8 @@ export class MainScene extends Phaser.Scene {
             playerCoins: this.playerCoins,
             nftImage: this.nftImage,
             isHome: this.isHome,
-            playerName: this.playerName
+            playerName: this.playerName,
+            spaceId: this.spaceId,
         });
 
         initialAnimations(this);
@@ -145,7 +149,7 @@ export class MainScene extends Phaser.Scene {
         if (this.animatedTiles) this.animatedTiles.forEach(tile => tile.update(delta));
 
         if (this.player) {
-            console.log(this.player.x, this.player.y);
+           // console.log(this.player.x, this.player.y);
             // update function for map
             addUpdateForMap(this, this.mapId, time, delta);
 

@@ -41,30 +41,43 @@ module.exports = (io) => {
     io.on('connect', (socket) => {
         peers[socket.id] = socket
 
-        function addPlayer(address, planet, firstEntrance, data, playerInfo) {
-            playerController.addPlayer(io, socket, players, peers, address, planet, playerInfo, rooms, firstEntrance, data);
+        function addPlayer(initData, data) {
+            playerController.addPlayer({
+                io: io,
+                socket: socket,
+                players: players,
+                rooms: rooms,
+                peers: peers,
+                spaces: spaces,
+                address: initData.address,
+                planet: initData.planet, 
+                playerInfo: initData.playerInfo,
+                firstEntrance: initData.firstEntrance,
+                spaceId: initData.spaceId,
+                data: data,
+            });
+
             getLeaderboard(socket);
-            getItems(socket, address)
+            getItems(socket, initData.address);
 
             if (players[socket.id].mapId == 8) {
                 socket.emit('updateRewardCoins', coins);
             }
+            console.log('PLAYERS: ', players);
 
-            console.log('ALL PLAYERS: ', players);
         }
 
-        socket.on('initializePlayer', (address, planet, firstEntrance, playerInfo) => {
+        socket.on('initializePlayer', initData => {
             (async () => {
-                const result = await supabase.getPlayerData(address);
+                const result = await supabase.getPlayerData(initData.address);
                 var data = result ? result.data : null;
                 if (data && !data.length) {
                     supabase.createPlayer(address).then(result => {
-                        addPlayer(address, planet, firstEntrance, data, playerInfo);
+                        addPlayer(initData, data);
                     })
                 } else {
                     if (data) data = data[0];
-                    if (data && data.planet != planet) data = null;
-                    addPlayer(address, planet, firstEntrance, data, playerInfo);
+                    addPlayer(initData, data);
                 }
             })()
         })
@@ -102,6 +115,7 @@ module.exports = (io) => {
             // IF IT SPACE
             if (data.spaceRoom) {
                 room = data.spaceRoom;
+                players[socket.id].space = data.spaceRoom;
             }
 
             socket.join(room);
