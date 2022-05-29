@@ -29,6 +29,9 @@ coins = {};
 
 spaces = {};
 
+// update each 3 seconds player info (microphone, etc.)
+var batchUpdatePlayerInfo = [];
+
 
 module.exports = (io) => {
     io.engine.on("initial_headers", (headers, req) => {
@@ -50,7 +53,7 @@ module.exports = (io) => {
                 peers: peers,
                 spaces: spaces,
                 address: initData.address,
-                planet: initData.planet, 
+                planet: initData.planet,
                 playerInfo: initData.playerInfo,
                 firstEntrance: initData.firstEntrance,
                 spaceId: initData.spaceId,
@@ -165,7 +168,9 @@ module.exports = (io) => {
             if (data.nft != null) players[socket_id].nft = data.nft;
             if (data.textureId) players[socket_id].textureId = data.textureId;
             if (data.deafen != null) players[socket_id].deafen = data.deafen;
-            io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
+
+            batchUpdatePlayerInfo.push(socket_id);
+            //io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket_id]);
         });
 
 
@@ -288,7 +293,7 @@ module.exports = (io) => {
                 supabase.checkItem(players[socket.id].address, category, itemId).then(res => {
                     if (res && res.count) {
                         players[socket.id].weapon = weapons[itemId];
-                        io.to(players[socket.id].room).emit('updatePlayerInfo', players[socket.id]);
+                        batchUpdatePlayerInfo.push(socket.id);
                     }
                 })
             }
@@ -299,7 +304,7 @@ module.exports = (io) => {
         socket.on('connectToRoom', (data) => {
             if (data.isMyRoom) {
                 if (players[socket.id].address) {
-                    socket.emit('connectToRoom', { mapId: 9, error: false, isHome: true});
+                    socket.emit('connectToRoom', { mapId: 9, error: false, isHome: true });
 
                 } else {
                     socket.emit('connectToRoom', { error: true, message: 'You should connect metamask to get your room' });
@@ -339,7 +344,7 @@ module.exports = (io) => {
                     createdTime: Math.floor(Date.now() / 1000),
                     room: 'space$' + spaceId,
                 }
-                socket.emit('createSpace', { error: false, space: spaces[spaceId]});
+                socket.emit('createSpace', { error: false, space: spaces[spaceId] });
             }
         })
 
@@ -369,7 +374,7 @@ module.exports = (io) => {
 
     /**
      * MAIN INTERVAL
-     * UPDATE PLAYERS AND MONSTERS (FOR MMORPG)
+     * UPDATE PLAYERS AND MONSTERS
      */
     setInterval(() => {
         // get for in object 
@@ -403,6 +408,18 @@ module.exports = (io) => {
         io.to('coffeebar$8').emit('updateMonsters', monstersList);
 
     }, 50);
+
+    /**
+     * UPDATE PLAYER INFO IN BATCH EVERY 3 SECONDS
+     */
+    setInterval(() => {
+        batchUpdatePlayerInfo.forEach(socketId => {
+            console.log("HERE");
+            if (players[socketId]) {
+                io.to(players[socketId].room).emit('updatePlayerInfo', players[socketId]);
+            }
+        })
+    }, 3000);
 
     /**
      * CREATING MONSTERS
