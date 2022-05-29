@@ -26,6 +26,8 @@ var spaceKey;
 
 var wallsCollider;
 
+var mapCleared = false;
+
 
 export function addMap4(self) {
     mapCleared = false;
