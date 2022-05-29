@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
-import { initializeSupabase } from '../supabase/supabase';
+import { initializeFirebase } from '../login/firebase';
+import { connectTwitter, initializeSupabase } from '../login/supabase';
 import { goToPlanet, lastVisitSetup, microphoneWasInitialized, playerWasAtPlanet, showCurrentLevel } from './StartScene/default-levels/showLevels';
 import { initializeRooms } from './StartScene/initializeRooms';
 
@@ -16,7 +17,7 @@ export class StartScene extends Phaser.Scene {
         // initialize room
         initializeRooms(this);
 
-        initializeSupabase();
+        initializeFirebase();
 
         // step = 0
         this.step = 0;
@@ -58,6 +59,7 @@ export class StartScene extends Phaser.Scene {
 
         // add key events
         this.addKeyEvents();
+
     
     }
 

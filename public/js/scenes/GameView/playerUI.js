@@ -70,6 +70,7 @@ export function getWeaponFromUI(playerUI) {
 }
 
 export function updateTalkingEffect(self, isTalking, playerId) {
+    console.log('updateing talking effect for player: ', playerId);
     if (!self.playerUI.second[playerId]) return;
 
     const talkingEffect = self.playerUI.second[playerId].getAt(4);

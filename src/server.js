@@ -10,7 +10,7 @@ require('./routes.js')(app);
 
 const session = require('express-session');
 
-const {parser} = require('socket.io-msgpack-parser');
+const { parser } = require('socket.io-msgpack-parser');
 
 // CONFIGURATION ===============================================================
 
@@ -18,6 +18,17 @@ var port = process.env.PORT || 3000; // set our port
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// var Twitter = require('twitter');
+
+// var client = new Twitter({
+//     consumer_key: 'ddXsYRqDrHzISCtD9RO8UyqGJ',
+//     consumer_secret: 'S8mTc7Cf2eHZCW8YhyFx0iJi21XJja4rT60IlGpbJrZBC6zJpe',
+//     bearer_token: 'AAAAAAAAAAAAAAAAAAAAAN5qdAEAAAAABEmJU%2FH%2F%2BE65X4%2FFXFGgTdjGzSI%3D4okHW1oJOO4K0jDGgpBO1FqtDzQxfgwY9S6FX0dKXiM37l3nJO'
+// });
+
+// client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response) {
+//     console.log(tweets);
+//  });
 
 // get SECRET_SECCION from .env 
 const SECRET_SESSION = process.env.SECRET_SESSION;

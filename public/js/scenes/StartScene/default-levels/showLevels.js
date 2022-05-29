@@ -4,7 +4,6 @@ import { initializeRooms } from "../initializeRooms";
 import { getUserMoralis } from "./web3-utils";
 import { startMoralis } from "./web3-utils";
 import { startSocket } from "../../../socketController/startSocket";
-import { getSupabaseUser } from "../../../supabase/supabase";
 
 export function showCurrentLevel(self) {
     // CLEAR SCREEN FOR THE NEXT LEVEL(MESSAGE)

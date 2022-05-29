@@ -407,19 +407,18 @@ module.exports = (io) => {
         });
         io.to('coffeebar$8').emit('updateMonsters', monstersList);
 
-    }, 50);
+    }, 60);
 
     /**
      * UPDATE PLAYER INFO IN BATCH EVERY 3 SECONDS
      */
     setInterval(() => {
         batchUpdatePlayerInfo.forEach(socketId => {
-            console.log("HERE");
             if (players[socketId]) {
                 io.to(players[socketId].room).emit('updatePlayerInfo', players[socketId]);
             }
         })
-    }, 3000);
+    }, 4000);
 
     /**
      * CREATING MONSTERS
@@ -448,7 +447,7 @@ module.exports = (io) => {
 
 
         }
-    }, 2000)
+    }, 1500)
 
 };
 

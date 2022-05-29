@@ -161,7 +161,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
      * EFFECT IF PLAYER TALKING
      */
     self.socket.on('updateTalkingEffect', (data) => {
-        if (self.playerUI[data.playerId]) {
+        if (self.playerUI.second[data.playerId]) {
             updateTalkingEffect(self, data.isTalking, data.playerId);
         }
     });

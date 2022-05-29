@@ -2,7 +2,6 @@ import { createButton } from "./level-utils";
 import { startMoralis } from "./web3-utils";
 import { showCurrentLevel, typeTextWithDelay } from "./showLevels";
 import { login } from "./web3-utils";
-import { signInWithGoogle } from "../../../supabase/supabase";
 
 // Get microphone access
 export function defaultLevel0(self, Moralis) {
