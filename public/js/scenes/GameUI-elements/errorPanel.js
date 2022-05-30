@@ -9,6 +9,9 @@ var self;
 export function initializeErrors(newSelf) {
     self = newSelf;
 
+    errorDisconnectGroup = self.add.group();
+    errorPanelGroup = self.add.group();
+
     sceneEvents.on('createErrorDisconnectMessage', () => {
         createErrorDisconnectMessage();
     });
@@ -20,10 +23,11 @@ export function initializeErrors(newSelf) {
     sceneEvents.on('createErrorMessage', (message) => {
         createErrorPanel(message);
     });
+
+    
 }
 
 function createErrorPanel(message) {
-    if (!errorPanelGroup) errorPanelGroup = self.add.group();
 
     var panel = self.add.image(640, 320, 'cell-info').setScale(3, 1.5);
 
@@ -62,7 +66,9 @@ function createErrorPanel(message) {
 }
 
 function createErrorDisconnectMessage() {
-    errorDisconnectGroup = self.add.group();
+    removeErrorDisconnectMessage();
+    errorDisconnectGroup.setVisible(true);
+
     var panel = self.add.image(640, 320, 'cell-info').setScale(5, 3);
 
     const message = `YOU HAVE BEEN DISCONNECTED FROM THE SERVER.\n\nTRYING TO RECCONNECT...`;
@@ -82,7 +88,8 @@ function createErrorDisconnectMessage() {
 }
 
 function removeErrorDisconnectMessage() {
-    if (!errorDisconnectGroup) return;
+    errorDisconnectGroup.setVisible(false);
+
     errorDisconnectGroup.getChildren().forEach(child => {
         if (child.clear) child.clear(true);
         child.destroy();

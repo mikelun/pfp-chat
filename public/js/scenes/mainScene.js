@@ -217,6 +217,9 @@ function sendPlayerPosition(self, time) {
 function updatePeopleForTalk(self) {
     if (!self.player) return;
 
+    // if player if host, he automatically talk to all players
+    if (self.player.isHost) return;
+    
     // if player turn off headphones(deafen mode)
     if (self.deafen) return;
 

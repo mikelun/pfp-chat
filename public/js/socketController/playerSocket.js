@@ -202,7 +202,11 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     sceneEvents.on('createSpace', (data) => {
         console.log('CREATE SPACE', data);
         self.socket.emit('createSpace', data);
-    })
+    });
+
+    sceneEvents.on('addToAllPeers', () => {
+        self.socket.emit('addToAllPeers');
+    });
 }
 
 

@@ -26,8 +26,8 @@ var port = process.env.PORT || 3000; // set our port
 //     bearer_token: 'AAAAAAAAAAAAAAAAAAAAAN5qdAEAAAAABEmJU%2FH%2F%2BE65X4%2FFXFGgTdjGzSI%3D4okHW1oJOO4K0jDGgpBO1FqtDzQxfgwY9S6FX0dKXiM37l3nJO'
 // });
 
-// client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response) {
-//     console.log(tweets);
+// client.get('/2/tweets/1531112342850781184', function(error, tweets, response) {
+//     console.log(tweets, error);
 //  });
 
 // get SECRET_SECCION from .env 

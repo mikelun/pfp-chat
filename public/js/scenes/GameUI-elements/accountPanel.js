@@ -8,7 +8,6 @@ export function createAccountPanel(newSelf) {
 
     self.accountGroup = self.add.group();
     
-    return;
     const panel = self.add.image(390, 80, 'inventory-panel').setOrigin(0, 0).setScale(2.5);
     const header = self.add.text(panel.x + 250, panel.y + 60, 'ACCOUNT', { fontFamily: 'PixelFont', fontSize: '48px', color: '#ffffff' }).setOrigin(0.5, 0.5);
 

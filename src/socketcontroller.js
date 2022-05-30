@@ -221,10 +221,10 @@ module.exports = (io) => {
 
         socket.on('addToTalk', id => {
             if (hashChats.includes(socket.id + '$' + id)) return;
-            console.log('sending init receive to ' + socket.id)
+            //console.log('sending init receive to ' + socket.id)
             if (peers[id]) peers[id].emit('initReceive', socket.id)
             hashChats.push(id + '$' + socket.id);
-            console.log(`TRYING TO CHAT ${id} with ${socket.id}`)
+            //console.log(`TRYING TO CHAT ${id} with ${socket.id}`)
         });
 
         socket.on('addToAllPeers', () => {
@@ -233,7 +233,7 @@ module.exports = (io) => {
                 if (peers[peer]) peers[id].emit('initeReceive', socket.id);
                 hashChats.push(peers + '$' + socket.id);
             }
-        })
+        });
 
         socket.on('removeFromTalk', id => {
             if (hashChats.includes(id + '$' + socket.id)) hashChats.splice(hashChats.indexOf(id + '$' + socket.id), 1);
@@ -331,7 +331,7 @@ module.exports = (io) => {
          */
         socket.on('createSpace', (data) => {
             // generate ranom string
-            const spaceId = Math.random().toString(36).substring(3, 9) + Math.random().toString(36).substring(2, 4);
+            const spaceId = Math.random().toString(36).substring(3, 12)// + Math.random().toString(36).substring(2, 4);
             if (!players[socket.id].address) {
                 socket.emit('createSpace', { error: true });
             } else {
