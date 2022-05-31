@@ -201,6 +201,7 @@ function createStartNowButton(x, y) {
 
 function createSelectMap() {
     selectMapGroup.clear(true);
+    selectMapGroup.setVisible(true);
 
     var panel = self.add.image(1320, 360, 'cell-info').setScale(5, 4.8);
 
@@ -265,6 +266,7 @@ function addRoomImage(x, y, data) {
 
     image.on('pointerdown', () => {
         mapSelected(data);
+        selectMapGroup.setVisible(false);
         selectMapGroup.clear(true);
     });
 
