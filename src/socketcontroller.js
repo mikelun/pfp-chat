@@ -375,10 +375,17 @@ module.exports = (io) => {
         /**
          * WHEN OTHER PLAYER CREATE REQUEST SEND IT TO HOST
          */
-        socket.on('createSpeakRequest', (data) => {
-            if (!data.spaceId || !spaces[data.spaceId]) return;
-
-            peers[spaces[data.spaceId].host].emit('createSpeakRequest', {playerId: socket.id});
+        socket.on('createSpeakRequest', () => {
+            if (!players[socket.id] || !players[socket.id].spaceId) return;
+            const spaceId = players[socket.id].spaceId;
+            // find player with address spaces[spaceId].host
+            for (var player in players) {
+                if (players[player].address == spaces[spaceId].host) {
+                    peers[player].emit('createSpeakRequest', {playerId: socket.id});
+                    return;
+                }
+            }
+            
         });
 
         /**
@@ -393,9 +400,9 @@ module.exports = (io) => {
         /**
          *  REMOVE FROM TALK, IF HOST MUTE OTHER PLAYER
          */
-        socket.on('removeFromTalk', (data) => {
+        socket.on('removeFromSpeakers', (data) => {
             if (peers[data.playerId]) {
-                peers[data.playerId].emit('removeFromTalk');
+                peers[data.playerId].emit('removeFromSpeakers');
             }
         });
 

@@ -182,7 +182,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     /**
      * SPEAK REQUEST (IT SENDING TO HOST)
      */
-    self.socket.on('speakRequest', (data) => {
+    self.socket.on('createSpeakRequest', (data) => {
         if (self.playerUI.second[data.playerId]) {
             createSpeakRequest(self, data.playerId);
         }
@@ -191,7 +191,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     /**
      * APPROVE SPEAK REQUEST, SENDING TO COHOST
      */
-    self.socket.on('approveCohost', (data) => {
+    self.socket.on('approveSpeakRequest', (data) => {
         if (self.talkRectangle) {
             self.talkRectangle.width = 10000;
             self.talkRectangle.height = 10000;
@@ -201,7 +201,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     /**
      * REMOVE COHOST, SENDING TO COHOST
      */
-    self.socket.on('removeCohost', (data) => {
+    self.socket.on('removeFromSpeakers', (data) => {
         if (self.talkRectangle) {
             self.talkRectangle.width = 0;
             self.talkRectangle.height = 0;
@@ -227,7 +227,6 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     });
 
     sceneEvents.on('createSpace', (data) => {
-        console.log('CREATE SPACE', data);
         self.socket.emit('createSpace', data);
     });
 
@@ -242,6 +241,15 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     sceneEvents.on('removeFromTalk', (data) => {
         self.socket.emit('removeFromTalk', data);
     });
+
+    sceneEvents.on('createSpeakRequest', () => {
+        self.socket.emit('createSpeakRequest');
+    });
+
+    sceneEvents.on('removeFromSpeakers', (data) => {
+        self.socket.emit('removeFromSpeakers', data);
+    })
+
 }
 
 

@@ -3,6 +3,7 @@ import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 import { createAnimationsUI } from './GameUI-elements/animationsUI';
+import { initializeApprovePanel } from './GameUI-elements/approvePanel';
 import { initalizeCopyLinkButton } from './GameUI-elements/copyLinkButton';
 import { editHome } from './GameUI-elements/editHome';
 import { initializeErrors } from './GameUI-elements/errorPanel';
@@ -57,6 +58,8 @@ export class GameUi extends Phaser.Scene {
         initialiezeSpacePanel(this);
 
         initalizeCopyLinkButton(this, {spaceId: spaceId});
+
+        initializeApprovePanel(this);
 
 
         // tip how to open text chat

@@ -145,14 +145,14 @@ export function createSpeakRequest(self, playerId) {
 /**
  * CREATE PLAYER INFO WITH TWITTER LINK AND REMOVE FROM COHOST INFO
  */
-export function createPlayerInfo(self, data) {
+export function createPlayerInfo(self, playerInfo) {
     const panel = self.add.image(0, -25, 'cell-info').setScale(0.5, 0.2);
     const removeBackground = self.add.image(panel.x, panel.y, 'long-button').setScale(0.5).setAlpha(0.8);
     const removeText = self.add.text(removeBackground.x, removeBackground.y - 2, 'MUTE', { fontSize: '120px', fontFamily: 'PixelFont', fill: '#ffffff', align: 'center' }).setOrigin(0.5).setScale(0.1);
 
     makeButtonInteractive(removeBackground, '', 0, 0);
     removeBackground.on('pointerdown', () => {
-        sceneEvents.emit('removeFromTalk', {playerId: data.playerId});
+        sceneEvents.emit('removeFromSpeakers', {playerId: playerInfo.playerId});
         panel.destroy();
         removeBackground.destroy();
         removeText.destroy();

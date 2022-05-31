@@ -7,7 +7,7 @@ import { loadTexture } from "./loadTexture";
 import { getInterectionForEns, isTextureFromInternet, pushToPlayerList, randColor, showPlayersToTalk, updateEnsInPlayerList, updateNFTInPlayerList } from "../../socketController/playerSocket"
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 import { createTalkingEffect } from "./addEffectToPlayer";
-import { createPlayerUI, createPlayerUILevelDown, createSpeakRequest } from "./playerUI";
+import { createPlayerInfo, createPlayerUI, createPlayerUILevelDown, createSpeakRequest } from "./playerUI";
 
 
 export function addOtherPlayers(self, playerInfo) {
@@ -16,9 +16,6 @@ export function addOtherPlayers(self, playerInfo) {
     // define other player with 0 character
     const otherPlayer = self.add.otherPlayer(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`, self)
 
-    otherPlayer.setInteractive().on('pointerdown', function (pointer) {
-        createSpeakRequest(self, otherPlayer.playerId);
-    });
     otherPlayer.setDepth(25);
 
     const textureFromInternet = isTextureFromInternet(playerInfo.textureId);
@@ -41,6 +38,15 @@ export function addOtherPlayers(self, playerInfo) {
 
     createPlayerUI(self, playerInfo);
 
+    /**
+     * IF PLAYER IN SPACE
+     */
+    otherPlayer.setInteractive().on('pointerdown', () => {
+        if (playerInfo.spaceId) {
+            createPlayerInfo(self, {playerId: playerInfo.playerId});
+        }
+    });
+
     // ADD WEAPON FOR PLAYER
     if (self.mapId == 8) self.playerUI.second[playerInfo.playerId].add(self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5));
 
@@ -49,5 +55,5 @@ export function addOtherPlayers(self, playerInfo) {
     pushToPlayerList(playerInfo);
     //showPlayersToTalk()
 
-    getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
+    //getInterectionForEns(playerInfo.playerId, playerInfo.playerName);
 }

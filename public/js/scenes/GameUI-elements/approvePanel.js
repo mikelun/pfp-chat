@@ -1,4 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
+import { makeButtonInteractive } from "./lowButttons";
 
 var self;
 var approvePanelGroup;
@@ -11,6 +12,8 @@ export function initializeApprovePanel(newSelf) {
     sceneEvents.on('createApprovePanel', (data) => {
         createApprovePanel(data);
     });
+
+    createApprovePanel({message: 'DO YOU WANT TO SEND REQUEST TO JOIN TO THIS VOICE CHAT?'});
 }
 
 
@@ -19,9 +22,9 @@ function createApprovePanel(data) {
 
     approvePanelGroup.setVisible(true);
 
-    var panel = self.add.image(640, 320, 'cell-info').setScale(3, 1.5);
+    var panel = self.add.image(630, 320, 'cell-info').setScale(3, 1.5);
 
-    const text = self.rexUI.add.BBCodeText(panel.x - 190, panel.y - 90, message, {
+    const text = self.rexUI.add.BBCodeText(panel.x - 190, panel.y - 90, data.message, {
         wrap: {
             mode: 'word',
             width:  400,
@@ -33,7 +36,7 @@ function createApprovePanel(data) {
     }).setOrigin(0, 0);
 
     const yesButton = self.rexUI.add.label({
-        x: panel.x- 50, y: panel.y + 60,
+        x: panel.x- 80, y: panel.y + 60,
         background: self.add.image(0, 0, 'long-button'),
         text: self.add.text(0, 0, 'YES', { fontFamily: 'PixelFont', fontSize: '34px', color: '#ffffff' }).setOrigin(0, 0),
         space: {
@@ -44,11 +47,11 @@ function createApprovePanel(data) {
     makeButtonInteractive(yesButton);
 
     const noButton = self.rexUI.add.label({
-        x: panel.x + 50, y: panel.y + 60,
+        x: panel.x + 70, y: panel.y + 60,
         background: self.add.image(0, 0, 'long-button'),
         text: self.add.text(0, 0, 'NO', { fontFamily: 'PixelFont', fontSize: '34px', color: '#ffffff' }).setOrigin(0, 0),
         space: {
-            left: 40, right: 40, top: 5, bottom: 10
+            left: 45, right: 45, top: 5, bottom: 10
         }
         }).layout().setAlpha(0.8);
 
@@ -56,6 +59,11 @@ function createApprovePanel(data) {
 
     noButton.on('pointerdown', () => {
         removeApprovePanel();
+    });
+
+    yesButton.on('pointerdown', () => {
+        removeApprovePanel();
+        sceneEvents.emit(data.onApprove, data.data);
     });
 
     approvePanelGroup.add(panel);
