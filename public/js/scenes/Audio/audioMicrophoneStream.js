@@ -20,7 +20,7 @@ export function initializeAudioStream(self) {
             sceneEvents.emit('createErrorMessage', 'YOU HAVEN\'T MICROPHONE ACCESS, PLEASE RESTART PAGE');
             return;
         }
-        
+
         if (self.localStream) {
             toggleMute(self);
         };
@@ -54,6 +54,11 @@ export function connectToAllPeople(self) {
 }
 
 function toggleMute(self) {
+    if (self.isSpace && self.talkRectangle && self.talkRectangle.width == 0) {
+        // make a panel with request
+        sceneEvents.emit('createRequest', 'DO YOU WANT TO SEND REQUEST TO JOIN TO THIS VOICE CHAT?');
+        return;
+    }
     let localStream = self.localStream;
     for (let index in localStream.getAudioTracks()) {
         let localStreamEnabled = localStream.getAudioTracks()[index].enabled;

@@ -12,7 +12,7 @@ import { changeMap } from "../scenes/GameView/changeMap";
 import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
-import { clearPlayerUI, updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
+import { clearPlayerUI, createSpeakRequest, updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
 import { createMapsSpecialElements } from "../scenes/GameView/mapsSpecialElements";
 // import { sendFile } from "express/lib/response";
 
@@ -177,10 +177,37 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         }
         
         changeMap(self, {mapId: data.space.mapId, space: data.space});
-
-
-
     });
+
+    /**
+     * SPEAK REQUEST (IT SENDING TO HOST)
+     */
+    self.socket.on('speakRequest', (data) => {
+        if (self.playerUI.second[data.playerId]) {
+            createSpeakRequest(self, data.playerId);
+        }
+    });
+
+    /**
+     * APPROVE SPEAK REQUEST, SENDING TO COHOST
+     */
+    self.socket.on('approveCohost', (data) => {
+        if (self.talkRectangle) {
+            self.talkRectangle.width = 10000;
+            self.talkRectangle.height = 10000;
+        }
+    });
+
+    /**
+     * REMOVE COHOST, SENDING TO COHOST
+     */
+    self.socket.on('removeCohost', (data) => {
+        if (self.talkRectangle) {
+            self.talkRectangle.width = 0;
+            self.talkRectangle.height = 0;
+        }
+    })
+
 
 
     sceneEvents.on('connectToMyRoom', () => {
@@ -206,6 +233,14 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
     sceneEvents.on('addToAllPeers', () => {
         self.socket.emit('addToAllPeers');
+    });
+
+    sceneEvents.on('approveSpeakRequest', (data) => {
+        self.socket.emit('approveSpeakRequest', data);
+    });
+
+    sceneEvents.on('removeFromTalk', (data) => {
+        self.socket.emit('removeFromTalk', data);
     });
 }
 

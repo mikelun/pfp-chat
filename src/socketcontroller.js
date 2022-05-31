@@ -121,6 +121,8 @@ module.exports = (io) => {
                 if (players[socket.id].address = data.space.host) {
                     players[socket.id].isHost = true;
                 }
+            } else {
+                players[socket.id].spaceId = null;
             }
 
             socket.join(room);
@@ -368,7 +370,34 @@ module.exports = (io) => {
             } else {
                 socket.emit('getSpaceData', { error: true });
             }
-        })
+        });
+
+        /**
+         * WHEN OTHER PLAYER CREATE REQUEST SEND IT TO HOST
+         */
+        socket.on('createSpeakRequest', (data) => {
+            if (!data.spaceId || !spaces[data.spaceId]) return;
+
+            peers[spaces[data.spaceId].host].emit('createSpeakRequest', {playerId: socket.id});
+        });
+
+        /**
+         * WHEN HOST APROVE SPEAK REQUEST TO OTHER PLAYER
+         */
+        socket.on('approveSpeakRequest', (data) => {
+            if (peers[data.playerId]) {
+                peers[data.playerId].emit('approveSpeakRequest');
+            }
+        });
+
+        /**
+         *  REMOVE FROM TALK, IF HOST MUTE OTHER PLAYER
+         */
+        socket.on('removeFromTalk', (data) => {
+            if (peers[data.playerId]) {
+                peers[data.playerId].emit('removeFromTalk');
+            }
+        });
 
     });
 

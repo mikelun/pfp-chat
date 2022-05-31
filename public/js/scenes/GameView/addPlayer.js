@@ -45,13 +45,14 @@ export function addPlayer(newSelf, playerInfo) {
         }
         loadTexture(self, self.player, playerInfo.textureId, type, true);
     } else if ((playerInfo.textureId + '').startsWith('artifact$')){
+        // NOW ONLY GOOSE CHARACTER
         configureArtifactCharacter(self, playerInfo.textureId, self.player);
 
     } else {
         self.player.setTexture(`characters${playerInfo.textureId}`);
     }
 
-    
+
 
     // SETUP PLAYER
     self.textureId = playerInfo.textureId;
@@ -69,7 +70,7 @@ export function addPlayer(newSelf, playerInfo) {
     // ADD PLAYER UI
     createPlayerUI(self, playerInfo);
 
-    // NOW UI IS FOLLOWING
+    // MAKE UI FOLLOW TO PLAYER
     addUIFollowToPlayer(self);
 
     // push player to playerList
@@ -89,10 +90,17 @@ export function addPlayer(newSelf, playerInfo) {
 
     addPhysicsForScene(self, self.mapId);
 
+    // PLAYER HAST TALK RECTANGLE, WHERE HE CAN TALK WITH OTHER PEOPLE (IF IT IS NOT SPACE)
     var talkSize = 400;
-    if (false) {
-        talkSize = 10000;
+    
+    if (playerInfo.spaceId) {
+        talkSize = 0;
+        if (playerInfo.isHost) {
+            talkSize = 10000;
+        }
     }
+
+    console.log("talkSize", talkSize);
     self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, talkSize, talkSize, 0x000000).setAlpha(0);
 
     self.connected = [];
@@ -100,6 +108,7 @@ export function addPlayer(newSelf, playerInfo) {
     sceneEvents.on('nftSelected', nftSelected, this);
     
 }
+
 
 function cleanPreviousInfoAboutPlayer(self) {    
     if (!self.addedRoomText) {
