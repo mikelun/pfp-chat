@@ -43,11 +43,11 @@ export function initializeRPGSocket(newSelf) {
         });
     });
 
+    // WHEN OTHER PLAYER SHOT
     self.socket.on('weaponShot', (data) => {
-        //console.log('maing shot with data', data);
         createBullet(self, data.weaponId, data.x, data.y, true, data.angle);
         const weapon =  getWeaponFromUI(self.playerUI[data.playerId]);
-        
+
         playShotSound(self, weapon.texture.key);
         weapon.rotation = data.angle;
         if (data.angle < -Math.PI / 2 || data.angle > Math.PI / 2) {

@@ -3,9 +3,26 @@ import { TextEdit } from "phaser3-rex-plugins/plugins/textedit";
 import { sceneEvents } from "../../Events/EventsCenter";
 import { blockMovement, unblockMovement } from "../../utils/utils";
 import { makeButtonInteractive } from "./lowButttons";
-
 import CircleMaskImage from 'phaser3-rex-plugins/plugins/circlemaskimage.js';
 
+/*
+        _..._
+      .'     '.      _
+     /    .-""-\   _/ \
+   .-|   /:.   |  |   |
+   |  \  |:.   /.-'-./
+   | .-'-;:__.'    =/
+   .'=  *=|ILON _.='
+  /   _.  |    ;
+ ;-.-'|    \   |
+/   | \    _\  _\
+\__/'._;.  ==' ==\
+         \    \   |
+         /    /   /
+         /-._/-._/
+         \   `\  \
+          `-._/._/
+*/
 var backgroundSelectMap, addIcon, mapName, mapImage;
 
 var self;
