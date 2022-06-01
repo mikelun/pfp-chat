@@ -232,7 +232,7 @@ function updatePeopleForTalk(self) {
             // remove from connected)
             self.socket.emit('removeFromTalk', otherPlayer.playerId);
             self.connected.splice(self.connected.indexOf(otherPlayer), 1);
-            showPlayersToTalk();
+            //showPlayersToTalk();
         }
     });
 
@@ -243,7 +243,7 @@ function updatePeopleForTalk(self) {
                 self.socket.emit('addToTalk', otherPlayer.playerId);
                 console.log('player with id: ' + otherPlayer.name + ' is in talk rectangle');
                 self.connected.push(otherPlayer);
-                showPlayersToTalk();
+                //showPlayersToTalk();
             }
         });
     }

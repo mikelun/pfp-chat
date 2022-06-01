@@ -59,6 +59,7 @@ export function addPlayer(newSelf, playerInfo) {
     self.player.textureId = playerInfo.textureId;
     self.player.id = playerInfo.playerId;
     self.playerName = playerInfo.playerName;
+    self.player.isHost = playerInfo.isHost;
 
 
     // add player to layer1
@@ -100,7 +101,6 @@ export function addPlayer(newSelf, playerInfo) {
         }
     }
 
-    console.log("talkSize", talkSize);
     self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, talkSize, talkSize, 0x000000).setAlpha(0);
 
     self.connected = [];

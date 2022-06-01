@@ -13,7 +13,7 @@ export function initializeApprovePanel(newSelf) {
         createApprovePanel(data);
     });
 
-    createApprovePanel({message: 'DO YOU WANT TO SEND REQUEST TO JOIN TO THIS VOICE CHAT?'});
+    //createApprovePanel({message: 'DO YOU WANT TO SEND REQUEST TO JOIN TO THIS VOICE CHAT?'});
 }
 
 

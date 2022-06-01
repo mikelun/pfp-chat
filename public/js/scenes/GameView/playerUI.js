@@ -13,7 +13,7 @@ export function createPlayerUILevelDown(self, playerInfo) {
     if (playerInfo.isHost) hostEffect.setAlpha(1);
 
     const containerLevelDown = self.add.container(0, 0, [hostEffect]);
-    
+
     // set level of layer to 24
     containerLevelDown.setDepth(24);
 
@@ -65,10 +65,12 @@ export function updatePlayerUI(self, playerInfo) {
         const headphones = container.getAt(3);
         microphone.setTexture(playerInfo.microphoneStatus ? "microphone1" : "microphone1-off");
         headphones.setTexture(playerInfo.deafen ? "headphones-off" : "headphones");
-        const weapon = container.getAt(5);
-        if (weapon) {
-            weapon.setTexture(playerInfo.weapon.texture);
-        }
+
+        container.list.forEach(child => {
+            if (child.id == 'weapon') {
+                weapon.setTexture(playerInfo.weapon.texture);
+            }
+        })
     }
 }
 
@@ -102,19 +104,20 @@ export function clearPlayerUI(self, playerId) {
  *  CREATE COHOST REQUEST PANEL ONLY FOR HOST
  */
 export function createSpeakRequest(self, playerId) {
+    const { x, y } = { x: 0, y: -25 };
     const panel = self.add.image(0, -25, 'cell-info').setScale(0.5, 0.2);
 
-    const text = self.add.text(panel.x, panel.y - 10, 'SPEAK REQUEST', { fontSize: '120px', fontFamily: 'PixelFont', fill: '#ffffff', align: 'center' }).setOrigin(0.5).setScale(0.1);
+    const text = self.add.text(x, y - 10, 'SPEAK REQUEST', { fontSize: '120px', fontFamily: 'PixelFont', fill: '#ffffff', align: 'center' }).setOrigin(0.5).setScale(0.1);
 
-    const yesBackground = self.add.image(panel.x - 18, panel.y + 5, 'long-button').setScale(0.4).setAlpha(0.8);
+    const yesBackground = self.add.image(x - 18, y + 5, 'long-button').setScale(0.4).setAlpha(0.8);
     const yesText = self.add.text(yesBackground.x, yesBackground.y - 2, 'Yes', { fontSize: '120px', fontFamily: 'PixelFont', fill: '#ffffff', align: 'center' }).setOrigin(0.5).setScale(0.1);
 
-    const noBackground = self.add.image(panel.x + 15, panel.y + 5, 'long-button').setScale(0.4).setAlpha(0.8);
+    const noBackground = self.add.image(x + 15, y + 5, 'long-button').setScale(0.4).setAlpha(0.8);
     const noText = self.add.text(noBackground.x, noBackground.y - 2, 'No', { fontSize: '120px', fontFamily: 'PixelFont', fill: '#ffffff', align: 'center' }).setOrigin(0.5).setScale(0.1);
 
     makeButtonInteractive(yesBackground, '', 0, 0);
     yesBackground.on('pointerdown', () => {
-        sceneEvents.emit('approveSpeakRequest', {playerId: playerId});
+        sceneEvents.emit('approveSpeakRequest', { playerId: playerId });
         panel.destroy();
         yesBackground.destroy();
         yesText.destroy();
@@ -146,20 +149,21 @@ export function createSpeakRequest(self, playerId) {
  * CREATE PLAYER INFO WITH TWITTER LINK AND REMOVE FROM COHOST INFO
  */
 export function createPlayerInfo(self, playerInfo) {
+    const { x, y } = { x: 0, y: -25 };
     const panel = self.add.image(0, -25, 'cell-info').setScale(0.5, 0.2);
-    const removeBackground = self.add.image(panel.x, panel.y, 'long-button').setScale(0.5).setAlpha(0.8);
+    const removeBackground = self.add.image(x, y, 'long-button').setScale(0.5).setAlpha(0.8);
     const removeText = self.add.text(removeBackground.x, removeBackground.y - 2, 'MUTE', { fontSize: '120px', fontFamily: 'PixelFont', fill: '#ffffff', align: 'center' }).setOrigin(0.5).setScale(0.1);
 
     makeButtonInteractive(removeBackground, '', 0, 0);
     removeBackground.on('pointerdown', () => {
-        sceneEvents.emit('removeFromSpeakers', {playerId: playerInfo.playerId});
+        sceneEvents.emit('removeFromSpeakers', { playerId: playerInfo.playerId });
         panel.destroy();
         removeBackground.destroy();
         removeText.destroy();
         closeButton.destroy();
     });
 
-    const closeButton = self.add.image(panel.x + 32, panel.y - 12, 'close-button').setScale(0.75).setAlpha(0.8);
+    const closeButton = self.add.image(x + 32, y - 12, 'close-button').setScale(0.75).setAlpha(0.8);
     makeButtonInteractive(closeButton, '', 0, 0);
     closeButton.on('pointerdown', () => {
         panel.destroy();
@@ -172,6 +176,8 @@ export function createPlayerInfo(self, playerInfo) {
     self.playerUI.second[playerInfo.playerId].add(removeBackground);
     self.playerUI.second[playerInfo.playerId].add(removeText);
     self.playerUI.second[playerInfo.playerId].add(closeButton);
+
+    console.log(self.playerUI.second[playerInfo.playerId]);
 }
 
 export function removePlayerInfo(self, playerInfo) {

@@ -42,13 +42,17 @@ export function addOtherPlayers(self, playerInfo) {
      * IF PLAYER IN SPACE
      */
     otherPlayer.setInteractive().on('pointerdown', () => {
-        if (playerInfo.spaceId) {
+        if (playerInfo.spaceId && self.player && self.player.isHost) {
             createPlayerInfo(self, {playerId: playerInfo.playerId});
         }
     });
 
     // ADD WEAPON FOR PLAYER
-    if (self.mapId == 8) self.playerUI.second[playerInfo.playerId].add(self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5));
+    if (self.mapId == 8) {
+        const weapon = self.add.image(0, 23, playerInfo.weapon.texture).setOrigin(0, 0.5);
+        weapon.id = 'weapon';
+        self.playerUI.second[playerInfo.playerId].add(weapon);
+    }
 
     self.otherPlayers.add(otherPlayer);
 
