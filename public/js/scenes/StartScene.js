@@ -45,6 +45,7 @@ export class StartScene extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.skip = true;
         });
+
         
         // this.step = 3;
         // showCurrentLevel(this);
@@ -103,9 +104,14 @@ export class StartScene extends Phaser.Scene {
         this.enterText = this.add.image(660, 500, 'press-enter-text').setScale(2);
 
         // every 0.5 secs call the function
-        this.time.addEvent({
+        const timer = this.time.addEvent({
             delay: 500,
             callback: () => {
+                if (!this.enterText) {
+                    timer.destroy();
+                    return;
+                }
+
                 this.enterText.setAlpha(this.enterText.alpha ? 0 : 1);
             },
             loop: true
@@ -151,12 +157,17 @@ export class StartScene extends Phaser.Scene {
     addKeyEvents() {
         // if enter has tapped
         this.input.keyboard.on('keydown-ENTER', () => {
-            this.enterText.destroy();
-            // move text to left corner
-            this.moveText = true;
+            if (this.enterText) {
+                this.enterText.destroy();
+                // move text to left corner
+                this.moveText = true;
+                this.enterText = null;
+            } else {
+                this.skip = true;
+            }
 
             // destroy keydown
-            this.input.keyboard.off('keydown-ENTER');
+
         });
     }
 

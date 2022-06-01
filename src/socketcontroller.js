@@ -123,7 +123,7 @@ module.exports = (io) => {
                 }
             } else {
                 players[socket.id].spaceId = null;
-                players[data.playerId].isSpeaker = false;
+                players[socket.id].isSpeaker = false;
             }
 
             socket.join(room);
