@@ -39,6 +39,12 @@ export function initializeAudioStream(self) {
         };
     });
 
+    sceneEvents.on('muteMicrophone', () => {
+        if (self.localStream) {
+           muteMicrophone(self);
+        }
+    });
+
     setUndeafen(self);
 }
 
@@ -67,12 +73,6 @@ export function connectToAllPeople(self) {
 }
 
 function toggleMute(self) {
-
-    if (self.isSpace && self.talkRectangle && self.talkRectangle.width == 0) {
-        // make a panel with request
-        sceneEvents.emit('createRequest', 'DO YOU WANT TO SEND REQUEST TO JOIN TO THIS VOICE CHAT?');
-        return;
-    }
     let localStream = self.localStream;
     for (let index in localStream.getAudioTracks()) {
         let localStreamEnabled = localStream.getAudioTracks()[index].enabled;
@@ -88,6 +88,20 @@ function toggleMute(self) {
     }
 }
 
+
+function muteMicrophone(self) {
+    let localStream = self.localStream;
+    for (let index in localStream.getAudioTracks()) {
+        let localStreamEnabled = false;
+        localStream.getAudioTracks()[index].enabled = false;
+
+        //self.playerUI[self.socket.id].microphone.setTexture(localStreamEnabled ? 'microphone' : 'microphoneMuted');
+
+        self.socket.emit("updatePlayerInfo", { microphoneStatus: false }, self.socket.id);
+
+        sceneEvents.emit('updateMicStatus', false);
+    }
+}
 
 function setDeafen(self) {
     self.deafen = true;

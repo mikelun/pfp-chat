@@ -96,7 +96,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
             if (playersList[i].id == playerInfo.playerId) {
                 // change player text
                 updatePlayerUI(self, playerInfo);
-                
+
                 updateSpeakerEffect(self, playerInfo);
 
                 playersList[i].name = playerInfo.playerName;
@@ -207,6 +207,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         if (self.talkRectangle) {
             self.talkRectangle.width = 0;
             self.talkRectangle.height = 0;
+            sceneEvents.emit('muteMicrophone');
         }
     })
 
