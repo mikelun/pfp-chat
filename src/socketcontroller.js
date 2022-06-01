@@ -123,6 +123,7 @@ module.exports = (io) => {
                 }
             } else {
                 players[socket.id].spaceId = null;
+                players[data.playerId].isSpeaker = false;
             }
 
             socket.join(room);
@@ -392,8 +393,10 @@ module.exports = (io) => {
          * WHEN HOST APROVE SPEAK REQUEST TO OTHER PLAYER
          */
         socket.on('approveSpeakRequest', (data) => {
-            if (peers[data.playerId]) {
+            if (peers[data.playerId] && players[data.playerId]) {
+                players[data.playerId].isSpeaker = true;
                 peers[data.playerId].emit('approveSpeakRequest');
+                batchUpdatePlayerInfo.push(data.playerId);
             }
         });
 
@@ -401,8 +404,10 @@ module.exports = (io) => {
          *  REMOVE FROM TALK, IF HOST MUTE OTHER PLAYER
          */
         socket.on('removeFromSpeakers', (data) => {
-            if (peers[data.playerId]) {
+            if (peers[data.playerId] && players[data.playerId]) {
+                players[data.playerId].isSpeaker = false;
                 peers[data.playerId].emit('removeFromSpeakers');
+                batchUpdatePlayerInfo.push(data.playerId);
             }
         });
 
@@ -449,11 +454,13 @@ module.exports = (io) => {
      * UPDATE PLAYER INFO IN BATCH EVERY 3 SECONDS
      */
     setInterval(() => {
-        batchUpdatePlayerInfo.forEach(socketId => {
-            if (players[socketId]) {
-                io.to(players[socketId].room).emit('updatePlayerInfo', players[socketId]);
+        for (let i = 0; i < batchUpdatePlayerInfo.length; i++) {
+            const playerId = batchUpdatePlayerInfo[i];
+            if (players[playerId]) {
+                io.to(players[playerId].room).emit('updatePlayerInfo', players[playerId]);
             }
-        })
+            batchUpdatePlayerInfo.splice(i, 1);
+        }
     }, 4000);
 
     /**

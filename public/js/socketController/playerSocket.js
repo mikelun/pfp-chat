@@ -12,7 +12,7 @@ import { changeMap } from "../scenes/GameView/changeMap";
 import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
-import { clearPlayerUI, createSpeakRequest, updatePlayerUI, updateTalkingEffect } from "../scenes/GameView/playerUI";
+import { clearPlayerUI, createSpeakRequest, updatePlayerUI, updateSpeakerEffect, updateTalkingEffect } from "../scenes/GameView/playerUI";
 import { createMapsSpecialElements } from "../scenes/GameView/mapsSpecialElements";
 // import { sendFile } from "express/lib/response";
 
@@ -96,6 +96,8 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
             if (playersList[i].id == playerInfo.playerId) {
                 // change player text
                 updatePlayerUI(self, playerInfo);
+                
+                updateSpeakerEffect(self, playerInfo);
 
                 playersList[i].name = playerInfo.playerName;
 

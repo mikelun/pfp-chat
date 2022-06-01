@@ -46,7 +46,7 @@ export function initializeRPGSocket(newSelf) {
     // WHEN OTHER PLAYER SHOT
     self.socket.on('weaponShot', (data) => {
         createBullet(self, data.weaponId, data.x, data.y, true, data.angle);
-        const weapon =  getWeaponFromUI(self.playerUI[data.playerId]);
+        const weapon =  getWeaponFromUI(self.playerUI.second[data.playerId]);
 
         playShotSound(self, weapon.texture.key);
         weapon.rotation = data.angle;

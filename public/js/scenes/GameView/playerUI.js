@@ -1,7 +1,7 @@
 import { sceneEvents } from "../../Events/EventsCenter";
 import { randColor } from "../../socketController/playerSocket";
 import { makeButtonInteractive } from "../GameUI-elements/lowButttons";
-import { createHostEffect, createTalkingEffect } from "./addEffectToPlayer";
+import { createHostEffect, createSpeakerEffect, createTalkingEffect } from "./addEffectToPlayer";
 
 
 /**
@@ -12,7 +12,10 @@ export function createPlayerUILevelDown(self, playerInfo) {
     const hostEffect = createHostEffect(self, 1, 23);
     if (playerInfo.isHost) hostEffect.setAlpha(1);
 
-    const containerLevelDown = self.add.container(0, 0, [hostEffect]);
+    const cohostEffect = createSpeakerEffect(self, 1, 23);
+    cohostEffect.id = 'cohost-effect';
+
+    const containerLevelDown = self.add.container(0, 0, [hostEffect, cohostEffect]);
 
     // set level of layer to 24
     containerLevelDown.setDepth(24);
@@ -70,15 +73,17 @@ export function updatePlayerUI(self, playerInfo) {
             if (child.id == 'weapon') {
                 weapon.setTexture(playerInfo.weapon.texture);
             }
-        })
+        });
     }
 }
 
 
 export function getWeaponFromUI(playerUI) {
-    const weapon = playerUI.getAt(5);
-
-    return weapon;
+    playerUI.list.forEach(child => {
+        if (child.id == 'weapon') {
+            return child;
+        }
+    });
 }
 
 export function updateTalkingEffect(self, isTalking, playerId) {
@@ -89,6 +94,18 @@ export function updateTalkingEffect(self, isTalking, playerId) {
     talkingEffect.setAlpha(isTalking ? 1 : 0);
 }
 
+
+/**
+ * BACKGROUND EFFECT FOR ALL SPEAKERS (NOT FOR HOST)
+ */
+export function updateSpeakerEffect(self, playerInfo) {
+    console.log(playerInfo);
+    if (!self.playerUI.first[playerInfo.playerId]) return;
+
+    const cohostEffect = self.playerUI.first[playerInfo.playerId].getAt(1);
+    cohostEffect.setAlpha(playerInfo.isSpeaker ? 1 : 0);
+
+}
 export function clearPlayerUI(self, playerId) {
     if (self.playerUI.second[playerId]) {
         self.playerUI.second[playerId].destroy();

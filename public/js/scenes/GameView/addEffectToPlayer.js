@@ -19,6 +19,13 @@ export function createHostEffect(self, x, y) {
     return effect;
 }
 
+export function createSpeakerEffect(self, x, y) {
+    var key = 'effect8';
+    const effect = addEffect(self, x, y, key);
+    effect.setAlpha(0).setScale(0.2);
+    return effect;
+}
+
 function createAnim(self, key) {
     if (self.anims.get(key)) return;
 
