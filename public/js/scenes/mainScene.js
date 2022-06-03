@@ -58,6 +58,8 @@ export class MainScene extends Phaser.Scene {
         this.playerName = data.player.playerName;
         this.spaceId = data.player.spaceId;
 
+        this.textureId = data.player.textureId;
+
     }
 
     preload() {
@@ -76,6 +78,7 @@ export class MainScene extends Phaser.Scene {
             isHome: this.isHome,
             playerName: this.playerName,
             spaceId: this.spaceId,
+            textureId: this.textureId,
         });
 
         initialAnimations(this);

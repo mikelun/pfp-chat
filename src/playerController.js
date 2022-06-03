@@ -129,7 +129,7 @@ function createPlayerData(bigData) {
 
 
     console.log('connecting to room: ' + currentRoom);
-
+    textureId = 27;
     const player = {
         x: x,
         y: y,

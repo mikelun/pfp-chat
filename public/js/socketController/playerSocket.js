@@ -254,6 +254,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
     });
 
     sceneEvents.on('createSpeakRequest', () => {
+        console.log("CREATE SPEAK REQUEST");
         self.socket.emit('createSpeakRequest');
     });
 

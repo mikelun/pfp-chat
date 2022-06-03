@@ -21,7 +21,7 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
-var mapId, playerCoins, nftImage, spaceId;
+var mapId, coinsCount, nftImage, spaceId, textureId;
 
 export class GameUi extends Phaser.Scene {
     constructor() {
@@ -29,11 +29,12 @@ export class GameUi extends Phaser.Scene {
     }
     init(data) {
         mapId = data.mapId;
-        playerCoins = data.playerCoins;
+        coinsCount = data.playerCoins;
         nftImage = data.nftImage;
         this.isHome = data.isHome;
         this.playerName = data.playerName;
         spaceId = data.spaceId;
+        textureId = data.textureId;
     }
 
     create() {
@@ -47,7 +48,7 @@ export class GameUi extends Phaser.Scene {
         initializeLoadingPanel(this);
 
         // initializing player hud
-        initializeHUD(this, playerCoins, nftImage);
+        initializeHUD(this, {coinsCount: coinsCount, nftImage: nftImage, textureId: textureId});
 
         initializeMusicPlayerPanel(this, mapId)
 
