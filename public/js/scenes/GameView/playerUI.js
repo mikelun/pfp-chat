@@ -39,11 +39,16 @@ export function createPlayerUI(self, playerInfo) {
     const microphone = self.add.image(-4, -15, microphoneTexture).setScale(0.25);
     const headphones = self.add.image(4, -14, headphonesTexture).setScale(0.25);
     const talkingEffect = createTalkingEffect(self, 0, 20);
-    const emotionsWheelGroup = createEmotionWheel(self);
-    const container = self.add.container(0, 0, [background, playerText, microphone, headphones, talkingEffect, ...emotionsWheelGroup]);
+
+    var container;
+    if (playerInfo.playerId == self.socket.id) {
+        const emotionsWheelGroup = createEmotionWheel(self);
+        container = self.add.container(0, 0, [background, playerText, microphone, headphones, talkingEffect, ...emotionsWheelGroup]);
+    } else {
+        container = self.add.container(0, 0, [background, playerText, microphone, headphones, talkingEffect, ]);
+    }
 
     container.setDepth(26);
-
     self.playerUI.second[playerInfo.playerId] = container;
 }
 
@@ -209,7 +214,7 @@ export function createPlayerInfo(self, playerInfo) {
 }
 
 function createEmotionWheel(self) {
-    const {x, y} = {x: 0, y: 10};
+    const { x, y } = { x: 0, y: 10 };
 
     const emotionsWheelBackground = self.add.image(x, y, 'emotions-wheel').setScale(0.5).setAlpha(0.6);
     emotionsWheelBackground.setVisible(false);
@@ -256,7 +261,7 @@ export function showEmotionsWheelPanel(self, playerId) {
         if (child.id == 'emotions-wheel') {
             child.setVisible(true);
         }
-    })  
+    })
 }
 
 export function hideEmotionsWheelPanel(self, playerId) {
