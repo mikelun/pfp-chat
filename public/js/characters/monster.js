@@ -22,6 +22,8 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
 Phaser.GameObjects.GameObjectFactory.register('monster', function (x, y, texture, hp, frame) {
     var sprite = new Monster(this.scene, x, y, texture, frame, hp).setScale(1);
+    sprite.setDepth(30);
+    
     this.displayList.add(sprite);
     this.updateList.add(sprite);
     this.scene.physics.world.enableBody(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
@@ -59,6 +61,9 @@ function addUIToMonster(scene, sprite) {
     var hpBackground = scene.rexUI.add.roundRectangle(0, 0, 60, 6, 4, 0x333333).setOrigin(0, 0);
     var hpBar = scene.rexUI.add.roundRectangle(0, 0, 40, 6, 4, 0xCC0000).setOrigin(0, 0);
     
+    hpBackground.setDepth(30);
+    hpBar.setDepth(30);
+
     sprite.hpBackground = hpBackground;
     sprite.hpBar = hpBar;
 }

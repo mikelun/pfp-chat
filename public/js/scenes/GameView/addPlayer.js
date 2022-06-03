@@ -124,10 +124,6 @@ function cleanPreviousInfoAboutPlayer(self) {
         }
         self.errors = null;
     }
-
-    if (self.previousMap == 8) {
-        removeAllMonsters();
-    }
 }
 
 function addUIFollowToPlayer(self) {

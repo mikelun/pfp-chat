@@ -15,10 +15,6 @@ var self;
 export function initializeRPGSocket(newSelf) {
     self = newSelf;
 
-    self.socket.on('currentMonsters', monsters => {
-
-    });
-
     self.socket.on('updateMonsters', monsters => {
         Object.keys(monsters).forEach(monsterId => {
             const monster = monsters[monsterId];
@@ -97,8 +93,9 @@ export function weaponShot(data) {
 
 
 export function removeAllMonsters() {
-    console.log('removing all monsters');
+
     Object.keys(monstersList).forEach(monsterId => {
+        monstersList[monsterId].setVisible(false);
         monstersList[monsterId].destroyWithoutAnimation(monstersList[monsterId]);
         delete monstersList[monsterId];
     });

@@ -7,8 +7,13 @@ import { connectToOtherMap } from "./connectToMap";
 import { disconnectPlayer } from "./disconnectPlayer";
 
 export function changeMap(self, data) {
+    if (self.mapId == 8) {
+        console.log('removing monsters!');
+        removeAllMonsters();
+    }
     clearMapWithTransition(self);
     disconnectPlayer(self);
+    
 
     setTimeout(() => {
         self.mapId = data.mapId;
