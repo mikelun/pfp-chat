@@ -63,7 +63,7 @@ export class GameUi extends Phaser.Scene {
 
 
         // tip how to open text chat
-        this.tipOpenChat = this.add.text(18, 620, 'Press enter to open chat', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(0.8);
+        this.tipOpenChat = this.add.text(18, 570, 'ENTER - CHAT\nY - EMOTIONS WHEEL\nWASD - MOVE', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setAlpha(0.8);
 
         // write count of online players 
         this.onlinePlayers = this.add.text(1000, 650, 'Online: 1', { fontSize: '24px', fill: '#00FF66', fontFamily: 'PixelFont' }).setAlpha(0);
