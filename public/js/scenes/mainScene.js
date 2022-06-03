@@ -17,6 +17,7 @@ import { initializeWeapon, updateWeapon } from './Weapons/weapon';
 import { initialAnimations } from '../utils/initialAnimations';
 import { initializePlayerEffects } from './GameView/playerEffects';
 import { clearPlayerUI } from './GameView/playerUI';
+import { initializeEmotionsWheel } from './GameView/emotinos';
 /**
  * All peer connections
  */
@@ -125,6 +126,9 @@ export class MainScene extends Phaser.Scene {
 
         // add joystic if android
         addJoysticIfAndroid(this);
+
+        // add emotions wheel
+        initializeEmotionsWheel(this);
 
         // set timeout clear UI - FIXING BUG WITH NOT DELETING UI
         setInterval(() => {

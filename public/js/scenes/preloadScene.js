@@ -171,7 +171,14 @@ export class PreloadScene extends Phaser.Scene {
         this.load.spritesheet('effect6', 'assets/effects/effect6.png', { frameWidth: 192, frameHeight: 192, })
         this.load.spritesheet('effect7', 'assets/effects/effect7.png', { frameWidth: 192, frameHeight: 192, })
         this.load.spritesheet('effect8', 'assets/effects/effect8.png', { frameWidth: 192, frameHeight: 192, })
+    }
 
+    loadEmotions() {
+        for (let i = 1; i <= 20; i++) {
+            this.load.spritesheet(`emotion${i}`, `assets/emotions/${i}.png`, { frameWidth: 256, frameHeight: 256 })
+        }
+
+        this.load.image('emotions-wheel', 'assets/emotions/emotions-wheel.png');
     }
     preload() {
 
@@ -186,6 +193,7 @@ export class PreloadScene extends Phaser.Scene {
         this.loadEffects();
         this.loadTilesForEditHome();
         this.loadRoomImages();
+        this.loadEmotions();
 
         // LOAD PLANETS
         this.load.spritesheet('planet0', 'assets/planets/planet0.png', {

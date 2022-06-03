@@ -13,7 +13,7 @@ import { removeAllMonsters } from "../../socketController/mmorpgSocket";
 import { updatePlayerCoins } from "../GameUI-elements/hud";
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 import { addEffect, createTalkingEffect } from "./addEffectToPlayer";
-import { createPlayerUI, createPlayerUILevelDown } from "./playerUI";
+import { createPlayerUI, createPlayerUILevelDown, showEmotion } from "./playerUI";
 
 var self;
 
@@ -100,6 +100,8 @@ export function addPlayer(newSelf, playerInfo) {
             talkSize = 10000;
         }
     }
+
+    //showEmotion(self, playerInfo.playerId);
 
     self.talkRectangle = self.add.rectangle(self.player.x, self.player.y, talkSize, talkSize, 0x000000).setAlpha(0);
 
