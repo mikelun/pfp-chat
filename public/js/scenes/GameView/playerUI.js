@@ -5,6 +5,9 @@ import { createHostEffect, createSpeakerEffect, createTalkingEffect } from "./ad
 import { createEmotion } from "./emotinos";
 
 
+var blocked;
+
+
 /**
  * ONE LEVEL DOWN FOR PLAYER (EFFECTS WILL BE ON BACK OF PLAYER)
  */
@@ -41,6 +44,7 @@ export function createPlayerUI(self, playerInfo) {
     const talkingEffect = createTalkingEffect(self, 0, 20);
 
     var container;
+
     if (playerInfo.playerId == self.socket.id) {
         const emotionsWheelGroup = createEmotionWheel(self);
         container = self.add.container(0, 0, [background, playerText, microphone, headphones, talkingEffect, ...emotionsWheelGroup]);
@@ -123,12 +127,27 @@ export function clearPlayerUI(self, playerId) {
     }
 }
 
-export function showEmotion(self, playerId, type) {
+export function showEmotion(self, playerId, emotionId) {
     if (!self.playerUI.second[playerId]) return;
+    const isMainPlayer = playerId == self.socket.id;
 
+    // block creating emotions too often for main player
+    if (isMainPlayer) {
+        if (blocked) return;
+        blockCreatingEmotions();
+        sceneEvents.emit('showEmotion', {playerId: playerId, emotionId: emotionId});
+    }
     const container = self.playerUI.second[playerId];
-    const emotion = createEmotion(self, type);
+    const emotion = createEmotion(self, emotionId, isMainPlayer);
     container.add(emotion);
+
+}
+
+function blockCreatingEmotions() {
+    blocked = true;
+    setTimeout(() => {
+        blocked = false;
+    }, 2000);
 }
 
 export function createEmotionWheel(self, playerId) {
@@ -228,7 +247,7 @@ function createEmotionWheel(self) {
         const xPos = x + Math.cos(angle * Math.PI / 180) * 55;
         const yPos = y + Math.sin(angle * Math.PI / 180) * 55;
 
-        const emotion = self.add.sprite(xPos, yPos, `emotion${i + 1}`).setScale(0.5).setFrame(20).setAlpha(0.6);
+        const emotion = self.add.sprite(xPos, yPos, `emotion${i + 1}`).setScale(1).setFrame(5).setAlpha(0.6);
         const backgroundRectangle = self.add.rectangle(xPos, yPos, 50, 50, 0x000000).setAlpha(0.0001).setInteractive();
         // add emotion on hoover event
         backgroundRectangle.on('pointerover', () => {

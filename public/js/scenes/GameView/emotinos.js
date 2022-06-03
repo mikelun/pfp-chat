@@ -11,31 +11,29 @@ export function initializeEmotionsWheel(self) {
         hideEmotionsWheelPanel(self, self.player.id);
     });
 }
-export function createEmotion(self, type) {
-    const emotion = self.add.sprite(20, 0, `emotion${type}`).setScale(0.5);
-    
+export function createEmotion(self, emotionId, isMainPlayer) {
+
+    const emotion = self.add.sprite(0, -20, `emotion${emotionId}`).setScale(2);
+
     createEmotionAnimation(self, emotion);
 
     return emotion;
-}   
+}
 
 function createEmotionAnimation(self, emotion) {
-    if (self.anims.get(emotion.texture.key)) {
-        emotion.play(emotion.texture.key);
-        return;
+    if (!self.anims.get(emotion.texture.key)) {
+        self.anims.create({
+            key: emotion.texture.key,
+            frames: self.anims.generateFrameNumbers(emotion.texture.key, { start: 0, end: self.textures.get(emotion.texture.key).frameTotal - 3 }),
+            frameRate: 8,
+            repeat: 0
+        });
     }
 
-    self.anims.create({
-        key: emotion.texture.key,
-        frames: self.anims.generateFrameNumbers(emotion.texture.key, { start: 0, end: 63 }),
-        frameRate: 15,
-        repeat: 0
-    });
 
+    emotion.play(emotion.texture.key);
     emotion.on('animationcomplete', () => {
         emotion.setVisible(false);
         emotion.destroy();
-    });
-
-    emotion.play(emotion.texture.key);
+    });   
 }

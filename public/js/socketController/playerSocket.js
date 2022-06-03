@@ -12,7 +12,7 @@ import { changeMap } from "../scenes/GameView/changeMap";
 import { disconnectPlayer } from "../scenes/GameView/disconnectPlayer";
 import { clearMap } from "../MapBuilding/showMap";
 import { removeAllMonsters } from "./mmorpgSocket";
-import { clearPlayerUI, createSpeakRequest, updatePlayerUI, updateSpeakerEffect, updateTalkingEffect } from "../scenes/GameView/playerUI";
+import { clearPlayerUI, createSpeakRequest, showEmotion, updatePlayerUI, updateSpeakerEffect, updateTalkingEffect } from "../scenes/GameView/playerUI";
 import { createMapsSpecialElements } from "../scenes/GameView/mapsSpecialElements";
 // import { sendFile } from "express/lib/response";
 
@@ -151,6 +151,7 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         sceneEvents.emit('getItems', items);
     });
 
+
     self.socket.on('connectToRoom', (data) => {
         if (data.error) {
             sceneEvents.emit('createErrorMessage', 'TO USE THIS FUNCTION YOU SHOULD CONNECT METAMASK');
@@ -211,6 +212,13 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
         }
     })
 
+    /**
+     * WHEN  OTHER PLAYER SHOWED AN EMOTION
+     */
+    self.socket.on('showEmotion', (data) => {
+        showEmotion(self, data.playerId, data.emotionId); 
+    });
+
 
 
     sceneEvents.on('connectToMyRoom', () => {
@@ -251,7 +259,11 @@ export function initializePlayersSocket(anotherSelf, _peers, currentPlayers) {
 
     sceneEvents.on('removeFromSpeakers', (data) => {
         self.socket.emit('removeFromSpeakers', data);
-    })
+    });
+
+    sceneEvents.on('showEmotion', (data) => {
+        self.socket.emit('showEmotion', data);
+    });
 
 }
 

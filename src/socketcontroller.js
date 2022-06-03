@@ -411,6 +411,15 @@ module.exports = (io) => {
             }
         });
 
+        /**
+         * WHEN OTHER PLAYER SHIW EMOTION
+         */
+        socket.on('showEmotion', (data) => {
+            if (players[data.playerId]) {
+                socket.to(players[data.playerId].room).emit('showEmotion', { playerId: socket.id, emotionId: data.emotionId });
+            }    
+        });
+
     });
 
     /**

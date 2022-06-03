@@ -174,8 +174,8 @@ export class PreloadScene extends Phaser.Scene {
     }
 
     loadEmotions() {
-        for (let i = 1; i <= 20; i++) {
-            this.load.spritesheet(`emotion${i}`, `assets/emotions/${i}.png`, { frameWidth: 256, frameHeight: 256 })
+        for (let i = 1; i <= 13; i++) {
+            this.load.spritesheet(`emotion${i}`, `assets/emotions/${i}.png`, { frameWidth: 32, frameHeight: 32 })
         }
 
         this.load.image('emotions-wheel', 'assets/emotions/emotions-wheel.png');
