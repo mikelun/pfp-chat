@@ -18,8 +18,9 @@ import { createPlayerUI, createPlayerUILevelDown, showEmotion } from "./playerUI
 var self;
 
 export function addPlayer(newSelf, playerInfo) {
-    sceneEvents.emit('removeErrorDisconnectMessage');
     self = newSelf;
+
+    sceneEvents.emit('removeErrorDisconnectMessage');
 
     sceneEvents.emit('updatePlayerName', playerInfo.playerName);
 
