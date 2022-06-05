@@ -1,4 +1,5 @@
 import { Player } from "../../characters/player";
+import { NPC } from "../../characters/npc";
 import { Monsterd } from "../../characters/monster";
 import { sceneEvents } from "../../Events/EventsCenter";
 import { addPhysicsForScene, showMap } from "../../MapBuilding/showMap";
@@ -36,6 +37,8 @@ export function addPlayer(newSelf, playerInfo) {
 
     //updatePlayerCoins(playerInfo.coins);
     self.player = self.add.player(playerInfo.x, playerInfo.y, `characters${playerInfo.textureId}`);
+
+    //self.cat = self.add.npc(playerInfo.x, playerInfo.y, 'witch-kitty-idle');
 
     // check if texture from internet
     const textureFromInternet = isTextureFromInternet(playerInfo.textureId);

@@ -6,6 +6,7 @@ import { getAnalytics } from "firebase/analytics";
 
 export function initializeFirebase() {
     return;
+    
     const firebaseConfig = {
         apiKey: "AIzaSyBhE82fWVhzvXCSIFq03GHNbBAzKcpbhtg",
         authDomain: "pfpchat-9a3c1.firebaseapp.com",
@@ -17,9 +18,9 @@ export function initializeFirebase() {
       };
 
     // Initialize Firebase
-    //const app = initializeApp(firebaseConfig);
+    const app = initializeApp(firebaseConfig);
 
-    //connectTwitter(app);
+    connectTwitter(app);
 }
 
 export function connectTwitter(app) {

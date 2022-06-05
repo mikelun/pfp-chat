@@ -181,11 +181,11 @@ export class PreloadScene extends Phaser.Scene {
         this.load.image('emotions-wheel', 'assets/emotions/emotions-wheel.png');
     }
 
-    loadCharacters() {
-        this.load.spritesheet('pink-kitty', 'assets/characters/kittens/pink-kitty.png', { frameWidth: 25, frameHeight: 19, margin: 1, spacing: 1});
+    loadNPCs() {
+        this.load.spritesheet('witch-kitty-idle', 'assets/characters/npcs/witch-kitty-idle.png', { frameWidth: 64, frameHeight: 64, });
     }
     preload() {
-        this.loadCharacters();
+        this.loadNPCs();
         this.loadUI();
         this.loadPlanets();
         this.loadMaps();
