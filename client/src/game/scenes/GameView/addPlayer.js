@@ -11,7 +11,6 @@ import { resizeObjectForNFT } from "./nftsOffset";
 import { createImageNFT } from "./gameViewUtils";
 import { initializeWeapon } from "../Weapons/weapon";
 import { removeAllMonsters } from "../../socketController/mmorpgSocket";
-import { updatePlayerCoins } from "../GameUI-elements/hud";
 import { configureArtifactCharacter } from "../../Artifacts/configureArtifacts";
 import { addEffect, createTalkingEffect } from "./addEffectToPlayer";
 import { createPlayerUI, createPlayerUILevelDown, showEmotion } from "./playerUI";

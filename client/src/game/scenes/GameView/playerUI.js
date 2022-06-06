@@ -1,6 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
 import { randColor } from "../../socketController/playerSocket";
-import { makeButtonInteractive } from "../GameUI-elements/lowButttons";
 import { createHostEffect, createSpeakerEffect, createTalkingEffect } from "./addEffectToPlayer";
 import { createEmotion } from "./emotinos";
 
