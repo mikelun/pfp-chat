@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import { sendEventToAmplitude } from '../Analytics/amplitude';
 
 import { sceneEvents } from '../Events/EventsCenter';
 import { createAnimationsUI } from './GameUI-elements/animationsUI';

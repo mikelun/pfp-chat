@@ -1,14 +1,7 @@
-import { object } from "sharp/lib/is";
 import { changeMap } from "../../scenes/GameView/changeMap";
-import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
-import { disconnectPlayer } from "../../scenes/GameView/disconnectPlayer";
-import { addAudioTimer } from "../../utils/addAudioTimer";
-import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
-import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
-import { addAnimationForMap } from "../AnimatedTile";
-import { showMap } from "../showMap";
+import { checkOverlap } from "../../utils/playerOverlap";
 import { createLight } from "./map4";
-import { clearMapWithTransition, startMapTransition } from "./maps-utils";
+import { startMapTransition } from "./maps-utils";
 
 // lights for map
 var redLights = [];

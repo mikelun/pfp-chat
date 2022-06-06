@@ -1,13 +1,7 @@
-import { sceneEvents } from "../../Events/EventsCenter";
-import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
-import { addAudioTimer } from "../../utils/addAudioTimer";
-import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
-import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
+
+import { checkOverlap } from "../../utils/playerOverlap";
 import { addAnimationForMap } from "../AnimatedTile";
-import { buildTile, editTile, saveAllProgress, stopBuilding, updateTilesFromData } from "../editTiles";
-import { showMap } from "../showMap";
-import { createLight } from "./map4";
-import { clearMapWithTransition, startMapTransition } from "./maps-utils";
+import { startMapTransition } from "./maps-utils";
 
 
 // main map

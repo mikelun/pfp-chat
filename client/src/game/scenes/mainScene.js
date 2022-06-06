@@ -3,17 +3,13 @@ import { initializeSocket } from '../socketController/socketController';
 import { initMainMap, updatePlayerPosition, initKeysForController } from '../utils/utils';
 import { createAnimationForNFTBackround, createAnimationForPlayer } from "../anims/characterAnims";
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
-import { sceneEvents } from '../Events/EventsCenter';
 import { addJoysticIfAndroid } from '../utils/pluginJoystic';
-import { addIframeGameAndMusicMachine } from '../utils/addIframeGameAndMusicMachine';
 import { addPlayerOverlap, checkOverlap } from '../utils/playerOverlap';
 import { updateOtherPlayersPositions } from '../utils/updatePlayersPositions';
-import { addAudioTimer } from '../utils/addAudioTimer';
 import { addUpdateForMap, showMap } from '../MapBuilding/showMap';
 import { showPlayersToTalk } from '../socketController/playerSocket';
-import { initializeAmplitude } from '../Analytics/amplitude';
 import { initializeAudioStream, initializeUserOnOtherTab } from './Audio/audioMicrophoneStream';
-import { initializeWeapon, updateWeapon } from './Weapons/weapon';
+import { updateWeapon } from './Weapons/weapon';
 import { initialAnimations } from '../utils/initialAnimations';
 import { initializePlayerEffects } from './GameView/playerEffects';
 import { clearPlayerUI } from './GameView/playerUI';
@@ -108,9 +104,6 @@ export class MainScene extends Phaser.Scene {
         
         // if user of other tab, stop microphone stream
         initializeUserOnOtherTab(this);
-
-        // INITIAlIZE AMPLITUDE (Util for analytics)
-        initializeAmplitude();
 
         // add main camera zoom
         this.cameras.main.setZoom(2);

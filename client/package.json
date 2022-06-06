@@ -3,26 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@supabase/supabase-js": "^1.35.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "@supabase/supabase-js": "^1.35.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-scripts": "5.0.1",
+    "bulma": "^0.9.3",
     "firebase": "^9.8.2",
     "moralis": "^1.5.8",
     "node-fetch": "^2.6.7",
     "phaser": "^3.55.2",
     "phaser-animated-tiles": "^2.0.2",
     "phaser3-rex-plugins": "^1.1.67",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1",
     "sharp": "^0.30.4",
     "signalhub": "^4.9.0",
     "simple-peer": "^9.11.1",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "socket.io-msgpack-parser": "^3.0.1",
-    "bulma": "^0.9.3"
+    "web-vitals": "^2.1.4"
+  },
+  "browser": {
+    "crypto": false
   },
   "scripts": {
     "start": "react-scripts start",

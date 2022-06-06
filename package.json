@@ -4,10 +4,7 @@
     "description": "",
     "source": "public/index.html",
     "scripts": {
-        "parcel": "mkdir -p dist && cp -r public/assets/ dist/assets && parcel",
-        "start": "node src/server.js",
-        "build": "parcel build && cp -r public/assets/ dist/assets",
-        "production": "parcel build && cp -r public/assets/ dist/assets"
+        "start": "node server/server.js"
     },
     "author": "mikelun",
     "license": "MIT",
@@ -17,7 +14,6 @@
     },
     "dependencies": {
         "@supabase/supabase-js": "^1.35.3",
-        "amplitude-js": "^8.18.1",
         "bulma": "^0.9.3",
         "cors": "^2.8.5",
         "dotenv": "^16.0.1",
@@ -31,11 +27,6 @@
         "signalhub": "^4.9.0",
         "simple-peer": "^9.11.1",
         "socket.io": "^4.4.1"
-    },
-    "staticFiles": {
-        "staticPath": [
-            "public"
-        ]
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.6",

@@ -1,11 +1,6 @@
 import { changeMap } from "../../scenes/GameView/changeMap";
-import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
-import { addAudioTimer } from "../../utils/addAudioTimer";
-import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
-import { addPlayerOverlap, checkOverlap } from "../../utils/playerOverlap";
-import { addAnimationForMap } from "../AnimatedTile";
-import { showMap } from "../showMap";
-import { clearMapWithTransition, startMapTransition } from "./maps-utils";
+import {checkOverlap } from "../../utils/playerOverlap";
+import { startMapTransition } from "./maps-utils";
 
 
 // main map

@@ -1,4 +1,3 @@
-import e from "cors";
 import { sceneEvents } from "../Events/EventsCenter";
 
 export async function getPlayerNFT(moralis) {
