@@ -1,4 +1,5 @@
 import { sceneEvents } from "../../Events/EventsCenter";
+import { changedMap } from "../../scenes/GameUI-elements/musicLogic";
 import { connectToOtherMap } from "../../scenes/GameView/connectToMap";
 import { addAudioTimer } from "../../utils/addAudioTimer";
 import { addIframeGameAndMusicMachine } from "../../utils/addIframeGameAndMusicMachine";
@@ -63,7 +64,7 @@ function addMap(self) {
     self.input.keyboard.on('keydown-SPACE', function (event) {
         if (entranceMapId && !spaceKey) {
             spaceKey = true;
-            changeMap(self, {mapId: entranceMapId});
+            changedMap(self, {mapId: entranceMapId});
         }
     });
 }

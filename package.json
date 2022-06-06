@@ -16,7 +16,6 @@
         "parcel-plugin-static-files-copy": "^2.6.0"
     },
     "dependencies": {
-        "@ensdomains/ensjs": "^2.1.0",
         "@supabase/supabase-js": "^1.35.3",
         "amplitude-js": "^8.18.1",
         "bulma": "^0.9.3",
@@ -25,24 +24,13 @@
         "eiows": "^4.0.1",
         "express": "^4.17.3",
         "express-session": "^1.17.3",
-        "firebase": "^9.8.2",
         "fs": "^0.0.1-security",
         "https": "^1.0.0",
-        "moralis": "^1.5.8",
         "node-fetch": "^2.6.7",
-        "parcel": "^2.3.2",
-        "phaser": "^3.55.2",
-        "phaser-animated-tiles": "^2.0.2",
-        "phaser3-rex-plugins": "^1.1.67",
         "sharp": "^0.30.4",
         "signalhub": "^4.9.0",
         "simple-peer": "^9.11.1",
-        "socket.io": "^4.4.1",
-        "socket.io-client": "^4.4.1",
-        "socket.io-msgpack-parser": "^3.0.1",
-        "twitter": "^1.7.1",
-        "web3": "^1.7.1",
-        "webrtc-swarm": "^2.9.0"
+        "socket.io": "^4.4.1"
     },
     "staticFiles": {
         "staticPath": [

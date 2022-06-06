@@ -1,8 +1,9 @@
-import { MainScene } from './scenes/mainScene.js';
-import { PreloadScene } from './scenes/preloadScene.js';
-import { GameUi } from './scenes/GameUi.js';
+import { MainScene } from './game/scenes/mainScene.js';
+import { PreloadScene } from './game/scenes/preloadScene.js';
+import { GameUi } from './game/scenes/GameUi.js';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-import { StartScene } from './scenes/StartScene.js';
+import { StartScene } from './game/scenes/StartScene.js';
+import Phaser from 'phaser';
 const DEFAULT_WIDTH = 1280
 const DEFAULT_HEIGHT = 720
 
@@ -60,6 +61,4 @@ const config = {
   },
 }
 
-window.addEventListener('load', () => {
-  const game = new Phaser.Game(config)
-})
+export const game = new Phaser.Game(config)

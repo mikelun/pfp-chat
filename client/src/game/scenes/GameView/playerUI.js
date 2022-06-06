@@ -150,10 +150,6 @@ function blockCreatingEmotions() {
     }, 2000);
 }
 
-export function createEmotionWheel(self, playerId) {
-
-}
-
 /**
  *  CREATE COHOST REQUEST PANEL ONLY FOR HOST
  */
