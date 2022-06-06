@@ -46,7 +46,6 @@ app.use(sessionMiddleware);
 const server = require('http').Server(app);
 
 const io = require('socket.io')(server, {
-    wsEngine: require("eiows").Server,
     allowRequest: (req, callback) => {
         // with HTTP long-polling, we have access to the HTTP response here, but this is not
         // the case with WebSocket, so we provide a dummy response object

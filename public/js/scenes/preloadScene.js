@@ -66,6 +66,11 @@ export class PreloadScene extends Phaser.Scene {
 
         this.load.tilemapTiledJSON('10', 'assets/tiles/10.json');
 
+        // LOADING COFFEEBAR MAP
+        this.load.image('Bakery', 'assets/tiles/Bakery-extruded.png');
+        this.load.image('Interior', 'assets/tiles/Interior-extruded.png');
+        this.load.tilemapTiledJSON('cafe', 'assets/tiles/cafe.json');
+
     }
 
 
@@ -285,10 +290,6 @@ export class PreloadScene extends Phaser.Scene {
         this.load.tilemapTiledJSON('surf-vibe', 'assets/tiles/surf-vibe.json');
         // END LOADING SURF VIBE MAP
 
-        // LOADING COFFEEBAR MAP
-        this.load.image('Bakery', 'assets/tiles/Bakery.png');
-        this.load.image('Interior', 'assets/tiles/Interior.png');
-        this.load.tilemapTiledJSON('cafe', 'assets/tiles/cafe.json');
 
         this.load.image('play-button', 'assets/game-ui/button-play.png');
 

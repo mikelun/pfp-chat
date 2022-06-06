@@ -35,8 +35,8 @@ export function addMap4(self) {
     
     cafe = self.make.tilemap({ key: 'cafe' });
     const tilemapDayTileset = cafe.addTilesetImage('TilemapDay', 'tiles');
-    const bakeryTileset = cafe.addTilesetImage('Bakery', 'Bakery');
-    const interiorTileset = cafe.addTilesetImage('Interior', 'Interior');
+    const bakeryTileset = cafe.addTilesetImage('Bakery', 'Bakery', 32, 32, 1, 2);
+    const interiorTileset = cafe.addTilesetImage('Interior', 'Interior', 32, 32, 1, 2);
     const deepwaterTileset = cafe.addTilesetImage('Animated_Deepwater', 'Animated_Deepwater', 48, 48, 1, 2);
 
     // Create layers and collides for physics
