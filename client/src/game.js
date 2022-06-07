@@ -1,11 +1,6 @@
-import { MainScene } from './game/scenes/mainScene.js';
-import { PreloadScene } from './game/scenes/preloadScene.js';
-import { GameUi } from './game/scenes/GameUi.js';
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-import { StartScene } from './game/scenes/StartScene.js';
 import Phaser from 'phaser';
-const DEFAULT_WIDTH = 1280
-const DEFAULT_HEIGHT = 720
+import { MainScene} from './game/scenes/MainScene'
+import { PreloadScene} from './game/scenes/PreloadScene'
 
 /*
  ________  ________ ________  ________  ___  ___  ________  _________   
@@ -31,27 +26,16 @@ const DEFAULT_HEIGHT = 720
                         ░░░▀▄▄▀▀▄▄▀▀▄▄▄█▀
 */
 const config = {
-  parent: "gameDiv",
-  dom: { createContainer: true },
   type: Phaser.AUTO,
-  backgroundColor: '#000000',
+  parent: 'phaser-container',
+  backgroundColor: '#332882',
+  pixelArt: true, // Prevent pixel art from becoming blurred when scaled.
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: DEFAULT_WIDTH,
-    height: DEFAULT_HEIGHT
+    mode: Phaser.Scale.ScaleModes.RESIZE,
+    width: window.innerWidth,
+    height: window.innerHeight,
   },
-  pixelArt: true,
-  scene: [PreloadScene, MainScene, GameUi, StartScene],
-  plugins: {
-    scene: [{
-        key: 'rexUI',
-        plugin: UIPlugin,
-        mapping: 'rexUI'
-    },
-    // ...
-    ]
-  },
+  autoFocus: true,
   physics: {
     default: 'arcade',
     arcade: {
@@ -59,6 +43,7 @@ const config = {
       gravity: { y: 0 }
     }
   },
+  scene: [PreloadScene, MainScene],
 }
 
 export const game = new Phaser.Game(config)
