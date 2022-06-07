@@ -7,7 +7,7 @@ const muiTheme = createTheme({
       main: '#426dea',
     },
     secondary: {
-      main: '#f57c00',
+      main: '#282D4E',
     },
     metamask: {
       main: '#f57c00',

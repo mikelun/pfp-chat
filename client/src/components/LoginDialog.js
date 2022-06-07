@@ -4,18 +4,16 @@ import Button from '@mui/material/Button'
 // import twitter icon
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GroupIcon from '@mui/icons-material/Group';
-import logo from '../logo.gif';
-import { red } from '@mui/material/colors';
+import catLogo from '../cat-logo.png';
+import GoogleIcon from '@mui/icons-material/Google';
 
-const color = red[500];
 
-// add icon to top
-const Icon = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px;
-`;
+const Background = styled.div`
+    background-color: #5680e9;
+    height: 100%;
+    width: 100%;
+    `;
+
 
 const Backdrop = styled.div`
   position: absolute;
@@ -30,8 +28,8 @@ const Backdrop = styled.div`
 
 const Wrapper = styled.div`
   background: #ffffff;
-  border-radius: 16px;
-  padding: 40px 60px 100px 60px;
+  border-radius: 30px;
+  padding: 40px 50px 60px 50px;
   box-shadow: 0px 0px 10px #0000006f;
 `
 
@@ -39,11 +37,8 @@ const CustomRoomWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: center;
   justify-content: center;
-  .tip {
-    font-size: 18px;
 }
 `
 
@@ -51,59 +46,62 @@ const CustomRoomWrapper = styled.div`
 const ButtonWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
     align-items: center;
     justify-content: center;
-    .Button {
-        width: 250px;
-    }
-    padding: 30px 0 0 0;
+    font-family: 'Rubik', sans-serif;
+    padding: 0px 0px 0px 0px;
 `
 
 const Title = styled.h1`
-    font-size: 20px;
-    font-weight: 800;
-    color: #516dd2;
+    font-size: 22px;
+    font-family: 'Rubik', sans-serif;
+    color: #282D4E;
     text-align: center;
     margin: 0;
+    padding: 20px 0px 30px 0px;
 `
-
-const LoginTitle = styled.h3`
-    font-size: 20px;
-    font-weight: 500;
-    color: #555555;
-    text-align: center;
-    margin: 0;
-}
+const OrText = styled.p`
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Rubik', sans-serif;
+    opacity: 0.5;
 `
 
 function Logo() {
     return (
-        <img src={logo} alt="logo" style={{ width: '40%', minWidth: '200px' }} />
+        <img src={catLogo} alt="logo" style={{ width: '100%', minWidth: '100%', margin: '0px', padding: '0px' }} />
     );
 }
+
+function TwitterButton() {
+    return (
+        <Button variant="outlined" startIcon={<TwitterIcon />} size="medium" style={{ width: '300px', fontWeight: 800, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif" }}>SIGN IN WITH TWITTER</Button>
+    );
+}
+
+function MetamaskButton() {
+    return (
+        <Button variant="contained" size="medium" style={{ width: '300px', fontWeight: 800, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif", backgroundColor: "#FFC44B" }}>CONNECT METAMASK</Button>
+    );
+}
+
+
 export default function LoginDialog() {
     return (
-        <>
-            <Icon><Logo/></Icon>
+        <Background>
             <Backdrop>
                 <Wrapper>
                     <CustomRoomWrapper>
-                        <Title>WELCOME TO PFPCHAT</Title>
+                        <Logo />
+                        <Title>WELCOME TO PFPCHAT!</Title>
                         <ButtonWrapper>
-                            <Button variant="outlined" startIcon={<TwitterIcon />} size="medium" style={{ width: '150px' }}>
-                                Twitter
-                            </Button>
-                            <Button variant="outlined" startIcon={<GroupIcon />} size="medium" style={{ width: '150px', fontWeight: 800 }}>
-                                GUEST
-                            </Button>
-                            <Button variant="contained" size="medium" style={{ width: '250px', fontWeight: 800 }} color='metamask' >
-                                CONNECT METAMASK
-                            </Button>
+                            <TwitterButton />
+                            <OrText>or</OrText>
+                            <MetamaskButton/>
                         </ButtonWrapper>
                     </CustomRoomWrapper>
                 </Wrapper>
             </Backdrop>
-        </>
+        </Background>
     )
 }
