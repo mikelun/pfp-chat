@@ -32,6 +32,10 @@ const Wrapper = styled.div`
   border-radius: 30px;
   padding: 40px 50px 60px 50px;
   box-shadow: 0px 0px 10px #0000006f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `
 // scale buttons to same width
 const ButtonWrapper = styled.div`
@@ -44,7 +48,7 @@ const ButtonWrapper = styled.div`
 `
 
 const Title = styled.h1`
-    font-size: 22px;
+    font-size: 24px;
     font-family: 'Rubik', sans-serif;
     color: #282D4E;
     text-align: center;
@@ -53,26 +57,31 @@ const Title = styled.h1`
 `
 const OrText = styled.p`
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 600;
     font-family: 'Rubik', sans-serif;
     opacity: 0.5;
 `
 
 function Logo() {
     return (
-        <img src={catLogo} alt="logo" style={{ width: '100%', minWidth: '100%', margin: '0px', padding: '0px' }} />
+        <img src={catLogo} alt="logo" style={{ width: '250px', }} />
     );
 }
 
 function TwitterButton() {
     return (
-        <Button variant="outlined" onClick={() => loginByTwitter()} startIcon={<TwitterIcon/>} size="medium" style={{ width: '300px', fontWeight: 800, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif" }}>SIGN IN WITH TWITTER</Button>
+        <Button variant="outlined" onClick={() => loginByTwitter()} startIcon={<TwitterIcon />} size="medium" style={{ width: '300px', fontWeight: 600, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif" }}>SIGN IN WITH TWITTER</Button>
     );
 }
 
-function MetamaskButton() {
+function EmailInput() {
     return (
-        <Button variant="contained" onClick={() => {loginByMoralis()}} size="medium" style={{ width: '300px', fontWeight: 800, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif", backgroundColor: "#FFC44B" }}>CONNECT METAMASK</Button>
+        <input type="email" placeholder="Enter your email" style={{ fontFamily: "'Rubik', sans-serif", fontWeight:600, fontSize:'18px', width: '290px', height: '38px', borderRadius: '15px', border:'1px solid #282d4e', color: '#282D4E',  textIndent:'15px'  }} />
+    );
+}
+function EmailButton() {
+    return (
+        <Button variant="contained" onClick={() => { loginByMoralis() }} size="medium" style={{ width: '300px', fontWeight: 600, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif", backgroundColor: "#FFC44B", marginTop: '10px', }}>SIGN IN WITH EMAIL</Button>
     );
 }
 
@@ -82,13 +91,12 @@ export default function LoginDialog() {
         <Background>
             <Backdrop>
                 <Wrapper>
-                        <Logo />
-                        <Title>WELCOME TO PFPCHAT!</Title>
-                        <ButtonWrapper>
-                            <TwitterButton />
-                            <OrText>or</OrText>
-                            <MetamaskButton/>
-                        </ButtonWrapper>
+                    <Logo />
+                    <Title>WELCOME TO PFPCHAT!</Title>
+                    <TwitterButton />
+                    <OrText>or</OrText>
+                    <EmailInput/>
+                    <EmailButton />
                 </Wrapper>
             </Backdrop>
         </Background>
