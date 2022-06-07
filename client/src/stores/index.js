@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './authReducer';
-import counterReducer from './counterReducer'
+import loginReducer from './loginReducer';
 
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    auth: authReducer
+    login: loginReducer,
   },
   // Temporary disable serialize check for redux as we store MediaStream in ComputerStore.
   // https://stackoverflow.com/a/63244831

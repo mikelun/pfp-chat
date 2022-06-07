@@ -2,34 +2,37 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup, TwitterAuthProvider } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { store } from "../stores";
+import { updateFirebaseUser } from "../stores/loginReducer";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyBhE82fWVhzvXCSIFq03GHNbBAzKcpbhtg",
-    authDomain: "pfpchat-9a3c1.firebaseapp.com",
-    projectId: "pfpchat-9a3c1",
-    storageBucket: "pfpchat-9a3c1.appspot.com",
-    messagingSenderId: "475475338783",
-    appId: "1:475475338783:web:24995d0149d593dff0d72a",
-    measurementId: "G-C4FJBJKJKP"
-};
+var app;
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export async function initializeFirebase() {
+    const firebaseConfig = {
+        apiKey: "AIzaSyBhE82fWVhzvXCSIFq03GHNbBAzKcpbhtg",
+        authDomain: "pfpchat-9a3c1.firebaseapp.com",
+        projectId: "pfpchat-9a3c1",
+        storageBucket: "pfpchat-9a3c1.appspot.com",
+        messagingSenderId: "475475338783",
+        appId: "1:475475338783:web:24995d0149d593dff0d72a",
+        measurementId: "G-C4FJBJKJKP"
+    };
 
+    // Initialize Firebase
+    app = initializeApp(firebaseConfig);
 
-export function getCurrentUser() {
-    console.log(getAuth(app).currentUser);
+    const analytics = getAnalytics(app);
+
+    getAuthUser();
 }
 
-export function loginByGoogle() {
-    const provider = new GoogleAuthProvider();
-    login(provider);
+async function getAuthUser() {
+    getAuth().onIdTokenChanged(async (user) => {
+        // update firebase user
+        store.dispatch(updateFirebaseUser(user));
+    })
 }
+
 
 export function loginByTwitter() {
     const provider = new TwitterAuthProvider();
