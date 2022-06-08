@@ -1,4 +1,4 @@
-import { loginByTwitter } from "../logic/firebase";
+import { confirmEmail, loginByTwitter, signInByEmail } from "../logic/firebase";
 import styled from 'styled-components';
 import Button from '@mui/material/Button'
 // import twitter icon
@@ -7,12 +7,14 @@ import GroupIcon from '@mui/icons-material/Group';
 import catLogo from '../cat-logo.png';
 import GoogleIcon from '@mui/icons-material/Google';
 import { loginByMoralis } from "../logic/moralis";
-
+import ReactInputVerificationCode from 'react-input-verification-code';
 
 const Background = styled.div`
     background-color: #5680e9;
     height: 100%;
     width: 100%;
+    --ReactInputVerificationCode-itemWidth:3rem;
+    --ReactInputVerificationCode-itemHeight:3rem
     `;
 
 
@@ -30,7 +32,7 @@ const Backdrop = styled.div`
 const Wrapper = styled.div`
   background: #ffffff;
   border-radius: 30px;
-  padding: 40px 50px 60px 50px;
+  padding: 20px 50px 40px 50px;
   box-shadow: 0px 0px 10px #0000006f;
     display: flex;
     flex-direction: column;
@@ -70,18 +72,18 @@ function Logo() {
 
 function TwitterButton() {
     return (
-        <Button variant="outlined" onClick={() => loginByTwitter()} startIcon={<TwitterIcon />} size="medium" style={{ width: '300px', fontWeight: 600, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif" }}>SIGN IN WITH TWITTER</Button>
+        <Button variant="outlined" onClick={() => {}} startIcon={<TwitterIcon />} size="medium" style={{ width: '300px', fontWeight: 600, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif" }}>SIGN IN WITH TWITTER</Button>
     );
 }
 
 function EmailInput() {
     return (
-        <input type="email" placeholder="Enter your email" style={{ fontFamily: "'Rubik', sans-serif", fontWeight:600, fontSize:'18px', width: '290px', height: '38px', borderRadius: '15px', border:'1px solid #282d4e', color: '#282D4E',  textIndent:'15px'  }} />
+        <input type="email" placeholder="Enter your email" style={{ fontFamily: "'Rubik', sans-serif", fontWeight:600, fontSize:'15px', width: '290px', height: '38px', borderRadius: '15px', border:'1px solid #282d4e', color: '#282D4E',  textIndent:'15px'  }} />
     );
 }
 function EmailButton() {
     return (
-        <Button variant="contained" onClick={() => { loginByMoralis() }} size="medium" style={{ width: '300px', fontWeight: 600, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif", backgroundColor: "#FFC44B", marginTop: '10px', }}>SIGN IN WITH EMAIL</Button>
+        <Button variant="contained" onClick={() => {}} size="medium" style={{ width: '300px', fontWeight: 600, borderRadius: '15px', borderColor: '#282D4E', color: '#282D4E', height: '40px', fontFamily: "'Rubik', sans-serif", backgroundColor: "#FFC44B", marginTop: '10px', }}>SIGN IN AS GUEST</Button>
     );
 }
 
@@ -95,7 +97,6 @@ export default function LoginDialog() {
                     <Title>WELCOME TO PFPCHAT!</Title>
                     <TwitterButton />
                     <OrText>or</OrText>
-                    <EmailInput/>
                     <EmailButton />
                 </Wrapper>
             </Backdrop>
