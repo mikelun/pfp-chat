@@ -10,8 +10,6 @@ require('./routes.js')(app);
 
 const session = require('express-session');
 
-const { parser } = require('socket.io-msgpack-parser');
-
 // CONFIGURATION ===============================================================
 
 var port = process.env.PORT || 3000; // set our port
